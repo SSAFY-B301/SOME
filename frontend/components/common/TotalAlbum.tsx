@@ -19,14 +19,6 @@ function TotalAlbum() {
         !flag && (isClicked ? styles.click_total_album : styles.no_click)
       } bg-white dark:bg-dark-block`}
     >
-      {/* {isClicked && (
-        <div
-          onClick={() => {
-            setIsClicked(false);
-          }}
-          className="absolute bg-black w-16 h-2 rounded-xl"
-        />
-      )} */}
       <div
         onClick={() => {
           setIsClicked(true);
@@ -36,7 +28,6 @@ function TotalAlbum() {
         }}
         onTouchMove={(e) => {
           setTouchPosition(e.changedTouches[0].pageY);
-          console.log(touchPosition);
           setFlag(true);
         }}
         onTouchEnd={(e) => {
