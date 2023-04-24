@@ -1,12 +1,15 @@
 import ProfileModify from "@/public/icons/ProfileModify.svg";
 import CaretLeft from "@/public/icons/CaretLeft.svg";
+import Link from "next/link";
 
 export default function MyPage() {
     return(
         <div>
             <div className="flex items-center justify-center my-8">
                 <div className="flex items-center justify-between" style={{width: "89.744vw"}}>
-                    <CaretLeft></CaretLeft>
+                    <Link href={"/"}>
+                        <CaretLeft></CaretLeft>
+                    </Link>
                     <p className="text-xl text-center">마이페이지</p>
                     <div></div>
                 </div>
