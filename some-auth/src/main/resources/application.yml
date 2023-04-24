@@ -1,0 +1,16 @@
+
+# S3 ??
+
+
+cloud:
+  aws:
+    s3:
+      bucket: k8b301-bucket
+    credentials:
+      access-key: AKIAY7TIHYUIPS3AMUHV
+      secret-key: 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
+    region:
+      static: ap-northeast-2
+      auto: false
+    stack:
+      auto: false
