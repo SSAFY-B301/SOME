@@ -6,6 +6,7 @@ import { useTheme } from "next-themes";
 import Logo from "./Logo";
 import styles from "@/styles/home.module.scss"
 
+
 function NavBar() {
   const { theme, setTheme } = useTheme();
   return (
