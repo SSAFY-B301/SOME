@@ -1,12 +1,12 @@
 // "use client";
 
 import { useState } from "react";
-import { currentAlbums, favoriteAlbums } from "@/pages/api/dummyapi";
-import styles from "@/styles/style.module.scss";
-import HeartIcon from "@/public/icon/Heart.svg";
-import DotsIcon from "@/public/icon/DotsThreeOutline.svg";
-import RightIcon from "@/public/icon/CaretRight.svg";
-import ItemBlock from "@/components/ItemBlock";
+import { currentAlbumsApi, favoriteAlbumsApi } from "@/pages/api/dummyapi";
+import styles from "@/styles/home.module.scss";
+import HeartIcon from "@/public/icons/Heart.svg";
+import DotsIcon from "@/public/icons/DotsThreeOutline.svg";
+import RightIcon from "@/public/icons/CaretRight.svg";
+import ItemBlock from "@/components/common/ItemBlock";
 import { useRouter } from "next/router";
 
 interface CurrentAlbumType {
@@ -16,12 +16,14 @@ interface CurrentAlbumType {
   count: number;
 }
 
-// 최근 업로드
+/**
+ * 최근 업로드된 앨범
+ */
 function CurrentAlbum() {
   const router = useRouter();
 
-  const currents: React.ReactNode = currentAlbums ? (
-    currentAlbums.data.map((currentAlbum: CurrentAlbumType) => (
+  const currents: React.ReactNode = currentAlbumsApi ? (
+    currentAlbumsApi.data.map((currentAlbum: CurrentAlbumType) => (
       <div
         onClick={() => router.push(`/album/${currentAlbum.id}`)}
         key={currentAlbum.id}
@@ -63,11 +65,17 @@ interface FavoriteAlbumType {
   isLike: boolean;
 }
 
-// 즐겨찾는 앨범
+/**
+ * 즐겨찾는 앨범
+ */
 function FavoriteAlbum() {
   const router = useRouter();
+  const [Albums, setAlbums] = useState(favoriteAlbumsApi.data);
 
-  const [Albums, setAlbums] = useState(favoriteAlbums.data);
+  /**
+   * 즐겨찾기 토글
+   * @param id
+   */
   const clickedHeart = (id: number) => {
     console.log(Albums[id - 1]);
     const nextAlbums = Albums.map((album, i) => {
@@ -82,6 +90,10 @@ function FavoriteAlbum() {
     });
     setAlbums(nextAlbums);
   };
+
+  /**
+   * 즐겨찾는 앨범 리스트
+   */
   const favorites: React.ReactNode = Albums
     ? Albums.map((favoriteAlbum: FavoriteAlbumType) => (
         <div
