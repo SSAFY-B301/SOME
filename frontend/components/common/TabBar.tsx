@@ -11,37 +11,38 @@ function TabBar() {
 
   return (
     <section
-      className="flex justify-between fixed bottom-0 w-screen"
-      style={{ height: "10.427vh" }}
+      className={`flex justify-between  w-screen ${styles.tab_bar}`}
+      style={{ height: "22.564vw" }}
     >
       {/* 남사친 */}
       <div
-        className={`flex flex-col justify-center items-center gap-1 bg-white dark:bg-dark-block rounded-t-2xl ${styles.tab_bar}`}
+        className={`flex flex-col justify-center items-center bg-white dark:bg-dark-block ${styles.tab_bar_block}`}
+        style={{ gap: "1.026vw", borderRadius: "4.103vw 4.103vw 0px 0px" }}
       >
         {router.pathname === "/" ? (
-          <MfriendSelectedIcon />
+          <MfriendSelectedIcon width="8.205vw" height="7.436vw" />
         ) : (
           <MfriendIcon fill="#B1B8C0" />
         )}
 
-        <p className=" text-xs">남사친</p>
+        <p style={{ fontSize: "4.103vw" }}>남사친</p>
       </div>
 
       {/* 플러스 버튼 */}
       <div
-        className={`fixed z-50 left-auto right-auto flex justify-center items-center rounded-full w-16 h-16 ${styles.plus_btn}`}
+        className={`fixed z-50 left-auto right-auto flex justify-center items-center rounded-full ${styles.plus_btn}`}
+        style={{ width: "16.41vw", height: "16.41vw" }}
       >
         <PlusIcon />
       </div>
 
       {/* 가운데 빈 박스 */}
-      <div
-        className={`fixed bg-white dark:bg-dark-block bottom-0 ${styles.mid_box}`}
-      />
+      <div className={`bg-white dark:bg-dark-block ${styles.mid_box}`} />
 
       {/* 여사친 */}
       <div
-        className={`flex flex-col justify-center items-center  gap-1 bg-white dark:bg-dark-block rounded-t-2xl ${styles.tab_bar}`}
+        className={`flex flex-col justify-center items-center bg-white dark:bg-dark-block ${styles.tab_bar_block}`}
+        style={{ gap: "1.026vw", borderRadius: "4.103vw 4.103vw 0px 0px" }}
       >
         {router.pathname === "/f-friend" ? (
           <FfriendSelectedIcon />
@@ -49,7 +50,7 @@ function TabBar() {
           <FfriendIcon fill="#B1B8C0" />
         )}
 
-        <p className=" text-xs">여사친</p>
+        <p style={{ fontSize: "4.103vw" }}>여사친</p>
       </div>
     </section>
   );
