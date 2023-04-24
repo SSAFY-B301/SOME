@@ -12,12 +12,17 @@ export default function Home() {
       style={{ width: "100vw", height: "100vh" }}
     >
       <NavBar />
-      <section className="flex flex-col items-center gap-y-3">
+      <section
+        className="flex flex-col items-center"
+        style={{ rowGap: "3.077vw" }}
+      >
         <CurrentAlbum />
         <FavoriteAlbum />
       </section>
-      <TotalAlbum />
-      <TabBar />
+      <div className={`${styles.footer}`}>
+        <TotalAlbum />
+        <TabBar />
+      </div>
     </div>
   );
 }
