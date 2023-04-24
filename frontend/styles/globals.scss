@@ -7,11 +7,26 @@
 }
 
 body {
-  -ms-overflow-style: none;
+  -ms-overflow-style: none; /* IE, Edge */
+  scrollbar-width: none; /* Firefox */
+  touch-action: pan-y;
+  &::-webkit-scrollbar {
+    display: none; /* Chrome, Safari, Opera */
+  }
 }
 
 ::-webkit-scrollbar {
   display: none;
+}
+
+#__next {
+  -ms-overflow-style: none; /* IE, Edge */
+  scrollbar-width: none; /* Firefox */
+  touch-action: pan-y;
+  &::-webkit-scrollbar {
+    display: none; /* Chrome, Safari, Opera */
+  }
+  overflow: scroll;
 }
 /* :root {
   --foreground-rgb: 0, 0, 0;

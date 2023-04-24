@@ -1,12 +1,16 @@
-import NavBar from "@/components/Nav";
+import NavBar from "@/components/common/Nav";
 import React from "react";
-import TabBar from "@/components/TabBar";
-import TotalAlbum from "@/components/TotalAlbum";
-import { CurrentAlbum, FavoriteAlbum } from "@/components/Albums";
+import TabBar from "@/components/common/TabBar";
+import TotalAlbum from "@/components/common/TotalAlbum";
+import { CurrentAlbum, FavoriteAlbum } from "@/components/common/Albums";
+import styles from "@/styles/home.module.scss";
 
 export default function Home() {
   return (
-    <div className="w-screen h-screen bg-bg-home dark:bg-dark-bg-home relative touch-none">
+    <div
+      className={`bg-bg-home dark:bg-dark-bg-home relative touch-none ${styles.no_scroll}`}
+      style={{ width: "100vw", height: "100vh" }}
+    >
       <NavBar />
       <section className="flex flex-col items-center gap-y-3">
         <CurrentAlbum />
