@@ -4,13 +4,14 @@ import DarkModeIcon from "@/public/icons/Moon.svg";
 import AlarmIcon from "@/public/icons/Bell.svg";
 import { useTheme } from "next-themes";
 import Logo from "./Logo";
-import styles from "@/styles/home.module.scss"
-
+import styles from "@/styles/home.module.scss";
 
 function NavBar() {
   const { theme, setTheme } = useTheme();
   return (
-    <nav className={`flex flex-row justify-between items-center h-14 mx-6 ${styles.nav_bar}`} >
+    <nav
+      className={`flex flex-row justify-between items-center h-14 mx-6 ${styles.nav_bar}`}
+    >
       <Logo />
       {/* 다크모드 <-> 라이트모드 전환 버튼 */}
       <div className="flex gap-2">
