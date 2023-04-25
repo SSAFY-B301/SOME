@@ -10,3 +10,28 @@ cloud:
       auto: false
     stack:
       auto: false
+
+spring:
+  data:
+    mongodb:
+      host: localhost
+      port: 27017
+      database: some
+
+  datasource:
+    url: jdbc:mysql://127.0.0.1:3306/ssafydb?serverTimezone=UTC&characterEncoding=UTF-8
+    username: ssafy
+    password: ssafy
+    driver-class-name: com.mysql.cj.jdbc.Driver
+
+  jpa:
+    hibernate:
+      ddl-auto: update
+    properties:
+      hibernate:
+#        show_sql: true
+        format_sql: true
+
+logging.level:
+  org.hibernate.SQL: debug
+#  org.hibernate.type: trace
