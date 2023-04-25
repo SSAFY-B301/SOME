@@ -1,7 +1,7 @@
 // "use client";
 
 import { useState } from "react";
-import { currentAlbumsApi, favoriteAlbumsApi } from "@/pages/api/dummyapi";
+import { currentAlbumsApi, favoriteAlbumsApi } from "@/pages/api/dummyApi";
 import styles from "@/styles/home.module.scss";
 import HeartIcon from "@/public/icons/Heart.svg";
 import DotsIcon from "@/public/icons/DotsThreeOutline.svg";
@@ -29,29 +29,46 @@ function CurrentAlbum() {
         key={currentAlbum.id}
       >
         <div
-          className="w-12 h-12 rounded-xl bg-center bg-cover"
-          style={{ backgroundImage: "url(" + currentAlbum.img + ")" }}
+          className="bg-center bg-cover"
+          style={{
+            width: "12.308vw",
+            height: "12.308vw",
+            backgroundImage: "url(" + currentAlbum.img + ")",
+            borderRadius: "3.077vw",
+          }}
         >
           <div
-            className={`w-5 h-5 rounded-full flex justify-center items-center relative ${styles.count_circle}`}
-            style={{ top: "-5px", left: "35px" }}
+            className={`rounded-full flex justify-center items-center relative ${styles.count_circle}`}
+            style={{
+              width: "5.128vw",
+              height: "5.128vw",
+              top: "-1.282vw",
+              left: "8.974vw",
+            }}
           >
-            <span className="text-white" style={{ fontSize: "10px" }}>
+            <span className="text-white" style={{ fontSize: "2.564vw" }}>
               {currentAlbum.count <= 10 ? currentAlbum.count : "10+"}
             </span>
           </div>
         </div>
-        <p className="text-xs">{currentAlbum.name}</p>
+        <p style={{ fontSize: "3.077vw" }}>{currentAlbum.name}</p>
       </div>
     ))
   ) : (
     <p>아직 추가된 사진이 없어요</p>
   );
   return (
-    <ItemBlock width="360px" height="112px" radius="16px">
-      <div className="flex flex-col justify-around w-full h-full mx-4">
-        <h1 className="text-xl font-bold">최근 업로드</h1>
-        <div className="flex gap-4">{currents}</div>
+    <ItemBlock width="92.308vw" height="28.718vw" radius="16px">
+      <div
+        className="flex flex-col justify-around w-full h-full"
+        style={{ margin: "0px 4.103vw" }}
+      >
+        <h1 className="font-bold" style={{ fontSize: "5.128vw" }}>
+          최근 업로드
+        </h1>
+        <div className="flex" style={{ gap: "4.103vw" }}>
+          {currents}
+        </div>
       </div>
     </ItemBlock>
   );
@@ -102,22 +119,43 @@ function FavoriteAlbum() {
           className={styles.card}
         >
           <div
-            className="w-72 h-96 rounded-xl bg-center bg-cover "
-            style={{ backgroundImage: "url(" + favoriteAlbum.img + ")" }}
+            className="bg-center bg-cover "
+            style={{
+              width: "73.846vw",
+              height: "98.462vw",
+              borderRadius: "3.077vw",
+              backgroundImage: "url(" + favoriteAlbum.img + ")",
+            }}
           >
             <div className="flex justify-end relative top-4 right-4 gap-2">
               <HeartIcon
                 onClick={() => clickedHeart(favoriteAlbum.id)}
                 fill={favoriteAlbum.isLike ? "red" : "none"}
                 stroke={favoriteAlbum.isLike ? "red" : "white"}
+                width="6.154vw"
+                height="6.154vw"
               />
-              <DotsIcon fill="white" stroke="white" />
+              <DotsIcon
+                fill="white"
+                stroke="white"
+                width="6.154vw"
+                height="6.154vw"
+              />
             </div>
-            <div className="flex flex-col w-32 relative top-6 left-4">
-              <span className="text-3xl text-white text-end">
+            <div
+              className="flex flex-col relative "
+              style={{ width: "32.821vw", top: "6.154vw", left: "4.103vw" }}
+            >
+              <span
+                className="text-white text-end"
+                style={{ fontSize: "7.692vw" }}
+              >
                 {favoriteAlbum.name}
               </span>
-              <span className="text-white text-end" style={{ fontSize: "8px" }}>
+              <span
+                className="text-white text-end"
+                style={{ fontSize: "2.051vw" }}
+              >
                 {favoriteAlbum.createdTime}
               </span>
             </div>
@@ -136,14 +174,20 @@ function FavoriteAlbum() {
         </div>
       ));
   return (
-    <ItemBlock width="360px" height="" radius="20px">
-      <div className="flex flex-col gap-4 w-full h-full py-6">
-        <div className="flex justify-between mx-4">
-          <h1 className="text-xl font-bold">즐겨찾는 앨범</h1>
-          <RightIcon stroke="#B1B8C0" width="20" height="20" />
+    <ItemBlock width="92.308vw" height="" radius="5.128vw">
+      <div
+        className="flex flex-col w-full h-full"
+        style={{ gap: "4.103vw", padding: "6.154vw 0px" }}
+      >
+        <div className="flex justify-between" style={{ margin: "0px 4.103vw" }}>
+          <h1 className="font-bold" style={{ fontSize: "5.128vw" }}>
+            즐겨찾는 앨범
+          </h1>
+          <RightIcon stroke="#B1B8C0" width="5.128vw" height="5.128vw" />
         </div>
         <div
-          className={`flex justify-start gap-4 overflow-scroll ${styles.cards}`}
+          className={`flex justify-start overflow-scroll ${styles.cards}`}
+          style={{ gap: "4.103vw" }}
         >
           {favorites}
         </div>
