@@ -10,6 +10,10 @@ COPY . /app
 # Install any needed packages specified in requirements.txt
 # RUN pip install --no-cache-dir -r requirements.txt
 
+RUN apt-get update
+RUN apt-get -y install libgl1-mesa-glx
+
+
 RUN pip install fastapi
 RUN pip install "uvicorn[standard]"
 RUN pip install python-multipart
