@@ -1,5 +1,5 @@
 import React, { useState, useRef } from "react";
-import PlusIcon from "@/public/icon/Plus.svg";
+import PlusIcon from "@/public/icons/Plus.svg";
 import Link from "next/link";
 
 const SetAlbumNamePage = (): JSX.Element => {
@@ -23,7 +23,7 @@ const SetAlbumNamePage = (): JSX.Element => {
           className="absolute top-1/2 -translate-y-1/2 right-0 text-white opacity-60 text-lg font-thin"
           href={{
             pathname: "/album-starter/InviteFriendsPage",
-            query: { albumName: resultName },
+            query: { albumName: resultName, albumType: "new" },
           }}
           as={`/album-starter/InviteFriendsPage`}
         >
