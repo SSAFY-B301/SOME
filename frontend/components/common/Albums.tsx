@@ -1,7 +1,7 @@
 // "use client";
 
 import { useState } from "react";
-import { currentAlbumsApi, favoriteAlbumsApi } from "@/pages/api/dummyapi";
+import { currentAlbumsApi, favoriteAlbumsApi } from "@/pages/api/dummyApi";
 import styles from "@/styles/home.module.scss";
 import HeartIcon from "@/public/icons/Heart.svg";
 import DotsIcon from "@/public/icons/DotsThreeOutline.svg";
