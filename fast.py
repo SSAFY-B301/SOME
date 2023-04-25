@@ -138,13 +138,9 @@ async def yololo(file: list[UploadFile] = File(...)):
         categoryTemp = []
         for i in range(len(boxes)):
             if i in indexes:
-                x, y, w, h = boxes[i]
                 label = str(classes[class_ids[i]])
                 categoryTemp.append(str(classes[class_ids[i]]))
                 print(i, label)
-                color = colors[i]
-                cv2.rectangle(img, (x, y), (x + w, y + h), color, 2)
-                cv2.putText(img, label, (x, y + 30), font, 2, (0, 255, 0), 1)
         category.append(categoryTemp)
 
     return { 'category' : category}
