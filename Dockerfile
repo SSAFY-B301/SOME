@@ -11,13 +11,8 @@ COPY . /app
 # RUN pip install --no-cache-dir -r requirements.txt
 
 RUN apt-get update
-RUN apt-get -y install libgl1-mesa-glx
-
-
-RUN pip install fastapi
-RUN pip install "uvicorn[standard]"
-RUN pip install python-multipart
-RUN pip install opencv-python
+RUN apt-get update && apt-get install -y python3-pip
+RUN pip install --no-cache-dir -r requirements.txt
 
 # Expose port 8000 for the FastAPI server
 EXPOSE 8000
