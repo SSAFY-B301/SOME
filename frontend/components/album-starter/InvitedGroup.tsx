@@ -2,7 +2,7 @@ import React from "react";
 import InvitedFriend from "./InvitedFriend";
 
 interface FriendType {
-  id: string;
+  id: number;
   profileImg: string;
   name: string;
 }

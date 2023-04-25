@@ -1,7 +1,7 @@
 import React from "react";
 
 interface FriendType {
-  id: string;
+  id: number;
   profileImg: string;
   name: string;
 }
