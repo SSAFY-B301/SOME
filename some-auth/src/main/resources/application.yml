@@ -1,6 +1,6 @@
 server:
   servlet:
-#    context-path: /auth
+    #    context-path: /auth
     encoding:
       charset: UTF-8
       enabled: true
@@ -8,7 +8,7 @@ server:
 spring:
   profiles.active: local
 
-  # ??? ?? ??
+  # DataSource
   datasource:
     driver-class-name: com.mysql.cj.jdbc.Driver
     url: jdbc:mysql://localhost:3306/some_test?useSSL=false&serverTimezone=UTC&useLegacyDatetimeCode=false&allowPublicKeyRetrieval=true
@@ -24,7 +24,7 @@ spring:
       data-source-properties:
         rewriteBatchedStatements: true
 
-  # JPA ??
+  # JPA
   jpa:
     generate-ddl: true
     hibernate:
@@ -57,7 +57,6 @@ spring:
             - account_email
           clientName: Kakao
 
-      # Provider ??
       provider:
         kakao:
           authorizationUri: https://kauth.kakao.com/oauth/authorize
@@ -65,17 +64,17 @@ spring:
           userInfoUri: https://kapi.kakao.com/v2/user/me
           userNameAttribute: id
 
-# cors ??
+# cors
 cors:
   allowed-origins: 'http://localhost:3000'
   allowed-methods: GET,POST,PUT,DELETE,OPTIONS
   allowed-headers: '*'
   max-age: 3600
 
-# jwt secret key ??
+# jwt secret key
 jwt.secret: '8sknjlO3NPTBqo319DHLNqsQAfRJEdKsETOds'
 
-# ?? ?? secret Key ? RedirectUri ??
+# jwt 토큰 관련 secret Key 및 RedirectUri
 app:
   auth:
     tokenSecret: 926D96C90030DD58429D2751AC1BDBBC
@@ -84,3 +83,17 @@ app:
   oauth2:
     authorizedRedirectUris:
       - http://localhost:3000/oauth/redirect
+
+# S3
+cloud:
+  aws:
+    s3:
+      bucket: k8b301-bucket
+    credentials:
+      access-key: AKIAY7TIHYUIPS3AMUHV
+      secret-key: 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
+    region:
+      static: ap-northeast-2
+      auto: false
+    stack:
+      auto: false
