@@ -11,6 +11,7 @@ COPY . /app
 # RUN pip install --no-cache-dir -r requirements.txt
 
 RUN apt-get update
+RUN apt-get -y install libgl1-mesa-glx
 RUN pip install --no-cache-dir -r requirements.txt
 
 # Expose port 8000 for the FastAPI server
