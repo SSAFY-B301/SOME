@@ -1,20 +1,32 @@
 import React, { useState } from "react";
 
 interface FriendType {
-  id: string;
+  id: number;
   profileImg: string;
   name: string;
 }
 
 interface Props {
   friend: FriendType;
+  inviteFriends(id: number): void;
+  removeFriends(id: number): void;
 }
 
-const Friend = ({ friend }: Props): JSX.Element => {
+const Friend = ({
+  friend,
+  inviteFriends,
+  removeFriends,
+}: Props): JSX.Element => {
   const [isActive, setIsActive] = useState<boolean>(false);
 
   const select = () => {
-    setIsActive((prev) => (prev ? false : true));
+    if (isActive == false) {
+      setIsActive(true);
+      inviteFriends(friend.id);
+    } else {
+      setIsActive(false);
+      removeFriends(friend.id);
+    }
   };
 
   return (
