@@ -8,7 +8,12 @@ WORKDIR /app
 COPY . /app
 
 # Install any needed packages specified in requirements.txt
-RUN pip install --no-cache-dir -r requirements.txt
+# RUN pip install --no-cache-dir -r requirements.txt
+
+RUN pip install fastapi
+RUN pip install "uvicorn[standard]"
+RUN pip install python-multipart
+RUN pip install opencv-python
 
 # Expose port 8000 for the FastAPI server
 EXPOSE 8000
