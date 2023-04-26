@@ -60,7 +60,7 @@ public class User {
         this.userId = userId;
         this.userName = userName;
         this.userEmail = userEmail;
-        this.userImg = userImg != null ? userImg : "";
+        this.userImg = userImg;
         this.roleType = roleType;
         this.createdDate = createdDate;
     }

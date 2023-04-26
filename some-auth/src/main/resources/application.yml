@@ -1,9 +1,9 @@
 server:
-  servlet:
-    #    context-path: /auth
-    encoding:
-      charset: UTF-8
-      enabled: true
+#  servlet:
+#    context-path: /auth
+#    encoding:
+#      charset: UTF-8
+#      enabled: true
 
 spring:
   profiles.active: local
@@ -57,6 +57,7 @@ spring:
           clientAuthenticationMethod: post
           authorizationGrantType: authorization_code
           redirectUri: "http://localhost:8080/login/oauth2/code/kakao"
+#          redirectUri: "https://k8b301.p.ssafy.io/auth/login/oauth2/code/kakao"
           scope:
             - profile_nickname
             - profile_image
@@ -89,6 +90,7 @@ app:
   oauth2:
     authorizedRedirectUris:
       - http://localhost:3000/oauth/redirect
+#      - https://k8b301.p.ssafy.io/oauth/redirect
 
 # S3
 cloud:
