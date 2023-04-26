@@ -8,7 +8,7 @@ RUN npm install
 
 COPY . /app
 
-RUN npm run start
+CMD [ "npm","run","start" ]
 
 # FROM nginx
 
