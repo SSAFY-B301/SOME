@@ -4,7 +4,7 @@ import { RootState, useAppDispatch } from "@/store";
 import { useSelector } from "react-redux";
 import { useRouter } from "next/router";
 
-export default function Kakao() {
+export default function AuthRedirect() {
     //로그인 완료 페이지니까 리덕스에 state 저장해주고 이동할 수 있도록
     const dispatch = useAppDispatch();
     const router = useRouter();
@@ -21,7 +21,6 @@ export default function Kakao() {
       dispatch(setAccessToken(access_token));
       return () => {}
     }, [])
-    
 
     return(
         <div className="flex items-center justify-center h-screen">

@@ -1,14 +1,6 @@
-import { RootState, useAppDispatch } from "@/store";
 import Link from "next/link";
-import { useCallback, useEffect } from "react";
-import { useSelector } from "react-redux";
-
-
 
 export default function Login() {
-    
-    const {isLogin} = useSelector((state:RootState) => state.auth);
-    
     const authBaseURL = process.env.NEXT_PUBLIC_AUTH_BASE_URL;
     const redirectURI = process.env.NEXT_PUBLIC_REDIRECT_URI;
     const oauthURL = authBaseURL+ "oauth2/authorization/kakao?redirect_uri=" + redirectURI;
@@ -20,9 +12,8 @@ export default function Login() {
                 <p>함께 만들어가는 앨범</p>
                 <img src="/images/onboarding1.PNG" className="rounded-3xl" style={{width : 240}} alt="" />
                 <Link href={oauthURL}>
-                    {!isLogin && <button className="w-56 rounded-md">로그인</button>}
+                    <button className="w-56 rounded-md">로그인</button>
                 </Link>
-                <p className="text-white">{isLogin}</p>
             </div>
         </div>
     )    
