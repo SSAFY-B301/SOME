@@ -1,5 +1,5 @@
-import ProfileModify from "@/public/icons/ProfileModify.svg";
-import CaretLeft from "@/public/icons/CaretLeft.svg";
+import ProfileModify from "public/icons/ProfileModify.svg";
+import CaretLeft from "public/icons/CaretLeft.svg";
 import Link from "next/link";
 
 export default function MyPage() {
