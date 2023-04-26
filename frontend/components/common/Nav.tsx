@@ -36,7 +36,9 @@ function NavBar() {
         <Link href={"/profile"}>
           <Profile img="https://images.unsplash.com/photo-1506794778202-cad84cf45f1d?ixlib=rb-4.0.3&ixid=MnwxMjA3fDB8MHxzZWFyY2h8NDd8fHByb2ZpbGV8ZW58MHx8MHx8&auto=format&fit=crop&w=400&q=60" />
         </Link>
-        <AlarmIcon fill="grey" stroke="grey" />
+        <Link href={"/notification"}>
+          <AlarmIcon fill="grey" stroke="grey" />
+        </Link>
       </div>
     </nav>
   );
