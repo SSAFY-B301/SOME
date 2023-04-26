@@ -7,6 +7,4 @@ import javax.persistence.Id;
 public class AlbumMember {
     @Id
     private String userId;
-    @Id
-    private Long albumId;
 }
