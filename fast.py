@@ -11,7 +11,7 @@ def root():
 
 
 
-@app.get('/yolo')
+@app.post('/yolo')
 def yololo():
     min_confidence = 0.5
 
@@ -77,7 +77,7 @@ def yololo():
 
     return { 'ids' : category}
 
-@app.get('/yolo/file')
+@app.post('/yolo/file')
 async def yololo(file: list[UploadFile] = File(...)):
     min_confidence = 0.5
 
