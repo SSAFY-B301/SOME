@@ -6,6 +6,11 @@ import { useTheme } from "next-themes";
 import Logo from "./Logo";
 import styles from "@/styles/home.module.scss";
 import Link from "next/link";
+import CaretLeft from "public/icons/CaretLeft.svg";
+
+interface InfoType{
+  title : string
+}
 
 function NavBar() {
   const { theme, setTheme } = useTheme();
@@ -43,6 +48,21 @@ function NavBar() {
       </div>
     </nav>
   );
+}
+
+export function InfoBar(props:InfoType){
+  return(
+    <div className={props.title === "마이페이지" ? "flex items-center justify-center py-8" : "flex items-center justify-center py-4"}>
+        <div className="relative flex items-center justify-center" style={{width: "89.744vw"}}>
+            <div className="absolute top-0 left-0">  
+                <Link href={"/"}>
+                    <CaretLeft stroke="#000000"></CaretLeft>
+                </Link>
+            </div>
+            <p className="text-xl text-center">{props.title}</p>
+        </div>
+    </div>
+  )
 }
 
 export default NavBar;
