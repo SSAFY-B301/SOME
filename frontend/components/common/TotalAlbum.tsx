@@ -47,6 +47,7 @@ function TotalAlbumItems() {
   const totalAlbums: React.ReactNode = totalAlbumsApi ? (
     albums.map((album: TotalAlbumType) => (
       <div
+        key={album.id}
         onClick={() => router.push(`/album/${album.id}`)}
         className={`flex flex-col items-end justify-between bg-center bg-cover ${styles.total_item}`}
         style={{
