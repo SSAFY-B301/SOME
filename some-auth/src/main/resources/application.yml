@@ -10,9 +10,10 @@ spring:
 
   # Redis
   redis:
-    host: localhost
-#    host: 3.35.149.202
+#    host: localhost
+    host: 3.35.18.146
     port: 6379
+    password: '13524'
 
   # DataSource
   datasource:
