@@ -11,12 +11,10 @@ export default function Login() {
     const dispatch = useAppDispatch();
     const {isLogin} = useSelector((state:RootState) => state.auth);
     const onLogout = useCallback(()=>dispatch(logout()),[]) 
-    // NEXT_PUBLIC_AUTH_BASE_URL=https://k8b301.p.ssafy.io/auth/
-    // NEXT_PUBLIC_REDIRECT_URI=https://k8b301.p.ssafy.io/auth/login/oauth2/code/kakao
+    
     const authBaseURL = process.env.NEXT_PUBLIC_AUTH_BASE_URL;
     const redirectURI = process.env.NEXT_PUBLIC_REDIRECT_URI;
     const oauthURL = authBaseURL+ "oauth2/authorization/kakao?redirect_uri=" + redirectURI;
-    // const oauthURL2 = "https://k8b301.p.ssafy.io/auth/oauth2/authorization/kakao?redirect_uri=https://k8b301.p.ssafy.io/auth/login/oauth2/code/kakao";
 
     function login() {
         window.location.href = oauthURL;
@@ -35,6 +33,5 @@ export default function Login() {
                 <p className="text-white">{isLogin}</p>
             </div>
         </div>
-    )
-    
+    )    
 };
