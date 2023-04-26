@@ -14,7 +14,7 @@ cloud:
 spring:
   data:
     mongodb:
-      host: localhost
+      host: 3.35.18.146
       port: 27017
       database: some
 
