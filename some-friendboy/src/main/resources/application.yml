@@ -3,8 +3,8 @@ cloud:
     s3:
       bucket: k8b301-bucket
     credentials:
-      access-key: AKIAY7TIHYUIPS3AMUHV
-      secret-key: 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
+      access-key: AKIAY7TIHYUIKEQBZTE2
+      secret-key: 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
     region:
       static: ap-northeast-2
       auto: false
@@ -21,7 +21,7 @@ spring:
   datasource:
     url: jdbc:mysql://3.35.18.146:3306/some?serverTimezone=UTC&characterEncoding=UTF-8
     username: some
-    password: !23Qwe
+    password: '!23Qwe'
     driver-class-name: com.mysql.cj.jdbc.Driver
 
   jpa:
