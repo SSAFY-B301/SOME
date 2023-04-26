@@ -8,12 +8,18 @@ server:
 spring:
   profiles.active: local
 
+  # Redis
+  redis:
+    host: localhost
+#    host: 3.35.149.202
+    port: 6379
+
   # DataSource
   datasource:
     driver-class-name: com.mysql.cj.jdbc.Driver
-    url: jdbc:mysql://localhost:3306/some_test?useSSL=false&serverTimezone=UTC&useLegacyDatetimeCode=false&allowPublicKeyRetrieval=true
-    username: root
-    password: 1234
+    url: jdbc:mysql://3.35.18.146:3306/some?useSSL=false&serverTimezone=UTC&useLegacyDatetimeCode=false&allowPublicKeyRetrieval=true
+    username: some
+    password: !23Qwe
     hikari:
       pool-name: jpa-hikari-pool
       maximum-pool-size: 5
