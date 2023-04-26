@@ -17,6 +17,7 @@ spring:
       host: 3.35.18.146
       port: 27017
       database: some
+      password: '!23Qwe'
 
   datasource:
     url: jdbc:mysql://3.35.18.146:3306/some?serverTimezone=UTC&characterEncoding=UTF-8
