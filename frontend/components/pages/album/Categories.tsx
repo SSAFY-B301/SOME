@@ -1,7 +1,10 @@
 import styles from "@/styles/album.module.scss";
+import React from "react";
 
 interface CategoriesType {
   categories: number[];
+  selectedId: number;
+  setSelectedId: React.Dispatch<React.SetStateAction<number>>;
 }
 
 interface categoriesTable {
@@ -16,11 +19,30 @@ const categoriesTable: categoriesTable = {
   5: "음식",
 };
 
-function Categories({ categories }: CategoriesType) {
+function Categories({ categories, selectedId, setSelectedId }: CategoriesType) {
+  /**
+   * 선택된 카테고리 변경
+   * @param id 카테고리 id
+   */
+  const selectCategory = (id: number) => {
+    setSelectedId(id);
+  };
   return (
     <section className={`${styles.categories}`}>
+      <p
+        onClick={() => selectCategory(0)}
+        className={selectedId === 0 ? styles.is_selected : ""}
+      >
+        전체
+      </p>
       {categories.map((category: number) => (
-        <p key={category}>{categoriesTable[category]}</p>
+        <p
+          onClick={() => selectCategory(category)}
+          className={selectedId === category ? styles.is_selected : ""}
+          key={category}
+        >
+          {categoriesTable[category]}
+        </p>
       ))}
     </section>
   );
