@@ -20,7 +20,7 @@ public class RedisConfig extends CachingConfigurerSupport {
 
     public RedisConfig(@Value("${spring.redis.host}") final String redisHost,
                        @Value("${spring.redis.port}") final int redisPort,
-                        @Value("{spring.redis.password}") final String redisPassword) {
+                        @Value("${spring.redis.password}") final String redisPassword) {
         this.redisHost = redisHost;
         this.redisPort = redisPort;
         this.redisPassword = redisPassword;
