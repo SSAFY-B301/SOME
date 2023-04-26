@@ -1,0 +1,60 @@
+$main-color: linear-gradient(
+    238.55deg,
+    rgba(244, 114, 182, 0.75) 15.98%,
+    rgba(145, 153, 217, 0.75) 55.85%,
+    rgba(56, 189, 248, 0.75) 84.59%
+  ),
+  linear-gradient(134.36deg, #f472b6 15.23%, #9797d7 49.79%, #38bdf8 84.77%);
+
+.NavBar {
+  width: 100vw;
+  height: 15.385vw;
+  .NavBarItems {
+    position: fixed;
+    width: 100%;
+    height: 15.385vw;
+  }
+}
+
+.members {
+  display: flex;
+  align-items: center;
+  gap: 2.051vw;
+  padding: 0px 4.103vw;
+  background-color: #f2f4f6;
+  width: 100vw;
+  height: 15.385vw;
+  .member {
+    width: 10.256vw;
+    height: 10.256vw;
+    border-radius: 9999px;
+    background-position: center;
+    background-size: cover;
+  }
+}
+
+.categories {
+  width: 100vw;
+  height: 10.256vw;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  gap: 8.974vw;
+
+  p {
+    font-size: 4.103vw;
+    color: #b1b8c0;
+  }
+  .active {
+    background: $main-color;
+    -webkit-background-clip: text;
+    -webkit-text-fill-color: transparent;
+    background-clip: text;
+    text-fill-color: transparent;
+    background-blend-mode: lighten, normal;
+  }
+}
+
+.photos {
+  padding: 4.103vw;
+}
