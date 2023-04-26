@@ -1,4 +1,3 @@
-import { login, logout } from "@/features/authSlice";
 import { RootState, useAppDispatch } from "@/store";
 import Link from "next/link";
 import { useCallback, useEffect } from "react";
@@ -8,9 +7,7 @@ import { useSelector } from "react-redux";
 
 export default function Login() {
     
-    const dispatch = useAppDispatch();
     const {isLogin} = useSelector((state:RootState) => state.auth);
-    const onLogout = useCallback(()=>dispatch(logout()),[]) 
     
     const authBaseURL = process.env.NEXT_PUBLIC_AUTH_BASE_URL;
     const redirectURI = process.env.NEXT_PUBLIC_REDIRECT_URI;
@@ -24,7 +21,6 @@ export default function Login() {
                 <img src="/images/onboarding1.PNG" className="rounded-3xl" style={{width : 240}} alt="" />
                 <Link href={oauthURL}>
                     {!isLogin && <button className="w-56 rounded-md">로그인</button>}
-                    {isLogin && <button onClick={onLogout} className="w-56 rounded-md">로그아웃</button>}
                 </Link>
                 <p className="text-white">{isLogin}</p>
             </div>
