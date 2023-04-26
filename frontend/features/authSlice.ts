@@ -20,8 +20,9 @@ export const loginSlice = createSlice({
   name: 'auth',
   initialState,
   reducers: {
-    login(state){
+    setAccessToken(state, action){
       state.isLogin = true;
+      state.accessToken = action.payload;
     },
     logout(state){
       state.isLogin = false;
@@ -30,5 +31,5 @@ export const loginSlice = createSlice({
   extraReducers: (builder) => {}
 });
 
-export const { login, logout } = loginSlice.actions;
+export const { setAccessToken, logout } = loginSlice.actions;
 export default loginSlice.reducer;
