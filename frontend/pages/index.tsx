@@ -21,7 +21,7 @@ export default function Home() {
       </section>
       <div className={`${styles.footer}`}>
         <TotalAlbum />
-        <TabBar />
+        <TabBar plusBtnUrl={"/album-starter/SetAlbumNamePage"} />
       </div>
     </div>
   );

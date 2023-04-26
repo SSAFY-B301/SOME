@@ -5,8 +5,13 @@ import MfriendSelectedIcon from "@/public/icons/MfriendSelected.svg";
 import FfriendSelectedIcon from "@/public/icons/FfriendSelected.svg";
 import styles from "@/styles/home.module.scss";
 import { useRouter } from "next/router";
+import Link from "next/link";
 
-function TabBar() {
+interface TabBarType {
+  plusBtnUrl: string;
+}
+
+function TabBar({ plusBtnUrl }: TabBarType) {
   const router = useRouter();
 
   return (
@@ -29,12 +34,14 @@ function TabBar() {
       </div>
 
       {/* 플러스 버튼 */}
-      <div
-        className={`fixed z-50 left-auto right-auto flex justify-center items-center rounded-full ${styles.plus_btn}`}
-        style={{ width: "16.41vw", height: "16.41vw" }}
-      >
-        <PlusIcon />
-      </div>
+      <Link href={plusBtnUrl}>
+        <div
+          className={`fixed z-50 left-auto right-auto flex justify-center items-center rounded-full ${styles.plus_btn}`}
+          style={{ width: "16.41vw", height: "16.41vw" }}
+        >
+          <PlusIcon />
+        </div>
+      </Link>
 
       {/* 가운데 빈 박스 */}
       <div className={`bg-white dark:bg-dark-block ${styles.mid_box}`} />
