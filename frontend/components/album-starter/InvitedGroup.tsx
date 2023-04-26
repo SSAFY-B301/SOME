@@ -9,13 +9,18 @@ interface FriendType {
 
 interface Props {
   group: FriendType[];
+  topRemoveFriends(id: number): void;
 }
 
-const InvitedGroup = ({ group }: Props): JSX.Element => {
+const InvitedGroup = ({ group, topRemoveFriends }: Props): JSX.Element => {
   return (
     <ul className="flex gap-4 overflow-scroll">
       {group.map((friend) => (
-        <InvitedFriend key={friend.id} friend={friend} />
+        <InvitedFriend
+          key={friend.id}
+          friend={friend}
+          topRemoveFriends={topRemoveFriends}
+        />
       ))}
     </ul>
   );
