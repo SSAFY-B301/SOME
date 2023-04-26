@@ -91,20 +91,14 @@ public class OAuth2AuthenticationSuccessHandler extends SimpleUrlAuthenticationS
                 new Date(now.getTime() + refreshTokenExpiry)
         );
 
-        // DB 저장
-        RefreshToken userRefreshToken = refreshTokenRepository.findByUserId(userInfo.getId());
-        if (userRefreshToken != null) {
-            userRefreshToken.setTokenValue(refreshToken.getToken());
-        } else {
-            userRefreshToken = new RefreshToken(userInfo.getId(), refreshToken.getToken());
-            refreshTokenRepository.saveAndFlush(userRefreshToken);
-        }
+        // refreshToken DB에 저장
+        RefreshToken userRefreshToken = new RefreshToken(userInfo.getId(), refreshToken.getToken());
+        refreshTokenRepository.save(userRefreshToken);
 
         int cookieMaxAge = (int) refreshTokenExpiry;
         CookieUtil.deleteCookie(request, response, REFRESH_TOKEN);
         CookieUtil.addCookie(response, REFRESH_TOKEN, refreshToken.getToken(), cookieMaxAge);
 
-//        User loginUser = userRepository.findByUserId(userInfo.getId());
         return UriComponentsBuilder.fromUriString(targetUrl)
                 .queryParam("token", accessToken.getToken())
                 .build().encode(StandardCharsets.UTF_8).toUriString();
