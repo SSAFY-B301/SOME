@@ -1,7 +1,12 @@
+import CheckIcon from "public/icons/Check.svg";
+import styles from "styles/album.module.scss";
+
 interface PhotoType {
   width: string;
   height: string;
   img: string;
+  selectedPhotos: Set<number>;
+  photoId: number;
 }
 
 /**
@@ -14,13 +19,19 @@ interface PhotoType {
 function Photo(props: PhotoType) {
   return (
     <div
-      className="bg-cover bg-center"
+      className={`bg-cover bg-center ${styles.photo} justify-end items-end`}
       style={{
         width: props.width,
         height: props.height,
         backgroundImage: "url(" + props.img + ")",
       }}
-    ></div>
+    >
+      {props.selectedPhotos.has(props.photoId) && (
+        <div className={`${styles.select_check}`}>
+          <CheckIcon width={"3.077vw"} height={"3.077vw"} fill={"white"} />
+        </div>
+      )}
+    </div>
   );
 }
 
