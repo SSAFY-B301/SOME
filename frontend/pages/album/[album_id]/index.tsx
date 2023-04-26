@@ -25,13 +25,29 @@ function AlbumDetail() {
   const [selectedCategory, setSelectedCategory] = useState<number>(0);
   const [isSelect, setIsSelect] = useState<boolean>(false);
   const [selectedPhotos, setSelectedPhotos] = useState<Set<number>>(new Set());
+  const [isTotal, setIsTotal] = useState<boolean>(false);
 
-  useState;
   useEffect(() => {
     return () => {
       // TODO : API 보내기 추가
     };
   }, [albumInfo]);
+
+  useEffect(() => {
+    isTotal
+      ? setSelectedPhotos(new Set(albumInfo.totalId))
+      : setSelectedPhotos(new Set());
+    !isSelect && setSelectedPhotos(new Set());
+    console.log(1);
+  }, [isTotal, isSelect]);
+
+  // useEffect(() => {
+  //   selectedPhotos.size === albumInfo.total && setIsTotal(true);
+  //   console.log(2);
+  //   console.log("S", selectedPhotos.size);
+  //   console.log("T", albumInfo.total);
+  //   console.log(selectedPhotos);
+  // }, [selectedPhotos]);
 
   return (
     <section>
@@ -39,6 +55,8 @@ function AlbumDetail() {
         title={albumInfo.name}
         isSelect={isSelect}
         setIsSelect={setIsSelect}
+        isTotal={isTotal}
+        setIsTotal={setIsTotal}
       />
       <div className={`${styles.container}`}>
         <Members members={albumInfo.members} albumId={albumInfo.id} />
@@ -55,10 +73,18 @@ function AlbumDetail() {
           setSelectedPhotos={setSelectedPhotos}
         />
         <div className={`${styles.total_count}`}>
-          <span>{albumInfo.total}장의 사진</span>
+          <span>
+            {isSelect
+              ? `${selectedPhotos.size}장의 사진이 선택됨`
+              : `${albumInfo.total}장의 사진`}
+          </span>
         </div>
       </div>
-      <TabBar albumInfo={albumInfo} setAlbumInfo={setAlbumInfo} />
+      <TabBar
+        albumInfo={albumInfo}
+        setAlbumInfo={setAlbumInfo}
+        isSelect={isSelect}
+      />
     </section>
   );
 }

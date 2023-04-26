@@ -3,6 +3,7 @@ import styles from "styles/album.module.scss";
 import NewPhoto from "./NewPhoto";
 import React from "react";
 import Link from "next/link";
+import { useRouter } from "next/router";
 interface PhotosType {
   photos: PhotoType[];
   isSelect: boolean;
@@ -26,9 +27,14 @@ function Photos({
   selectedPhotos,
   setSelectedPhotos,
 }: PhotosType) {
+  const router = useRouter();
   const addCheckPhoto = (id: number) => {
     selectedPhotos.has(id) ? selectedPhotos.delete(id) : selectedPhotos.add(id);
     setSelectedPhotos(new Set(selectedPhotos));
+  };
+
+  const goPhoto = (id: number) => {
+    router.push(`/photo/${id}`);
   };
 
   return (
@@ -36,22 +42,19 @@ function Photos({
       {photos.map(
         (photo) =>
           (selectedCategory === 0 || selectedCategory === photo.category) && (
-            <div onClick={() => isSelect && addCheckPhoto(photo.id)}>
-              <Link
-                href={{
-                  pathname: `/photo/${photo.id}`,
-                  query: { id: photo.id },
-                }}
-              >
-                <Photo
-                  key={photo.id}
-                  width={"22.564vw"}
-                  height={"22.564vw"}
-                  selectedPhotos={selectedPhotos}
-                  photoId={photo.id}
-                  img={photo.img}
-                />
-              </Link>
+            <div
+              onClick={() =>
+                isSelect ? addCheckPhoto(photo.id) : goPhoto(photo.id)
+              }
+            >
+              <Photo
+                key={photo.id}
+                width={"22.564vw"}
+                height={"22.564vw"}
+                selectedPhotos={selectedPhotos}
+                photoId={photo.id}
+                img={photo.img}
+              />
             </div>
           )
       )}

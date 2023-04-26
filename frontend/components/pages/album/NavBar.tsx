@@ -6,9 +6,17 @@ interface NavBarType {
   title: string;
   isSelect: boolean;
   setIsSelect: React.Dispatch<React.SetStateAction<boolean>>;
+  isTotal: boolean;
+  setIsTotal: React.Dispatch<React.SetStateAction<boolean>>;
 }
 
-function NavBar({ title, isSelect, setIsSelect }: NavBarType) {
+function NavBar({
+  title,
+  isSelect,
+  setIsSelect,
+  isTotal,
+  setIsTotal,
+}: NavBarType) {
   const router = useRouter();
   const clickSelect = () => {
     setIsSelect(!isSelect);
@@ -22,8 +30,16 @@ function NavBar({ title, isSelect, setIsSelect }: NavBarType) {
           {title}
         </p>
         <div className="relative w-screen h-full flex justify-between items-center p-4">
-          <LeftIcon onClick={() => router.back()} stroke="black" />
+          {isSelect ? (
+            <p onClick={() => setIsTotal(!isTotal)}>
+              {isTotal ? "선택 해제" : "전체선택"}
+            </p>
+          ) : (
+            <LeftIcon onClick={() => router.back()} stroke="black" />
+          )}
+
           <div onClick={clickSelect}>
+            // TODO : 토탈 state 해제하기
             {isSelect ? (
               <span className={`${styles.selectBtn}`}>취소</span>
             ) : (
