@@ -57,7 +57,7 @@ spring:
           clientAuthenticationMethod: post
           authorizationGrantType: authorization_code
 #          redirectUri: "http://localhost:8080/login/oauth2/code/kakao"
-          redirectUri: "https://3.35.18.146:9000/login/oauth2/code/kakao"
+          redirectUri: "http://3.35.18.146:9000/login/oauth2/code/kakao"
           scope:
             - profile_nickname
             - profile_image
