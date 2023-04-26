@@ -39,15 +39,6 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
     private final TokenAccessDeniedHandler tokenAccessDeniedHandler;
     private final RefreshTokenRepository refreshTokenRepository;
 
-    /*
-    * UserDetailsService 설정
-    * */
-//    @Override
-//    protected void configure(AuthenticationManagerBuilder auth) throws Exception {
-//        auth.userDetailsService(userDetailsService)
-//                .passwordEncoder(passwordEncoder());
-//    }
-
     @Override
     protected void configure(HttpSecurity http) throws Exception {
             http
@@ -69,10 +60,6 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
 //                    .antMatchers("/api/**").hasAnyAuthority(RoleType.USER.getCode()) // Security 허용 Url
 //                    .antMatchers("/api/**/admin/**").hasAnyAuthority(RoleType.ADMIN.getCode())
                     .anyRequest().authenticated() // 그 외엔 모두 인증 필요
-                .and()
-                    .formLogin()
-                    .loginPage("/api/users/auth/loginform").permitAll() // 로그인 폼 사용
-                    .defaultSuccessUrl("/") // 로그인 성공 후 이동 페이지
                 .and()
                     // 인가에 대한 요청 서비스
                     // "/oauth2/authorization"로 접근시 oauth 로그인 요청
