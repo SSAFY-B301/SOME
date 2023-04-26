@@ -2,6 +2,7 @@ import ProfileModify from "public/icons/ProfileModify.svg";
 import CaretLeft from "public/icons/CaretLeft.svg";
 import Link from "next/link";
 import { InfoBar } from "@/components/common/Nav";
+import Toggle from "@/components/pages/profile/Toggle";
 
 export default function MyPage() {
     return(
@@ -38,24 +39,15 @@ export default function MyPage() {
                     <p className="text-xl font-bold">알림 설정</p>
                     <div className="flex justify-between">
                         <p>공유 투표 알림</p>
-                        <div className="relative inline-block w-10 mr-2 align-middle transition duration-200 ease-in select-none">
-                            <input type="checkbox" name="toggle" id="toggle" className="absolute block w-6 h-6 bg-white border-4 rounded-full appearance-none cursor-pointer toggle-checkbox" />
-                            <label htmlFor="toggle" className="block h-6 overflow-hidden bg-gray-300 rounded-full cursor-pointer toggle-label"></label>
-                        </div>
+                        <Toggle categori="공유 투표"></Toggle>
                     </div>
                     <div className="flex justify-between">
-                        <p>공유 투표 알림</p>
-                        <div className="relative inline-block w-10 mr-2 align-middle transition duration-200 ease-in select-none">
-                            <input type="checkbox" name="toggle" id="toggle" className="absolute block w-6 h-6 bg-white border-4 rounded-full appearance-none cursor-pointer toggle-checkbox" />
-                            <label htmlFor="toggle" className="block h-6 overflow-hidden bg-gray-300 rounded-full cursor-pointer toggle-label"></label>
-                        </div>
+                        <p>앨범 초대 알림</p>
+                        <Toggle categori="앨범 초대"></Toggle>
                     </div>
                     <div className="flex justify-between">
-                        <p>공유 투표 알림</p>
-                        <div className="relative inline-block w-10 mr-2 align-middle transition duration-200 ease-in select-none">
-                            <input type="checkbox" name="toggle" id="toggle" className="absolute block w-6 h-6 bg-white border-4 rounded-full appearance-none cursor-pointer toggle-checkbox" />
-                            <label htmlFor="toggle" className="block h-6 overflow-hidden bg-gray-300 rounded-full cursor-pointer toggle-label"></label>
-                        </div>
+                        <p>새 사진 알림</p>
+                        <Toggle categori="새 사진"></Toggle>
                     </div>
                 </div>
                 <div className="flex flex-col p-4 bg-white rounded-lg gap-y-4" style={{width: "89.744vw"}}>
