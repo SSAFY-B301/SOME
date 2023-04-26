@@ -8,12 +8,12 @@ RUN npm install
 
 COPY . /app
 
-RUN npm run build
+RUN npm run start
 
-FROM nginx
+# FROM nginx
 
-EXPOSE 3000
+# EXPOSE 3000
 
-COPY ./nginx/default.conf /etc/nginx/conf.d/next.conf
+# COPY ./nginx/default.conf /etc/nginx/conf.d/next.conf
 
-COPY --from=builder /app/build /usr/share/nginx/html
+# COPY --from=builder /app/build /usr/share/nginx/html
