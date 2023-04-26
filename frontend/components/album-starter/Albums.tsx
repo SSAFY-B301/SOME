@@ -1,7 +1,7 @@
 import React, { useState } from "react";
 import ItemBlock from "@/components/common/ItemBlock";
 import styles from "@/styles/home.module.scss";
-import { favoriteAlbumsApi } from "@/pages/api/dummyapi";
+import { favoriteAlbumsApi } from "@/pages/api/homeDummyApi";
 
 interface FavoriteAlbumType {
   id: number;
