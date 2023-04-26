@@ -86,8 +86,8 @@ public class UserController {
             return responseDto;
         }
 
-        // userId refresh token으로 DB 확인
-        RefreshToken userRefreshToken = refreshTokenRepository.findByUserIdAndRefreshTokenId(userId, refreshToken);
+        // DB에 저장된 refresh token인지 확인
+        RefreshToken userRefreshToken = refreshTokenRepository.findByUserIdAndTokenValue(userId, refreshToken);
         if (userRefreshToken == null) {
             responseDto.setStatusCode(501);
             responseDto.setMessage("유효하지 않은 RefreshToken입니다.");
@@ -104,6 +104,7 @@ public class UserController {
 
         // refresh 토큰 기간이 3일 이하로 남은 경우, refresh 토큰 갱신
         if (validTime <= THREE_DAYS_MSEC) {
+
             // refresh 토큰 설정
             long refreshTokenExpiry = appProperties.getAuth().getRefreshTokenExpiry();
 
@@ -113,7 +114,8 @@ public class UserController {
             );
 
             // DB에 refresh 토큰 업데이트
-            userRefreshToken.setTokenValue(authRefreshToken.getToken());
+            RefreshToken updatedRefreshToken = new RefreshToken(userId, authRefreshToken.getToken());
+            refreshTokenRepository.save(updatedRefreshToken);
 
             int cookieMaxAge = (int) refreshTokenExpiry / 60;
             CookieUtil.deleteCookie(request, response, REFRESH_TOKEN);
