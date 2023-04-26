@@ -1,6 +1,6 @@
 import Link from "next/link";
 import CaretLeft from "public/icons/CaretLeft.svg";
-import { notiDummy } from "./api/notidummy";
+import { notiDummy } from "./api/notiDummyApi";
 import styles from "@/styles/notification.module.scss"
 
 
@@ -18,7 +18,7 @@ export default function Notification() {
                 {
                     notiDummy.map((noti) => {
                         return(
-                            <div className={noti.isRead ? `p-4 border-b-2` : `p-4 border-b-2 ${styles.on_read}`}>
+                            <div key={noti.notificationId} className={noti.isRead ? `p-4 border-b-2` : `p-4 border-b-2 ${styles.on_read}`}>
                                 <div className="flex justify-between">
                                     <div className="flex">
                                         <div className="flex items-center">
