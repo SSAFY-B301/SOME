@@ -1,19 +1,12 @@
 import ProfileModify from "public/icons/ProfileModify.svg";
 import CaretLeft from "public/icons/CaretLeft.svg";
 import Link from "next/link";
+import { InfoBar } from "@/components/common/Nav";
 
 export default function MyPage() {
     return(
-        <div>
-            <div className="flex items-center justify-center my-8">
-                <div className="flex items-center justify-between" style={{width: "89.744vw"}}>
-                    <Link href={"/"}>
-                        <CaretLeft></CaretLeft>
-                    </Link>
-                    <p className="text-xl text-center">마이페이지</p>
-                    <div></div>
-                </div>
-            </div>
+        <div className="bg-bg-home" style={{ width: "100vw", height: "100vh" }}>
+            <InfoBar title="마이페이지"></InfoBar>
             <div className="flex flex-col items-center w-full gap-y-4">
                 <div className="flex flex-col p-4 bg-white rounded-lg gap-y-4" style={{width: "89.744vw"}}>
                     <div className="flex justify-between">
