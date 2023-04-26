@@ -92,7 +92,6 @@ function FavoriteAlbum() {
    * @param id
    */
   const clickedHeart = (id: number) => {
-    console.log(Albums[id - 1]);
     const nextAlbums = Albums.map((album, i) => {
       if (i === id - 1) {
         return {
