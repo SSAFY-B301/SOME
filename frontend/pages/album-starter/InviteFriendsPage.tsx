@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useState, useEffect } from "react";
 import { useRouter } from "next/router";
 import CaretLeft from "@/public/icons/CaretLeft.svg";
 import FavoriteAlbum from "@/components/album-starter/Albums";
@@ -62,14 +62,18 @@ interface FriendType {
 const InviteFriendsPage = (): JSX.Element => {
   const router = useRouter();
   console.log(router.query);
-
+  const [friends, setFriends] = useState<FriendType[]>([]);
   const [invitedGroup, setInviteGroup] = useState<FriendType[]>([]);
+
+  useEffect(() => {
+    setFriends(FRIENDS);
+  }, []);
 
   /**
    * 친구 선택 기능
    */
   const inviteFriends = (id: number) => {
-    const friend = FRIENDS.filter((item) => item.id == id);
+    const friend = friends.filter((item) => item.id == id);
     setInviteGroup([...invitedGroup, ...friend]);
   };
 
@@ -82,8 +86,13 @@ const InviteFriendsPage = (): JSX.Element => {
   };
 
   /**
-   * 상단부 친구 선택 취소 기능 추가 필요
+   * 상단부 친구 선택 취소 기능
+   * 취소 시 하단 친구리스트 토글 버튼 off 기능 추가 예정
    */
+  const topRemoveFriends = (id: number) => {
+    const friend = invitedGroup.filter((item) => item.id != id);
+    setInviteGroup(friend);
+  };
 
   /**
    * 친구 목록 스크롤 방식 변경 필요
@@ -117,7 +126,10 @@ const InviteFriendsPage = (): JSX.Element => {
       <div className="w-11/12 flex flex-col justify-between">
         {invitedGroup.length > 0 ? (
           <div className="w-full h-20 flex items-center box-border mt-4 px-2">
-            <InvitedGroup group={invitedGroup} />
+            <InvitedGroup
+              group={invitedGroup}
+              topRemoveFriends={topRemoveFriends}
+            />
           </div>
         ) : (
           <div></div>

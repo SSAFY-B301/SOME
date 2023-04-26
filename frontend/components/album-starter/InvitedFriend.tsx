@@ -8,13 +8,21 @@ interface FriendType {
 
 interface Props {
   friend: FriendType;
+  topRemoveFriends(id: number): void;
 }
 
-const InvitedFriend = ({ friend }: Props): JSX.Element => {
+const InvitedFriend = ({ friend, topRemoveFriends }: Props): JSX.Element => {
+  const select = () => {
+    topRemoveFriends(friend.id);
+  };
+
   return (
     <li className="flex flex-col items-center">
       <div className="w-14 h-14 mb-2 relative">
-        <button className="absolute z-10 top-0 right-0 w-5 h-5 bg-gray-400 rounded-full"></button>
+        <button
+          className="absolute z-10 top-0 right-0 w-5 h-5 bg-gray-400 rounded-full"
+          onClick={select}
+        ></button>
         <img
           src={friend.profileImg}
           alt="img"
