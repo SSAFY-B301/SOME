@@ -6,7 +6,7 @@ import { InfoBar } from "@/components/common/Nav";
 
 export default function Notification() {
     return(
-        <div className="h-screen bg-white">
+        <div className="flex flex-col justify-start h-screen bg-white">
             <InfoBar title="알림"></InfoBar>
             <div className="notiList">
                 {

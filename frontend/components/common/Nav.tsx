@@ -56,7 +56,7 @@ export function InfoBar(props:InfoType){
         <div className="relative flex items-center justify-center" style={{width: "89.744vw"}}>
             <div className="absolute top-0 left-0">  
                 <Link href={"/"}>
-                    <CaretLeft stroke="#000000"></CaretLeft>
+                    <CaretLeft width="24px" height="24px" stroke="#000000"></CaretLeft>
                 </Link>
             </div>
             <p className="text-xl text-center">{props.title}</p>
