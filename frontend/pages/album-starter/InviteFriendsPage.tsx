@@ -1,6 +1,6 @@
 import React, { useState, useEffect } from "react";
 import { useRouter } from "next/router";
-import CaretLeft from "@/public/icons/CaretLeft.svg";
+import BackButtonIcon from "@/public/icons/CaretLeft.svg";
 import FavoriteAlbum from "@/components/album-starter/Albums";
 import Friends from "@/components/album-starter/Friends";
 import InvitedGroup from "@/components/album-starter/InvitedGroup";
@@ -47,6 +47,36 @@ const FRIENDS = [
   },
   {
     id: 6,
+    profileImg:
+      "https://images.unsplash.com/photo-1511367461989-f85a21fda167?ixlib=rb-4.0.3&ixid=MnwxMjA3fDB8MHxzZWFyY2h8Mnx8cHJvZmlsZXxlbnwwfHwwfHw%3D&auto=format&fit=crop&w=500&q=60",
+    name: "최현인",
+  },
+  {
+    id: 7,
+    profileImg:
+      "https://images.unsplash.com/photo-1511367461989-f85a21fda167?ixlib=rb-4.0.3&ixid=MnwxMjA3fDB8MHxzZWFyY2h8Mnx8cHJvZmlsZXxlbnwwfHwwfHw%3D&auto=format&fit=crop&w=500&q=60",
+    name: "정상민",
+  },
+  {
+    id: 8,
+    profileImg:
+      "https://images.unsplash.com/photo-1511367461989-f85a21fda167?ixlib=rb-4.0.3&ixid=MnwxMjA3fDB8MHxzZWFyY2h8Mnx8cHJvZmlsZXxlbnwwfHwwfHw%3D&auto=format&fit=crop&w=500&q=60",
+    name: "차현경",
+  },
+  {
+    id: 9,
+    profileImg:
+      "https://images.unsplash.com/photo-1511367461989-f85a21fda167?ixlib=rb-4.0.3&ixid=MnwxMjA3fDB8MHxzZWFyY2h8Mnx8cHJvZmlsZXxlbnwwfHwwfHw%3D&auto=format&fit=crop&w=500&q=60",
+    name: "최현인",
+  },
+  {
+    id: 10,
+    profileImg:
+      "https://images.unsplash.com/photo-1511367461989-f85a21fda167?ixlib=rb-4.0.3&ixid=MnwxMjA3fDB8MHxzZWFyY2h8Mnx8cHJvZmlsZXxlbnwwfHwwfHw%3D&auto=format&fit=crop&w=500&q=60",
+    name: "차현경",
+  },
+  {
+    id: 11,
     profileImg:
       "https://images.unsplash.com/photo-1511367461989-f85a21fda167?ixlib=rb-4.0.3&ixid=MnwxMjA3fDB8MHxzZWFyY2h8Mnx8cHJvZmlsZXxlbnwwfHwwfHw%3D&auto=format&fit=crop&w=500&q=60",
     name: "최현인",
@@ -111,21 +141,29 @@ const InviteFriendsPage = (): JSX.Element => {
    */
 
   return (
-    <div className="w-screen h-screen bg-white flex flex-col items-center">
-      <div className="w-11/12 h-12 relative">
-        <div onClick={() => router.back()}>
-          <CaretLeft className="absolute top-1/2 -translate-y-1/2 left-0 text-black text-lg" />
-        </div>
-        <span className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 text-black text-2xl">
-          공유 상대 초대
-        </span>
-        <div className="absolute top-1/2 -translate-y-1/2 right-0 text-black text-lg">
-          확인
+    <div
+      className="bg-white flex flex-col items-center"
+      style={{ width: "100vw", height: "100vh" }}
+    >
+      <div className="w-full h-16 flex justify-center items-center">
+        <div className="w-11/12 h-full relative">
+          <div onClick={() => router.back()}>
+            <BackButtonIcon
+              className="absolute top-1/2 -translate-y-1/2 left-0 text-black text-lg"
+              stroke={`black`}
+            />
+          </div>
+          <span className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 text-black text-2xl">
+            공유 상대 초대
+          </span>
+          <div className="absolute top-1/2 -translate-y-1/2 right-0 text-black text-lg">
+            확인
+          </div>
         </div>
       </div>
-      <div className="w-11/12 flex flex-col justify-between">
+      <div className="w-11/12 flex flex-col" style={{ height: "780px" }}>
         {invitedGroup.length > 0 ? (
-          <div className="w-full h-20 flex items-center box-border mt-4 px-2">
+          <div className="w-full h-20 flex items-center box-border px-2">
             <InvitedGroup
               group={invitedGroup}
               topRemoveFriends={topRemoveFriends}
