@@ -72,6 +72,7 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
                     .redirectionEndpoint()
                     .baseUri("/*/oauth2/code/*")  // 소셜 인증 후 Redirect Url
                 .and()
+                    //.tokenEndpoint(token -> token.accessTokenResponseClient(this.))
                     .userInfoEndpoint()
                     .userService(oAuth2UserService) // 소셜의 회원 정보를 받아와 가공처리
                 .and()

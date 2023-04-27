@@ -8,6 +8,7 @@ import com.ssafy.someauth.oauth.info.KakaoOAuth2UserInfo;
 import com.ssafy.someauth.oauth.info.OAuth2UserInfo;
 import com.ssafy.someauth.repository.UserRepository;
 import lombok.RequiredArgsConstructor;
+import lombok.extern.slf4j.Slf4j;
 import org.springframework.security.authentication.InternalAuthenticationServiceException;
 import org.springframework.security.core.AuthenticationException;
 import org.springframework.security.oauth2.client.userinfo.DefaultOAuth2UserService;
@@ -21,6 +22,7 @@ import java.time.ZonedDateTime;
 
 @Service
 @RequiredArgsConstructor
+@Slf4j
 public class CustomOAuth2UserService extends DefaultOAuth2UserService {
 
     private final UserRepository userRepository;
@@ -41,7 +43,7 @@ public class CustomOAuth2UserService extends DefaultOAuth2UserService {
     private OAuth2User process(OAuth2UserRequest userRequest, OAuth2User user) {
         OAuth2UserInfo userInfo = new KakaoOAuth2UserInfo(user.getAttributes());
         User savedUser = userRepository.findByUserId(userInfo.getId());
-
+        log.info("ddddddddplease"+userRequest.getAccessToken().toString());
         if (savedUser != null) {
             updateUser(savedUser, userInfo);
         } else {
