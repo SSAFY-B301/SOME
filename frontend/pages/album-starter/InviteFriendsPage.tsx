@@ -178,7 +178,7 @@ const InviteFriendsPage = (): JSX.Element => {
           <div></div>
         )}
         <input
-          className="w-full h-12 bg-gray-100 rounded-lg box-border pl-3 mt-4"
+          className="w-full h-12 bg-gray-100 rounded-lg box-border pl-3 mt-4 mb-2"
           placeholder="친구, 앨범 검색"
         ></input>
         <div className="w-full overflow-y-scroll" style={{ height: 700 }}>
