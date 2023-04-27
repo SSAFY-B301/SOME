@@ -46,6 +46,7 @@ spring:
     host: 3.35.18.146
     port: 6379
     password: '13524'
+
 logging.level:
   org.hibernate.SQL: debug
 #  org.hibernate.type: trace
