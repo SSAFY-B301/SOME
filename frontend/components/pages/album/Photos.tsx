@@ -10,6 +10,7 @@ interface PhotosType {
   selectedPhotos: Set<number>;
   setSelectedPhotos: React.Dispatch<React.SetStateAction<Set<number>>>;
   selectMembers: Set<number>;
+  setPreviewPhoto: React.Dispatch<React.SetStateAction<any>>;
 }
 
 interface PhotoType {
@@ -18,7 +19,6 @@ interface PhotoType {
   user: number;
   category: number;
   createdTime: string;
-  setPreviewPhoto: React.Dispatch<React.SetStateAction<any>>;
 }
 
 function Photos({
