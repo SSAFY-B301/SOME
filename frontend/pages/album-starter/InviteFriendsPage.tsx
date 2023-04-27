@@ -94,6 +94,7 @@ const InviteFriendsPage = (): JSX.Element => {
   const router = useRouter();
   console.log(router.query);
   const [friends, setFriends] = useState<FriendType[]>([]);
+  const [isActiveFriends, setActiveFriends] = useState<number[]>([]);
   const [invitedGroup, setInviteGroup] = useState<FriendType[]>([]);
 
   useEffect(() => {
@@ -103,8 +104,9 @@ const InviteFriendsPage = (): JSX.Element => {
   /**
    * 친구 선택 기능
    */
-  const inviteFriends = (id: number) => {
+  const selectFriends = (id: number) => {
     const friend = friends.filter((item) => item.id == id);
+    setActiveFriends([...isActiveFriends, id]);
     setInviteGroup([...invitedGroup, ...friend]);
   };
 
@@ -112,16 +114,19 @@ const InviteFriendsPage = (): JSX.Element => {
    * 친구 선택 취소 기능
    */
   const removeFriends = (id: number) => {
+    const friendId = isActiveFriends.filter((item) => item != id);
     const friend = invitedGroup.filter((item) => item.id != id);
+    setActiveFriends(friendId);
     setInviteGroup(friend);
   };
 
   /**
    * 상단부 친구 선택 취소 기능
-   * 취소 시 하단 친구리스트 토글 버튼 off 기능 추가 예정
    */
   const topRemoveFriends = (id: number) => {
+    const friendId = isActiveFriends.filter((item) => item != id);
     const friend = invitedGroup.filter((item) => item.id != id);
+    setActiveFriends(friendId);
     setInviteGroup(friend);
   };
 
@@ -178,7 +183,7 @@ const InviteFriendsPage = (): JSX.Element => {
           <div></div>
         )}
         <input
-          className="w-full h-12 bg-gray-100 rounded-lg box-border pl-3 mt-4"
+          className="w-full h-12 bg-gray-100 rounded-lg box-border pl-3 mt-4 mb-2"
           placeholder="친구, 앨범 검색"
         ></input>
         <div className="w-full overflow-y-scroll" style={{ height: 700 }}>
@@ -192,8 +197,9 @@ const InviteFriendsPage = (): JSX.Element => {
             <span className="text-base mb-4">친구</span>
             <div className="h- box-border px-2">
               <Friends
-                friends={FRIENDS}
-                inviteFriends={inviteFriends}
+                friends={friends}
+                isActiveFriends={isActiveFriends}
+                selectFriends={selectFriends}
                 removeFriends={removeFriends}
               />
             </div>
