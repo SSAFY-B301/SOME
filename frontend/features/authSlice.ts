@@ -26,6 +26,7 @@ export const loginSlice = createSlice({
     },
     logout(state){
       state.isLogin = false;
+      state.accessToken = "";
     }
   },
   extraReducers: (builder) => {}
