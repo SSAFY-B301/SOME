@@ -23,7 +23,7 @@ public class AlbumPhotoService {
         ResponseDto responseDto = new ResponseDto();
         responseDto.setStatusCode(200);
         responseDto.setMessage("앨범 사진 등록");
-        responseDto.setBody(null);
+        responseDto.setData(null);
         return responseDto;
     }
 

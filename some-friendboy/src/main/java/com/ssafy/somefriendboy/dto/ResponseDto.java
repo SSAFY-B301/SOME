@@ -11,6 +11,6 @@ public class ResponseDto<T> {
     @JsonProperty("message")
     private String message;
     @JsonProperty("data")
-    private T body;
+    private T data;
 
 }

@@ -1,10 +1,10 @@
 package com.ssafy.somefriendboy.entity;
 
+import javax.persistence.EmbeddedId;
 import javax.persistence.Entity;
-import javax.persistence.Id;
 
 @Entity
 public class AlbumMember {
-    @Id
-    private String userId;
+    @EmbeddedId
+    private AlbumMemberId albumMemberId;
 }
