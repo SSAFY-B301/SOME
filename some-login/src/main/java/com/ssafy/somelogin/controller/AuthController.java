@@ -35,7 +35,6 @@ public class AuthController {
     private final AuthService authService;
 
     @PostMapping("/kakao")
-    @Transactional
     public ResponseEntity<?> getKaKaoToken(@RequestHeader HttpHeaders headers) throws IOException {
         String authorization_code = headers.get("authorization_code").toString();
         log.info("auth_code : {}", authorization_code);
