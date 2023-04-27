@@ -17,6 +17,7 @@ import {
 
 // CSS
 import styles from "@/styles/album.module.scss";
+import Preview from "@/components/pages/album/Preview";
 
 function AlbumDetail() {
   const router = useRouter();
@@ -32,14 +33,23 @@ function AlbumDetail() {
   const [selectMembers, setSelectMembers] = useState<Set<number>>(
     new Set(membersId)
   );
-  const [previewPhoto, setPreviewPhoto] = useState([]);
+  const [inputPhoto, setInputPhoto] = useState<FileList | null>(null);
+  const [isPreview, setIsPreview] = useState<boolean>(false);
+  const [previewPhotos, setPreviewPhotos] = useState<previewPhotoType[]>([]);
 
+  interface previewPhotoType {
+    id: number;
+    img: string;
+  }
+
+  // 페이지 빠져나올 때 API 요청하기
   useEffect(() => {
     return () => {
       // TODO : API 보내기 추가
     };
   }, [albumInfo]);
 
+  // 전체 선택 누르면 전부 선택 / 해제 누르면 전부 해제
   useEffect(() => {
     isTotal
       ? setSelectedPhotos(new Set(albumInfo.totalId))
@@ -48,9 +58,36 @@ function AlbumDetail() {
     !isSelect && setIsTotal(false);
   }, [isTotal, isSelect]);
 
+  // 전체 크기만큼 선택하면 전체선택 토글
   useEffect(() => {
     selectedPhotos.size === albumInfo.total && setIsTotal(true);
   }, [selectedPhotos]);
+
+  /**
+   * size 길이의 배열 반환
+   * @param size
+   * @param start
+   * @returns
+   */
+  const range = (size: number, start = 0) => {
+    return Array.from({ length: size }, (_, index) => index + start);
+  };
+
+  // 사진 미리보기
+  useEffect(() => {
+    if (inputPhoto) {
+      console.log(inputPhoto);
+
+      range(inputPhoto.length).forEach((idx) => {
+        setIsPreview(true);
+        previewPhotos.push({
+          id: idx,
+          img: URL.createObjectURL(inputPhoto.item(idx)!),
+        });
+      });
+      setPreviewPhotos([...previewPhotos]);
+    }
+  }, [inputPhoto]);
 
   return (
     <section>
@@ -82,7 +119,7 @@ function AlbumDetail() {
           selectedPhotos={selectedPhotos}
           setSelectedPhotos={setSelectedPhotos}
           selectMembers={selectMembers}
-          setPreviewPhoto={setPreviewPhoto}
+          setInputPhoto={setInputPhoto}
         />
         <div className={`${styles.total_count}`}>
           <span>
@@ -97,6 +134,13 @@ function AlbumDetail() {
         setAlbumInfo={setAlbumInfo}
         isSelect={isSelect}
       />
+      {isPreview && (
+        <Preview
+          previewPhotos={previewPhotos}
+          photoLength={inputPhoto?.length}
+          setIsPreview={setIsPreview}
+        />
+      )}
     </section>
   );
 }
