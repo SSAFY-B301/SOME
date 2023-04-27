@@ -2,18 +2,12 @@ import Link from "next/link";
 import CaretLeft from "public/icons/CaretLeft.svg";
 import { notiDummy } from "./api/notiDummyApi";
 import styles from "@/styles/notification.module.scss"
-
+import { InfoBar } from "@/components/common/Nav";
 
 export default function Notification() {
     return(
-        <div className="h-screen bg-white">
-            <div className="flex items-center justify-between p-4" style={{width: "89.744vw"}}>
-                <Link href={"/"}>
-                    <CaretLeft></CaretLeft>
-                </Link>
-                <p className="text-xl text-center">알림</p>
-                <div></div>
-            </div>
+        <div className="flex flex-col justify-start h-screen bg-white">
+            <InfoBar title="알림"></InfoBar>
             <div className="notiList">
                 {
                     notiDummy.map((noti) => {
