@@ -1,10 +1,35 @@
 import ProfileModify from "public/icons/ProfileModify.svg";
-import CaretLeft from "public/icons/CaretLeft.svg";
 import Link from "next/link";
 import { InfoBar } from "@/components/common/Nav";
-import Toggle from "@/components/pages/profile/Toggle";
+import ToggleList from "@/components/pages/profile/ToggleList";
+import { useEffect, useState } from "react";
+import Alert from "@/components/common/Alert";
+import { useRouter } from "next/router";
+import { RootState, useAppDispatch } from "@/store";
+import { logout } from "@/features/authSlice";
+import { useSelector } from "react-redux";
 
 export default function MyPage() {
+    const [isModalOpen, setIsModalOpen] = useState<boolean>(false);
+    const router = useRouter()
+    const dispatch = useAppDispatch()
+
+    const {isLogin} = useSelector((state:RootState) => state.auth);
+
+    function onModalClick(){
+        setIsModalOpen(!isModalOpen);
+    }   
+
+    function onLogout() {
+        dispatch(logout());
+    }
+
+    useEffect(()=>{
+        if(!isLogin){
+            router.push('/')
+        }
+    }, [isLogin])
+
     return(
         <div className="bg-bg-home" style={{ width: "100vw", height: "100vh" }}>
             <InfoBar title="마이페이지"></InfoBar>
@@ -18,9 +43,9 @@ export default function MyPage() {
                     </div>
                     <div className="flex items-center gap-x-10">
                         <img className="w-24 h-24 rounded-full " src="/images/profileImg.png" alt="" />
-                        <div className="flex flex-col ">
-                            <p className="text-lg text-gray-300">닉네임</p>
-                            <p className="text-2xl">최현인</p>
+                        <div className="flex flex-col justify-center items-left">
+                            <p className="text-gray-300">닉네임</p>
+                            <p className="text-2xl font-bold">최현인</p>
                         </div>
                     </div>
                 </div>
@@ -37,24 +62,14 @@ export default function MyPage() {
                 </div>
                 <div className="flex flex-col p-4 bg-white rounded-lg gap-y-4" style={{width: "89.744vw"}}>
                     <p className="text-xl font-bold">알림 설정</p>
-                    <div className="flex justify-between">
-                        <p>공유 투표 알림</p>
-                        <Toggle categori="공유 투표"></Toggle>
-                    </div>
-                    <div className="flex justify-between">
-                        <p>앨범 초대 알림</p>
-                        <Toggle categori="앨범 초대"></Toggle>
-                    </div>
-                    <div className="flex justify-between">
-                        <p>새 사진 알림</p>
-                        <Toggle categori="새 사진"></Toggle>
-                    </div>
+                    <ToggleList></ToggleList>
                 </div>
                 <div className="flex flex-col p-4 bg-white rounded-lg gap-y-4" style={{width: "89.744vw"}}>
                     <p className="text-xl font-bold">계정 설정</p>
-                    <button className="text-red-500">로그아웃</button>
+                    <button onClick={onModalClick} className="w-full text-left text-red-500">로그아웃</button>
                 </div>
             </div>
+            {isModalOpen && <Alert msg="정말 로그아웃 하시겠습니까?" yesHandler={onLogout} noHandler={onModalClick}></Alert>}
         </div>
     )
 };
