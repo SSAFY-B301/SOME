@@ -4,6 +4,7 @@ interface AlbumInfoType {
     name: string;
     members: MemberType[];
     categories: number[];
+    totalId: number[];
     total: number;
     isLike: boolean;
     createdTime: string;
@@ -43,6 +44,7 @@ const albumInfo: AlbumInfoType = {
       },
     ],
     categories: [1, 2, 3, 4, 5],
+    totalId: [1, 2, 3, 4, 5, 6, 7, 8, 9, 10],
     total: 10,
     isLike: true,
     createdTime: "2023.04.17",
