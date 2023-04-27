@@ -16,7 +16,9 @@ spring:
     mongodb:
       host: 3.35.18.146
       port: 27017
+      authentication-database: admin
       database: some
+      username: some
       password: '!23Qwe'
 
   datasource:
