@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useState, useEffect } from "react";
 import styles from "@/styles/inviteFriends.module.scss";
 
 interface FriendType {
@@ -9,24 +9,34 @@ interface FriendType {
 
 interface Props {
   friend: FriendType;
-  inviteFriends(id: number): void;
+  isActiveFriends: number[];
+  selectFriends(id: number): void;
   removeFriends(id: number): void;
 }
 
 const Friend = ({
   friend,
-  inviteFriends,
+  isActiveFriends,
+  selectFriends,
   removeFriends,
 }: Props): JSX.Element => {
   const [isActive, setIsActive] = useState<boolean>(false);
 
-  const select = () => {
-    if (isActive == false) {
+  useEffect(() => {
+    if (isActiveFriends.includes(friend.id)) {
       setIsActive(true);
-      inviteFriends(friend.id);
     } else {
       setIsActive(false);
+    }
+  });
+
+  const select = () => {
+    if (isActive == false) {
+      selectFriends(friend.id);
+      console.log("선택 성공");
+    } else {
       removeFriends(friend.id);
+      console.log("삭제 성공");
     }
   };
 
