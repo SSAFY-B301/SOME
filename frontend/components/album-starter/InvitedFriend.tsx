@@ -20,9 +20,24 @@ const InvitedFriend = ({ friend, topRemoveFriends }: Props): JSX.Element => {
     <li className="flex flex-col items-center">
       <div className="w-14 h-14 mb-2 relative">
         <button
-          className="absolute z-10 top-0 right-0 w-5 h-5 bg-gray-400 rounded-full"
+          className="absolute z-10 top-0 right-0 w-5 h-5 bg-gray-400 rounded-full flex justify-center items-center"
           onClick={select}
-        ></button>
+        >
+          <svg
+            xmlns="http://www.w3.org/2000/svg"
+            fill="none"
+            viewBox="0 0 24 24"
+            strokeWidth="5"
+            stroke="white"
+            className="w-3 h-3"
+          >
+            <path
+              strokeLinecap="round"
+              strokeLinejoin="round"
+              d="M6 18L18 6M6 6l12 12"
+            />
+          </svg>
+        </button>
         <img
           src={friend.profileImg}
           alt="img"
