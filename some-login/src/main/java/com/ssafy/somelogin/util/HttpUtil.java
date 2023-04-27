@@ -20,7 +20,7 @@ public class HttpUtil {
 
             // KAKAO 서버에 HTTP 요청
             HttpURLConnection conn = (HttpURLConnection) url.openConnection();
-            conn.setRequestMethod("POST");
+            conn.setRequestMethod("GET");
             conn.setRequestProperty("Authorization", "Bearer " + token);
 
             // 응답 코드
