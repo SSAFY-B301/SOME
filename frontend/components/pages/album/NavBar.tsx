@@ -37,9 +37,7 @@ function NavBar({
           ) : (
             <LeftIcon onClick={() => router.back()} stroke="black" />
           )}
-
           <div onClick={clickSelect}>
-            // TODO : 토탈 state 해제하기
             {isSelect ? (
               <span className={`${styles.selectBtn}`}>취소</span>
             ) : (

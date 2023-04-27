@@ -2,7 +2,6 @@ import Photo from "components/common/Photo";
 import styles from "styles/album.module.scss";
 import NewPhoto from "./NewPhoto";
 import React from "react";
-import Link from "next/link";
 import { useRouter } from "next/router";
 interface PhotosType {
   photos: PhotoType[];
@@ -10,6 +9,7 @@ interface PhotosType {
   selectedCategory: number;
   selectedPhotos: Set<number>;
   setSelectedPhotos: React.Dispatch<React.SetStateAction<Set<number>>>;
+  selectMembers: Set<number>;
 }
 
 interface PhotoType {
@@ -18,6 +18,7 @@ interface PhotoType {
   user: number;
   category: number;
   createdTime: string;
+  setPreviewPhoto: React.Dispatch<React.SetStateAction<any>>;
 }
 
 function Photos({
@@ -26,9 +27,13 @@ function Photos({
   selectedCategory,
   selectedPhotos,
   setSelectedPhotos,
+  selectMembers,
+  setPreviewPhoto,
 }: PhotosType) {
   const router = useRouter();
-  const addCheckPhoto = (id: number) => {
+
+  // 사진 선택 상태 바꾸기
+  const changeSelect = (id: number) => {
     selectedPhotos.has(id) ? selectedPhotos.delete(id) : selectedPhotos.add(id);
     setSelectedPhotos(new Set(selectedPhotos));
   };
@@ -41,10 +46,11 @@ function Photos({
     <section className={`${styles.photos} grid grid-cols-4`}>
       {photos.map(
         (photo) =>
-          (selectedCategory === 0 || selectedCategory === photo.category) && (
+          (selectedCategory === 0 || selectedCategory === photo.category) &&
+          selectMembers.has(photo.user) && (
             <div
               onClick={() =>
-                isSelect ? addCheckPhoto(photo.id) : goPhoto(photo.id)
+                isSelect ? changeSelect(photo.id) : goPhoto(photo.id)
               }
             >
               <Photo
@@ -58,7 +64,7 @@ function Photos({
             </div>
           )
       )}
-      <NewPhoto />
+      {!isSelect && <NewPhoto setPreviewPhoto={setPreviewPhoto} />}
     </section>
   );
 }

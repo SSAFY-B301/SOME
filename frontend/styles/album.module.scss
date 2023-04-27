@@ -44,6 +44,11 @@ $main-color: linear-gradient(
     background-position: center;
     background-size: cover;
   }
+  .no_select_member {
+    filter: grayscale(100%);
+  }
+  .select_member {
+  }
 }
 
 .categories {
@@ -82,7 +87,8 @@ $main-color: linear-gradient(
 
 .tab_bar {
   width: 100vw;
-  height: 18.462vw;
+  // height: 18.462vw;
+  height: 22.564vw;
   position: fixed;
   bottom: 0px;
 
