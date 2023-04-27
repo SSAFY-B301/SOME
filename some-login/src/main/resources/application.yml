@@ -1,0 +1,27 @@
+server:
+  port: 9000
+  servlet:
+    context-path: /auth
+spring:
+  datasource:
+    url: jdbc:mysql://3.35.18.146:3306/some?serverTimezone=UTC&characterEncoding=UTF-8
+    username: some
+    password: '!23Qwe'
+    driver-class-name: com.mysql.cj.jdbc.Driver
+  jpa:
+    database: mysql   # ?? ?? ??
+    database-platform: org.hibernate.dialect.MySQL5InnoDBDialect # ?? ?? ??
+    hibernate:
+      ddl-auto: create
+    properties:
+      hibernate:
+        # show_sql: true
+        format_sql: true
+  mvc:
+    pathmatch:
+      matching-strategy: ant_path_matcher
+logging.level:
+  org.hibernate.SQL: debug
+  org.hibernate.type: trace
+  # org.hibernate.type: trace #??? ?? 2.x, hibernate5
+  # org.hibernate.orm.jdbc.bind: trace #??? ?? 3.x, hibernate6
