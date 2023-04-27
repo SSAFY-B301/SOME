@@ -1,15 +1,19 @@
 package com.ssafy.somefriendboy.entity;
 
-import lombok.Getter;
-import lombok.Setter;
-import org.joda.time.LocalDateTime;
+import lombok.*;
+
+import java.time.LocalDateTime;
 import org.springframework.data.mongodb.core.mapping.Document;
 
 import javax.persistence.*;
+import java.util.List;
 
 @Document
-@Getter @Setter
-//@NoArgsConstructor(access = AccessLevel.PROTECTED)
+@Getter
+@Setter
+@Builder
+@NoArgsConstructor(access = AccessLevel.PROTECTED)
+@AllArgsConstructor
 public class AlbumPhoto {
 
     @Transient
@@ -20,9 +24,10 @@ public class AlbumPhoto {
     private LocalDateTime uploadedDate;
     private LocalDateTime shootDate;
     private String s3Url;
-    private String shootLocation;
-    private String category;
-    private Long userId;
-    private Album album;
+    private Double gpsLatitude;
+    private Double gpsLongitude;
+    private List<String> category;
+    private String userId;
+    private Long albumId;
 
 }
