@@ -1,4 +1,5 @@
 import React, { useState, useEffect } from "react";
+import Link from "next/link";
 import { useRouter } from "next/router";
 import BackButtonIcon from "@/public/icons/CaretLeft.svg";
 import FavoriteAlbum from "@/components/album-starter/Albums";
@@ -138,6 +139,7 @@ const InviteFriendsPage = (): JSX.Element => {
 
   /**
    * 확인 누를 시 router.query.albumName, invitedGroup으로 앨범 생성 요청
+   * 메인 페이지로 이동하도록 설정, 추후 페이지 주소 변동 필요
    */
 
   return (
@@ -156,9 +158,12 @@ const InviteFriendsPage = (): JSX.Element => {
           <span className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 text-black text-2xl">
             공유 상대 초대
           </span>
-          <div className="absolute top-1/2 -translate-y-1/2 right-0 text-black text-lg">
+          <Link
+            className="absolute top-1/2 -translate-y-1/2 right-0 text-black text-lg"
+            href="/"
+          >
             확인
-          </div>
+          </Link>
         </div>
       </div>
       <div className="w-11/12 flex flex-col" style={{ height: "780px" }}>
