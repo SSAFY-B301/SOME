@@ -20,12 +20,19 @@ import styles from "@/styles/album.module.scss";
 
 function AlbumDetail() {
   const router = useRouter();
+
   const [albumInfo, setAlbumInfo] = useState(albumInfoData.data);
   const [photos, setPhotos] = useState(PhotosData.data);
   const [selectedCategory, setSelectedCategory] = useState<number>(0);
   const [isSelect, setIsSelect] = useState<boolean>(false);
   const [selectedPhotos, setSelectedPhotos] = useState<Set<number>>(new Set());
   const [isTotal, setIsTotal] = useState<boolean>(false);
+  const membersId = albumInfo.members.map((member) => member.id);
+  const membersSize = membersId.length;
+  const [selectMembers, setSelectMembers] = useState<Set<number>>(
+    new Set(membersId)
+  );
+  const [previewPhoto, setPreviewPhoto] = useState([]);
 
   useEffect(() => {
     return () => {
@@ -38,16 +45,12 @@ function AlbumDetail() {
       ? setSelectedPhotos(new Set(albumInfo.totalId))
       : setSelectedPhotos(new Set());
     !isSelect && setSelectedPhotos(new Set());
-    console.log(1);
+    !isSelect && setIsTotal(false);
   }, [isTotal, isSelect]);
 
-  // useEffect(() => {
-  //   selectedPhotos.size === albumInfo.total && setIsTotal(true);
-  //   console.log(2);
-  //   console.log("S", selectedPhotos.size);
-  //   console.log("T", albumInfo.total);
-  //   console.log(selectedPhotos);
-  // }, [selectedPhotos]);
+  useEffect(() => {
+    selectedPhotos.size === albumInfo.total && setIsTotal(true);
+  }, [selectedPhotos]);
 
   return (
     <section>
@@ -59,7 +62,14 @@ function AlbumDetail() {
         setIsTotal={setIsTotal}
       />
       <div className={`${styles.container}`}>
-        <Members members={albumInfo.members} albumId={albumInfo.id} />
+        <Members
+          members={albumInfo.members}
+          albumId={albumInfo.id}
+          selectMembers={selectMembers}
+          setSelectMembers={setSelectMembers}
+          membersSize={membersSize}
+          membersId={membersId}
+        />
         <Categories
           categories={albumInfo.categories}
           selectedId={selectedCategory}
@@ -71,6 +81,8 @@ function AlbumDetail() {
           selectedCategory={selectedCategory}
           selectedPhotos={selectedPhotos}
           setSelectedPhotos={setSelectedPhotos}
+          selectMembers={selectMembers}
+          setPreviewPhoto={setPreviewPhoto}
         />
         <div className={`${styles.total_count}`}>
           <span>
