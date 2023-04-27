@@ -15,7 +15,7 @@ const DeleteModal = ({ clickDelete }: Props): JSX.Element => {
 
   return (
     <div
-      className="fixed left-0 top-0 w-screen h-screen bg-black/50 flex justify-center items-center"
+      className="fixed left-0 top-0 w-screen h-screen z-20 bg-black/50 flex justify-center items-center"
       onClick={clickDelete}
     >
       <div className="w-11/12 h-full flex flex-col justify-end items-center">
