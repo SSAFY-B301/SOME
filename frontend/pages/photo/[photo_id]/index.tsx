@@ -7,7 +7,6 @@ import {
   DownloadModal,
   DeleteModal,
   VoteModal,
-  ConcentrationModal,
 } from "@/components/photo-detail";
 import BackButtonIcon from "@/public/icons/CaretLeft.svg";
 import styles from "./photo.module.scss";
@@ -29,7 +28,7 @@ const PhotoDetail = (): JSX.Element => {
   const [showDownLoadModal, setDownLoadShowModal] = useState<boolean>(false);
   const [showDeleteModal, setDeleteModal] = useState<boolean>(false);
   const [showVoteModal, setVoteModal] = useState<boolean>(false);
-  const [showConcentrationModal, setConcentrationModal] =
+  const [showConcentrationMode, setConcentrationMode] =
     useState<boolean>(false);
 
   /**
@@ -59,14 +58,18 @@ const PhotoDetail = (): JSX.Element => {
    * 집중 모드 모달창 생성
    */
   const clickImg = () => {
-    showConcentrationModal
-      ? setConcentrationModal(false)
-      : setConcentrationModal(true);
+    showConcentrationMode
+      ? setConcentrationMode(false)
+      : setConcentrationMode(true);
   };
+
+  /**
+   * 공유 요청 알림을 통해서 들어왔을 때 승인 모달 생성 필요
+   */
 
   return (
     <div className="w-screen h-screen bg-white flex flex-col items-center">
-      <div className="w-full h-16 z-10 flex justify-center items-center border-b-2">
+      <div className="w-full h-16 z-20 flex justify-center items-center border-b-2">
         <div className="w-11/12 h-full relative">
           <div onClick={() => router.back()}>
             <BackButtonIcon
@@ -79,12 +82,15 @@ const PhotoDetail = (): JSX.Element => {
           </span>
         </div>
       </div>
-      <div className="w-full h-20 z-10 flex justify-center items-center">
+      <div className="w-full h-20 z-20 flex justify-center items-center">
         <PhotoFeatures user={USER} photo={PHOTO} />
       </div>
-      <Photo clickImg={clickImg} />
+      <Photo
+        clickImg={clickImg}
+        showConcentrationMode={showConcentrationMode}
+      />
       <div
-        className={`w-full h-24 fixed bottom-0 border-t-2 rounded-t-2xl flex justify-center items-center ${styles.footer}`}
+        className={`w-full h-24 fixed bottom-0 border-t-2 z-20 rounded-t-2xl flex justify-center items-center ${styles.footer}`}
       >
         <Footer
           clickDownload={clickDownload}
@@ -95,7 +101,6 @@ const PhotoDetail = (): JSX.Element => {
       {showDownLoadModal && <DownloadModal clickDownload={clickDownload} />}
       {showDeleteModal && <DeleteModal clickDelete={clickDelete} />}
       {showVoteModal && <VoteModal clickVote={clickVote} />}
-      {showConcentrationModal && <ConcentrationModal clickImg={clickImg} />}
     </div>
   );
 };
