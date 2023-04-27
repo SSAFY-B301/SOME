@@ -33,10 +33,8 @@ const Friend = ({
   const select = () => {
     if (isActive == false) {
       selectFriends(friend.id);
-      console.log("선택 성공");
     } else {
       removeFriends(friend.id);
-      console.log("삭제 성공");
     }
   };
 
