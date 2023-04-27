@@ -106,7 +106,7 @@ public class AlbumPhotoService {
         ResponseDto responseDto = new ResponseDto();
         responseDto.setStatusCode(200);
         responseDto.setMessage("사진 상세 보기");
-        responseDto.setBody(albumPhotoDto);
+        responseDto.setData(albumPhotoDto);
         return responseDto;
     }
 
