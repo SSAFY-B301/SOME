@@ -14,7 +14,10 @@ const SetAlbumNamePage = (): JSX.Element => {
   const resultName = albumName ? albumName : defaultName.current;
 
   return (
-    <div className="w-screen h-screen bg-pink-400 flex flex-col justify-between items-center">
+    <div
+      className=" bg-pink-400 flex flex-col justify-between items-center"
+      style={{ width: "100vw", height: "100vh" }}
+    >
       <div className="w-full h-16 flex justify-center items-center">
         <div className="w-11/12 h-12 relative">
           <span className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 text-white text-2xl">
