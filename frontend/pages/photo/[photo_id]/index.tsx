@@ -1,6 +1,6 @@
 import React, { useState } from "react";
 import { useRouter } from "next/router";
-import CaretLeft from "@/public/icons/CaretLeft.svg";
+import BackButtonIcon from "@/public/icons/CaretLeft.svg";
 import styles from "./photo.module.scss";
 import PhotoFeatures from "@/components/photo-detail/PhotoFeatures";
 import Footer from "@/components/photo-detail/Footer";
@@ -45,7 +45,10 @@ const PhotoDetail = (): JSX.Element => {
       <div className="w-full h-16 flex justify-center items-center border-b-2">
         <div className="w-11/12 h-full relative">
           <div onClick={() => router.back()}>
-            <CaretLeft className="absolute top-1/2 -translate-y-1/2 left-0 text-black text-lg" />
+            <BackButtonIcon
+              className="absolute top-1/2 -translate-y-1/2 left-0 text-black text-lg"
+              stroke={`black`}
+            />
           </div>
           <span className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 text-black text-2xl">
             앨범
