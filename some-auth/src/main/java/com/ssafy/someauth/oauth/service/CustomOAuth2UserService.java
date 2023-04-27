@@ -20,9 +20,9 @@ import org.springframework.stereotype.Service;
 import java.time.LocalDateTime;
 import java.time.ZonedDateTime;
 
+@Slf4j
 @Service
 @RequiredArgsConstructor
-@Slf4j
 public class CustomOAuth2UserService extends DefaultOAuth2UserService {
 
     private final UserRepository userRepository;
@@ -43,7 +43,9 @@ public class CustomOAuth2UserService extends DefaultOAuth2UserService {
     private OAuth2User process(OAuth2UserRequest userRequest, OAuth2User user) {
         OAuth2UserInfo userInfo = new KakaoOAuth2UserInfo(user.getAttributes());
         User savedUser = userRepository.findByUserId(userInfo.getId());
-        log.info("ddddddddplease"+userRequest.getAccessToken().toString());
+
+        log.info("Kakao AccessToken 나와라 => " + userRequest.getAccessToken().getTokenValue());
+
         if (savedUser != null) {
             updateUser(savedUser, userInfo);
         } else {
