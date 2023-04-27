@@ -1,3 +1,8 @@
+server:
+  port: 9000
+  servlet:
+    context-path: /friendboy
+
 cloud:
   aws:
     s3:
@@ -18,7 +23,9 @@ spring:
       port: 27017
       database: some
       password: '!23Qwe'
-
+  mvc:
+    pathmatch:
+      matching-strategy: ant_path_matcher
   datasource:
     url: jdbc:mysql://3.35.18.146:3306/some?serverTimezone=UTC&characterEncoding=UTF-8
     username: some
@@ -32,7 +39,11 @@ spring:
       hibernate:
 #        show_sql: true
         format_sql: true
-
+        default_batch_fetch_size: 1000
+  redis:
+    host: 3.35.18.146
+    port: 6379
+    password: '13524'
 logging.level:
   org.hibernate.SQL: debug
 #  org.hibernate.type: trace
