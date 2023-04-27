@@ -1,4 +1,5 @@
-import React, { useState } from "react";
+import React, { useState, useEffect } from "react";
+import styles from "@/styles/inviteFriends.module.scss";
 
 interface FriendType {
   id: number;
@@ -8,23 +9,31 @@ interface FriendType {
 
 interface Props {
   friend: FriendType;
-  inviteFriends(id: number): void;
+  isActiveFriends: number[];
+  selectFriends(id: number): void;
   removeFriends(id: number): void;
 }
 
 const Friend = ({
   friend,
-  inviteFriends,
+  isActiveFriends,
+  selectFriends,
   removeFriends,
 }: Props): JSX.Element => {
   const [isActive, setIsActive] = useState<boolean>(false);
 
-  const select = () => {
-    if (isActive == false) {
+  useEffect(() => {
+    if (isActiveFriends.includes(friend.id)) {
       setIsActive(true);
-      inviteFriends(friend.id);
     } else {
       setIsActive(false);
+    }
+  });
+
+  const select = () => {
+    if (isActive == false) {
+      selectFriends(friend.id);
+    } else {
       removeFriends(friend.id);
     }
   };
@@ -42,11 +51,26 @@ const Friend = ({
       <button
         className={
           isActive
-            ? `w-6 h-6 bg-pink-400 border-2 rounded-full`
-            : `w-6 h-6 border-2 rounded-full`
+            ? `w-6 h-6 border-2 rounded-full flex justify-center items-center ${styles.btn}`
+            : `w-6 h-6 border-2 rounded-full flex justify-center items-center`
         }
         onClick={select}
-      />
+      >
+        <svg
+          xmlns="http://www.w3.org/2000/svg"
+          fill="none"
+          viewBox="0 0 24 24"
+          strokeWidth="5"
+          stroke="white"
+          className="w-3 h-3"
+        >
+          <path
+            strokeLinecap="round"
+            strokeLinejoin="round"
+            d="M4.5 12.75l6 6 9-13.5"
+          />
+        </svg>
+      </button>
     </li>
   );
 };
