@@ -15,20 +15,22 @@ const SetAlbumNamePage = (): JSX.Element => {
 
   return (
     <div className="w-screen h-screen bg-pink-400 flex flex-col justify-between items-center">
-      <div className="w-11/12 h-12 relative">
-        <span className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 text-white text-2xl">
-          새로운 앨범 생성
-        </span>
-        <Link
-          className="absolute top-1/2 -translate-y-1/2 right-0 text-white opacity-60 text-lg font-thin"
-          href={{
-            pathname: "/album-starter/InviteFriendsPage",
-            query: { albumName: resultName, albumType: "new" },
-          }}
-          as={`/album-starter/InviteFriendsPage`}
-        >
-          다음
-        </Link>
+      <div className="w-full h-16 flex justify-center items-center">
+        <div className="w-11/12 h-12 relative">
+          <span className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 text-white text-2xl">
+            새로운 앨범 생성
+          </span>
+          <Link
+            className="absolute top-1/2 -translate-y-1/2 right-0 text-white opacity-60 text-lg font-thin"
+            href={{
+              pathname: "/album-starter/InviteFriendsPage",
+              query: { albumName: resultName, albumType: "new" },
+            }}
+            as={`/album-starter/InviteFriendsPage`}
+          >
+            다음
+          </Link>
+        </div>
       </div>
       <div className="w-9/12 h-24 flex flex-col justify-between">
         <span className="text-white text-3xl">앨범 제목</span>
