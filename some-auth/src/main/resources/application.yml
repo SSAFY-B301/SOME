@@ -91,7 +91,8 @@ app:
   oauth2:
     authorizedRedirectUris:
       - http://localhost:3000/oauth/redirect
-#      - https://k8b301.p.ssafy.io/oauth/redirect
+      - https://k8b301.p.ssafy.io/oauth/redirect
+      - http://192.168.137.1:3000/oauth/redirect
 
 # S3
 cloud:
