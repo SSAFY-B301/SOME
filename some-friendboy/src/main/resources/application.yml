@@ -21,7 +21,9 @@ spring:
     mongodb:
       host: 3.35.18.146
       port: 27017
+      authentication-database: admin
       database: some
+      username: some
       password: '!23Qwe'
   mvc:
     pathmatch:
@@ -47,6 +49,7 @@ spring:
     host: 3.35.18.146
     port: 6379
     password: '13524'
+
 logging.level:
   org.hibernate.SQL: debug
 #  org.hibernate.type: trace
