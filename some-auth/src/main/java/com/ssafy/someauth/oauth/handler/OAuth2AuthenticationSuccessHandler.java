@@ -13,6 +13,7 @@ import com.ssafy.someauth.repository.RefreshTokenRepository;
 import com.ssafy.someauth.repository.UserRepository;
 import com.ssafy.someauth.util.CookieUtil;
 import lombok.RequiredArgsConstructor;
+import lombok.extern.slf4j.Slf4j;
 import org.springframework.security.core.Authentication;
 import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.oauth2.client.authentication.OAuth2AuthenticationToken;
@@ -40,6 +41,7 @@ import static com.ssafy.someauth.oauth.repository.OAuth2AuthorizationRequestBase
 
 @Component
 @RequiredArgsConstructor
+@Slf4j
 public class OAuth2AuthenticationSuccessHandler extends SimpleUrlAuthenticationSuccessHandler {
 
     private final AuthTokenProvider tokenProvider;
@@ -68,9 +70,10 @@ public class OAuth2AuthenticationSuccessHandler extends SimpleUrlAuthenticationS
         if(redirectUri.isPresent() && !isAuthorizedRedirectUri(redirectUri.get())) {
             throw new IllegalArgumentException("Sorry! We've got an Unauthorized Redirect URI and can't proceed with the authentication");
         }
-
         String targetUrl = redirectUri.orElse(getDefaultTargetUrl());
         OAuth2AuthenticationToken authToken = (OAuth2AuthenticationToken) authentication;
+        log.info("tokentokentoken : "+ authToken.toString());
+
         OidcUser user = ((OidcUser) authentication.getPrincipal());
         OAuth2UserInfo userInfo = new KakaoOAuth2UserInfo(user.getAttributes());
         Collection<? extends GrantedAuthority> authorities = ((OidcUser) authentication.getPrincipal()).getAuthorities();
