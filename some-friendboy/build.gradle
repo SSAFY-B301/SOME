@@ -32,12 +32,9 @@ dependencies {
 	implementation 'org.springframework.boot:spring-boot-starter-validation'
 	implementation 'org.springframework.boot:spring-boot-starter-web'
 	implementation 'io.awspring.cloud:spring-cloud-starter-aws:2.4.4'
-<<<<<<< HEAD
 	implementation 'com.drewnoakes:metadata-extractor:2.18.0'
 	implementation 'commons-fileupload:commons-fileupload:1.4'
-=======
 	implementation 'org.springframework.boot:spring-boot-starter-data-redis'
->>>>>>> 896a44f16fdb887ae9e406e50fe5d5fa04ba341c
 
 	//querydsl 추가
 	implementation "com.querydsl:querydsl-jpa:${queryDslVersion}"
