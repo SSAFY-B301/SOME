@@ -9,13 +9,15 @@ interface FriendType {
 
 interface Props {
   friends: FriendType[];
-  inviteFriends(id: number): void;
+  isActiveFriends: number[];
+  selectFriends(id: number): void;
   removeFriends(id: number): void;
 }
 
 const Friends = ({
   friends,
-  inviteFriends,
+  isActiveFriends,
+  selectFriends,
   removeFriends,
 }: Props): JSX.Element => {
   return (
@@ -26,7 +28,8 @@ const Friends = ({
             <Friend
               key={friend.id}
               friend={friend}
-              inviteFriends={inviteFriends}
+              isActiveFriends={isActiveFriends}
+              selectFriends={selectFriends}
               removeFriends={removeFriends}
             />
           ))}
