@@ -3,9 +3,10 @@ import Slider from "react-slick"
 import styles from "@/styles/login.module.scss"
 
 export default function Login() {
-    const authBaseURL = process.env.NEXT_PUBLIC_AUTH_BASE_URL;
+    const kakaoAuthURL = process.env.NEXT_PUBLIC_KAKAO_AUTH_URL;
+    const kakaoKey = process.env.NEXT_PUBLIC_KAKAO_RESTAPI_KEY;
     const redirectURI = process.env.NEXT_PUBLIC_REDIRECT_URI;
-    const oauthURL = authBaseURL+ "oauth2/authorization/kakao?redirect_uri=" + redirectURI;
+    const oauthURL = kakaoAuthURL+ "/oauth/authorize?response_type=code&client_id="+kakaoKey+"&redirect_uri=" + redirectURI+ "&scope=account_email,profile_image,profile_nickname,friends";
     const settings = {
         dots: true,
         infinite: true,
