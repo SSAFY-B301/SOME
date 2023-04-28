@@ -10,11 +10,11 @@ interface LoginStateType{
 const initialState: LoginStateType = {
   isLogin: false,
   userInfo : {
-    accessToken: "",
-    refreshToken: "",
-    userId : "",
-    userImg: "",
-    userName: "",
+    access_token: "",
+    refresh_token: "",
+    user_id : "",
+    user_img: "",
+    user_name: "",
   },
 };
 
@@ -29,11 +29,11 @@ export const loginSlice = createSlice({
     onLogout(state){
       state.isLogin = false;
       state.userInfo = {
-        accessToken: "",
-        refreshToken: "",
-        userId : "",
-        userImg: "",
-        userName: "",
+        access_token: "",
+        refresh_token: "",
+        user_id : "",
+        user_img: "",
+        user_name: "",
       };
     }
   },

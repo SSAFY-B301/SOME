@@ -22,7 +22,7 @@ export default function Home() {
     if (!isLogin) {
       router.push("login");
     } else {
-      console.log("Token : " + userInfo.accessToken);
+      console.log("Token : " + userInfo.access_token);
     }
     return () => {};
   }, []);
