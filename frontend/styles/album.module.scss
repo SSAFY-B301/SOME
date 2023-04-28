@@ -127,10 +127,10 @@ $main-color: linear-gradient(
   height: 100vh;
   position: fixed;
   top: 0px;
-  background-color: white;
+
   nav {
     width: 100vw;
-    height: 12.308vw;
+    height: 15.385vw;
     display: flex;
     justify-content: space-between;
     align-items: center;
@@ -144,25 +144,44 @@ $main-color: linear-gradient(
   }
   .view_photo {
     width: 100vw;
-    height: 50vh;
+    height: 75vh;
+    display: flex;
+    padding: 24px 16px;
   }
-  .photos_container {
+
+  .check_box {
+    width: 32px;
+    height: 32px;
+    border-radius: 9999px;
     display: flex;
     justify-content: center;
-    height: 88px;
-    margin: 0px;
-
-    .photo_box {
-      width: 88px;
-      height: 88px;
-      overflow-x: scroll;
-      display: flex;
-    }
-    .photo_list {
-      flex-shrink: 0;
-      margin: 0px 4px;
-      width: 88px;
-      height: 88px;
+    align-items: center;
+  }
+  .is_check {
+    background: $main-color;
+  }
+  .no_check {
+    background-color: white;
+    border: 2px solid grey;
+  }
+  ul {
+    overflow: scroll;
+    min-width: 100vw;
+    display: flex !important;
+    gap: 1.026vw;
+    position: relative;
+    li {
+      width: 104px;
+      height: 104px;
+      background-color: currentcolor;
+      .no_active {
+        filter: grayscale(75%);
+      }
     }
   }
+}
+
+.paging_photo {
+  width: 104px;
+  height: 104px;
 }
