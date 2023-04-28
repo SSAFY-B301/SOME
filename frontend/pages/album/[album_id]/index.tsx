@@ -80,6 +80,7 @@ function AlbumDetail() {
 
       range(inputPhoto.length).forEach((idx) => {
         setIsPreview(true);
+        setPreviewPhotos([]);
         previewPhotos.push({
           id: idx,
           img: URL.createObjectURL(inputPhoto.item(idx)!),
@@ -88,6 +89,10 @@ function AlbumDetail() {
       setPreviewPhotos([...previewPhotos]);
     }
   }, [inputPhoto]);
+
+  useEffect(() => {
+    !isPreview && setPreviewPhotos([]);
+  }, [isPreview]);
 
   return (
     <section>
@@ -136,7 +141,7 @@ function AlbumDetail() {
       {isPreview && (
         <Preview
           previewPhotos={previewPhotos}
-          photoLength={inputPhoto?.length}
+          photoLength={inputPhoto ? inputPhoto.length : 0}
           setIsPreview={setIsPreview}
         />
       )}
