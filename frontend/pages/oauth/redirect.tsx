@@ -2,9 +2,14 @@ import { useEffect, useState } from "react"
 import { onLogin } from "@/features/authSlice";
 import { RootState, useAppDispatch } from "@/store";
 import { useSelector } from "react-redux";
-import { useRouter } from "next/router";
+// axios
 import axios from "axios";
+
+//인터페이스
 import { UserInfoType } from "@/types/UserType";
+
+// next Hooks
+import { useRouter } from "next/router";
 
 //로그인 완료 페이지니까 리덕스에 state 저장해주고 이동할 수 있도록
 export default function AuthRedirect() {
@@ -18,7 +23,7 @@ export default function AuthRedirect() {
     // 인가 코드로 서버에서 사용자 데이터 받아오기
     async function getUserInfo(paramAuthCode : string | null){
         if (paramAuthCode !== null){
-            const userResult = await axios.post(`${process.env.NEXT_PUBLIC_SOME_AUTH_URL}/auth/member/kakao`,{},
+            const userResult = await axios.post(`${process.env.NEXT_PUBLIC_SOME_AUTH_URL}/user/kakao`,{},
                 {
                     headers : {
                         "redirect_base" : process.env.NEXT_PUBLIC_FRONT_BASE,
