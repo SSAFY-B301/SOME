@@ -36,11 +36,13 @@ dependencies {
 	implementation 'commons-fileupload:commons-fileupload:1.4'
 	implementation 'org.springframework.boot:spring-boot-starter-data-redis'
 	implementation 'com.github.gavlyukovskiy:p6spy-spring-boot-starter:1.5.8'
+	implementation 'org.mongodb:mongodb-driver-sync:4.6.1'
 	implementation 'com.google.code.gson:gson:2.9.0'
 
 	//querydsl 추가
 	implementation "com.querydsl:querydsl-jpa:${queryDslVersion}"
 	annotationProcessor "com.querydsl:querydsl-apt:${queryDslVersion}"
+	implementation "com.querydsl:querydsl-mongodb:${queryDslVersion}"
 
 	compileOnly 'org.projectlombok:lombok'
 	developmentOnly 'org.springframework.boot:spring-boot-devtools'
@@ -58,6 +60,7 @@ def querydslDir = "$buildDir/generated/querydsl"
 
 querydsl {
 	jpa = true
+	springDataMongo = true
 	querydslSourcesDir = querydslDir
 }
 sourceSets {
