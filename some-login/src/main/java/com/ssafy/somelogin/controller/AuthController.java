@@ -38,6 +38,7 @@ public class AuthController {
     public ResponseEntity<?> getKaKaoToken(@RequestHeader HttpHeaders headers) throws IOException {
         String authorization_code = headers.get("authorization_code").toString();
         String redirect_base = headers.get("redirect_base").toString();
+        log.debug("인가코드로 토큰 요청 POST: /member/kakao, code : {}, redirect : {}",authorization_code,redirect_base);
 
         log.info("auth_code : {}", authorization_code);
         ResponseDto responseDto = authService.getTokenAnduserInfo(authorization_code,redirect_base);
