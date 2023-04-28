@@ -6,7 +6,7 @@ import { useEffect, useState } from "react";
 import Alert from "@/components/common/Alert";
 import { useRouter } from "next/router";
 import { RootState, useAppDispatch } from "@/store";
-import { logout } from "@/features/authSlice";
+import { onLogout } from "@/features/authSlice";
 import { useSelector } from "react-redux";
 
 export default function MyPage() {
@@ -21,7 +21,7 @@ export default function MyPage() {
     }   
 
     function onLogout() {
-        dispatch(logout());
+        dispatch(onLogout);
     }
 
     useEffect(()=>{
