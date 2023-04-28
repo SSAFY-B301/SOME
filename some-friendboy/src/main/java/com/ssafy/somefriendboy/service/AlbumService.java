@@ -8,6 +8,7 @@ import com.ssafy.somefriendboy.dto.ResponseDto;
 import com.ssafy.somefriendboy.entity.*;
 import com.ssafy.somefriendboy.repository.album.AlbumRepository;
 import com.ssafy.somefriendboy.repository.albummember.AlbumMemberRepository;
+import com.ssafy.somefriendboy.util.HttpUtil;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.log4j.Log4j2;
 import org.springframework.core.io.ByteArrayResource;
@@ -30,9 +31,13 @@ public class AlbumService {
 
     private final AlbumRepository albumRepository;
     private final AlbumMemberRepository albumMemberRepository;
-
-    public ResponseDto createAlbum(AlbumCreateDto albumCreateDto) {
+    private final HttpUtil httpUtil;
+    public ResponseDto createAlbum(AlbumCreateDto albumCreateDto, String access_token) {
         Map<String,Object> result = new HashMap<>();
+        String userId = tokenCheck(access_token);
+        if(userId == null){
+            setResponseDto(result,"토큰 만료",450);
+        }
 
         Album album = Album.builder()
                 .albumName(albumCreateDto.getAlbumName())
@@ -104,5 +109,8 @@ public class AlbumService {
         responseDto.setMessage(message);
         responseDto.setStatusCode(statusCode);
         return responseDto;
+    }
+    private String tokenCheck(String accessToken){
+        return httpUtil.requestParingToken(accessToken);
     }
 }
