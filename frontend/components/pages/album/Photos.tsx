@@ -10,7 +10,7 @@ interface PhotosType {
   selectedPhotos: Set<number>;
   setSelectedPhotos: React.Dispatch<React.SetStateAction<Set<number>>>;
   selectMembers: Set<number>;
-  setPreviewPhoto: React.Dispatch<React.SetStateAction<any>>;
+  setInputPhoto: React.Dispatch<React.SetStateAction<FileList | null>>;
 }
 
 interface PhotoType {
@@ -28,7 +28,7 @@ function Photos({
   selectedPhotos,
   setSelectedPhotos,
   selectMembers,
-  setPreviewPhoto,
+  setInputPhoto,
 }: PhotosType) {
   const router = useRouter();
 
@@ -49,6 +49,7 @@ function Photos({
           (selectedCategory === 0 || selectedCategory === photo.category) &&
           selectMembers.has(photo.user) && (
             <div
+              key={photo.id}
               onClick={() =>
                 isSelect ? changeSelect(photo.id) : goPhoto(photo.id)
               }
@@ -64,7 +65,7 @@ function Photos({
             </div>
           )
       )}
-      {!isSelect && <NewPhoto setPreviewPhoto={setPreviewPhoto} />}
+      {!isSelect && <NewPhoto setInputPhoto={setInputPhoto} />}
     </section>
   );
 }

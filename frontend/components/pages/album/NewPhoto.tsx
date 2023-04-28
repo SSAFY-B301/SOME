@@ -4,11 +4,11 @@ import PlusIcon from "@/public/icons/PlusMainColor.svg";
 import React from "react";
 
 interface NewPhotoType {
-  setPreviewPhoto: React.Dispatch<React.SetStateAction<any>>;
+  setInputPhoto: React.Dispatch<React.SetStateAction<FileList | null>>;
 }
 
 // TODO : 사진 업로드 기능 추가
-function NewPhoto({ setPreviewPhoto }: NewPhotoType) {
+function NewPhoto({ setInputPhoto }: NewPhotoType) {
   // TODO : useRef 타입 any 처리하기
   const fileInput = React.useRef<any>(null);
   const inputPhoto = () => {
@@ -16,7 +16,10 @@ function NewPhoto({ setPreviewPhoto }: NewPhotoType) {
   };
 
   const changeInputPhoto = (e: React.ChangeEvent<HTMLInputElement>) => {
-    console.log(e.target.files);
+    // TODO : 콘솔 지우기
+    // console.log(e.target.files);
+    // console.log(typeof e.target.files);
+    e.target.files && setInputPhoto(e.target.files);
   };
 
   return (
