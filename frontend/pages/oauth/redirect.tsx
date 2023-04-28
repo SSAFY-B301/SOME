@@ -12,7 +12,6 @@ export default function AuthRedirect() {
     const dispatch = useAppDispatch();
     // redux state 변경 감지를 위해 state 값 가져오기
     const {isLogin, userInfo} = useSelector((state : RootState) => state.auth);
-
     // router 객체 생성
     const router = useRouter();
 
@@ -22,6 +21,7 @@ export default function AuthRedirect() {
             const userResult = await axios.post(`${process.env.NEXT_PUBLIC_SOME_AUTH_URL}/auth/member/kakao`,{},
                 {
                     headers : {
+                        "redirect_base" : process.env.NEXT_PUBLIC_FRONT_BASE,
                         "authorization_code" : paramAuthCode,
                     },
                 });
@@ -34,7 +34,7 @@ export default function AuthRedirect() {
 
     // dispatch로 로그인 상태 변경 되었음을 감지
     useEffect(() => {
-        if (userInfo.userId !== "") {
+        if (userInfo.user_id !== "") {
             router.push('/');
         }
     }, [isLogin])
