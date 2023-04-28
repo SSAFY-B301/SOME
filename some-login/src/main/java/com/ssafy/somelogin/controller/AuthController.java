@@ -17,7 +17,7 @@ import java.io.*;
 
 
 @RestController
-@RequestMapping("/member")
+@RequestMapping("/user")
 @Slf4j
 @RequiredArgsConstructor
 public class AuthController {
