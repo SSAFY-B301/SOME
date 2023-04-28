@@ -1,11 +1,16 @@
-import PlusIcon from "@/public/icons/Plus.svg";
-import MfriendIcon from "@/public/icons/Mfriend.svg";
-import FfriendIcon from "@/public/icons/Ffriend.svg";
-import MfriendSelectedIcon from "@/public/icons/MfriendSelected.svg";
-import FfriendSelectedIcon from "@/public/icons/FfriendSelected.svg";
-import styles from "@/styles/home.module.scss";
+// 라이브러리
 import { useRouter } from "next/router";
 import Link from "next/link";
+
+// CSS
+import styles from "styles/home.module.scss";
+
+// 아이콘
+import PlusIcon from "public/icons/Plus.svg";
+import MfriendIcon from "public/icons/Mfriend.svg";
+import FfriendIcon from "public/icons/Ffriend.svg";
+import MfriendSelectedIcon from "public/icons/MfriendSelected.svg";
+import FfriendSelectedIcon from "public/icons/FfriendSelected.svg";
 
 interface TabBarType {
   plusBtnUrl: string;

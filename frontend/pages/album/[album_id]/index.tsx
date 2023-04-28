@@ -1,9 +1,9 @@
 // 컴포넌트
-import Photos from "@/components/pages/album/Photos";
-import Categories from "@/components/pages/album/Categories";
-import Members from "@/components/pages/album/Members";
-import NavBar from "@/components/pages/album/NavBar";
-import TabBar from "@/components/pages/album/TabBar";
+import Photos from "components/pages/album/Photos";
+import Categories from "components/pages/album/Categories";
+import Members from "components/pages/album/Members";
+import NavBar from "components/pages/album/NavBar";
+import TabBar from "components/pages/album/TabBar";
 
 // 라이브러리
 import { useRouter } from "next/router";
@@ -13,11 +13,11 @@ import { useEffect, useState } from "react";
 import {
   albumInfo as albumInfoData,
   photos as PhotosData,
-} from "@/pages/api/albumDummyApi";
+} from "pages/api/albumDummyApi";
 
 // CSS
-import styles from "@/styles/album.module.scss";
-import Preview from "@/components/pages/album/Preview";
+import styles from "styles/album.module.scss";
+import Preview from "components/pages/album/Preview";
 
 function AlbumDetail() {
   const router = useRouter();
@@ -101,7 +101,6 @@ function AlbumDetail() {
       <div className={`${styles.container}`}>
         <Members
           members={albumInfo.members}
-          albumId={albumInfo.id}
           selectMembers={selectMembers}
           setSelectMembers={setSelectMembers}
           membersSize={membersSize}

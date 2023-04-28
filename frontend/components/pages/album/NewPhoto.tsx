@@ -1,7 +1,5 @@
-import styles from "styles/album.module.scss";
-
-import PlusIcon from "@/public/icons/PlusMainColor.svg";
 import React from "react";
+import PlusIcon from "public/icons/PlusMainColor.svg";
 
 interface NewPhotoType {
   setInputPhoto: React.Dispatch<React.SetStateAction<FileList | null>>;
