@@ -5,8 +5,7 @@ import com.fasterxml.jackson.databind.ObjectMapper;
 import com.ssafy.somefriendboy.dto.AlbumCreateDto;
 import com.ssafy.somefriendboy.dto.KakaoFriendResponseDto;
 import com.ssafy.somefriendboy.dto.ResponseDto;
-import com.ssafy.somefriendboy.entity.Album;
-import com.ssafy.somefriendboy.entity.AlbumStatus;
+import com.ssafy.somefriendboy.entity.*;
 import com.ssafy.somefriendboy.repository.album.AlbumRepository;
 import com.ssafy.somefriendboy.repository.albummember.AlbumMemberRepository;
 import lombok.RequiredArgsConstructor;
@@ -22,10 +21,7 @@ import org.springframework.web.multipart.MultipartFile;
 
 import java.io.IOException;
 import java.time.LocalDateTime;
-import java.util.Arrays;
-import java.util.HashMap;
-import java.util.List;
-import java.util.Map;
+import java.util.*;
 
 @Service
 @RequiredArgsConstructor
@@ -47,9 +43,21 @@ public class AlbumService {
         Album savedAlbum = albumRepository.save(album);
         result.put("album_id",savedAlbum.getAlbumId());
 
-        //여기에 친구초대하는 코드
-        //
+        for (String invitedFriendId : albumCreateDto.getInviteFriend()) {
+            AlbumMemberId albumMemberId = AlbumMemberId.builder()
+                    .albumId(savedAlbum.getAlbumId())
+                    .userId(invitedFriendId)
+                    .albumMemberStatus(AlbumMemberStatus.NOREPLY)
+                    .build();
+            AlbumMember albumMember = AlbumMember.builder()
+                    .albumMemberId(albumMemberId)
+                    .build();
+            albumMemberRepository.save(albumMember);
+        }
 
+        // TODO 친구 초대 알림
+        // 가입되어있는 친구라면 초대알림
+        // 가입되어있지 않은 친구라면 초대 메시지
 
         return setResponseDto(result,"앨범 생성 완료",200);
     }
@@ -57,12 +65,15 @@ public class AlbumService {
     public ResponseDto wholeList(String userId, Pageable pageable) {
         Map<String,Object> result = new HashMap<>();
 
+        // 내가 속한 전체 앨범들 ID 불러옴
         List<Long> myAlbumIdList = albumMemberRepository.findMyAlbumIdList(userId);
-
         result.put("myAlbumIdList",myAlbumIdList);
 
+        // 내가 속한 앨범들의 ID로 Album 정보 불러옴
         List<Album> wholeAlbum = albumRepository.findWholeAlbum();
         result.put("myAlbumList",wholeAlbum);
+
+        //
 
         return setResponseDto(result,"앨범 목록",200);
     }
@@ -86,6 +97,7 @@ public class AlbumService {
         result.put("kakao_list",kakaoFriendResponseDto);
         return setResponseDto(result,"친구목록 리턴",200);
     }
+
     private ResponseDto setResponseDto(Map<String,Object> result, String message, int statusCode){
         ResponseDto responseDto = new ResponseDto();
         responseDto.setData(result);
