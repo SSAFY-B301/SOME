@@ -14,6 +14,8 @@ import LightModeIcon from "public/icons/Sun.svg";
 import DarkModeIcon from "public/icons/Moon.svg";
 import AlarmIcon from "public/icons/Bell.svg";
 import CaretLeft from "public/icons/CaretLeft.svg";
+import { useSelector } from "react-redux";
+import { RootState } from "@/store";
 
 interface InfoType {
   title: string;
@@ -21,6 +23,7 @@ interface InfoType {
 
 function NavBar() {
   const { theme, setTheme } = useTheme();
+  const {userInfo} = useSelector((state : RootState) => state.auth);
   return (
     <nav
       className={`flex flex-row justify-between items-center h-14 mx-6 ${styles.nav_bar}`}
@@ -47,7 +50,7 @@ function NavBar() {
           )}
         </button>
         <Link href={"/profile"}>
-          <Profile img="https://images.unsplash.com/photo-1506794778202-cad84cf45f1d?ixlib=rb-4.0.3&ixid=MnwxMjA3fDB8MHxzZWFyY2h8NDd8fHByb2ZpbGV8ZW58MHx8MHx8&auto=format&fit=crop&w=400&q=60" />
+          <Profile img={userInfo.user_img} />
         </Link>
         <Link href={"/notification"}>
           <AlarmIcon fill="grey" stroke="grey" />
