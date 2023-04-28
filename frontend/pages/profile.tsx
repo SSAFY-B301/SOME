@@ -13,6 +13,7 @@ import ProfileModify from "public/icons/ProfileModify.svg";
 //Redux 관련
 import { RootState, useAppDispatch } from "@/store";
 import { useSelector } from "react-redux";
+import { onLogout } from "@/features/authSlice";
 
 export default function MyPage() {
     const router = useRouter();
@@ -27,8 +28,8 @@ export default function MyPage() {
     setIsModalOpen(!isModalOpen);
   }
 
-  function onLogout() {
-    dispatch(onLogout);
+  function logout() {
+    dispatch(onLogout());
   }
 
   useEffect(() => {
@@ -100,7 +101,7 @@ export default function MyPage() {
       {isModalOpen && (
         <Alert
           msg="정말 로그아웃 하시겠습니까?"
-          yesHandler={onLogout}
+          yesHandler={logout}
           noHandler={onModalClick}
         ></Alert>
       )}
