@@ -32,6 +32,7 @@ import java.time.LocalDateTime;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Objects;
+import java.util.stream.Collectors;
 
 import static org.springframework.data.mongodb.core.FindAndModifyOptions.options;
 import static org.springframework.data.mongodb.core.query.Criteria.where;
@@ -50,12 +51,16 @@ public class AlbumPhotoService {
             inputStream.close();
 
             //AI 자동 카테고리 분류 코드 추가할 위치
-            requestToFAST(metaDataDto.getMultipartFile());
+//            requestToFAST(metaDataDto.getMultipartFile());
+            List<Long> categories = new ArrayList<>();
+            categories.add(3L);
+            categories.add(4L);
 
             AlbumPhoto albumPhoto = AlbumPhoto.builder()
                     .photoId(generateSequence(AlbumPhoto.SEQUENCE_NAME))
                     .uploadedDate(LocalDateTime.now())
                     .s3Url(metaDataDto.getUrl())
+                    .categoryId(categories)
                     .albumId(albumId)
                     .userId(userId)
                     .build();
@@ -85,17 +90,18 @@ public class AlbumPhotoService {
         ResponseDto responseDto = new ResponseDto();
         responseDto.setStatusCode(200);
         responseDto.setMessage("앨범 사진 등록");
-        responseDto.setData(null);
         return responseDto;
     }
 
-    public ResponseDto selectAllPhoto(Long albumId) {
-//        AlbumPhoto albumPhoto = albumPhotoRepository.fin
-//        AlbumPhotoDto albumPhotoDto = AlbumPhotoDto.builder().
+    public ResponseDto selectAlbumPhoto(Long albumId) {
+        List<AlbumPhoto> albumPhotos = albumPhotoRepository.findByAlbumId(albumId);
+        List<AlbumPhotoDto> albumPhotoDtos = albumPhotos.stream()
+                .map(AlbumPhotoDto::new).collect(Collectors.toList());
 
         ResponseDto responseDto = new ResponseDto();
         responseDto.setStatusCode(200);
-        responseDto.setMessage("앨범 사진 등록");
+        responseDto.setMessage("앨범 사진 목록");
+        responseDto.setData(albumPhotoDtos);
         return responseDto;
     }
 
@@ -107,6 +113,18 @@ public class AlbumPhotoService {
         responseDto.setStatusCode(200);
         responseDto.setMessage("사진 상세 보기");
         responseDto.setData(albumPhotoDto);
+        return responseDto;
+    }
+
+    public ResponseDto selectCategoryPhoto(Long albumId, Long categoryId) {
+        List<AlbumPhoto> albumPhotos = albumPhotoRepository.findAlbumCategoryPhoto(albumId, categoryId);
+        List<AlbumPhotoDto> albumPhotoDtos = albumPhotos.stream()
+                .map(AlbumPhotoDto::new).collect(Collectors.toList());
+
+        ResponseDto responseDto = new ResponseDto();
+        responseDto.setStatusCode(200);
+        responseDto.setMessage("카테고리 사진 목록");
+        responseDto.setData(albumPhotoDtos);
         return responseDto;
     }
 
