@@ -3,6 +3,7 @@ package com.ssafy.somefriendboy.service;
 import com.fasterxml.jackson.databind.JsonNode;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.ssafy.somefriendboy.dto.AlbumCreateDto;
+import com.ssafy.somefriendboy.dto.KakaoFriendResponseDto;
 import com.ssafy.somefriendboy.dto.ResponseDto;
 import com.ssafy.somefriendboy.entity.Album;
 import com.ssafy.somefriendboy.entity.AlbumStatus;
@@ -36,7 +37,6 @@ public class AlbumService {
 
     public ResponseDto createAlbum(AlbumCreateDto albumCreateDto) {
         Map<String,Object> result = new HashMap<>();
-        ResponseDto responseDto = new ResponseDto();
 
         Album album = Album.builder()
                 .albumName(albumCreateDto.getAlbumName())
@@ -50,15 +50,12 @@ public class AlbumService {
         //여기에 친구초대하는 코드
         //
 
-        responseDto.setData(result);
-        responseDto.setMessage("앨범 생성 완료");
-        responseDto.setStatusCode(200);
-        return responseDto;
+
+        return setResponseDto(result,"앨범 생성 완료",200);
     }
 
     public ResponseDto wholeList(String userId, Pageable pageable) {
         Map<String,Object> result = new HashMap<>();
-        ResponseDto responseDto = new ResponseDto();
 
         List<Long> myAlbumIdList = albumMemberRepository.findMyAlbumIdList(userId);
 
@@ -66,10 +63,34 @@ public class AlbumService {
 
         List<Album> wholeAlbum = albumRepository.findWholeAlbum();
         result.put("myAlbumList",wholeAlbum);
-        responseDto.setData(result);
-        responseDto.setMessage("앨범 목록");
-        responseDto.setStatusCode(200);
-        return responseDto;
+
+        return setResponseDto(result,"앨범 목록",200);
     }
 
+    public ResponseDto getfriendList(String accessToken) {
+        Map<String,Object> result = new HashMap<>();
+        String url = "https://kapi.kakao.com/v1/api/talk/friends";
+
+        HttpHeaders headers = new HttpHeaders();
+        headers.setContentType(MediaType.APPLICATION_FORM_URLENCODED);
+        headers.setBearerAuth(accessToken);
+
+        MultiValueMap<String, String> map = new LinkedMultiValueMap<>();
+//        map.add("limit", "3");
+
+        HttpEntity<MultiValueMap<String, String>> request = new HttpEntity<>(map, headers);
+        RestTemplate restTemplate = new RestTemplate();
+        ResponseEntity<KakaoFriendResponseDto> response = restTemplate.exchange(url, HttpMethod.GET, request, KakaoFriendResponseDto.class);
+
+        KakaoFriendResponseDto kakaoFriendResponseDto = response.getBody();
+        result.put("kakao_list",kakaoFriendResponseDto);
+        return setResponseDto(result,"친구목록 리턴",200);
+    }
+    private ResponseDto setResponseDto(Map<String,Object> result, String message, int statusCode){
+        ResponseDto responseDto = new ResponseDto();
+        responseDto.setData(result);
+        responseDto.setMessage(message);
+        responseDto.setStatusCode(statusCode);
+        return responseDto;
+    }
 }
