@@ -7,13 +7,16 @@ import ToggleList from "@/components/pages/profile/ToggleList";
 import { useEffect, useState } from "react";
 import { useRouter } from "next/router";
 
-//svg 아이콘
+// svg 아이콘
 import ProfileModify from "public/icons/ProfileModify.svg";
 
-//Redux 관련
+// Redux 관련
 import { RootState, useAppDispatch } from "@/store";
 import { useSelector } from "react-redux";
 import { onLogout } from "@/features/authSlice";
+
+// Axios
+import axios from "axios";
 
 export default function MyPage() {
     const router = useRouter();
@@ -27,11 +30,28 @@ export default function MyPage() {
   function onModalClick() {
     setIsModalOpen(!isModalOpen);
   }
+  
+  // 카카오 로그아웃 API 요청
+  async function kakaoLogout() {
+    await axios.post(`${process.env.NEXT_PUBLIC_KAKAO_API_URL}/v1/user/logout`,{},
+    {
+        headers : {
+            "Content-Type": "application/x-www-form-urlencoded",
+            "Authorization" : "Bearer " + userInfo.access_token,
+        }
+    })
+  }
 
+  //로그아웃 로직
   function logout() {
+    //카카오 로그아웃
+    kakaoLogout();
+    
+    //리덕스 초기화
     dispatch(onLogout());
   }
 
+  // 로그아웃 시 리덕스 값이 바뀌었을 때 페이지 이동
   useEffect(() => {
     if (!isLogin) {
       router.push("/");
