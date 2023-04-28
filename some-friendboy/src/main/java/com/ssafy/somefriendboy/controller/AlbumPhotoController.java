@@ -16,7 +16,7 @@ import java.util.List;
 
 @RestController
 @RequiredArgsConstructor
-@RequestMapping("/api/photo")
+@RequestMapping("/photo")
 public class AlbumPhotoController {
 
     private final AmazonS3Service amazonS3Service;
@@ -30,9 +30,21 @@ public class AlbumPhotoController {
         return new ResponseEntity<ResponseDto>(responseDto, HttpStatus.OK);
     }
 
+    @GetMapping("/album/list")
+    public ResponseEntity<ResponseDto> getAlbumPhoto(Long albumId) {
+        ResponseDto responseDto = albumPhotoService.selectAlbumPhoto(albumId);
+        return new ResponseEntity<ResponseDto>(responseDto, HttpStatus.OK);
+    }
+
     @GetMapping("/detail")
     public ResponseEntity<ResponseDto> getPhoto(Long photoId) {
         ResponseDto responseDto = albumPhotoService.selectPhoto(photoId);
+        return new ResponseEntity<ResponseDto>(responseDto, HttpStatus.OK);
+    }
+
+    @GetMapping("/category/list")
+    public ResponseEntity<ResponseDto> getCategoryPhoto(Long albumId, Long categoryId) {
+        ResponseDto responseDto = albumPhotoService.selectCategoryPhoto(albumId, categoryId);
         return new ResponseEntity<ResponseDto>(responseDto, HttpStatus.OK);
     }
 
