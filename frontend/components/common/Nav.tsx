@@ -13,6 +13,8 @@ import styles from "styles/home.module.scss";
 import LightModeIcon from "public/icons/Sun.svg";
 import DarkModeIcon from "public/icons/Moon.svg";
 import AlarmIcon from "public/icons/Bell.svg";
+
+// 리덕스
 import { useSelector } from "react-redux";
 import { RootState } from "@/store";
 
@@ -74,8 +76,9 @@ export function InfoBar(props: InfoType) {
       >
         <div className="absolute top-0 left-0">
           <Link href={"/"}>
+            
             <svg width="6.154vw" height="6.154vw" viewBox="0 0 24 24" fill="none" stroke="transparent" xmlns="http://www.w3.org/2000/svg">
-              <path className="stroke-black dark:stroke-white" d="M15 19.5L7.5 12L15 4.5" stroke="transparent" stroke-width="3" stroke-linecap="round" stroke-linejoin="round"/>
+              <path className="stroke-black dark:stroke-white" d="M15 19.5L7.5 12L15 4.5" stroke="transparent" strokeWidth="3" strokeLinecap="round" strokeLinejoin="round"/>
             </svg>
           </Link>
         </div>
