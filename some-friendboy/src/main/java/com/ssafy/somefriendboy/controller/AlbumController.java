@@ -28,9 +28,11 @@ public class AlbumController {
     }
 
     @PostMapping("/create")
-    public ResponseEntity<ResponseDto> albumCreate(@RequestBody AlbumCreateDto albumCreateDto) {
+    public ResponseEntity<ResponseDto> albumCreate(@RequestHeader HttpHeaders headers,@RequestBody AlbumCreateDto albumCreateDto) {
         log.debug("앨범 생성 요청 POST: /album/create, albumCreateDto : {}",albumCreateDto);
-        ResponseDto responseDto = albumService.createAlbum(albumCreateDto);
+        String access_token = headers.get("access_token").toString();
+
+        ResponseDto responseDto = albumService.createAlbum(albumCreateDto,access_token);
         return new ResponseEntity<ResponseDto>(responseDto, HttpStatus.OK);
     }
     @GetMapping("/list/friend")
@@ -43,8 +45,9 @@ public class AlbumController {
     }
 
     @GetMapping("/list/whole/{userId}")
-    public ResponseEntity<ResponseDto> albumWholeList(@PathVariable String userId, Pageable pageable) {
+    public ResponseEntity<ResponseDto> albumWholeList(@RequestHeader HttpHeaders headers,@PathVariable String userId, Pageable pageable) {
         log.debug("전체 앨범 목록 요청 GET: /album/whole/userId, userId : {}, pageable : {}",userId,pageable);
+        String access_token = headers.get("access_token").toString();
         ResponseDto responseDto = albumService.wholeList(userId,pageable);
         return new ResponseEntity<ResponseDto>(responseDto, HttpStatus.OK);
     }
