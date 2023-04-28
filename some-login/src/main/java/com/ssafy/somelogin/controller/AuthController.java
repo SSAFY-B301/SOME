@@ -24,6 +24,10 @@ public class AuthController {
 
     @PostMapping("/kakao")
     public ResponseEntity<?> getKaKaoToken(@RequestHeader HttpHeaders headers) throws IOException {
+        log.info(headers.toString());
+        if(headers.isEmpty()){
+            log.info("비어있으면 뜹니다.");
+        }
         String authorization_code = headers.get("authorization_code").toString();
         String redirect_base = headers.get("redirect_base").toString();
         redirect_base = redirect_base.replace("[","");
