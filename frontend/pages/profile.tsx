@@ -1,14 +1,18 @@
-import ProfileModify from "public/icons/ProfileModify.svg";
-import Link from "next/link";
+// components
 import { InfoBar } from "@/components/common/Nav";
-import ToggleList from "@/components/pages/profile/ToggleList";
-import { useEffect, useState } from "react";
 import Alert from "@/components/common/Alert";
+import ToggleList from "@/components/pages/profile/ToggleList";
+
+// react Hooks, next Hooks
+import { useEffect, useState } from "react";
 import { useRouter } from "next/router";
+
+//svg 아이콘
+import ProfileModify from "public/icons/Pro fileModify.svg";
+
+//Redux 관련
 import { RootState, useAppDispatch } from "@/store";
-import { onLogout } from "@/features/authSlice";
 import { useSelector } from "react-redux";
-import { Root } from "postcss";
 
 export default function MyPage() {
     const [isModalOpen, setIsModalOpen] = useState<boolean>(false);
