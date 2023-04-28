@@ -23,7 +23,7 @@ export default function AuthRedirect() {
     // 인가 코드로 서버에서 사용자 데이터 받아오기
     async function getUserInfo(paramAuthCode : string | null){
         if (paramAuthCode !== null){
-            const userResult = await axios.post(`${process.env.NEXT_PUBLIC_SOME_AUTH_URL}/member/kakao`,{},
+            const userResult = await axios.post(`${process.env.NEXT_PUBLIC_SOME_AUTH_URL}/user/kakao`,{},
                 {
                     headers : {
                         "redirect_base" : process.env.NEXT_PUBLIC_FRONT_BASE,
