@@ -6,8 +6,6 @@ import { useRouter } from "next/router";
 import axios from "axios";
 import { UserInfoType } from "@/types/UserType";
 
-
-
 //로그인 완료 페이지니까 리덕스에 state 저장해주고 이동할 수 있도록
 export default function AuthRedirect() {
     // redux dispatch
@@ -17,7 +15,6 @@ export default function AuthRedirect() {
 
     // router 객체 생성
     const router = useRouter();
-
 
     // 인가 코드로 서버에서 사용자 데이터 받아오기
     async function getUserInfo(paramAuthCode : string | null){
@@ -29,19 +26,20 @@ export default function AuthRedirect() {
                     },
                 });
             const resultUserInfo : UserInfoType = userResult.data.data;
-            dispatch(onLogin(resultUserInfo));
+            if (resultUserInfo !== null){
+                dispatch(onLogin(resultUserInfo));
+            }
         }
     }
 
     // dispatch로 로그인 상태 변경 되었음을 감지
     useEffect(() => {
-        if(isLogin === true){
-            console.log("check");
-            console.log(userInfo);
-            router.push('/')
+        if (userInfo.userId !== "") {
+            router.push('/');
         }
     }, [isLogin])
     
+    // 렌더링 되면 authorization code URL에서 파싱
     useEffect(() => {
       // authorization code URL에서 파싱해오기
       const params = new URL(document.location.toString()).searchParams;
