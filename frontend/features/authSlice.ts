@@ -1,36 +1,44 @@
 import { createSlice } from "@reduxjs/toolkit";
+import type {UserInfoType} from "@/types/UserType";
 
-interface LoginState{
+
+interface LoginStateType{
   isLogin: boolean,
-  nickname: string,
-  accessToken: string,
-  refreshToken: string,
-  profileImg: string,
+  userInfo : UserInfoType
 }
 
-const initialState: LoginState = {
+const initialState: LoginStateType = {
   isLogin: false,
-  nickname: "",
-  accessToken: "",
-  refreshToken: "",
-  profileImg: "/images/profileImg.png"
+  userInfo : {
+    accessToken: "",
+    refreshToken: "",
+    userId : "",
+    userImg: "",
+    userName: "",
+  },
 };
 
 export const loginSlice = createSlice({
   name: 'auth',
   initialState,
   reducers: {
-    setAccessToken(state, action){
+    onLogin(state, action){
       state.isLogin = true;
-      state.accessToken = action.payload;
+      state.userInfo = action.payload;
     },
-    logout(state){
+    onLogout(state){
       state.isLogin = false;
-      state.accessToken = "";
+      state.userInfo = {
+        accessToken: "",
+        refreshToken: "",
+        userId : "",
+        userImg: "",
+        userName: "",
+      };
     }
   },
   extraReducers: (builder) => {}
 });
 
-export const { setAccessToken, logout } = loginSlice.actions;
+export const { onLogin, onLogout } = loginSlice.actions;
 export default loginSlice.reducer;
