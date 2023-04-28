@@ -26,7 +26,7 @@ public class AlbumPhoto {
     private String s3Url;
     private Double gpsLatitude;
     private Double gpsLongitude;
-    private List<String> category;
+    private List<Long> categoryId;
     private String userId;
     private Long albumId;
 
