@@ -8,10 +8,13 @@ import { useRouter } from "next/router";
 import { RootState, useAppDispatch } from "@/store";
 import { onLogout } from "@/features/authSlice";
 import { useSelector } from "react-redux";
+import { Root } from "postcss";
 
 export default function MyPage() {
     const [isModalOpen, setIsModalOpen] = useState<boolean>(false);
     const router = useRouter()
+
+    const {userInfo} = useSelector((state : RootState) => state.auth);
     const dispatch = useAppDispatch()
 
     const {isLogin} = useSelector((state:RootState) => state.auth);
@@ -42,10 +45,10 @@ export default function MyPage() {
                         </div>
                     </div>
                     <div className="flex items-center gap-x-10">
-                        <img className="w-24 h-24 rounded-full " src="/images/profileImg.png" alt="" />
+                        <img className="w-24 h-24 rounded-full " src={userInfo.user_img} alt="" />
                         <div className="flex flex-col justify-center items-left">
                             <p className="text-gray-300">닉네임</p>
-                            <p className="text-2xl font-bold">최현인</p>
+                            <p className="text-2xl font-bold">{userInfo.user_name}</p>
                         </div>
                     </div>
                 </div>
