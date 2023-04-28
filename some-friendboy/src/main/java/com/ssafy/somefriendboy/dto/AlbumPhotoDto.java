@@ -16,7 +16,7 @@ public class AlbumPhotoDto {
     private String s3Url;
     private Double gpsLatitude;
     private Double gpsLongitude;
-    private List<String> category;
+    private List<Long> categoryId;
     private String userId;
     private Long albumId;
 
@@ -27,7 +27,7 @@ public class AlbumPhotoDto {
         this.s3Url = albumPhoto.getS3Url();
         this.gpsLatitude = albumPhoto.getGpsLatitude();
         this.gpsLongitude = albumPhoto.getGpsLongitude();
-        this.category = albumPhoto.getCategory();
+        this.categoryId = albumPhoto.getCategoryId();
         this.userId = albumPhoto.getUserId();
         this.albumId = albumPhoto.getAlbumId();
     }
