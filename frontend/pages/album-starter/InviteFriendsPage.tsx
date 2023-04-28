@@ -96,6 +96,7 @@ const InviteFriendsPage = (): JSX.Element => {
   const [friends, setFriends] = useState<FriendType[]>([]);
   const [isActiveFriends, setActiveFriends] = useState<number[]>([]);
   const [invitedGroup, setInviteGroup] = useState<FriendType[]>([]);
+  const [friendName, setFriendName] = useState<string>("");
 
   useEffect(() => {
     setFriends(FRIENDS);
@@ -131,12 +132,17 @@ const InviteFriendsPage = (): JSX.Element => {
   };
 
   /**
-   * 친구 목록 스크롤 방식 변경 필요
+   * 검색 기능
+   * 검색 중일 땐 filterd를, 그렇지 않을 땐 friends를 props로 전달
    */
+  const onChange = (e: React.ChangeEvent<HTMLInputElement>) => {
+    e.preventDefault();
+    setFriendName(e.target.value);
+  };
 
-  /**
-   * 검색 기능 추가 필요
-   */
+  const filterd = friends.filter((item) =>
+    item.name.toUpperCase().includes(friendName.toUpperCase())
+  );
 
   /**
    * 앨범 목록 추후 수정 필요
@@ -185,6 +191,8 @@ const InviteFriendsPage = (): JSX.Element => {
         <input
           className="w-full h-12 bg-gray-100 rounded-lg box-border pl-3 mt-4 mb-2"
           placeholder="친구, 앨범 검색"
+          value={friendName}
+          onChange={onChange}
         ></input>
         <div className="w-full overflow-y-scroll" style={{ height: 700 }}>
           <div className="w-full h-44 box-border mt-4 border-b-2 flex flex-col">
@@ -196,12 +204,21 @@ const InviteFriendsPage = (): JSX.Element => {
           <div className="w-full box-border mt-4 flex flex-col">
             <span className="text-base mb-4">친구</span>
             <div className="h- box-border px-2">
-              <Friends
-                friends={friends}
-                isActiveFriends={isActiveFriends}
-                selectFriends={selectFriends}
-                removeFriends={removeFriends}
-              />
+              {friendName.length > 0 ? (
+                <Friends
+                  friends={filterd}
+                  isActiveFriends={isActiveFriends}
+                  selectFriends={selectFriends}
+                  removeFriends={removeFriends}
+                />
+              ) : (
+                <Friends
+                  friends={friends}
+                  isActiveFriends={isActiveFriends}
+                  selectFriends={selectFriends}
+                  removeFriends={removeFriends}
+                />
+              )}
             </div>
           </div>
         </div>
