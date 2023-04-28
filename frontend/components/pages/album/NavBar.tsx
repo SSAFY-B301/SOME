@@ -1,6 +1,6 @@
 import { useRouter } from "next/router";
-import styles from "@/styles/album.module.scss";
-import LeftIcon from "@/public/icons/CaretLeft.svg";
+import styles from "styles/album.module.scss";
+import LeftIcon from "public/icons/CaretLeft.svg";
 
 interface NavBarType {
   title: string;
@@ -10,6 +10,15 @@ interface NavBarType {
   setIsTotal: React.Dispatch<React.SetStateAction<boolean>>;
 }
 
+/**
+ *
+ * @param title 앨범 제목
+ * @param isSelect 사진 선택 여부
+ * @param setIsSelect 사진 선택 여부 Setter 함수
+ * @param isTotal 전체 선택 여부
+ * @param setIsTotal 전체 선택 여부 Setter 함수
+ * @returns
+ */
 function NavBar({
   title,
   isSelect,

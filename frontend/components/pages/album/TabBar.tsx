@@ -2,15 +2,16 @@
 import React from "react";
 
 //CSS
-import styles from "@/styles/album.module.scss";
+import styles from "styles/album.module.scss";
 
 // 아이콘
-import HeartIcon from "@/public/icons/Heart.svg";
-import DotsIcon from "@/public/icons/DotsThreeOutline.svg";
+import HeartIcon from "public/icons/Heart.svg";
+import DotsIcon from "public/icons/DotsThreeOutline.svg";
 import DownloadIcon from "public/icons/DownloadSimple.svg";
 import TrashIcon from "public/icons/Trash.svg";
 import UploadIcon from "public/icons/UploadSimple.svg";
 
+// 인터페이스
 interface TabBarType {
   albumInfo: AlbumInfoType;
   setAlbumInfo: React.Dispatch<React.SetStateAction<AlbumInfoType>>;
@@ -33,7 +34,17 @@ interface MemberType {
   img: string;
 }
 
+/**
+ * 하단 탭바 컴포넌트
+ * @param albumInfo 사진 정보 Object
+ * @param setAlbumInfo 사진 정보 Object의 Setter 함수
+ * @param isSelect 선택 여부
+ * @returns
+ */
 function TabBar({ albumInfo, setAlbumInfo, isSelect }: TabBarType) {
+  /**
+   * 앨범 좋아요 수정
+   */
   const clickLike = () => {
     albumInfo = {
       ...albumInfo,

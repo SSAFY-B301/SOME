@@ -1,5 +1,5 @@
-import styles from "@/styles/album.module.scss";
 import React from "react";
+import styles from "styles/album.module.scss";
 
 interface CategoriesType {
   categories: number[];
@@ -35,6 +35,7 @@ function Categories({ categories, selectedId, setSelectedId }: CategoriesType) {
       >
         전체
       </p>
+      {/* 서버에서 받아온 분류 기준 랜더 */}
       {categories.map((category: number) => (
         <p
           onClick={() => selectCategory(category)}

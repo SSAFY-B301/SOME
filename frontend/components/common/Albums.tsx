@@ -1,12 +1,22 @@
+// 라이브러리
 import { useState } from "react";
-import { currentAlbumsApi, favoriteAlbumsApi } from "@/pages/api/homeDummyApi";
-import styles from "@/styles/home.module.scss";
-import HeartIcon from "@/public/icons/Heart.svg";
-import DotsIcon from "@/public/icons/DotsThreeOutline.svg";
-import RightIcon from "@/public/icons/CaretRight.svg";
-import ItemBlock from "@/components/common/ItemBlock";
 import { useRouter } from "next/router";
 
+// 컴포넌트
+import ItemBlock from "components/common/ItemBlock";
+
+// API
+import { currentAlbumsApi, favoriteAlbumsApi } from "pages/api/homeDummyApi";
+
+// CSS
+import styles from "styles/home.module.scss";
+
+// 아이콘
+import HeartIcon from "public/icons/Heart.svg";
+import DotsIcon from "public/icons/DotsThreeOutline.svg";
+import RightIcon from "public/icons/CaretRight.svg";
+
+// 인터페이스
 interface CurrentAlbumType {
   id: number;
   img: string;
@@ -72,6 +82,7 @@ function CurrentAlbum() {
   );
 }
 
+// 인터페이스
 interface FavoriteAlbumType {
   id: number;
   img: string;
