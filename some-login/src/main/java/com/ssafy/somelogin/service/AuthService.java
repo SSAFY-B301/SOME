@@ -143,5 +143,24 @@ public class AuthService {
         responseDto.setStatus_code(200);
         return responseDto;
     }
+
+    public ResponseDto getUserId(String accessToken) {
+        ResponseDto responseDto = new ResponseDto<>();
+        HashMap<String, Object> resultMap = new HashMap<>();
+
+        String userId = httpUtil.parseToken(accessToken);
+
+        if(userId == null){
+            responseDto.setData(resultMap);
+            responseDto.setMessage("토큰 검증 실패");
+            responseDto.setStatus_code(400);
+            return responseDto;
+        }
+        resultMap.put("user_id",userId);
+        responseDto.setData(resultMap);
+        responseDto.setMessage("토큰 검증 성공");
+        responseDto.setStatus_code(200);
+        return responseDto;
+    }
 }
 
