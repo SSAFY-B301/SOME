@@ -56,7 +56,7 @@ public class AuthService {
 
         sb.append("grant_type=authorization_code");
         sb.append("&client_id=" + client_id); // TODO REST_API_KEY 입력
-        sb.append("&redirect_uri=" + redirect_base); // TODO 인가코드 받은 redirect_uri 입력
+        sb.append("&redirect_uri=" + redirect_base+"/oauth/redirect"); // TODO 인가코드 받은 redirect_uri 입력
         sb.append("&prompt=login");
         sb.append("&code=" + authorization_code);
         bw.write(sb.toString());
