@@ -15,14 +15,14 @@ import { RootState, useAppDispatch } from "@/store";
 import { useSelector } from "react-redux";
 
 export default function MyPage() {
-  const [isModalOpen, setIsModalOpen] = useState<boolean>(false);
-  const router = useRouter();
-
-  const { userInfo } = useSelector((state: RootState) => state.auth);
-  const dispatch = useAppDispatch();
-
-  const { isLogin } = useSelector((state: RootState) => state.auth);
-
+    const router = useRouter();
+    
+    const dispatch = useAppDispatch();
+    const { isLogin, userInfo } = useSelector((state: RootState) => state.auth);
+    
+    const [isModalOpen, setIsModalOpen] = useState<boolean>(false);
+  
+  //모달 창 열고 닫기
   function onModalClick() {
     setIsModalOpen(!isModalOpen);
   }
@@ -38,11 +38,11 @@ export default function MyPage() {
   }, [isLogin]);
 
   return (
-    <div className="bg-bg-home" style={{ width: "100vw", height: "100vh" }}>
+    <div className="bg-bg-home dark:bg-dark-bg-home" style={{ width: "100vw", height: "100vh" }}>
       <InfoBar title="마이페이지"></InfoBar>
       <div className="flex flex-col items-center w-full gap-y-4">
         <div
-          className="flex flex-col p-4 bg-white rounded-lg gap-y-4"
+          className="flex flex-col p-4 bg-white rounded-lg dark:bg-dark-block gap-y-4"
           style={{ width: "89.744vw" }}
         >
           <div className="flex justify-between">
@@ -64,7 +64,7 @@ export default function MyPage() {
           </div>
         </div>
         <div
-          className="flex flex-col p-4 bg-white rounded-lg gap-y-4"
+          className="flex flex-col p-4 bg-white rounded-lg dark:bg-dark-block gap-y-4"
           style={{ width: "89.744vw" }}
         >
           <p className="text-xl font-bold">활동 이력</p>
@@ -78,14 +78,14 @@ export default function MyPage() {
           </div>
         </div>
         <div
-          className="flex flex-col p-4 bg-white rounded-lg gap-y-4"
+          className="flex flex-col p-4 bg-white rounded-lg dark:bg-dark-block gap-y-4"
           style={{ width: "89.744vw" }}
         >
           <p className="text-xl font-bold">알림 설정</p>
           <ToggleList></ToggleList>
         </div>
         <div
-          className="flex flex-col p-4 bg-white rounded-lg gap-y-4"
+          className="flex flex-col p-4 bg-white rounded-lg dark:bg-dark-block gap-y-4"
           style={{ width: "89.744vw" }}
         >
           <p className="text-xl font-bold">계정 설정</p>
