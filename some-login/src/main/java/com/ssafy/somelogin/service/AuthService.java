@@ -29,13 +29,13 @@ import java.util.Optional;
 public class AuthService {
     private String get_token_url = "https://kauth.kakao.com/oauth/token";
     private String client_id = "ed5919bad756edb432bdb8d297df428a";
-    private String redirect_uri = "http://localhost:3000/oauth/redirect";
+    //private String redirect_uri = "http://localhost:3000/oauth/redirect";
 
     private final HttpUtil httpUtil;
     private final UserRepository userRepository;
 
     @Transactional
-    public ResponseDto getTokenAnduserInfo(String authorization_code) throws IOException {
+    public ResponseDto getTokenAnduserInfo(String authorization_code,String redirect_base) throws IOException {
         String access_Token = "";
         String refresh_Token = "";
         ResponseDto responseDto = new ResponseDto<>();
@@ -56,12 +56,12 @@ public class AuthService {
 
         sb.append("grant_type=authorization_code");
         sb.append("&client_id=" + client_id); // TODO REST_API_KEY 입력
-        sb.append("&redirect_uri=" + redirect_uri); // TODO 인가코드 받은 redirect_uri 입력
+        sb.append("&redirect_uri=" + redirect_base); // TODO 인가코드 받은 redirect_uri 입력
         sb.append("&prompt=login");
         sb.append("&code=" + authorization_code);
         bw.write(sb.toString());
         bw.flush();
-
+        //인가코드로 토큰 받아오기
         log.info(sb.toString());
         //결과 코드가 200이라면 성공
         int responseCode = connection.getResponseCode();
