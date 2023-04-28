@@ -80,7 +80,10 @@ def yololo():
 @app.post('/yolo/file')
 async def yololo(file: list[UploadFile] = File(...)):
     min_confidence = 0.5
-
+    food = ["bottle","wine glass","cup","fork","knife","spoon","bowl","banana","apple","sandwich","orange","broccoli","carrot","hot dog","pizza","donut","cake","diningtable","microwave","oven","toaster"]
+    animal = ["bird","cat","dog","horse","sheep","cow","elephant","bear","zebra","giraffe"]
+    thing = ["bicycle","car","motorbike","aeroplane","bus","train","truck","boat","traffic light","fire hydrant","stop sign","parking meter","bench","backpack","umbrella","handbag","tie","suitcase","chair","sofa","bed","toilet","tvmonitor","laptop","mouse","remote","keyboard","cell phone","sink","refrigerator","book","clock","vase","scissors","teddy bear","hair drier","toothbrush","pottedplant"]
+    sport = ["frisbee","skis","snowboard","sports ball","kite","baseball bat","baseball glove","skateboard","surfboard","tennis racket"]
     # Load Yolo
     net = cv2.dnn.readNet("yolo/yolov3.weights", "yolo/yolov3.cfg")
     classes = []
@@ -136,11 +139,31 @@ async def yololo(file: list[UploadFile] = File(...)):
         indexes = cv2.dnn.NMSBoxes(boxes, confidences, min_confidence, 0.4)
         font = cv2.FONT_HERSHEY_PLAIN
         categoryTemp = []
+        personCnt = 0
         for i in range(len(boxes)):
             if i in indexes:
                 label = str(classes[class_ids[i]])
-                categoryTemp.append(str(classes[class_ids[i]]))
+                cate = str(classes[class_ids[i]])
+                if cate == "person":
+                    personCnt = personCnt + 1
+                elif cate in food:
+                    categoryTemp.append("food")
+                elif cate in animal:
+                    categoryTemp.append("animal")
+                elif cate in thing:
+                    categoryTemp.append("thing")
+                else:
+                    categoryTemp.append("sport")
                 print(i, label)
-        category.append(categoryTemp)
+        
+        someTest = list(set(categoryTemp))
+        if personCnt == 1:
+            someTest.append("person")
+        elif personCnt > 1:
+            someTest.append("people")
+            someTest.append("person")
+        elif len(someTest) == 0:
+            someTest.append("nature")
+        category.append(someTest)
 
     return { 'category' : category}
