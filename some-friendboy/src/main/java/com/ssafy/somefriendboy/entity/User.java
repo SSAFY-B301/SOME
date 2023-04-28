@@ -37,11 +37,6 @@ public class User {
     @Size(max = 500)
     private String userImg;
 
-    @Column(name = "ROLE_TYPE", length = 20)
-    @Enumerated(EnumType.STRING)
-    @NotNull
-    private RoleType roleType;
-
     @CreationTimestamp
     @JsonFormat(shape = JsonFormat.Shape.STRING, pattern = "yyyy-MM-dd'T'HH:mm:ss.SSSXXX")
     @NotNull
@@ -53,14 +48,12 @@ public class User {
             String userName,
             String userEmail,
             String userImg,
-            RoleType roleType,
             LocalDateTime createdDate
     ) {
         this.userId = userId;
         this.userName = userName;
         this.userEmail = userEmail;
         this.userImg = userImg;
-        this.roleType = roleType;
         this.createdDate = createdDate;
     }
 }
