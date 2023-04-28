@@ -3,6 +3,7 @@ package com.ssafy.somefriendboy.controller;
 import com.ssafy.somefriendboy.dto.AlbumCreateDto;
 import com.ssafy.somefriendboy.dto.ResponseDto;
 import com.ssafy.somefriendboy.service.AlbumService;
+import com.ssafy.somefriendboy.util.HttpUtil;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.data.domain.Pageable;
@@ -19,7 +20,7 @@ import java.io.IOException;
 @Slf4j
 public class AlbumController {
     private final AlbumService albumService;
-
+    private HttpUtil httpUtil;
     @GetMapping("/list")
     public ResponseEntity<ResponseDto> albumList() {
         ResponseDto responseDto = null;
@@ -48,9 +49,12 @@ public class AlbumController {
         return new ResponseEntity<ResponseDto>(responseDto, HttpStatus.OK);
     }
 
-//    @GetMapping("/test")
-//    public ResponseEntity<String[]> test(MultipartFile[] multipartFiles) throws IOException {
-//        String[] strings = albumService.requestToFAST(multipartFiles);
-//        return new ResponseEntity<String[]>(strings, HttpStatus.OK);
-//    }
+    @PostMapping("/test")
+    public ResponseEntity<ResponseDto> test(@RequestHeader HttpHeaders headers) {
+        String access_token = headers.get("access_token").toString();
+        log.debug("TEST POST: /album/test, access_token : {}",access_token);
+        String s = httpUtil.requestParingToken(access_token);
+        ResponseDto responseDto = new ResponseDto();
+        return new ResponseEntity<ResponseDto>(responseDto, HttpStatus.OK);
+    }
 }
