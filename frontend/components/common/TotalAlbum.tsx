@@ -141,7 +141,7 @@ function Header({
           isTotal && setFlag(true);
           setIsSearch(!isSearch);
         }}
-        stroke="black"
+        className="stroke-black dark:stroke-white"
       />
     </div>
   );
