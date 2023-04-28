@@ -15,16 +15,14 @@ import styles from "@/styles/home.module.scss";
 
 export default function Home() {
   //로그인 상태인지 확인하고, 로그인 안 되어 있으면 로그인 페이지로 이동
-  const { isLogin, accessToken } = useSelector(
-    (state: RootState) => state.auth
-  );
+  const {isLogin, userInfo} = useSelector((state:RootState) => state.auth);
   const router = useRouter();
 
   useEffect(() => {
     if (!isLogin) {
       router.push("login");
     } else {
-      console.log("Token : " + accessToken);
+      console.log("Token : " + userInfo.accessToken);
     }
     return () => {};
   }, []);
