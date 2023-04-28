@@ -2,6 +2,7 @@ package com.ssafy.somelogin.controller;
 
 import com.ssafy.somelogin.dto.ResponseDto;
 import com.ssafy.somelogin.service.AuthService;
+import com.ssafy.somelogin.util.HttpUtil;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.http.HttpHeaders;
@@ -34,6 +35,14 @@ public class AuthController {
         redirect_base = redirect_base.replace("]","");
         log.info("인가코드로 토큰 요청 POST: /member/kakao, code : {}, redirect : {}",authorization_code,redirect_base);
         ResponseDto responseDto = authService.getTokenAnduserInfo(authorization_code,redirect_base);
+        return ResponseEntity.ok().body(responseDto);
+    }
+
+    @PostMapping("/userid")
+    public ResponseEntity<?> getUserId(@RequestHeader HttpHeaders headers) throws IOException {
+        String access_token = headers.get("access_token").toString();
+        log.info("토큰 검증, 유저아이디 리턴 POST: /member/userid, access_token : {}",access_token);
+        ResponseDto responseDto = authService.getUserId(access_token);
         return ResponseEntity.ok().body(responseDto);
     }
 }
