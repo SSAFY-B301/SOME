@@ -187,7 +187,10 @@ function FavoriteAlbum() {
         className="flex flex-col w-full h-full"
         style={{ gap: "4.103vw", padding: "6.154vw 0px" }}
       >
-        <div className="flex justify-between" style={{ margin: "0px 4.103vw" }}>
+        <div
+          className={`flex justify-between ${styles.title_box}`}
+          style={{ margin: "0px 4.103vw" }}
+        >
           <h1 className="font-bold" style={{ fontSize: "5.128vw" }}>
             즐겨찾는 앨범
           </h1>
@@ -198,6 +201,7 @@ function FavoriteAlbum() {
           style={{ gap: "4.103vw" }}
         >
           {favorites}
+          <div className={`${styles.mask}`}></div>
         </div>
       </div>
     </ItemBlock>
