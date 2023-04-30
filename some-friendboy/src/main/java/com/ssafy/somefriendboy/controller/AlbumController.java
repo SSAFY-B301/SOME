@@ -46,7 +46,7 @@ public class AlbumController {
     @Transactional
     @PutMapping("/modify")
     public ResponseEntity<ResponseDto> albumModify(@RequestHeader HttpHeaders headers, @RequestBody AlbumModifyDto albumModifyDto) {
-        log.debug("앨범 생성 요청 POST: /album/create, albumModifyDto : {}", albumModifyDto);
+        log.debug("앨범 정보 수정 PUT: /album/modify, albumModifyDto : {}", albumModifyDto);
         String access_token = headers.get("access_token").toString();
 
         ResponseDto responseDto = albumService.modifyAlbum(access_token, albumModifyDto);
@@ -74,7 +74,7 @@ public class AlbumController {
 
     @PostMapping("/friend/invite")
     public ResponseEntity<ResponseDto> friendInvite(@RequestBody AdditionalFriendsInviteDto additionalFriendsInviteDto) {
-        log.debug("앨범 생성 후 친구 초대 GET: /album/friend/invite");
+        log.debug("앨범 생성 후 친구 초대 POST: /album/friend/invite");
 
         ResponseDto responseDto = albumService.inviteFriend(additionalFriendsInviteDto);
         return new ResponseEntity<ResponseDto>(responseDto, HttpStatus.OK);
@@ -93,7 +93,7 @@ public class AlbumController {
     @PutMapping("/reply/invite")
     public ResponseEntity<ResponseDto> replyInvitedAlbum(@RequestHeader HttpHeaders headers, @RequestBody AlbumInviteReplyDto albumInviteReplyDto) {
         String access_token = headers.get("access_token").toString();
-        log.debug("앨범 초대 수락 PUT: /album/invite/accept, albumId : ", albumInviteReplyDto.getAlbumId());
+        log.debug("앨범 초대 응답 PUT: /album/reply/invite, albumId : ", albumInviteReplyDto.getAlbumId());
 
         ResponseDto responseDto = albumService.replyInvitedAlbum(access_token, albumInviteReplyDto);
         return new ResponseEntity<ResponseDto>(responseDto, HttpStatus.OK);

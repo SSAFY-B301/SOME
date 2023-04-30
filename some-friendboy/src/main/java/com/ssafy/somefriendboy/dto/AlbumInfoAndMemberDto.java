@@ -14,7 +14,7 @@ import java.util.Map;
 @Builder
 @AllArgsConstructor
 @NoArgsConstructor
-public class AlbumCreateResponseDto {
+public class AlbumInfoAndMemberDto {
 
     @JsonProperty("album_id")
     private Long albumId;
@@ -26,5 +26,5 @@ public class AlbumCreateResponseDto {
     private LocalDateTime albumCreatedDate;
 
     @JsonProperty("members")
-    private List<Map<String, String>> members;
+    private List<String> members;
 }
