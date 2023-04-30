@@ -186,17 +186,6 @@ const InviteFriendsPage = (): JSX.Element => {
   };
 
   /**
-   * 상단부 친구 선택 취소 기능
-   */
-  const topRemoveFriends = (id: number) => {
-    const tmp = new Set<Number>(isActiveFriends);
-    tmp.delete(id);
-    const tmpList = invitedFriends.filter((friend) => friend.id != id);
-    setActiveFriends(tmp);
-    setInvitedFriends(tmpList);
-  };
-
-  /**
    * 검색 기능
    * 검색 중일 땐 filterd를, 그렇지 않을 땐 friends and albums를 props로 전달
    */
@@ -271,7 +260,7 @@ const InviteFriendsPage = (): JSX.Element => {
           <div className="w-full h-20 flex items-center box-border px-2">
             <InvitedGroup
               friends={invitedFriends}
-              topRemoveFriends={topRemoveFriends}
+              topRemoveFriends={removeFriends}
             />
           </div>
         ) : (
