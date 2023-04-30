@@ -6,5 +6,5 @@ import java.util.List;
 
 public interface AlbumRepositoryCustom {
 
-    List<Album> findWholeAlbum();
+    long modifyAlbumName(Long albumId, String newName);
 }
