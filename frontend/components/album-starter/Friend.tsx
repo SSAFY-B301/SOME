@@ -9,7 +9,7 @@ interface FriendType {
 
 interface Props {
   friend: FriendType;
-  isActiveFriends: number[];
+  isActiveFriends: Set<Number>;
   selectFriends(id: number): void;
   removeFriends(id: number): void;
 }
@@ -23,7 +23,7 @@ const Friend = ({
   const [isActive, setIsActive] = useState<boolean>(false);
 
   useEffect(() => {
-    if (isActiveFriends.includes(friend.id)) {
+    if (isActiveFriends.has(friend.id)) {
       setIsActive(true);
     } else {
       setIsActive(false);
