@@ -4,6 +4,7 @@ import com.ssafy.somefriendboy.entity.AlbumPhoto;
 import lombok.*;
 import java.time.LocalDateTime;
 
+import java.util.Date;
 import java.util.List;
 
 @Getter
@@ -12,7 +13,7 @@ public class AlbumPhotoDto {
 
     private Long photoId;
     private LocalDateTime uploadedDate;
-    private LocalDateTime shootDate;
+    private Date shootDate;
     private String s3Url;
     private Double gpsLatitude;
     private Double gpsLongitude;
