@@ -15,11 +15,11 @@ public class AlbumRepositoryImpl implements AlbumRepositoryCustom{
     private final JPAQueryFactory queryFactory;
 
     @Override
-    public List<Album> findWholeAlbum() {
+    public long modifyAlbumName(Long albumId, String newName) {
         return queryFactory
-                .select(album)
-                .from(album)
-                .where(album.albumName.eq("yeahsangmin"))
-                .fetch();
+                .update(album)
+                .set(album.albumName, newName)
+                .where(album.albumId.eq(albumId))
+                .execute();
     }
 }
