@@ -169,35 +169,28 @@ public class AlbumService {
         ResponseEntity<KakaoFriendResponseDto> response = restTemplate.exchange(url, HttpMethod.GET, request, KakaoFriendResponseDto.class);
 
         KakaoFriendResponseDto kakaoFriendResponseDto = response.getBody();
-        result.put("kakao_list",kakaoFriendResponseDto);
+        result.put("kakao_friend_list",kakaoFriendResponseDto);
 
         // 내가 속한 앨범들의 멤버 리스트 불러오기
         // 내가 속한 전체 앨범들 ID 불러옴
         List<Long> myAlbumIdList = albumMemberRepository.findMyAlbumIdListByUserId(userId, AlbumMemberStatus.ACCEPT);
 
         // 내가 속한 앨범들의 ID로 Album 정보 불러와서 DTO로 반환
-        List<AlbumCreateResponseDto> albumCreateResponseDtoList = new ArrayList<>();
+        List<AlbumInfoAndMemberDto> albumInfoAndMemberDtoList = new ArrayList<>();
         for (Long albumId : myAlbumIdList) {
             Album album = albumRepository.findAlbumByAlbumId(albumId);
             List<String> albumMemberList = albumMemberRepository.findAlbumMemberIdByAlbumId(albumId);
-            List<Map<String, String>> albumMemberListMap = new ArrayList<>();
 
-            for (String albumMemberId : albumMemberList) {
-                Map<String, String> albumMemberMap = new HashMap<>();
-                albumMemberMap.put("id", albumMemberId);
-                albumMemberListMap.add(albumMemberMap);
-            }
-
-            AlbumCreateResponseDto albumCreateResponseDto = AlbumCreateResponseDto.builder()
+            AlbumInfoAndMemberDto albumInfoAndMemberDto = AlbumInfoAndMemberDto.builder()
                     .albumId(album.getAlbumId())
                     .albumName(album.getAlbumName())
                     .albumCreatedDate(album.getCreatedDate())
-                    .members(albumMemberListMap)
+                    .members(albumMemberList)
                     .build();
 
-            albumCreateResponseDtoList.add(albumCreateResponseDto);
+            albumInfoAndMemberDtoList.add(albumInfoAndMemberDto);
         }
-        result.put("album_list",albumCreateResponseDtoList);
+        result.put("myAlbum_member_list",albumInfoAndMemberDtoList);
         return setResponseDto(result,"친구 목록 리턴",200);
     }
 
