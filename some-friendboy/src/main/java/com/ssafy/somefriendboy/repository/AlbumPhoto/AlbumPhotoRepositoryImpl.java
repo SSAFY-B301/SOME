@@ -12,6 +12,7 @@ import org.springframework.data.mongodb.core.query.Query;
 import java.util.List;
 
 import static com.ssafy.somefriendboy.entity.QAlbumPhoto.albumPhoto;
+import static com.ssafy.somefriendboy.entity.QPhotoCategory.photoCategory;
 
 @RequiredArgsConstructor
 public class AlbumPhotoRepositoryImpl implements AlbumPhotoRepositoryCustom {
@@ -20,11 +21,18 @@ public class AlbumPhotoRepositoryImpl implements AlbumPhotoRepositoryCustom {
     private final MongoTemplate mongoTemplate;
 
     @Override
-    public List<AlbumPhoto> findAlbumCategoryPhoto(Long albumId, Long categoryId) {
+    public List<AlbumPhoto> findAlbumPhoto(Long albumId, Long categoryId, List<String> userId) {
         Query query = new Query();
-        query.addCriteria(new Criteria().andOperator(Criteria.where(MongoQueryUtil.parse(albumPhoto.albumId)).is(albumId),
-                new Criteria().orOperator(Criteria.where(MongoQueryUtil.parse(albumPhoto.categoryId)).in(categoryId))));
+        query.addCriteria(Criteria.where(MongoQueryUtil.parse(albumPhoto.albumId)).is(albumId));
+        if (categoryId != null) query.addCriteria(Criteria.where(MongoQueryUtil.parse(albumPhoto.categoryId)).in(categoryId));
+        if (userId != null && userId.size() != 0) query.addCriteria(Criteria.where(MongoQueryUtil.parse(albumPhoto.userId)).in(userId));
         return mongoTemplate.find(query, AlbumPhoto.class);
+    }
+
+    @Override
+    public List<Long> findCategoryName(List<String> categoryName) {
+        return queryFactory.select(photoCategory.categoryId).from(photoCategory)
+                .where(photoCategory.categoryName.in(categoryName)).fetch();
     }
 
     private BooleanExpression categoryIdEq(Long categoryId) {
