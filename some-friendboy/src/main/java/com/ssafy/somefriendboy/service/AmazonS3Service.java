@@ -11,6 +11,7 @@ import org.springframework.stereotype.Service;
 import org.springframework.web.multipart.MultipartFile;
 
 import java.io.IOException;
+import java.net.URLEncoder;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -26,7 +27,7 @@ public class AmazonS3Service {
         List<MetaDataDto> metaDataDtos = new ArrayList<>();
 
         for (MultipartFile multipartFile : multipartFiles) {
-            String originalName = multipartFile.getOriginalFilename();
+            String originalName = URLEncoder.encode(multipartFile.getOriginalFilename(), "UTF-8");
             long size = multipartFile.getSize();
 
             ObjectMetadata objectMetaData = new ObjectMetadata();
