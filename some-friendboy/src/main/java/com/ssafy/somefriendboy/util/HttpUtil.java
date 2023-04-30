@@ -35,7 +35,7 @@ public class HttpUtil {
                 JsonObject jsonObject = GetResponse.getJsonResponse(conn).getAsJsonObject();
 
                 JsonElement data = jsonObject.get("data");
-                String user_id = data.getAsJsonObject().get("user_id").toString();
+                String user_id = data.getAsJsonObject().get("user_id").getAsString();
                 log.info("user_id : {}", user_id);
 
                 return user_id;
