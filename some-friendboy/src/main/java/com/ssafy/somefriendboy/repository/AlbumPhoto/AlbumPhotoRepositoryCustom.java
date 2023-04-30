@@ -5,5 +5,6 @@ import com.ssafy.somefriendboy.entity.AlbumPhoto;
 import java.util.List;
 
 public interface AlbumPhotoRepositoryCustom {
-    List<AlbumPhoto> findAlbumCategoryPhoto(Long albumId, Long categoryId);
+    List<AlbumPhoto> findAlbumPhoto(Long albumId, Long categoryId, List<String> userId);
+    List<Long> findCategoryName(List<String> categoryName);
 }

@@ -6,6 +6,7 @@ import java.time.LocalDateTime;
 import org.springframework.data.mongodb.core.mapping.Document;
 
 import javax.persistence.*;
+import java.util.Date;
 import java.util.List;
 
 @Document
@@ -22,7 +23,7 @@ public class AlbumPhoto {
     @Id
     private Long photoId;
     private LocalDateTime uploadedDate;
-    private LocalDateTime shootDate;
+    private Date shootDate;
     private String s3Url;
     private Double gpsLatitude;
     private Double gpsLongitude;

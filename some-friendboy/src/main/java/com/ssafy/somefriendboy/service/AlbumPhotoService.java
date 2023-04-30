@@ -2,18 +2,20 @@ package com.ssafy.somefriendboy.service;
 
 import com.drew.imaging.ImageMetadataReader;
 import com.drew.imaging.ImageProcessingException;
-import com.drew.metadata.Directory;
 import com.drew.metadata.Metadata;
-import com.drew.metadata.Tag;
+import com.drew.metadata.exif.ExifSubIFDDirectory;
 import com.drew.metadata.exif.GpsDirectory;
 import com.fasterxml.jackson.databind.JsonNode;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.ssafy.somefriendboy.dto.AlbumPhotoDto;
+import com.ssafy.somefriendboy.dto.AlbumPhotoListDto;
 import com.ssafy.somefriendboy.dto.MetaDataDto;
 import com.ssafy.somefriendboy.dto.ResponseDto;
 import com.ssafy.somefriendboy.entity.AlbumPhoto;
 import com.ssafy.somefriendboy.entity.AutoIncrementSequence;
+import com.ssafy.somefriendboy.entity.PhotoCategory;
 import com.ssafy.somefriendboy.repository.AlbumPhoto.AlbumPhotoRepository;
+import com.ssafy.somefriendboy.util.HttpUtil;
 import lombok.RequiredArgsConstructor;
 import org.springframework.core.io.ByteArrayResource;
 import org.springframework.data.mongodb.core.MongoOperations;
@@ -29,9 +31,7 @@ import org.springframework.web.multipart.MultipartFile;
 import java.io.IOException;
 import java.io.InputStream;
 import java.time.LocalDateTime;
-import java.util.ArrayList;
-import java.util.List;
-import java.util.Objects;
+import java.util.*;
 import java.util.stream.Collectors;
 
 import static org.springframework.data.mongodb.core.FindAndModifyOptions.options;
@@ -43,29 +43,42 @@ public class AlbumPhotoService {
 
     private final AlbumPhotoRepository albumPhotoRepository;
     private final MongoOperations mongoOperations;
+    private final HttpUtil httpUtil;
 
-    public ResponseDto insertPhoto(List<MetaDataDto> metaDataDtos, Long albumId, String userId) throws ImageProcessingException, IOException {
+    public ResponseDto insertPhoto(List<MetaDataDto> metaDataDtos, Long albumId, String accessToken) throws ImageProcessingException, IOException {
+        Map<String, Object> result = new HashMap<>();
+        String userId = tokenCheck(accessToken);
+
+        if (userId == null) {
+            return setResponseDto(result, "토큰 만료", 450);
+        }
+
         for (MetaDataDto metaDataDto : metaDataDtos) {
             InputStream inputStream = metaDataDto.getMultipartFile().getInputStream();
             Metadata metadata = ImageMetadataReader.readMetadata(inputStream);
             inputStream.close();
 
-            //AI 자동 카테고리 분류 코드 추가할 위치
-//            requestToFAST(metaDataDto.getMultipartFile());
-            List<Long> categories = new ArrayList<>();
-            categories.add(3L);
-            categories.add(4L);
+            //AI 자동 카테고리 분류
+            List<String> categoryName = requestToFAST(metaDataDto.getMultipartFile());
+            List<Long> categoryId = albumPhotoRepository.findCategoryName(categoryName);
 
             AlbumPhoto albumPhoto = AlbumPhoto.builder()
                     .photoId(generateSequence(AlbumPhoto.SEQUENCE_NAME))
                     .uploadedDate(LocalDateTime.now())
                     .s3Url(metaDataDto.getUrl())
-                    .categoryId(categories)
+                    .categoryId(categoryId)
                     .albumId(albumId)
                     .userId(userId)
                     .build();
 
+            ExifSubIFDDirectory exifSubIFDDirectory = metadata.getFirstDirectoryOfType(ExifSubIFDDirectory.class);
             GpsDirectory gpsDirectory = metadata.getFirstDirectoryOfType(GpsDirectory.class);
+
+            if (exifSubIFDDirectory != null && exifSubIFDDirectory.containsTag(ExifSubIFDDirectory.TAG_DATETIME_ORIGINAL)) {
+                Date date = exifSubIFDDirectory.getDateOriginal();
+                System.out.println(date);
+                albumPhoto.setShootDate(date);
+            }
 
             if (gpsDirectory != null && gpsDirectory.containsTag(GpsDirectory.TAG_LATITUDE) && gpsDirectory.containsTag(GpsDirectory.TAG_LONGITUDE)) {
                 String pdsLat = String.valueOf(gpsDirectory.getGeoLocation().getLatitude());
@@ -77,55 +90,42 @@ public class AlbumPhotoService {
                 albumPhoto.setGpsLongitude(lon);
             }
 
-            for (Directory directory : metadata.getDirectories()) {
-                System.out.println(directory);
-                for (Tag tag : directory.getTags()) {
-                    System.out.println(tag.getDirectoryName() + "/" + tag.getTagName() + "/" + tag.getDescription());
-                }
-            }
-
             albumPhotoRepository.insert(albumPhoto);
         }
 
-        ResponseDto responseDto = new ResponseDto();
-        responseDto.setStatusCode(200);
-        responseDto.setMessage("앨범 사진 등록");
-        return responseDto;
+        return setResponseDto(result, "앨범 사진 등록", 200);
     }
 
-    public ResponseDto selectAlbumPhoto(Long albumId) {
-        List<AlbumPhoto> albumPhotos = albumPhotoRepository.findByAlbumId(albumId);
-        List<AlbumPhotoDto> albumPhotoDtos = albumPhotos.stream()
-                .map(AlbumPhotoDto::new).collect(Collectors.toList());
+    public ResponseDto selectPhoto(String accessToken, Long photoId) {
+        Map<String, Object> result = new HashMap<>();
+        String userId = tokenCheck(accessToken);
 
-        ResponseDto responseDto = new ResponseDto();
-        responseDto.setStatusCode(200);
-        responseDto.setMessage("앨범 사진 목록");
-        responseDto.setData(albumPhotoDtos);
-        return responseDto;
-    }
+        if (userId == null) {
+            return setResponseDto(result, "토큰 만료", 450);
+        }
 
-    public ResponseDto selectPhoto(Long photoId) {
         AlbumPhoto albumPhoto = albumPhotoRepository.findByPhotoId(photoId);
         AlbumPhotoDto albumPhotoDto = new AlbumPhotoDto(albumPhoto);
 
-        ResponseDto responseDto = new ResponseDto();
-        responseDto.setStatusCode(200);
-        responseDto.setMessage("사진 상세 보기");
-        responseDto.setData(albumPhotoDto);
-        return responseDto;
+        result.put("albumPhotoDetail", albumPhotoDto);
+        return setResponseDto(result, "사진 상세 보기", 200);
     }
 
-    public ResponseDto selectCategoryPhoto(Long albumId, Long categoryId) {
-        List<AlbumPhoto> albumPhotos = albumPhotoRepository.findAlbumCategoryPhoto(albumId, categoryId);
+    public ResponseDto selectAlbumPhoto(String accessToken, AlbumPhotoListDto albumPhotoListDto) {
+        Map<String, Object> result = new HashMap<>();
+        String userId = tokenCheck(accessToken);
+
+        if (userId == null) {
+            return setResponseDto(result, "토큰 만료", 450);
+        }
+
+        List<AlbumPhoto> albumPhotos = albumPhotoRepository.findAlbumPhoto(albumPhotoListDto.getAlbumId(),
+                albumPhotoListDto.getCategoryId(), albumPhotoListDto.getUserId());
         List<AlbumPhotoDto> albumPhotoDtos = albumPhotos.stream()
                 .map(AlbumPhotoDto::new).collect(Collectors.toList());
 
-        ResponseDto responseDto = new ResponseDto();
-        responseDto.setStatusCode(200);
-        responseDto.setMessage("카테고리 사진 목록");
-        responseDto.setData(albumPhotoDtos);
-        return responseDto;
+        result.put("albumPhotoList", albumPhotoDtos);
+        return setResponseDto(result, "앨범 사진 목록", 200);
     }
 
     private Long generateSequence(String seqName) {
@@ -174,6 +174,18 @@ public class AlbumPhotoService {
         }
 
         return categoryArray;
+    }
+
+    private ResponseDto setResponseDto(Map<String, Object> result, String message, int statusCode) {
+        ResponseDto responseDto = new ResponseDto();
+        responseDto.setData(result);
+        responseDto.setMessage(message);
+        responseDto.setStatusCode(statusCode);
+        return responseDto;
+    }
+
+    private String tokenCheck(String accessToken) {
+        return httpUtil.requestParingToken(accessToken);
     }
 
 }
