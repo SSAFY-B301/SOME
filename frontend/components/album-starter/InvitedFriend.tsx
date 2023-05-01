@@ -1,4 +1,5 @@
 import React from "react";
+import styles from "@/styles/inviteFriends.module.scss";
 
 interface FriendType {
   id: number;
@@ -17,7 +18,7 @@ const InvitedFriend = ({ friend, topRemoveFriends }: Props): JSX.Element => {
   };
 
   return (
-    <li className="flex flex-col items-center">
+    <li className={`flex flex-col items-center ${styles.appearIcon}`}>
       <div className="w-14 h-14 mb-2 relative">
         <button
           className="absolute z-10 top-0 right-0 w-5 h-5 bg-gray-400 rounded-full flex justify-center items-center"
