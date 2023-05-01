@@ -22,4 +22,14 @@ public class AlbumRepositoryImpl implements AlbumRepositoryCustom{
                 .where(album.albumId.eq(albumId))
                 .execute();
     }
+
+    @Override
+    public long modifyAlbumRecentPhoto(Long albumId, Long photoId) {
+        return queryFactory
+                .update(album)
+                .set(album.recentPhoto, photoId)
+                .where(album.albumId.eq(albumId))
+                .execute();
+    }
+
 }
