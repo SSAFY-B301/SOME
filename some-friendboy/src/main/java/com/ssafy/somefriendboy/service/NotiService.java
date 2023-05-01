@@ -1,5 +1,7 @@
 package com.ssafy.somefriendboy.service;
 
+import com.ssafy.somefriendboy.dto.NotiCreateDto;
+import com.ssafy.somefriendboy.dto.ResponseDto;
 import com.ssafy.somefriendboy.repository.noti.EmitterRepository;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.MediaType;
@@ -43,5 +45,13 @@ public class NotiService {
         } catch (IOException exception) {
             emitterRepository.deleteById(emitterId);
         }
+    }
+
+    public ResponseDto sendNoti(NotiCreateDto notiCreateDto) {
+        ResponseDto responseDto = new ResponseDto();
+
+
+
+        return responseDto;
     }
 }
