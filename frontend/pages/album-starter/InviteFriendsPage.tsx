@@ -2,7 +2,7 @@ import React, { useState, useEffect } from "react";
 import Link from "next/link";
 import { useRouter } from "next/router";
 import BackButtonIcon from "@/public/icons/CaretLeft.svg";
-import FavoriteAlbum from "@/components/album-starter/Albums";
+import Albums from "@/components/album-starter/Albums";
 import Friends from "@/components/album-starter/Friends";
 import InvitedGroup from "@/components/album-starter/InvitedGroup";
 
@@ -84,63 +84,147 @@ const FRIENDS = [
   },
 ];
 
+const ALBUMS = {
+  data: [
+    {
+      id: 1,
+      name: "국내 일주",
+      date: "2023-04-22",
+      thumbNail:
+        "https://images.unsplash.com/photo-1595981234058-a9302fb97229?ixlib=rb-4.0.3&ixid=MnwxMjA3fDB8MHxzZWFyY2h8MXx8YWxidW18ZW58MHx8MHx8&auto=format&fit=crop&w=500&q=60",
+      userIds: [1, 2, 3],
+    },
+    {
+      id: 2,
+      name: "해외 일주",
+      date: "2023-04-21",
+      thumbNail:
+        "https://images.unsplash.com/photo-1524613032530-449a5d94c285?ixlib=rb-4.0.3&ixid=MnwxMjA3fDB8MHxzZWFyY2h8Mnx8YWxidW18ZW58MHx8MHx8&auto=format&fit=crop&w=500&q=60",
+      userIds: [1, 3, 5],
+    },
+    {
+      id: 3,
+      name: "SSAFY 대전 2반",
+      date: "2023-03-22",
+      thumbNail:
+        "https://images.unsplash.com/photo-1500051638674-ff996a0ec29e?ixlib=rb-4.0.3&ixid=MnwxMjA3fDB8MHxzZWFyY2h8MTF8fGFsYnVtfGVufDB8fDB8fA%3D%3D&auto=format&fit=crop&w=500&q=60",
+      userIds: [1, 2, 4],
+    },
+    {
+      id: 4,
+      name: "자율 프로젝트",
+      date: "2023-02-28",
+      thumbNail:
+        "https://images.unsplash.com/photo-1571502189597-d7d3a0f114fd?ixlib=rb-4.0.3&ixid=MnwxMjA3fDB8MHxzZWFyY2h8MTR8fGFsYnVtfGVufDB8fDB8fA%3D%3D&auto=format&fit=crop&w=500&q=60",
+      userIds: [3, 4, 5],
+    },
+    {
+      id: 5,
+      name: "비밀 친구",
+      date: "2023-01-01",
+      thumbNail:
+        "https://images.unsplash.com/photo-1531777992189-ad52457fbe93?ixlib=rb-4.0.3&ixid=MnwxMjA3fDB8MHxzZWFyY2h8MTl8fGFsYnVtfGVufDB8fDB8fA%3D%3D&auto=format&fit=crop&w=500&q=60",
+      userIds: [4, 5, 6],
+    },
+  ],
+};
+
 interface FriendType {
   id: number;
   profileImg: string;
   name: string;
 }
 
+interface AlbumType {
+  id: number;
+  name: string;
+  date: string;
+  thumbNail: string;
+  userIds: number[];
+}
+
 const InviteFriendsPage = (): JSX.Element => {
   const router = useRouter();
   console.log(router.query);
   const [friends, setFriends] = useState<FriendType[]>([]);
-  const [isActiveFriends, setActiveFriends] = useState<number[]>([]);
-  const [invitedGroup, setInviteGroup] = useState<FriendType[]>([]);
+  const [albums, setAlbums] = useState<AlbumType[]>([]);
+  const [isActiveFriends, setActiveFriends] = useState<Set<Number>>(new Set());
+  const [invitedFriends, setInvitedFriends] = useState<FriendType[]>([]);
+  const [inputText, setInputText] = useState<string>("");
+
+  console.log(isActiveFriends);
 
   useEffect(() => {
     setFriends(FRIENDS);
+    setAlbums(ALBUMS.data);
   }, []);
 
   /**
    * 친구 선택 기능
    */
   const selectFriends = (id: number) => {
-    const friend = friends.filter((item) => item.id == id);
-    setActiveFriends([...isActiveFriends, id]);
-    setInviteGroup([...invitedGroup, ...friend]);
+    const tmpSet = new Set<Number>(isActiveFriends);
+    let tmpList: FriendType[] = [];
+    tmpSet.add(id);
+    setActiveFriends(tmpSet);
+    tmpSet.forEach(function (value) {
+      const filtered = friends.filter((friend) => friend.id == value);
+      tmpList = [...tmpList, ...filtered];
+    });
+    setInvitedFriends(tmpList);
   };
 
   /**
    * 친구 선택 취소 기능
    */
   const removeFriends = (id: number) => {
-    const friendId = isActiveFriends.filter((item) => item != id);
-    const friend = invitedGroup.filter((item) => item.id != id);
-    setActiveFriends(friendId);
-    setInviteGroup(friend);
+    const tmp = new Set<Number>(isActiveFriends);
+    tmp.delete(id);
+    const tmpList = invitedFriends.filter((friend) => friend.id != id);
+    setActiveFriends(tmp);
+    setInvitedFriends(tmpList);
   };
 
   /**
-   * 상단부 친구 선택 취소 기능
+   * 검색 기능
+   * 검색 중일 땐 filterd를, 그렇지 않을 땐 friends and albums를 props로 전달
    */
-  const topRemoveFriends = (id: number) => {
-    const friendId = isActiveFriends.filter((item) => item != id);
-    const friend = invitedGroup.filter((item) => item.id != id);
-    setActiveFriends(friendId);
-    setInviteGroup(friend);
+  const onChange = (e: React.ChangeEvent<HTMLInputElement>) => {
+    e.preventDefault();
+    setInputText(e.target.value);
+  };
+
+  const filterdFriends = friends.filter((item) =>
+    item.name.toUpperCase().includes(inputText.toUpperCase())
+  );
+
+  const filterdAlbums = albums.filter((item) =>
+    item.name.toUpperCase().includes(inputText.toUpperCase())
+  );
+
+  /**
+   * 앨범 멤버 선택 기능
+   */
+  const selectAlbums = (ids: number[]) => {
+    const tmp = new Set<Number>(isActiveFriends);
+    let tmpList: FriendType[] = [];
+    ids.map((id) => tmp.add(id));
+    setActiveFriends(tmp);
+    tmp.forEach(function (value) {
+      const filtered = friends.filter((friend) => friend.id == value);
+      tmpList = [...tmpList, ...filtered];
+    });
+    setInvitedFriends(tmpList);
   };
 
   /**
-   * 친구 목록 스크롤 방식 변경 필요
+   * 앨범 멤버 삭제 기능
    */
-
-  /**
-   * 검색 기능 추가 필요
-   */
-
-  /**
-   * 앨범 목록 추후 수정 필요
-   */
+  const removeAlbums = (ids: number[]) => {
+    const tmp = new Set<Number>(isActiveFriends);
+    ids.map((id) => tmp.delete(id));
+    setActiveFriends(tmp);
+  };
 
   /**
    * 확인 누를 시 router.query.albumName, invitedGroup으로 앨범 생성 요청
@@ -172,11 +256,11 @@ const InviteFriendsPage = (): JSX.Element => {
         </div>
       </div>
       <div className="w-11/12 flex flex-col" style={{ height: "780px" }}>
-        {invitedGroup.length > 0 ? (
+        {invitedFriends.length > 0 ? (
           <div className="w-full h-20 flex items-center box-border px-2">
             <InvitedGroup
-              group={invitedGroup}
-              topRemoveFriends={topRemoveFriends}
+              friends={invitedFriends}
+              topRemoveFriends={removeFriends}
             />
           </div>
         ) : (
@@ -185,23 +269,48 @@ const InviteFriendsPage = (): JSX.Element => {
         <input
           className="w-full h-12 bg-gray-100 rounded-lg box-border pl-3 mt-4 mb-2"
           placeholder="친구, 앨범 검색"
+          value={inputText}
+          onChange={onChange}
         ></input>
         <div className="w-full overflow-y-scroll" style={{ height: 700 }}>
           <div className="w-full h-44 box-border mt-4 border-b-2 flex flex-col">
             <span className="box-border mb-4 text-base">앨범으로 초대</span>
             <div className="w-full">
-              <FavoriteAlbum />
+              {inputText.length > 0 ? (
+                <Albums
+                  albums={filterdAlbums}
+                  isActiveFriends={isActiveFriends}
+                  selectAlbums={selectAlbums}
+                  removeAlbums={removeAlbums}
+                />
+              ) : (
+                <Albums
+                  albums={albums}
+                  isActiveFriends={isActiveFriends}
+                  selectAlbums={selectAlbums}
+                  removeAlbums={removeAlbums}
+                />
+              )}
             </div>
           </div>
           <div className="w-full box-border mt-4 flex flex-col">
             <span className="text-base mb-4">친구</span>
             <div className="h- box-border px-2">
-              <Friends
-                friends={friends}
-                isActiveFriends={isActiveFriends}
-                selectFriends={selectFriends}
-                removeFriends={removeFriends}
-              />
+              {inputText.length > 0 ? (
+                <Friends
+                  friends={filterdFriends}
+                  isActiveFriends={isActiveFriends}
+                  selectFriends={selectFriends}
+                  removeFriends={removeFriends}
+                />
+              ) : (
+                <Friends
+                  friends={friends}
+                  isActiveFriends={isActiveFriends}
+                  selectFriends={selectFriends}
+                  removeFriends={removeFriends}
+                />
+              )}
             </div>
           </div>
         </div>
