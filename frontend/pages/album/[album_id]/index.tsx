@@ -6,14 +6,11 @@ import NavBar from "components/pages/album/NavBar";
 import TabBar from "components/pages/album/TabBar";
 
 // 라이브러리
-import { useEffect, useState } from "react";
+import { useEffect, useMemo, useState } from "react";
 
 // API
-import {
-  albumInfo as albumInfoData,
-  photos as PhotosData,
-} from "pages/api/albumDummyApi";
-import { useGetDetail } from "pages/api/albumApi";
+import { albumInfo as albumInfoData } from "pages/api/albumDummyApi";
+import { useGetDetail, useGetPhotos } from "pages/api/albumApi";
 
 // CSS
 import styles from "styles/album.module.scss";
@@ -25,13 +22,29 @@ import { previewPhotoType } from "types/AlbumTypes";
 function AlbumDetail() {
   const { getDetail, getDetailIsLoading } = useGetDetail();
   const [albumInfo, setAlbumInfo] = useState(albumInfoData.data);
-  const [photos, setPhotos] = useState(PhotosData.data);
+
+  // const membersId = albumInfo.members.map((member) => member.id);
+  // const membersSize = membersId.length;
+
+  // useEffect(() => {
+  //   const membersId = useMemo(
+  //     () => getDetail?.data.members.map((member) => member.id),
+  //     [getDetailIsLoading]
+  //   );
+  //   const membersSize = useMemo(() => membersId.length, [membersId]);
+  // }, [getDetailIsLoading]);
+
+  const membersId = useMemo(
+    () => albumInfo.members.map((member) => member.id),
+    [getDetailIsLoading]
+  );
+  const membersSize = useMemo(() => membersId.length, [membersId]);
+
   const [selectedCategory, setSelectedCategory] = useState<number>(0);
   const [isSelect, setIsSelect] = useState<boolean>(false);
   const [selectedPhotos, setSelectedPhotos] = useState<Set<number>>(new Set());
   const [isTotal, setIsTotal] = useState<boolean>(false);
-  const membersId = albumInfo.members.map((member) => member.id);
-  const membersSize = membersId.length;
+
   const [selectMembers, setSelectMembers] = useState<Set<number>>(
     new Set(membersId)
   );
@@ -94,7 +107,6 @@ function AlbumDetail() {
   return (
     <section>
       <NavBar
-        title={albumInfo.name}
         isSelect={isSelect}
         setIsSelect={setIsSelect}
         isTotal={isTotal}
@@ -102,19 +114,16 @@ function AlbumDetail() {
       />
       <div className={`${styles.container}`}>
         <Members
-          members={albumInfo.members}
           selectMembers={selectMembers}
           setSelectMembers={setSelectMembers}
           membersSize={membersSize}
           membersId={membersId}
         />
         <Categories
-          categories={albumInfo.categories}
           selectedId={selectedCategory}
           setSelectedId={setSelectedCategory}
         />
         <Photos
-          photos={photos}
           isSelect={isSelect}
           selectedCategory={selectedCategory}
           selectedPhotos={selectedPhotos}
