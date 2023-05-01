@@ -39,7 +39,7 @@ const Friend = ({
   };
 
   return (
-    <li className="h-16 flex justify-between items-center">
+    <li className="h-16 flex justify-between items-center" onClick={select}>
       <div className="w-2/6 flex justify-between items-center">
         <img
           src={friend.profileImg}
@@ -54,7 +54,6 @@ const Friend = ({
             ? `w-6 h-6 border-2 rounded-full flex justify-center items-center ${styles.btn}`
             : `w-6 h-6 border-2 rounded-full flex justify-center items-center`
         }
-        onClick={select}
       >
         <svg
           xmlns="http://www.w3.org/2000/svg"
