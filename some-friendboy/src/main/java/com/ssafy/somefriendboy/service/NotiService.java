@@ -1,6 +1,6 @@
 package com.ssafy.somefriendboy.service;
 
-import com.ssafy.somefriendboy.dto.NotiCreateDto;
+import com.ssafy.somefriendboy.dto.NotiInviteCreateDto;
 import com.ssafy.somefriendboy.dto.ResponseDto;
 import com.ssafy.somefriendboy.repository.noti.EmitterRepository;
 import lombok.RequiredArgsConstructor;
@@ -47,7 +47,7 @@ public class NotiService {
         }
     }
 
-    public ResponseDto sendNoti(NotiCreateDto notiCreateDto) {
+    public ResponseDto sendNoti(NotiInviteCreateDto notiCreateDto) {
         ResponseDto responseDto = new ResponseDto();
 
 
