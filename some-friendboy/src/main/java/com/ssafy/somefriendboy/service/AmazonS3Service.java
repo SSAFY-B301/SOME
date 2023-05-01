@@ -40,8 +40,7 @@ public class AmazonS3Service {
             );
 
             String imagePath = amazonS3Client.getUrl(S3Bucket, originalName).toString();
-            MetaDataDto metaDataDto = MetaDataDto.builder().multipartFile(multipartFile)
-                    .url(imagePath).build();
+            MetaDataDto metaDataDto = MetaDataDto.builder().url(imagePath).build();
             metaDataDtos.add(metaDataDto);
         }
 
