@@ -1,9 +1,19 @@
-import styles from "@/styles/total.module.scss";
+// 라이브러리
 import { useEffect, useState } from "react";
-import { totalAlbumsApi } from "@/pages/api/totalDummyApi";
-import SearchIcon from "@/public/icons/MagnifyingGlass.svg";
-import HeartIcon from "@/public/icons/Heart.svg";
 import { useRouter } from "next/router";
+
+// API
+import { useGetTotal } from "@/pages/api/albumApi";
+
+// CSS
+import styles from "styles/total.module.scss";
+
+// 아이콘
+import SearchIcon from "public/icons/MagnifyingGlass.svg";
+import HeartIcon from "public/icons/Heart.svg";
+
+// 타입
+import { TotalAlbumType } from "types/AlbumTypes";
 
 function TotalAlbum() {
   const [isTotal, setIsTotal] = useState<boolean>(false);
@@ -28,24 +38,16 @@ function TotalAlbum() {
   );
 }
 
-interface TotalAlbumType {
-  id: number;
-  img: string;
-  name: string;
-  createdTime: string;
-  isLike: boolean;
-}
-
 /**
  * 전체 앨범 리스트
  * @returns
  */
 function TotalAlbumItems() {
   const router = useRouter();
-  const [albums, setAlbums] = useState<TotalAlbumType[]>(totalAlbumsApi.data);
+  const { getTotal, getTotalIsLoading } = useGetTotal();
 
-  const totalAlbums: React.ReactNode = totalAlbumsApi ? (
-    albums.map((album: TotalAlbumType) => (
+  const totalAlbums: React.ReactNode = getTotal?.data ? (
+    getTotal.data.map((album: TotalAlbumType) => (
       <div
         key={album.id}
         onClick={() => router.push(`/album/${album.id}`)}
