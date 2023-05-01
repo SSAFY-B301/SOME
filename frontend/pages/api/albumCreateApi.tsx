@@ -1,4 +1,3 @@
-import { customBoyAxios } from "@/features/customAxios"
 import axios from "axios"
 import {useMutation} from "react-query"
 
