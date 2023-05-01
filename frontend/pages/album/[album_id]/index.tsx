@@ -6,7 +6,6 @@ import NavBar from "components/pages/album/NavBar";
 import TabBar from "components/pages/album/TabBar";
 
 // 라이브러리
-import { useRouter } from "next/router";
 import { useEffect, useState } from "react";
 
 // API
@@ -14,14 +13,17 @@ import {
   albumInfo as albumInfoData,
   photos as PhotosData,
 } from "pages/api/albumDummyApi";
+import { useGetDetail } from "pages/api/albumApi";
 
 // CSS
 import styles from "styles/album.module.scss";
 import Preview from "components/pages/album/Preview";
 
-function AlbumDetail() {
-  const router = useRouter();
+// 타입
+import { previewPhotoType } from "types/AlbumTypes";
 
+function AlbumDetail() {
+  const { getDetail, getDetailIsLoading } = useGetDetail();
   const [albumInfo, setAlbumInfo] = useState(albumInfoData.data);
   const [photos, setPhotos] = useState(PhotosData.data);
   const [selectedCategory, setSelectedCategory] = useState<number>(0);
@@ -37,11 +39,6 @@ function AlbumDetail() {
   const [isPreview, setIsPreview] = useState<boolean>(false);
   const [previewPhotos, setPreviewPhotos] = useState<previewPhotoType[]>([]);
 
-  interface previewPhotoType {
-    id: number;
-    img: string;
-  }
-
   // 페이지 빠져나올 때 API 요청하기
   useEffect(() => {
     return () => {
@@ -52,7 +49,7 @@ function AlbumDetail() {
   // 전체 선택 누르면 전부 선택 / 해제 누르면 전부 해제
   useEffect(() => {
     isTotal
-      ? setSelectedPhotos(new Set(albumInfo.totalId))
+      ? setSelectedPhotos(new Set(getDetail?.data.totalId))
       : setSelectedPhotos(new Set());
     !isSelect && setSelectedPhotos(new Set());
     !isSelect && setIsTotal(false);

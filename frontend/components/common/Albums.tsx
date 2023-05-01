@@ -6,8 +6,7 @@ import { useRouter } from "next/router";
 import ItemBlock from "components/common/ItemBlock";
 
 // API
-import { currentAlbumsApi, favoriteAlbumsApi } from "pages/api/homeDummyApi";
-import { useGetFavorite, useGetCurrent } from "pages/api/homeApi";
+import { useGetFavorite, useGetCurrent } from "@/pages/api/albumApi";
 
 // CSS
 import styles from "styles/home.module.scss";
@@ -17,7 +16,8 @@ import HeartIcon from "public/icons/Heart.svg";
 import DotsIcon from "public/icons/DotsThreeOutline.svg";
 import RightIcon from "public/icons/CaretRight.svg";
 
-import { CurrentAlbumType, FavoriteAlbumType } from "types/HomeTypes";
+// 타입
+import { CurrentAlbumType, FavoriteAlbumType } from "@/types/AlbumTypes";
 
 /**
  * 최근 업로드된 앨범
@@ -26,13 +26,9 @@ function CurrentAlbum() {
   const router = useRouter();
 
   const { getCurrent, getCurrentIsLoading } = useGetCurrent();
-  const [Albums, setAlbums] = useState<CurrentAlbumType[]>(getCurrent?.data);
-  useEffect(() => {
-    !getCurrentIsLoading && setAlbums(getCurrent?.data);
-  }, [getCurrentIsLoading]);
 
-  const currents: React.ReactNode = Albums ? (
-    Albums.map((currentAlbum: CurrentAlbumType) => (
+  const currents: React.ReactNode = getCurrent?.data ? (
+    getCurrent.data.map((currentAlbum: CurrentAlbumType) => (
       <div
         onClick={() => router.push(`/album/${currentAlbum.id}`)}
         key={currentAlbum.id}

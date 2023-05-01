@@ -23,6 +23,7 @@ function App({ Component, pageProps }: AppProps) {
     <ThemeProvider attribute="class">
       <QueryClientProvider client={client}>
         <Component {...pageProps} />
+        <ReactQueryDevtools initialIsOpen={false} position="bottom-right" />
       </QueryClientProvider>
     </ThemeProvider>
   );
