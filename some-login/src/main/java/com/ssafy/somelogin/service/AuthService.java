@@ -70,7 +70,7 @@ public class AuthService {
         if(responseCode == 400){
             //Error
             responseDto.setMessage("인가 코드로 토큰 받는 과정에서 오류");
-            responseDto.setStatus_code(400);
+            responseDto.setStatus_code(450);
             return responseDto;
         }
         //요청을 통해 얻은 JSON타입의 Response 메세지 읽어오기
