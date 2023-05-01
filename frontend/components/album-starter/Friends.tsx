@@ -9,7 +9,7 @@ interface FriendType {
 
 interface Props {
   friends: FriendType[];
-  isActiveFriends: number[];
+  isActiveFriends: Set<Number>;
   selectFriends(id: number): void;
   removeFriends(id: number): void;
 }
