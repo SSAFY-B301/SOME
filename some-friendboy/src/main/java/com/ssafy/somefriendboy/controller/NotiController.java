@@ -1,6 +1,6 @@
 package com.ssafy.somefriendboy.controller;
 
-import com.ssafy.somefriendboy.dto.NotiCreateDto;
+import com.ssafy.somefriendboy.dto.NotiInviteCreateDto;
 import com.ssafy.somefriendboy.dto.ResponseDto;
 import com.ssafy.somefriendboy.service.NotiService;
 import lombok.RequiredArgsConstructor;
@@ -29,7 +29,7 @@ public class NotiController {
     }
 
     @PostMapping()
-    public ResponseEntity<ResponseDto> albumWholeList(@RequestBody NotiCreateDto notiCreateDto) {
+    public ResponseEntity<ResponseDto> albumWholeList(@RequestBody NotiInviteCreateDto notiCreateDto) {
         log.debug("알림 생성 요청 POST: /noti, NotiCreateDto : {}", notiCreateDto);
         ResponseDto responseDto = notiService.sendNoti(notiCreateDto);
         return new ResponseEntity<ResponseDto>(responseDto, HttpStatus.OK);
