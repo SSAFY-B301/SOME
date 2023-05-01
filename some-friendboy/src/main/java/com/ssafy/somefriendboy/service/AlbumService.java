@@ -194,8 +194,12 @@ public class AlbumService {
         return setResponseDto(result,"친구 목록 리턴",200);
     }
 
-    public ResponseDto inviteFriend(AdditionalFriendsInviteDto additionalFriendsInviteDto) {
+    public ResponseDto inviteFriend(String access_token, AdditionalFriendsInviteDto additionalFriendsInviteDto) {
         Map<String,Object> result = new HashMap<>();
+        String userId = tokenCheck(access_token);
+        if(userId == null){
+            return setResponseDto(result,"토큰 만료",450);
+        }
 
         for (String invitedFriendId : additionalFriendsInviteDto.getInviteFriend()) {
             AlbumMemberId albumMemberId = AlbumMemberId.builder()
