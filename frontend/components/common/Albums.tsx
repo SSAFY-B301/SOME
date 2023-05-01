@@ -1,12 +1,12 @@
 // 라이브러리
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import { useRouter } from "next/router";
 
 // 컴포넌트
 import ItemBlock from "components/common/ItemBlock";
 
 // API
-import { currentAlbumsApi, favoriteAlbumsApi } from "pages/api/homeDummyApi";
+import { useGetFavorite, useGetCurrent } from "@/pages/api/albumApi";
 
 // CSS
 import styles from "styles/home.module.scss";
@@ -16,13 +16,8 @@ import HeartIcon from "public/icons/Heart.svg";
 import DotsIcon from "public/icons/DotsThreeOutline.svg";
 import RightIcon from "public/icons/CaretRight.svg";
 
-// 인터페이스
-interface CurrentAlbumType {
-  id: number;
-  img: string;
-  name: string;
-  count: number;
-}
+// 타입
+import { CurrentAlbumType, FavoriteAlbumType } from "@/types/AlbumTypes";
 
 /**
  * 최근 업로드된 앨범
@@ -30,8 +25,10 @@ interface CurrentAlbumType {
 function CurrentAlbum() {
   const router = useRouter();
 
-  const currents: React.ReactNode = currentAlbumsApi ? (
-    currentAlbumsApi.data.map((currentAlbum: CurrentAlbumType) => (
+  const { getCurrent, getCurrentIsLoading } = useGetCurrent();
+
+  const currents: React.ReactNode = getCurrent?.data ? (
+    getCurrent.data.map((currentAlbum: CurrentAlbumType) => (
       <div
         onClick={() => router.push(`/album/${currentAlbum.id}`)}
         key={currentAlbum.id}
@@ -82,21 +79,18 @@ function CurrentAlbum() {
   );
 }
 
-// 인터페이스
-interface FavoriteAlbumType {
-  id: number;
-  img: string;
-  name: string;
-  createdTime: string;
-  isLike: boolean;
-}
-
 /**
  * 즐겨찾는 앨범
  */
 function FavoriteAlbum() {
   const router = useRouter();
-  const [Albums, setAlbums] = useState(favoriteAlbumsApi.data);
+
+  const { getFavorite, getFavoriteIsLoading } = useGetFavorite();
+
+  const [Albums, setAlbums] = useState<FavoriteAlbumType[]>(getFavorite?.data);
+  useEffect(() => {
+    !getFavoriteIsLoading && setAlbums(getFavorite?.data);
+  }, [getFavoriteIsLoading]);
 
   /**
    * 즐겨찾기 토글

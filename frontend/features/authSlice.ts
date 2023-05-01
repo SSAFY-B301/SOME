@@ -1,43 +1,42 @@
 import { createSlice } from "@reduxjs/toolkit";
-import type {UserInfoType} from "@/types/UserType";
+import type { UserInfoType } from "@/types/UserType";
 
-
-interface LoginStateType{
-  isLogin: boolean,
-  userInfo : UserInfoType
+interface LoginStateType {
+  isLogin: boolean;
+  userInfo: UserInfoType;
 }
 
 const initialState: LoginStateType = {
   isLogin: false,
-  userInfo : {
+  userInfo: {
     access_token: "",
     refresh_token: "",
-    user_id : "",
+    user_id: "",
     user_img: "",
     user_name: "",
   },
 };
 
 export const loginSlice = createSlice({
-  name: 'auth',
+  name: "auth",
   initialState,
   reducers: {
-    onLogin(state, action){
+    onLogin(state, action) {
       state.isLogin = true;
       state.userInfo = action.payload;
     },
-    onLogout(state){
+    onLogout(state) {
       state.isLogin = false;
       state.userInfo = {
         access_token: "",
         refresh_token: "",
-        user_id : "",
+        user_id: "",
         user_img: "",
         user_name: "",
       };
-    }
+    },
   },
-  extraReducers: (builder) => {}
+  extraReducers: (builder) => {},
 });
 
 export const { onLogin, onLogout } = loginSlice.actions;
