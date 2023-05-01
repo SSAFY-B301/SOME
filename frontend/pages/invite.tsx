@@ -6,6 +6,7 @@ import BackButtonIcon from "@/public/icons/CaretLeft.svg";
 import Albums from "@/components/album-starter/Albums";
 import Friends from "@/components/album-starter/Friends";
 import InvitedGroup from "@/components/album-starter/InvitedGroup";
+import { createAlbum } from "./api/albumCreateApi";
 
 /**
  * 새로운 앨범에서 들어왔을 때 albumType: "new"
@@ -144,7 +145,7 @@ interface AlbumType {
   userIds: number[];
 }
 
-const InviteFriendsPage = (): JSX.Element => {
+const InviteFriends = (): JSX.Element => {
   const router = useRouter();
   console.log(router.query);
   const [friends, setFriends] = useState<FriendType[]>([]);
@@ -232,31 +233,39 @@ const InviteFriendsPage = (): JSX.Element => {
    * 메인 페이지로 이동하도록 설정, 추후 페이지 주소 변동 필요
    */
 
+  const createAlbumClick = () => {
+    // createAlbum({
+    //     album_name : router.query.albumName,
+    //     invite_friend : invitedFriends,
+    // })
+  };
+
   return (
     <div
-      className="bg-white flex flex-col items-center"
+      className="flex flex-col items-center bg-white"
       style={{ width: "100vw", height: "100vh" }}
     >
-      <div className="w-full h-16 flex justify-center items-center">
-        <div className="w-11/12 h-full relative">
+      <div className="flex items-center justify-center w-full h-16">
+        <div className="relative w-11/12 h-full">
           <div onClick={() => router.back()}>
             <BackButtonIcon
-              className="absolute top-1/2 -translate-y-1/2 left-0 text-black text-lg"
+              className="absolute left-0 text-lg text-black -translate-y-1/2 top-1/2"
               stroke={`black`}
             />
           </div>
-          <span className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 text-black text-2xl">
+          <span className="absolute text-2xl text-black -translate-x-1/2 -translate-y-1/2 top-1/2 left-1/2">
             공유 상대 초대
           </span>
-          <Link
-            className="absolute top-1/2 -translate-y-1/2 right-0 text-black text-lg"
+          <button onClick={createAlbumClick} className="absolute right-0 text-lg text-black -translate-y-1/2 top-1/2">확인</button>
+          {/* <Link
+            className="absolute right-0 text-lg text-black -translate-y-1/2 top-1/2"
             href="/"
           >
             확인
-          </Link>
+          </Link> */}
         </div>
       </div>
-      <div className="w-11/12 flex flex-col" style={{ height: "780px" }}>
+      <div className="flex flex-col w-11/12" style={{ height: "780px" }}>
         {invitedFriends.length > 0 ? (
           <div
             className={`${styles.appearFriendDiv} flex items-center box-border px-2`}
@@ -270,13 +279,13 @@ const InviteFriendsPage = (): JSX.Element => {
           <div></div>
         )}
         <input
-          className="w-full h-12 bg-gray-100 rounded-lg box-border pl-3 mt-4 mb-2"
+          className="box-border w-full h-12 pl-3 mt-4 mb-2 bg-gray-100 rounded-lg"
           placeholder="친구, 앨범 검색"
           value={inputText}
           onChange={onChange}
         ></input>
         <div className="w-full overflow-y-scroll" style={{ height: 700 }}>
-          <div className="w-full h-44 box-border mt-4 border-b-2 flex flex-col">
+          <div className="box-border flex flex-col w-full mt-4 border-b-2 h-44">
             <span className="box-border mb-4 text-base">앨범으로 초대</span>
             <div className="w-full">
               {inputText.length > 0 ? (
@@ -296,9 +305,9 @@ const InviteFriendsPage = (): JSX.Element => {
               )}
             </div>
           </div>
-          <div className="w-full box-border mt-4 flex flex-col">
-            <span className="text-base mb-4">친구</span>
-            <div className="h- box-border px-2">
+          <div className="box-border flex flex-col w-full mt-4">
+            <span className="mb-4 text-base">친구</span>
+            <div className="box-border px-2 h-">
               {inputText.length > 0 ? (
                 <Friends
                   friends={filterdFriends}
@@ -322,4 +331,4 @@ const InviteFriendsPage = (): JSX.Element => {
   );
 };
 
-export default InviteFriendsPage;
+export default InviteFriends;
