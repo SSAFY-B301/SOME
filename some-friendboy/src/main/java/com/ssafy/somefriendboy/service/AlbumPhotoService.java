@@ -15,6 +15,7 @@ import com.ssafy.somefriendboy.entity.AlbumPhoto;
 import com.ssafy.somefriendboy.entity.AutoIncrementSequence;
 import com.ssafy.somefriendboy.entity.PhotoCategory;
 import com.ssafy.somefriendboy.repository.AlbumPhoto.AlbumPhotoRepository;
+import com.ssafy.somefriendboy.repository.album.AlbumRepository;
 import com.ssafy.somefriendboy.util.HttpUtil;
 import lombok.RequiredArgsConstructor;
 import org.springframework.core.io.ByteArrayResource;
@@ -42,6 +43,7 @@ import static org.springframework.data.mongodb.core.query.Criteria.where;
 public class AlbumPhotoService {
 
     private final AlbumPhotoRepository albumPhotoRepository;
+    private final AlbumRepository albumRepository;
     private final MongoOperations mongoOperations;
     private final HttpUtil httpUtil;
 
@@ -52,6 +54,8 @@ public class AlbumPhotoService {
         if (userId == null) {
             return setResponseDto(result, "토큰 만료", 450);
         }
+
+        Long photoId = null;
 
         for (MetaDataDto metaDataDto : metaDataDtos) {
             InputStream inputStream = metaDataDto.getMultipartFile().getInputStream();
@@ -91,6 +95,12 @@ public class AlbumPhotoService {
             }
 
             albumPhotoRepository.insert(albumPhoto);
+            photoId = albumPhoto.getPhotoId();
+        }
+
+        //앨범에 최신 업로드 사진 아이디 갱신하기
+        if (photoId != null) {
+            albumRepository.modifyAlbumRecentPhoto(albumId, photoId);
         }
 
         return setResponseDto(result, "앨범 사진 등록", 200);
