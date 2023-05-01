@@ -5,22 +5,26 @@ import axios from "axios";
 import { RootState } from "@/store/configureStore";
 import { useSelector } from "react-redux";
 
-//redux에서 access token 받아오기
-const {userInfo} = useSelector((state : RootState) => state.auth);
+function useCustomAxios() {
 
-// 남사친 API 커스텀
-export const customBoyAxios = axios.create({
-    baseURL: process.env.NEXT_PUBLIC_FRIEND_BOY_URL,
-    headers: {
-        "access_token" : userInfo.access_token
-    }
-});
+    //redux에서 access token 받아오기
+    const {userInfo} = useSelector((state : RootState) => state.auth);
 
-// 여사친 API 커스텀
-export const customGirlAxios = axios.create({
-    baseURL: process.env.NEXT_PUBLIC_FRIEND_GIRL_URL,
-    headers: {
-        "access_token" : userInfo.access_token
-    }
-});
+    const customBoyAxios = axios.create({
+        baseURL: process.env.NEXT_PUBLIC_FRIEND_BOY_URL,
+        headers: {
+            "access_token" : userInfo.access_token
+        }
+    });
 
+    const customGirlAxios = axios.create({
+        baseURL: process.env.NEXT_PUBLIC_FRIEND_GIRL_URL,
+        headers: {
+            "access_token" : userInfo.access_token
+        }
+    });
+    
+    return {customBoyAxios, customGirlAxios}
+}
+
+export default useCustomAxios;
