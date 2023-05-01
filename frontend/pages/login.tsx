@@ -6,7 +6,7 @@ export default function Login() {
     const kakaoAuthURL = process.env.NEXT_PUBLIC_KAKAO_AUTH_URL;
     const kakaoKey = process.env.NEXT_PUBLIC_KAKAO_RESTAPI_KEY;
     const redirectURI = process.env.NEXT_PUBLIC_REDIRECT_URI;
-    const oauthURL = kakaoAuthURL+ "/oauth/authorize?response_type=code&client_id="+kakaoKey+"&redirect_uri=" + redirectURI+ "&scope=account_email,profile_image,profile_nickname,friends";
+    const oauthURL = kakaoAuthURL + "/oauth/authorize?response_type=code&client_id="+kakaoKey+"&redirect_uri=" + redirectURI+ "&scope=account_email,profile_image,profile_nickname,friends";
     const settings = {
         dots: true,
         infinite: true,

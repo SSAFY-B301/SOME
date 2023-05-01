@@ -16,7 +16,7 @@ import AlarmIcon from "public/icons/Bell.svg";
 
 // 리덕스
 import { useSelector } from "react-redux";
-import { RootState } from "@/store";
+import { RootState } from "@/store/configureStore";
 
 interface InfoType {
   title: string;

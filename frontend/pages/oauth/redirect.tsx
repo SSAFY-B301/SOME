@@ -1,6 +1,6 @@
 import { useEffect, useState } from "react"
 import { onLogin } from "@/features/authSlice";
-import { RootState, useAppDispatch } from "@/store";
+import { RootState, useAppDispatch } from "@/store/configureStore";
 import { useSelector } from "react-redux";
 // axios
 import axios from "axios";

@@ -8,7 +8,7 @@ import NavBar from "@/components/common/Nav";
 import TabBar from "@/components/common/TabBar";
 import TotalAlbum from "@/components/common/TotalAlbum";
 import { CurrentAlbum, FavoriteAlbum } from "@/components/common/Albums";
-import { RootState } from "@/store";
+import { RootState } from "@/store/configureStore";
 
 // CSS
 import styles from "@/styles/home.module.scss";
