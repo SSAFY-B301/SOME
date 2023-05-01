@@ -39,7 +39,7 @@ public class AlbumPhotoController {
         log.debug("사진 업로드 POST: /photo/upload, albumId : ", albumId);
 
         List<MetaDataDto> metaDataDtos = amazonS3Service.uploadFile(multipartFiles);
-        ResponseDto responseDto = albumPhotoService.insertPhoto(metaDataDtos, albumId, accessToken);
+        ResponseDto responseDto = albumPhotoService.insertPhoto(multipartFiles, metaDataDtos, albumId, accessToken);
         return new ResponseEntity<ResponseDto>(responseDto, HttpStatus.OK);
     }
 
