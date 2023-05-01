@@ -13,7 +13,6 @@ import com.ssafy.somefriendboy.dto.MetaDataDto;
 import com.ssafy.somefriendboy.dto.ResponseDto;
 import com.ssafy.somefriendboy.entity.AlbumPhoto;
 import com.ssafy.somefriendboy.entity.AutoIncrementSequence;
-import com.ssafy.somefriendboy.entity.PhotoCategory;
 import com.ssafy.somefriendboy.repository.AlbumPhoto.AlbumPhotoRepository;
 import com.ssafy.somefriendboy.repository.album.AlbumRepository;
 import com.ssafy.somefriendboy.util.HttpUtil;
@@ -47,7 +46,7 @@ public class AlbumPhotoService {
     private final MongoOperations mongoOperations;
     private final HttpUtil httpUtil;
 
-    public ResponseDto insertPhoto(List<MetaDataDto> metaDataDtos, Long albumId, String accessToken) throws ImageProcessingException, IOException {
+    public ResponseDto insertPhoto(List<MultipartFile> multipartFiles, List<MetaDataDto> metaDataDtos, Long albumId, String accessToken) throws ImageProcessingException, IOException {
         Map<String, Object> result = new HashMap<>();
         String userId = tokenCheck(accessToken);
 
@@ -56,21 +55,18 @@ public class AlbumPhotoService {
         }
 
         Long photoId = null;
+        List<List<Long>> categories = requestToFAST(multipartFiles);
 
-        for (MetaDataDto metaDataDto : metaDataDtos) {
-            InputStream inputStream = metaDataDto.getMultipartFile().getInputStream();
+        for (int i = 0; i < metaDataDtos.size(); i++) {
+            InputStream inputStream = multipartFiles.get(i).getInputStream();
             Metadata metadata = ImageMetadataReader.readMetadata(inputStream);
             inputStream.close();
-
-            //AI 자동 카테고리 분류
-            List<String> categoryName = requestToFAST(metaDataDto.getMultipartFile());
-            List<Long> categoryId = albumPhotoRepository.findCategoryName(categoryName);
 
             AlbumPhoto albumPhoto = AlbumPhoto.builder()
                     .photoId(generateSequence(AlbumPhoto.SEQUENCE_NAME))
                     .uploadedDate(LocalDateTime.now())
-                    .s3Url(metaDataDto.getUrl())
-                    .categoryId(categoryId)
+                    .s3Url(metaDataDtos.get(i).getUrl())
+                    .categoryId(categories.get(i))
                     .albumId(albumId)
                     .userId(userId)
                     .build();
@@ -144,7 +140,7 @@ public class AlbumPhotoService {
         return !Objects.isNull(counter) ? counter.getSeq() : 1;
     }
 
-    private List<String> requestToFAST(MultipartFile multipartFile) throws IOException {
+    private List<List<Long>> requestToFAST(List<MultipartFile> multipartFiles) throws IOException {
         String url = "http://3.35.18.146:8000/yolo/file";
 
         RestTemplate restTemplate = new RestTemplate();
@@ -155,12 +151,15 @@ public class AlbumPhotoService {
 
         // Body set
         MultiValueMap<String, ByteArrayResource> body = new LinkedMultiValueMap<>();
-        body.add("file", new ByteArrayResource(multipartFile.getBytes()) {
-            @Override
-            public String getFilename() {
-                return multipartFile.getOriginalFilename();
-            }
-        });
+        for (MultipartFile multipartFile : multipartFiles) {
+            ByteArrayResource byteArrayResource = new ByteArrayResource(multipartFile.getBytes()) {
+                @Override
+                public String getFilename() {
+                    return multipartFile.getOriginalFilename();
+                }
+            };
+            body.add("file", byteArrayResource);
+        }
 
         // Message
         HttpEntity<?> requestMessage = new HttpEntity<>(body, httpHeaders);
@@ -178,9 +177,16 @@ public class AlbumPhotoService {
         JsonNode jsonNode = objectMapper.readTree(responseEntity.getBody());
         JsonNode category = jsonNode.get("category");
 
-        List<String> categoryArray = new ArrayList<>();
-        for (int i = 0; i < category.get(0).size(); i++) {
-            categoryArray.add(category.get(0).get(i).asText());
+        List<List<Long>> categoryArray = new ArrayList<>();
+
+        for (int i = 0; i < category.size(); i++) {
+            List<String> cate = new ArrayList<>();
+            for (int j = 0; j < category.get(i).size(); j++) {
+                cate.add(category.get(i).get(j).asText());
+            }
+
+            List<Long> cateId = albumPhotoRepository.findCategoryName(cate);
+            categoryArray.add(cateId);
         }
 
         return categoryArray;
