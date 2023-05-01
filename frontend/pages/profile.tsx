@@ -11,7 +11,7 @@ import { useRouter } from "next/router";
 import ProfileModify from "public/icons/ProfileModify.svg";
 
 // Redux 관련
-import { RootState, useAppDispatch } from "@/store";
+import { RootState, useAppDispatch } from "@/store/configureStore";
 import { useSelector } from "react-redux";
 import { onLogout } from "@/features/authSlice";
 

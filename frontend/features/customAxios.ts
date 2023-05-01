@@ -2,7 +2,7 @@
 import axios from "axios";
 
 // Redux 관련
-import { RootState } from "@/store";
+import { RootState } from "@/store/configureStore";
 import { useSelector } from "react-redux";
 
 //redux에서 access token 받아오기
