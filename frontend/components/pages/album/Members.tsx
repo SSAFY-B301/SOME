@@ -7,10 +7,10 @@ import styles from "styles/album.module.scss";
 
 // 아이콘
 import PlusIcon from "public/icons/PlusMainColor.svg";
+import { useGetDetail } from "@/pages/api/albumApi";
 
 // 인터페이스
 interface MembersType {
-  members: MemberType[];
   selectMembers: Set<number>;
   setSelectMembers: React.Dispatch<React.SetStateAction<Set<number>>>;
   membersSize: number;
@@ -33,12 +33,13 @@ interface MemberType {
  * @returns
  */
 function Members({
-  members,
   selectMembers,
   setSelectMembers,
   membersSize,
   membersId,
 }: MembersType) {
+  const { getDetail, getDetailIsLoading } = useGetDetail();
+
   /**
    * 멤버 선택값 변경
    * @param id 멤버 id
@@ -54,20 +55,26 @@ function Members({
   /**
    * 멤버 리스트 랜더
    */
-  const membersSection: React.ReactNode = members.map((member: MemberType) => (
-    <div
-      key={member.id}
-      onClick={() => {
-        changeSelect(member.id);
-      }}
-      className={`${styles.member} ${
-        selectMembers.has(member.id)
-          ? styles.select_member
-          : styles.no_select_member
-      }`}
-      style={{ backgroundImage: "url(" + member.img + ")" }}
-    ></div>
-  ));
+  const membersSection: React.ReactNode = getDetailIsLoading ? (
+    // TODO : 로딩
+    <p>로딩중</p>
+  ) : (
+    getDetail?.data.members.map((member: MemberType) => (
+      <div
+        key={member.id}
+        onClick={() => {
+          changeSelect(member.id);
+        }}
+        className={`${styles.member} ${
+          selectMembers.has(member.id)
+            ? styles.select_member
+            : styles.no_select_member
+        }`}
+        style={{ backgroundImage: "url(" + member.img + ")" }}
+      ></div>
+    ))
+  );
+
   return (
     <section className={`${styles.members}`}>
       {membersSection}
