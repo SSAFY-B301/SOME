@@ -6,7 +6,7 @@ import BackButtonIcon from "@/public/icons/CaretLeft.svg";
 import Albums from "@/components/album-starter/Albums";
 import Friends from "@/components/album-starter/Friends";
 import InvitedGroup from "@/components/album-starter/InvitedGroup";
-import { createAlbum } from "./api/albumCreateApi";
+import { createAlbum, useGetFriends } from "./api/inviteApi";
 
 /**
  * 새로운 앨범에서 들어왔을 때 albumType: "new"
@@ -157,6 +157,9 @@ const InviteFriends = (): JSX.Element => {
   console.log(isActiveFriends);
 
   useEffect(() => {
+    const friends = useGetFriends();
+    console.log(friends);
+
     setFriends(FRIENDS);
     setAlbums(ALBUMS.data);
   }, []);
@@ -256,7 +259,12 @@ const InviteFriends = (): JSX.Element => {
           <span className="absolute text-2xl text-black -translate-x-1/2 -translate-y-1/2 top-1/2 left-1/2">
             공유 상대 초대
           </span>
-          <button onClick={createAlbumClick} className="absolute right-0 text-lg text-black -translate-y-1/2 top-1/2">확인</button>
+          <button
+            onClick={createAlbumClick}
+            className="absolute right-0 text-lg text-black -translate-y-1/2 top-1/2"
+          >
+            확인
+          </button>
           {/* <Link
             className="absolute right-0 text-lg text-black -translate-y-1/2 top-1/2"
             href="/"

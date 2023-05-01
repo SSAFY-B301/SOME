@@ -35,7 +35,8 @@ $main-color: linear-gradient(
 }
 
 .appearIcon {
-  animation: smoothAppear 0.2s ease-in-out 0s 1 normal forwards;
+  opacity: 0;
+  animation: smoothAppear 0.2s ease-in-out 0.2s 1 normal forwards;
 }
 
 .disappearIcon {
