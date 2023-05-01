@@ -44,7 +44,7 @@ export default function Home() {
       </section>
       <div className={`${styles.footer}`}>
         <TotalAlbum />
-        <TabBar plusBtnUrl={"/album-starter/SetAlbumNamePage"} />
+        <TabBar plusBtnUrl={"/album/create"} />
       </div>
     </div>
   );
