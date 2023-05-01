@@ -1,5 +1,6 @@
 import React, { useState, useEffect } from "react";
 import Link from "next/link";
+import styles from "@/styles/inviteFriends.module.scss";
 import { useRouter } from "next/router";
 import BackButtonIcon from "@/public/icons/CaretLeft.svg";
 import Albums from "@/components/album-starter/Albums";
@@ -257,7 +258,9 @@ const InviteFriendsPage = (): JSX.Element => {
       </div>
       <div className="w-11/12 flex flex-col" style={{ height: "780px" }}>
         {invitedFriends.length > 0 ? (
-          <div className="w-full h-20 flex items-center box-border px-2">
+          <div
+            className={`${styles.appearFriendDiv} flex items-center box-border px-2`}
+          >
             <InvitedGroup
               friends={invitedFriends}
               topRemoveFriends={removeFriends}
