@@ -21,10 +21,15 @@ export default function Home() {
   const router = useRouter();
 
   useEffect(() => {
+    
     if (!isLogin) {
       router.push("login");
     } else {
-      console.log("Token : " + userInfo.access_token);
+      const storageAccessToken = window.localStorage.getItem("access_token");
+      if (storageAccessToken) {
+        const parseAccessToken = JSON.parse(storageAccessToken);
+        console.log("Token : " + parseAccessToken.access_token);
+      }
     }
     return () => {};
   }, []);

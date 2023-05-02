@@ -9,8 +9,6 @@ interface LoginStateType {
 const initialState: LoginStateType = {
   isLogin: false,
   userInfo: {
-    access_token: "",
-    refresh_token: "",
     user_id: "",
     user_img: "",
     user_name: "",
@@ -28,8 +26,6 @@ export const loginSlice = createSlice({
     onLogout(state) {
       state.isLogin = false;
       state.userInfo = {
-        access_token: "",
-        refresh_token: "",
         user_id: "",
         user_img: "",
         user_name: "",
