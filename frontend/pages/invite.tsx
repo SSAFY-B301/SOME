@@ -157,8 +157,8 @@ const InviteFriends = (): JSX.Element => {
   console.log(isActiveFriends);
 
   useEffect(() => {
-    const friends = useGetFriends();
-    console.log(friends);
+    // onst friends = useGetFriends();
+    // console.log(friends);
 
     setFriends(FRIENDS);
     setAlbums(ALBUMS.data);
