@@ -19,6 +19,10 @@ const client = new QueryClient({
   },
 });
 
+// if('serviceWorker' in navigator) {
+//   navigator.serviceWorker.register('/service-worker.js');
+// };
+
 function App({ Component, ...rest }: AppProps) {
   const {store, props} = wrapper.useWrappedStore(rest);
   return (
