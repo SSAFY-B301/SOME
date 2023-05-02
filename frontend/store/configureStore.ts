@@ -8,7 +8,7 @@ import { createWrapper } from "next-redux-wrapper";
 import { useDispatch } from "react-redux";
 import rootReducer from "./reducer";
 
-const isDev = process.env.NODE_ENV === "development";
+const isDev = process.env.NEXT_PUBLIC_ENV === "development";
 const makeStore = () => {
   const middleware = getDefaultMiddleware();
   const store = configureStore({
