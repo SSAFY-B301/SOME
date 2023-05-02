@@ -5,14 +5,15 @@ import lombok.*;
 import javax.persistence.*;
 
 @Entity
-@Builder @Getter
+@Builder
+@Getter
 @AllArgsConstructor
 @NoArgsConstructor(access = AccessLevel.PROTECTED)
-public class AlbumMember {
+public class AlbumFav {
     @EmbeddedId
     private AlbumMemberId albumMemberId;
 
-    @Column(name = "user_status")
+    @Column(name = "album_fav_status")
     @Enumerated(EnumType.STRING)
-    private AlbumMemberStatus albumMemberStatus;
+    private LikeStatus likeStatus;
 }
