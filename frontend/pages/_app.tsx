@@ -9,6 +9,7 @@ import { QueryClient, QueryClientProvider } from "react-query";
 import "slick-carousel/slick/slick.css";
 import "slick-carousel/slick/slick-theme.css";
 import "@/styles/globals.scss";
+import { Provider } from "react-redux";
 
 const client = new QueryClient({
   defaultOptions: {
@@ -18,15 +19,18 @@ const client = new QueryClient({
   },
 });
 
-function App({ Component, pageProps }: AppProps) {
+function App({ Component, ...rest }: AppProps) {
+  const {store, props} = wrapper.useWrappedStore(rest);
   return (
     <ThemeProvider attribute="class">
-      <QueryClientProvider client={client}>
-        <Component {...pageProps} />
-        <ReactQueryDevtools initialIsOpen={false} position="bottom-right" />
-      </QueryClientProvider>
+      <Provider store={store}>
+        <QueryClientProvider client={client}>
+          <Component {...props.pageProps} />
+          <ReactQueryDevtools initialIsOpen={false} position="bottom-right" />
+        </QueryClientProvider>
+      </Provider>
     </ThemeProvider>
   );
 }
 
-export default wrapper.withRedux(App);
+export default App;
