@@ -6,7 +6,7 @@ import { useSelector } from "react-redux";
 import axios from "axios";
 
 //인터페이스
-import { UserInfoType } from "@/types/UserType";
+import { UserResultType } from "@/types/UserType";
 
 // next Hooks
 import { useRouter } from "next/router";
@@ -20,6 +20,10 @@ export default function AuthRedirect() {
     // router 객체 생성
     const router = useRouter();
 
+    function saveAccessToken(_access_token : string) {
+        const accessTokenObj = { access_token : _access_token};
+        window.localStorage.setItem("access_token", JSON.stringify(accessTokenObj));
+    }
     // 인가 코드로 서버에서 사용자 데이터 받아오기
     async function getUserInfo(paramAuthCode : string | null){
         if (paramAuthCode !== null){
@@ -30,9 +34,10 @@ export default function AuthRedirect() {
                         "authorization_code" : paramAuthCode,
                     },
                 });
-            const resultUserInfo : UserInfoType = userResult.data.data;
+            const resultUserInfo : UserResultType = userResult.data.data;
             if (resultUserInfo !== null){
-                dispatch(onLogin(resultUserInfo));
+                saveAccessToken(resultUserInfo.access_token);
+                dispatch(onLogin(resultUserInfo.user_info));
             }
         }
     }
@@ -49,7 +54,7 @@ export default function AuthRedirect() {
       // authorization code URL에서 파싱해오기
       const params = new URL(document.location.toString()).searchParams;
       const paramsAuthCode = params.get("code");
-
+      
       // 인가 코드로 유저 데이터 받아오기
       getUserInfo(paramsAuthCode);
       return () => {}
