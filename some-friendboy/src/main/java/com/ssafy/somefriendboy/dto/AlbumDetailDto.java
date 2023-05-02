@@ -29,5 +29,5 @@ public class AlbumDetailDto {
     private boolean isAlbumFav;
 
     @JsonProperty("members")
-    private List<Map<String, String>> members;
+    private List<AlbumMemberIdAndProfileDto> members;
 }

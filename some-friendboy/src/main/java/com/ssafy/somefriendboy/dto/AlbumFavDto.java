@@ -12,7 +12,7 @@ import java.time.LocalDateTime;
 @Builder
 @AllArgsConstructor
 @NoArgsConstructor
-public class AlbumWholeListDto {
+public class AlbumFavDto {
     @JsonProperty("album_id")
     private Long albumId;
 
@@ -22,11 +22,6 @@ public class AlbumWholeListDto {
     @JsonProperty("album_created_date")
     private LocalDateTime albumCreatedDate;
 
-    // 표지사진
     @JsonProperty("thumbnail_photo_url")
     private String thumbnailPhotoUrl;
-
-    // 즐겨찾기 여부
-    @JsonProperty("isAlbumFav")
-    private boolean isAlbumFav;
 }

@@ -6,6 +6,7 @@ import com.ssafy.somefriendboy.repository.AlbumPhoto.AlbumPhotoRepository;
 import com.ssafy.somefriendboy.repository.album.AlbumRepository;
 import com.ssafy.somefriendboy.repository.albumFav.AlbumFavRepository;
 import com.ssafy.somefriendboy.repository.albummember.AlbumMemberRepository;
+import com.ssafy.somefriendboy.repository.user.UserRepository;
 import com.ssafy.somefriendboy.util.HttpUtil;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.log4j.Log4j2;
@@ -24,6 +25,7 @@ import java.util.*;
 @Log4j2
 public class AlbumService {
 
+    private final UserRepository userRepository;
     private final AlbumRepository albumRepository;
     private final AlbumFavRepository albumFavRepository;
     private final AlbumMemberRepository albumMemberRepository;
@@ -86,12 +88,16 @@ public class AlbumService {
 
         Album album = albumRepository.findAlbumByAlbumId(albumId);
         List<String> albumMemberList = albumMemberRepository.findAlbumMemberIdByAlbumId(albumId);
-        List<Map<String, String>> albumMemberListMap = new ArrayList<>();
+        List<AlbumMemberIdAndProfileDto> albumMemberIdAndProfileDtoList = new ArrayList<>();
 
         for (String albumMemberId : albumMemberList) {
-            Map<String, String> albumMemberMap = new HashMap<>();
-            albumMemberMap.put("id", albumMemberId);
-            albumMemberListMap.add(albumMemberMap);
+            User user = userRepository.findByUserId(albumMemberId);
+            AlbumMemberIdAndProfileDto albumMemberIdAndProfileDto = AlbumMemberIdAndProfileDto.builder()
+                    .userId(albumMemberId)
+                    .profileImgUrl(user.getUserImg())
+                    .build();
+
+            albumMemberIdAndProfileDtoList.add(albumMemberIdAndProfileDto);
         }
 
         AlbumFav albumFav = albumFavRepository.findAlbumFavByAlbumMemberId_AlbumIdAndAlbumMemberId_UserId(albumId, userId);
@@ -102,7 +108,7 @@ public class AlbumService {
                     .albumName(album.getAlbumName())
                     .albumCreatedDate(album.getCreatedDate())
                     .isAlbumFav(false)
-                    .members(albumMemberListMap)
+                    .members(albumMemberIdAndProfileDtoList)
                     .build();
         }
         else {
@@ -111,7 +117,7 @@ public class AlbumService {
                     .albumName(album.getAlbumName())
                     .albumCreatedDate(album.getCreatedDate())
                     .isAlbumFav(albumFav.getLikeStatus().equals(LikeStatus.LIKE) ? true : false)
-                    .members(albumMemberListMap)
+                    .members(albumMemberIdAndProfileDtoList)
                     .build();
         }
 
@@ -186,7 +192,7 @@ public class AlbumService {
                         .albumId(album.getAlbumId())
                         .albumName(album.getAlbumName())
                         .albumCreatedDate(album.getCreatedDate())
-                        .thumbnail_photo_url(thumbnailPhotoUrl)
+                        .thumbnailPhotoUrl(thumbnailPhotoUrl)
                         .isAlbumFav(false)
                         .build();
             }
@@ -195,7 +201,7 @@ public class AlbumService {
                         .albumId(album.getAlbumId())
                         .albumName(album.getAlbumName())
                         .albumCreatedDate(album.getCreatedDate())
-                        .thumbnail_photo_url(thumbnailPhotoUrl)
+                        .thumbnailPhotoUrl(thumbnailPhotoUrl)
                         .isAlbumFav(albumFav.getLikeStatus().equals(LikeStatus.LIKE) ? true : false)
                         .build();
             }
@@ -252,12 +258,21 @@ public class AlbumService {
         }
 
         List<Long> myFavAlbumIdList = albumFavRepository.getMyFavAlbumIdList(userId);
-        List<Album> myFavAlbumList = new ArrayList<>();
+        List<AlbumFavDto> albumFavDtoList = new ArrayList<>();
         for (Long albumId : myFavAlbumIdList) {
             Album album = albumRepository.findAlbumByAlbumId(albumId);
-            myFavAlbumList.add(album);
+            String thumbnailPhotoUrl = albumPhotoRepository.findByPhotoId(album.getThumbnailPhoto()).getS3Url();
+
+            AlbumFavDto albumFavDto = AlbumFavDto.builder()
+                    .albumId(album.getAlbumId())
+                    .albumName(album.getAlbumName())
+                    .albumCreatedDate(album.getCreatedDate())
+                    .thumbnailPhotoUrl(thumbnailPhotoUrl)
+                    .build();
+
+            albumFavDtoList.add(albumFavDto);
         }
-        result.put("myFavAlbumList", myFavAlbumList);
+        result.put("myFavAlbumList", albumFavDtoList);
 
         return setResponseDto(result,"앨범 즐겨찾기 등록",200);
     }
