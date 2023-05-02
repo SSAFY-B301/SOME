@@ -10,11 +10,11 @@ import lombok.NoArgsConstructor;
 @Builder
 @AllArgsConstructor
 @NoArgsConstructor
-public class AlbumModifyDto {
+public class AlbumModifyThumbnailDto {
 
     @JsonProperty("album_id")
     private Long albumId;
 
-    @JsonProperty("new_album_name")
-    private String newAlbumName;
+    @JsonProperty("new_album_thumbnail_id")
+    private Long newAlbumThumbnailId;
 }
