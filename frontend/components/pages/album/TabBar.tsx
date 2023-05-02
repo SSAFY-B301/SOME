@@ -10,11 +10,10 @@ import DotsIcon from "public/icons/DotsThreeOutline.svg";
 import DownloadIcon from "public/icons/DownloadSimple.svg";
 import TrashIcon from "public/icons/Trash.svg";
 import UploadIcon from "public/icons/UploadSimple.svg";
+import { useGetDetail, usePutDetail } from "@/pages/api/albumApi";
 
 // 인터페이스
 interface TabBarType {
-  albumInfo: AlbumInfoType;
-  setAlbumInfo: React.Dispatch<React.SetStateAction<AlbumInfoType>>;
   isSelect: boolean;
 }
 interface AlbumInfoType {
@@ -41,16 +40,26 @@ interface MemberType {
  * @param isSelect 선택 여부
  * @returns
  */
-function TabBar({ albumInfo, setAlbumInfo, isSelect }: TabBarType) {
+function TabBar({ isSelect }: TabBarType) {
+  const { getDetail } = useGetDetail();
   /**
    * 앨범 좋아요 수정
    */
+
+  const { mutate } = usePutDetail();
+
   const clickLike = () => {
-    albumInfo = {
-      ...albumInfo,
-      isLike: !albumInfo.isLike,
-    };
-    setAlbumInfo(albumInfo);
+    if (getDetail) {
+      getDetail.data = {
+        ...getDetail.data,
+        isLike: !getDetail.data.isLike,
+      };
+      // setAlbumInfo(albumInfo);
+      // TODO : API 요청 보내기
+      console.log("PUT", getDetail.data);
+
+      mutate(getDetail.data);
+    }
   };
   return (
     <section className={`${styles.tab_bar}`}>
@@ -66,8 +75,8 @@ function TabBar({ albumInfo, setAlbumInfo, isSelect }: TabBarType) {
             onClick={clickLike}
             width={"8.205vw"}
             height={"8.205vw"}
-            stroke={albumInfo.isLike ? "none" : "#B1B8C0"}
-            fill={albumInfo.isLike ? "red" : "none"}
+            stroke={getDetail?.data.isLike ? "none" : "#B1B8C0"}
+            fill={getDetail?.data.isLike ? "red" : "none"}
           />
           <DotsIcon width={"8.205vw"} height={"8.205vw"} stroke={"#061C3D"} />
         </>

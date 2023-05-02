@@ -1,6 +1,6 @@
-import axios, { AxiosResponse } from "axios";
-import { customBoyAxios } from "@/features/customAxios";
-import { useQuery } from "react-query";
+import axios, { AxiosError, AxiosResponse } from "axios";
+
+import { UseMutationResult, useMutation, useQuery } from "react-query";
 
 // Redux 관련
 import { RootState } from "@/store/configureStore";
@@ -75,8 +75,6 @@ export const useGetTotal = () => {
  */
 export const useGetDetail = () => {
   const queryKey = `${URL}/detail`;
-  // console.log("Detail API 호출");
-  const { userInfo } = useSelector((state: RootState) => state.auth);
   const { data: getDetail, isLoading: getDetailIsLoading } = useQuery<
     AxiosResponse<AlbumInfoType>
   >(["detail"], () => axios.get(queryKey));
@@ -84,8 +82,24 @@ export const useGetDetail = () => {
   return { getDetail, getDetailIsLoading };
 };
 
+export function usePutDetail(): UseMutationResult<
+  AlbumInfoType,
+  AxiosError,
+  AlbumInfoType
+> {
+  return useMutation((value) => axios.put(`${URL}/detail`, value), {
+    onSuccess: (data) => {
+      console.log(data); // mutation 이 성공하면 response를 받을 수 있다.
+    },
+    onError: (error) => {
+      // mutation 이 에러가 났을 경우 error를 받을 수 있다.
+      console.error(error);
+    },
+  });
+}
+
 /**
- * [GET] 앨범 정보
+ * [GET] 사진 정보
  * @returns
  */
 export const useGetPhotos = () => {

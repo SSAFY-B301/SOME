@@ -167,7 +167,7 @@ function FavoriteAlbum() {
     : [...Array(3)].map((_, i) => (
         <div
           key={i}
-          className="w-72 h-96 rounded-xl grow"
+          className={`w-72 h-96 rounded-xl grow flex-shrink-0 ${styles.card}`}
           style={{ backgroundColor: "#94a3b8" }}
         >
           <div>
