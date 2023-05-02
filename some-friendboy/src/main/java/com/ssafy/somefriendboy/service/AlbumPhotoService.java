@@ -58,6 +58,7 @@ public class AlbumPhotoService {
 
         Long photoId = null;
         List<List<Long>> categories = requestToFAST(multipartFiles);
+        List<Long> photoIds = new ArrayList<>();
 
         for (int i = 0; i < metaDataDtos.size(); i++) {
             InputStream inputStream = multipartFiles.get(i).getInputStream();
@@ -94,6 +95,7 @@ public class AlbumPhotoService {
 
             albumPhotoRepository.insert(albumPhoto);
             photoId = albumPhoto.getPhotoId();
+            photoIds.add(photoId);
         }
 
         //앨범에 최신 업로드 사진 아이디 갱신하기
@@ -101,6 +103,7 @@ public class AlbumPhotoService {
             albumRepository.modifyAlbumRecentPhoto(albumId, photoId);
         }
 
+        result.put("addPhotoIdList", photoIds);
         return setResponseDto(result, "앨범 사진 등록", 200);
     }
 
@@ -149,6 +152,7 @@ public class AlbumPhotoService {
         }
 
         UserPhotoLike userPhotoLiked = userPhotoLikeRepository.findUserPhotoLike(userId, photoId);
+        result.put("photoLikeId", photoId);
 
         if (userPhotoLiked == null) {
             UserPhotoLikeId userPhotoLikeId = UserPhotoLikeId.builder()
@@ -156,13 +160,16 @@ public class AlbumPhotoService {
             UserPhotoLike userPhotoLike = UserPhotoLike.builder()
                     .userPhotoLikeId(userPhotoLikeId).userPhotoLikeStatus(LikeStatus.LIKE).build();
             userPhotoLikeRepository.save(userPhotoLike);
+            result.put("photoLikeStatus", LikeStatus.LIKE);
         } else {
             if (userPhotoLiked.getUserPhotoLikeStatus().equals(LikeStatus.LIKE)) { //좋아요 상태인 경우
                 userPhotoLikeRepository.modifyUserPhotoLike(userPhotoLiked.getUserPhotoLikeId().getUserId(),
                         userPhotoLiked.getUserPhotoLikeId().getPhotoId(), LikeStatus.CANCEL);
+                result.put("photoLikeStatus", LikeStatus.CANCEL);
             } else if (userPhotoLiked.getUserPhotoLikeStatus().equals(LikeStatus.CANCEL)) { //안좋아요 상태인 경우
                 userPhotoLikeRepository.modifyUserPhotoLike(userPhotoLiked.getUserPhotoLikeId().getUserId(),
                         userPhotoLiked.getUserPhotoLikeId().getPhotoId(), LikeStatus.LIKE);
+                result.put("photoLikeStatus", LikeStatus.LIKE);
             }
         }
 
