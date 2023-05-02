@@ -6,13 +6,9 @@ import NavBar from "components/pages/album/NavBar";
 import TabBar from "components/pages/album/TabBar";
 
 // 라이브러리
-import { useEffect, useState } from "react";
+import { useEffect, useMemo, useState } from "react";
 
 // API
-import {
-  albumInfo as albumInfoData,
-  photos as PhotosData,
-} from "pages/api/albumDummyApi";
 import { useGetDetail } from "pages/api/albumApi";
 
 // CSS
@@ -24,14 +20,13 @@ import { previewPhotoType } from "types/AlbumTypes";
 
 function AlbumDetail() {
   const { getDetail, getDetailIsLoading } = useGetDetail();
-  const [albumInfo, setAlbumInfo] = useState(albumInfoData.data);
-  const [photos, setPhotos] = useState(PhotosData.data);
+  const [membersId, setMembersId] = useState<number[]>([]);
+
   const [selectedCategory, setSelectedCategory] = useState<number>(0);
   const [isSelect, setIsSelect] = useState<boolean>(false);
   const [selectedPhotos, setSelectedPhotos] = useState<Set<number>>(new Set());
   const [isTotal, setIsTotal] = useState<boolean>(false);
-  const membersId = albumInfo.members.map((member) => member.id);
-  const membersSize = membersId.length;
+
   const [selectMembers, setSelectMembers] = useState<Set<number>>(
     new Set(membersId)
   );
@@ -39,12 +34,17 @@ function AlbumDetail() {
   const [isPreview, setIsPreview] = useState<boolean>(false);
   const [previewPhotos, setPreviewPhotos] = useState<previewPhotoType[]>([]);
 
-  // 페이지 빠져나올 때 API 요청하기
+  // 로딩이 완료되면 user id 배열 수정
   useEffect(() => {
-    return () => {
-      // TODO : API 보내기 추가
-    };
-  }, [albumInfo]);
+    if (getDetail) {
+      setMembersId([...getDetail.data.members.map((member) => member.id)]);
+    }
+  }, [getDetailIsLoading]);
+
+  // user id 배열을 선택 set에 저장
+  useEffect(() => {
+    setSelectMembers(new Set(membersId));
+  }, [membersId]);
 
   // 전체 선택 누르면 전부 선택 / 해제 누르면 전부 해제
   useEffect(() => {
@@ -57,7 +57,7 @@ function AlbumDetail() {
 
   // 전체 크기만큼 선택하면 전체선택 토글
   useEffect(() => {
-    selectedPhotos.size === albumInfo.total && setIsTotal(true);
+    selectedPhotos.size === getDetail?.data.total && setIsTotal(true);
   }, [selectedPhotos]);
 
   /**
@@ -94,7 +94,6 @@ function AlbumDetail() {
   return (
     <section>
       <NavBar
-        title={albumInfo.name}
         isSelect={isSelect}
         setIsSelect={setIsSelect}
         isTotal={isTotal}
@@ -102,19 +101,15 @@ function AlbumDetail() {
       />
       <div className={`${styles.container}`}>
         <Members
-          members={albumInfo.members}
           selectMembers={selectMembers}
           setSelectMembers={setSelectMembers}
-          membersSize={membersSize}
           membersId={membersId}
         />
         <Categories
-          categories={albumInfo.categories}
           selectedId={selectedCategory}
           setSelectedId={setSelectedCategory}
         />
         <Photos
-          photos={photos}
           isSelect={isSelect}
           selectedCategory={selectedCategory}
           selectedPhotos={selectedPhotos}
@@ -126,15 +121,11 @@ function AlbumDetail() {
           <span>
             {isSelect
               ? `${selectedPhotos.size}장의 사진이 선택됨`
-              : `${albumInfo.total}장의 사진`}
+              : `${getDetail ? getDetail.data.total : 0}장의 사진`}
           </span>
         </div>
       </div>
-      <TabBar
-        albumInfo={albumInfo}
-        setAlbumInfo={setAlbumInfo}
-        isSelect={isSelect}
-      />
+      <TabBar isSelect={isSelect} />
       {isPreview && (
         <Preview
           previewPhotos={previewPhotos}

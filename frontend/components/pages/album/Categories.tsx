@@ -1,8 +1,8 @@
+import { useGetDetail } from "@/pages/api/albumApi";
 import React from "react";
 import styles from "styles/album.module.scss";
 
 interface CategoriesType {
-  categories: number[];
   selectedId: number;
   setSelectedId: React.Dispatch<React.SetStateAction<number>>;
 }
@@ -19,7 +19,9 @@ const categoriesTable: categoriesTable = {
   5: "음식",
 };
 
-function Categories({ categories, selectedId, setSelectedId }: CategoriesType) {
+function Categories({ selectedId, setSelectedId }: CategoriesType) {
+  const { getDetail, getDetailIsLoading } = useGetDetail();
+
   /**
    * 선택된 카테고리 변경
    * @param id 카테고리 id
@@ -36,15 +38,20 @@ function Categories({ categories, selectedId, setSelectedId }: CategoriesType) {
         전체
       </p>
       {/* 서버에서 받아온 분류 기준 랜더 */}
-      {categories.map((category: number) => (
-        <p
-          onClick={() => selectCategory(category)}
-          className={selectedId === category ? styles.is_selected : ""}
-          key={category}
-        >
-          {categoriesTable[category]}
-        </p>
-      ))}
+      {getDetailIsLoading ? (
+        // TODO : 로딩중
+        <p>로딩중</p>
+      ) : (
+        getDetail?.data.categories.map((category: number) => (
+          <p
+            onClick={() => selectCategory(category)}
+            className={selectedId === category ? styles.is_selected : ""}
+            key={category}
+          >
+            {categoriesTable[category]}
+          </p>
+        ))
+      )}
     </section>
   );
 }
