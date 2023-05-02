@@ -3,6 +3,7 @@ import axios from "axios";
 import { useMutation } from "react-query";
 import { useSelector } from "react-redux";
 import { RootState } from "@/store/configureStore";
+import useCustomAxios from "@/features/customAxios";
 
 interface AlbumCreateType {
   album_name: string | string[] | undefined;
@@ -16,24 +17,21 @@ interface AlbumCreateType {
  */
 export const useGetFriends = () => {
   const queryKey = "/album/list/friend";
-  const { userInfo } = useSelector((state: RootState) => state.auth);
+
+  const {customBoyAxios} = useCustomAxios();
+
 
   const { isLoading: getIsLoading, data: getFriends } = useQuery(
     ["friends"],
-    () =>
-      axios.get(queryKey, {
-        headers: {
-          access_token: userInfo.access_token,
-        },
-      }),
+    () => customBoyAxios.get(queryKey),
     {
       onSuccess: (data) => {
         console.log(data);
       },
     }
   );
-
   return { getFriends, getIsLoading };
+
 };
 
 export const createAlbum = (requestData: AlbumCreateType) => {

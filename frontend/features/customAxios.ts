@@ -6,21 +6,24 @@ import { RootState } from "@/store/configureStore";
 import { useSelector } from "react-redux";
 
 function useCustomAxios() {
+    let parseAccessToken;
+    const storageAccessToken = window.localStorage.getItem("access_token");
 
-    //redux에서 access token 받아오기
-    const {userInfo} = useSelector((state : RootState) => state.auth);
+    if (storageAccessToken) {
+        parseAccessToken = JSON.parse(storageAccessToken);
+    }
 
     const customBoyAxios = axios.create({
         baseURL: process.env.NEXT_PUBLIC_FRIEND_BOY_URL,
         headers: {
-            "access_token" : userInfo.access_token
+            "access_token" : parseAccessToken.access_token,
         }
     });
 
     const customGirlAxios = axios.create({
         baseURL: process.env.NEXT_PUBLIC_FRIEND_GIRL_URL,
         headers: {
-            "access_token" : userInfo.access_token
+            "access_token" : parseAccessToken.access_token,
         }
     });
     
