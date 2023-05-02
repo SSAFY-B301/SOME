@@ -9,6 +9,7 @@ import com.fasterxml.jackson.databind.JsonNode;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.ssafy.somefriendboy.dto.AlbumPhotoDto;
 import com.ssafy.somefriendboy.dto.AlbumPhotoListDto;
+import com.ssafy.somefriendboy.dto.AlbumPhotoListOptDto;
 import com.ssafy.somefriendboy.dto.MetaDataDto;
 import com.ssafy.somefriendboy.dto.ResponseDto;
 import com.ssafy.somefriendboy.entity.*;
@@ -122,7 +123,7 @@ public class AlbumPhotoService {
         return setResponseDto(result, "사진 상세 보기", 200);
     }
 
-    public ResponseDto selectAlbumPhoto(String accessToken, AlbumPhotoListDto albumPhotoListDto) {
+    public ResponseDto selectAlbumPhoto(String accessToken, AlbumPhotoListOptDto albumPhotoListOptDto) {
         Map<String, Object> result = new HashMap<>();
         String userId = tokenCheck(accessToken);
 
@@ -130,12 +131,12 @@ public class AlbumPhotoService {
             return setResponseDto(result, "토큰 만료", 450);
         }
 
-        List<AlbumPhoto> albumPhotos = albumPhotoRepository.findAlbumPhoto(albumPhotoListDto.getAlbumId(),
-                albumPhotoListDto.getCategoryId(), albumPhotoListDto.getUserId());
-        List<AlbumPhotoDto> albumPhotoDtos = albumPhotos.stream()
-                .map(AlbumPhotoDto::new).collect(Collectors.toList());
+        List<AlbumPhoto> albumPhotos = albumPhotoRepository.findAlbumPhoto(albumPhotoListOptDto.getAlbumId(),
+                albumPhotoListOptDto.getCategoryId(), albumPhotoListOptDto.getUserId());
+        List<AlbumPhotoListDto> albumPhotoListDtos = albumPhotos.stream()
+                .map(AlbumPhotoListDto::new).collect(Collectors.toList());
 
-        result.put("albumPhotoList", albumPhotoDtos);
+        result.put("albumPhotoList", albumPhotoListDtos);
         return setResponseDto(result, "앨범 사진 목록", 200);
     }
 

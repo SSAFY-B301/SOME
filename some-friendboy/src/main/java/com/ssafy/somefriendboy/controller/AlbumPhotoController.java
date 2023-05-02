@@ -1,7 +1,7 @@
 package com.ssafy.somefriendboy.controller;
 
 import com.drew.imaging.ImageProcessingException;
-import com.ssafy.somefriendboy.dto.AlbumPhotoListDto;
+import com.ssafy.somefriendboy.dto.AlbumPhotoListOptDto;
 import com.ssafy.somefriendboy.dto.MetaDataDto;
 import com.ssafy.somefriendboy.dto.ResponseDto;
 import com.ssafy.somefriendboy.service.AlbumPhotoService;
@@ -53,11 +53,11 @@ public class AlbumPhotoController {
     }
 
     @GetMapping("/album/list")
-    public ResponseEntity<ResponseDto> getAlbumPhoto(@RequestHeader HttpHeaders headers, @RequestBody AlbumPhotoListDto albumPhotoListDto) {
+    public ResponseEntity<ResponseDto> getAlbumPhoto(@RequestHeader HttpHeaders headers, @RequestBody AlbumPhotoListOptDto albumPhotoListOptDto) {
         String accessToken = headers.get("access_token").toString();
-        log.debug("앨범 목록 정보 GET: /photo/album/list, albumPhotoListDto : {}", albumPhotoListDto);
+        log.debug("앨범 목록 정보 GET: /photo/album/list, albumPhotoListOptDto : {}", albumPhotoListOptDto);
 
-        ResponseDto responseDto = albumPhotoService.selectAlbumPhoto(accessToken, albumPhotoListDto);
+        ResponseDto responseDto = albumPhotoService.selectAlbumPhoto(accessToken, albumPhotoListOptDto);
         return new ResponseEntity<ResponseDto>(responseDto, HttpStatus.OK);
     }
 
