@@ -299,6 +299,7 @@ public class AlbumService {
             AlbumInfoAndMemberDto albumInfoAndMemberDto = AlbumInfoAndMemberDto.builder()
                     .albumId(album.getAlbumId())
                     .albumName(album.getAlbumName())
+                    .thumbnail_photo_url(albumPhotoRepository.findByPhotoId(album.getAlbumId()).getS3Url())
                     .albumCreatedDate(album.getCreatedDate())
                     .members(albumMemberList)
                     .build();
