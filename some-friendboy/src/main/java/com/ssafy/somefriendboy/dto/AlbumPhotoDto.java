@@ -20,6 +20,8 @@ public class AlbumPhotoDto {
     private Double gpsLongitude;
     private List<Long> categoryId;
     private String userId;
+    private String userName;
+    private String userProfileImg;
     private Long albumId;
     private LikeStatus likeStatus;
 
