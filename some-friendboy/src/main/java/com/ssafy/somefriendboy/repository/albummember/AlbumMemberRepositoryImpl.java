@@ -20,7 +20,7 @@ public class AlbumMemberRepositoryImpl implements AlbumMemberRepositoryCustom{
         return queryFactory
                 .select(albumMember.albumMemberId.albumId)
                 .from(albumMember)
-                .where(albumMember.albumMemberId.userId.eq(userId).and(albumMember.albumMemberId.albumMemberStatus.eq(albumMemberStatus)))
+                .where(albumMember.albumMemberId.userId.eq(userId).and(albumMember.albumMemberStatus.eq(albumMemberStatus)))
                 .fetch();
     }
 
@@ -29,7 +29,7 @@ public class AlbumMemberRepositoryImpl implements AlbumMemberRepositoryCustom{
         return queryFactory
                 .select(albumMember.albumMemberId.userId)
                 .from(albumMember)
-                .where(albumMember.albumMemberId.albumId.eq(albumId).and(albumMember.albumMemberId.albumMemberStatus.eq(AlbumMemberStatus.ACCEPT)))
+                .where(albumMember.albumMemberId.albumId.eq(albumId).and(albumMember.albumMemberStatus.eq(AlbumMemberStatus.ACCEPT)))
                 .fetch();
     }
 
@@ -37,7 +37,7 @@ public class AlbumMemberRepositoryImpl implements AlbumMemberRepositoryCustom{
     public long acceptInvitedAlbumStatus(Long albumId, String userId) {
         return queryFactory
                 .update(albumMember)
-                .set(albumMember.albumMemberId.albumMemberStatus, AlbumMemberStatus.ACCEPT)
+                .set(albumMember.albumMemberStatus, AlbumMemberStatus.ACCEPT)
                 .where(albumMember.albumMemberId.albumId.eq(albumId).and(albumMember.albumMemberId.userId.eq(userId)))
                 .execute();
     }
@@ -46,7 +46,7 @@ public class AlbumMemberRepositoryImpl implements AlbumMemberRepositoryCustom{
     public long declineInvitedAlbumStatus(Long albumId, String userId) {
         return queryFactory
                 .update(albumMember)
-                .set(albumMember.albumMemberId.albumMemberStatus, AlbumMemberStatus.DECLINE)
+                .set(albumMember.albumMemberStatus, AlbumMemberStatus.DECLINE)
                 .where(albumMember.albumMemberId.albumId.eq(albumId).and(albumMember.albumMemberId.userId.eq(userId)))
                 .execute();
     }
