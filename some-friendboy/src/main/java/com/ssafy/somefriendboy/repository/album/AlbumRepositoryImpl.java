@@ -2,7 +2,6 @@ package com.ssafy.somefriendboy.repository.album;
 
 import com.querydsl.jpa.impl.JPAQueryFactory;
 import com.ssafy.somefriendboy.entity.Album;
-import com.ssafy.somefriendboy.entity.QAlbum;
 import lombok.RequiredArgsConstructor;
 
 import java.util.List;
@@ -19,6 +18,15 @@ public class AlbumRepositoryImpl implements AlbumRepositoryCustom{
         return queryFactory
                 .update(album)
                 .set(album.albumName, newName)
+                .where(album.albumId.eq(albumId))
+                .execute();
+    }
+
+    @Override
+    public long modifyAlbumThumbnail(Long albumId, Long photoId) {
+        return queryFactory
+                .update(album)
+                .set(album.thumbnailPhoto, photoId)
                 .where(album.albumId.eq(albumId))
                 .execute();
     }
