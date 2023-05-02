@@ -33,8 +33,8 @@ public class AlbumPhotoController {
     @Transactional
     @PostMapping("/upload")
     public ResponseEntity<ResponseDto> upload(@RequestHeader HttpHeaders headers,
-                                              @RequestParam("multipartFile") List<MultipartFile> multipartFiles,
-                                              @RequestParam Long albumId) throws IOException, ImageProcessingException {
+                                              @RequestPart("multipartFile") List<MultipartFile> multipartFiles,
+                                              @RequestPart Long albumId) throws IOException, ImageProcessingException {
         String accessToken = headers.get("access_token").toString();
         log.debug("사진 업로드 POST: /photo/upload, albumId : ", albumId);
 
