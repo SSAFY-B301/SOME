@@ -4,6 +4,7 @@ import com.google.gson.JsonElement;
 import com.google.gson.JsonParser;
 import com.ssafy.somelogin.dto.OpenIdResponseDto;
 import com.ssafy.somelogin.dto.ResponseDto;
+import com.ssafy.somelogin.dto.UserInfoDto;
 import com.ssafy.somelogin.entity.User;
 import com.ssafy.somelogin.repository.UserRepository;
 import com.ssafy.somelogin.util.HttpUtil;
@@ -132,11 +133,13 @@ public class AuthService {
                 user1.setUserImg(user.getUserImg());
                 user1.setUserName(user.getUserName());
             }
+            UserInfoDto userInfoDto = UserInfoDto.builder()
+                    .userId(user.getUserId())
+                    .userName(user.getUserName())
+                    .userImg(user.getUserImg())
+                    .build();
             resultMap.put("access_token",access_Token);
-            resultMap.put("refresh_token",refresh_Token);
-            resultMap.put("user_id",user.getUserId());
-            resultMap.put("user_name",user.getUserName());
-            resultMap.put("user_img",user.getUserImg());
+            resultMap.put("user_info",userInfoDto);
         }
         responseDto.setData(resultMap);
         responseDto.setMessage("로그인 성공, 토큰/회원정보 리턴");
