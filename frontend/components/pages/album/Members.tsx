@@ -1,5 +1,5 @@
 // 라이브러리
-import React from "react";
+import React, { useEffect, useState } from "react";
 import Link from "next/link";
 
 // CSS
@@ -13,7 +13,6 @@ import { useGetDetail } from "@/pages/api/albumApi";
 interface MembersType {
   selectMembers: Set<number>;
   setSelectMembers: React.Dispatch<React.SetStateAction<Set<number>>>;
-  membersSize: number;
   membersId: number[];
 }
 
@@ -26,19 +25,20 @@ interface MemberType {
 /**
  * 앨범의 멤버들 컴포넌트
  * @param members 멤버 리스트
- * @param  selectMembers 선택된 멤버가 저장되는 Set
- * @param  setSelectMembers 선택된 멤버가 저장되는 Set의 Setter 함수
- * @param  membersSize 멤버 수
- * @param  membersId 멤버들의 id
+ * @param selectMembers 선택된 멤버가 저장되는 Set
+ * @param setSelectMembers 선택된 멤버가 저장되는 Set의 Setter 함수
+ * @param membersSize 멤버 수
+ * @param membersId 멤버들의 id
  * @returns
  */
-function Members({
-  selectMembers,
-  setSelectMembers,
-  membersSize,
-  membersId,
-}: MembersType) {
+function Members({ selectMembers, setSelectMembers, membersId }: MembersType) {
   const { getDetail, getDetailIsLoading } = useGetDetail();
+  const [membersSize, setMembersSize] = useState<number>(membersId.length);
+
+  useEffect(() => {
+    setMembersSize(membersId.length);
+  }, [membersId]);
+  console.log(getDetail);
 
   /**
    * 멤버 선택값 변경
@@ -58,8 +58,8 @@ function Members({
   const membersSection: React.ReactNode = getDetailIsLoading ? (
     // TODO : 로딩
     <p>로딩중</p>
-  ) : (
-    getDetail?.data.members.map((member: MemberType) => (
+  ) : getDetail ? (
+    getDetail.data.members.map((member: MemberType) => (
       <div
         key={member.id}
         onClick={() => {
@@ -73,6 +73,8 @@ function Members({
         style={{ backgroundImage: "url(" + member.img + ")" }}
       ></div>
     ))
+  ) : (
+    <p>멤버 없는디..?</p>
   );
 
   return (
