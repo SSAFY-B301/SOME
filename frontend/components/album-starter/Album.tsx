@@ -12,15 +12,9 @@ interface Props {
   album: AlbumType;
   isActiveFriends: Set<Number>;
   selectAlbum(ids: number[]): void;
-  removeAlbums(ids: number[]): void;
 }
 
-const Album = ({
-  album,
-  selectAlbum,
-  isActiveFriends,
-  removeAlbums,
-}: Props): JSX.Element => {
+const Album = ({ album, selectAlbum, isActiveFriends }: Props): JSX.Element => {
   const select = () => {
     selectAlbum(album.userIds);
   };
