@@ -15,14 +15,12 @@ interface Props {
   albums: AlbumType[];
   isActiveFriends: Set<Number>;
   selectAlbums(ids: number[]): void;
-  removeAlbums(ids: number[]): void;
 }
 
 const Albums = ({
   albums,
   selectAlbums,
   isActiveFriends,
-  removeAlbums,
 }: Props): JSX.Element => {
   return (
     <ItemBlock width="100%" height="" radius="20px">
@@ -35,7 +33,6 @@ const Albums = ({
               album={album}
               isActiveFriends={isActiveFriends}
               selectAlbum={selectAlbums}
-              removeAlbums={removeAlbums}
             />
           ))}
         </div>
