@@ -115,7 +115,8 @@ public class AlbumPhotoService {
         AlbumPhotoDto albumPhotoDto = new AlbumPhotoDto(albumPhoto);
 
         UserPhotoLike userPhotoLike = userPhotoLikeRepository.findUserPhotoLike(userId, photoId);
-        albumPhotoDto.setLikeStatus(userPhotoLike.getUserPhotoLikeStatus());
+        if (userPhotoLike == null) albumPhotoDto.setLikeStatus(LikeStatus.CANCEL);
+        else albumPhotoDto.setLikeStatus(userPhotoLike.getUserPhotoLikeStatus());
 
         result.put("albumPhotoDetail", albumPhotoDto);
         return setResponseDto(result, "사진 상세 보기", 200);

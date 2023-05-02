@@ -22,6 +22,9 @@ public class AlbumInfoAndMemberDto {
     @JsonProperty("album_name")
     private String albumName;
 
+    @JsonProperty("thumbnail_photo_url")
+    private String thumbnail_photo_url;
+
     @JsonProperty("album_created_date")
     private LocalDateTime albumCreatedDate;
 
