@@ -10,7 +10,8 @@ import java.util.List;
 @Builder
 public class MetaDataDto {
 
-    private String url;
+    private String originUrl;
+    private String resizeUrl;
     private List<Long> categoryId;
 
 }
