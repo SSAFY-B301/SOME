@@ -125,7 +125,7 @@ public class AlbumPhotoService {
         if (userPhotoLike == null) albumPhotoDto.setLikeStatus(LikeStatus.CANCEL);
         else albumPhotoDto.setLikeStatus(userPhotoLike.getUserPhotoLikeStatus());
 
-        User user = userRepository.findByUserId(userId);
+        User user = userRepository.findByUserId(albumPhotoDto.getUserId());
         albumPhotoDto.setUserName(user.getUserName());
         albumPhotoDto.setUserProfileImg(user.getUserImg());
 
