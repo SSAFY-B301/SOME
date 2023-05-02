@@ -1,6 +1,7 @@
 package com.ssafy.somefriendboy.dto;
 
 import com.ssafy.somefriendboy.entity.AlbumPhoto;
+import com.ssafy.somefriendboy.entity.LikeStatus;
 import lombok.*;
 import java.time.LocalDateTime;
 
@@ -20,6 +21,7 @@ public class AlbumPhotoDto {
     private List<Long> categoryId;
     private String userId;
     private Long albumId;
+    private LikeStatus likeStatus;
 
     public AlbumPhotoDto(AlbumPhoto albumPhoto) {
         this.photoId = albumPhoto.getPhotoId();

@@ -7,14 +7,12 @@ import lombok.Data;
 import lombok.NoArgsConstructor;
 
 import java.time.LocalDateTime;
-import java.util.List;
-import java.util.Map;
 
 @Data
 @Builder
 @AllArgsConstructor
 @NoArgsConstructor
-public class AlbumDetailDto {
+public class AlbumWholeListDto {
     @JsonProperty("album_id")
     private Long albumId;
 
@@ -24,10 +22,11 @@ public class AlbumDetailDto {
     @JsonProperty("album_created_date")
     private LocalDateTime albumCreatedDate;
 
+    // 표지사진
+    @JsonProperty("thumbnail_photo_url")
+    private String thumbnail_photo_url;
+
     // 즐겨찾기 여부
     @JsonProperty("isAlbumFav")
     private boolean isAlbumFav;
-
-    @JsonProperty("members")
-    private List<Map<String, String>> members;
 }
