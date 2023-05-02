@@ -30,15 +30,24 @@ $main-color: linear-gradient(
   }
 }
 
+@keyframes smoothDisappear {
+  from {
+    opacity: 1;
+  }
+  to {
+    opacity: 0;
+  }
+}
+
 .appearFriendDiv {
   animation: slider 0.2s ease-in-out 0s 1 normal forwards;
 }
 
 .appearIcon {
   opacity: 0;
-  animation: smoothAppear 0.2s ease-in-out 0.2s 1 normal forwards;
+  animation: smoothAppear 0.2s ease-in-out 0s 1 normal forwards;
 }
 
 .disappearIcon {
-  animation: smoothAppear 1s ease-in-out 0s 1 normal reverse forwards;
+  animation: smoothDisappear 0.2s ease-in-out 0s 1 normal forwards;
 }
