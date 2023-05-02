@@ -15,6 +15,7 @@ import com.ssafy.somefriendboy.dto.ResponseDto;
 import com.ssafy.somefriendboy.entity.*;
 import com.ssafy.somefriendboy.repository.AlbumPhoto.AlbumPhotoRepository;
 import com.ssafy.somefriendboy.repository.album.AlbumRepository;
+import com.ssafy.somefriendboy.repository.user.UserRepository;
 import com.ssafy.somefriendboy.repository.userPhotoLike.UserPhotoLikeRepository;
 import com.ssafy.somefriendboy.util.HttpUtil;
 import lombok.RequiredArgsConstructor;
@@ -45,6 +46,7 @@ public class AlbumPhotoService {
     private final AlbumPhotoRepository albumPhotoRepository;
     private final AlbumRepository albumRepository;
     private final UserPhotoLikeRepository userPhotoLikeRepository;
+    private final UserRepository userRepository;
     private final MongoOperations mongoOperations;
     private final HttpUtil httpUtil;
 
@@ -122,6 +124,10 @@ public class AlbumPhotoService {
         UserPhotoLike userPhotoLike = userPhotoLikeRepository.findUserPhotoLike(userId, photoId);
         if (userPhotoLike == null) albumPhotoDto.setLikeStatus(LikeStatus.CANCEL);
         else albumPhotoDto.setLikeStatus(userPhotoLike.getUserPhotoLikeStatus());
+
+        User user = userRepository.findByUserId(userId);
+        albumPhotoDto.setUserName(user.getUserName());
+        albumPhotoDto.setUserProfileImg(user.getUserImg());
 
         result.put("albumPhotoDetail", albumPhotoDto);
         return setResponseDto(result, "사진 상세 보기", 200);
