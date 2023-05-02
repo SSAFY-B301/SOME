@@ -3,8 +3,10 @@ import styles from "@/styles/inviteFriends.module.scss";
 
 interface FriendType {
   id: number;
-  profileImg: string;
-  name: string;
+  uuid: string;
+  favorite: boolean;
+  profile_nickname: string;
+  profile_thumbnail_image: string;
 }
 
 interface Props {
@@ -53,12 +55,12 @@ const InvitedFriend = ({ friend, topRemoveFriends }: Props): JSX.Element => {
             </svg>
           </button>
           <img
-            src={friend.profileImg}
+            src={friend.profile_thumbnail_image}
             alt="img"
             className="absolute left-1/2 top-1/2 -translate-x-1/2 -translate-y-1/2 w-12 h-12 border-2 rounded-full"
           />
         </div>
-        <span className="text-xs">{friend.name}</span>
+        <span className="text-xs">{friend.profile_nickname}</span>
       </div>
     </div>
   );

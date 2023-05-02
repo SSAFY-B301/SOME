@@ -3,8 +3,10 @@ import styles from "@/styles/inviteFriends.module.scss";
 
 interface FriendType {
   id: number;
-  profileImg: string;
-  name: string;
+  uuid: string;
+  favorite: boolean;
+  profile_nickname: string;
+  profile_thumbnail_image: string;
 }
 
 interface Props {
@@ -42,11 +44,11 @@ const Friend = ({
     <li className="h-16 flex justify-between items-center" onClick={select}>
       <div className="w-2/6 flex justify-between items-center">
         <img
-          src={friend.profileImg}
+          src={friend.profile_thumbnail_image}
           alt="img"
           className="w-12 h-12 border-2 rounded-full"
         />
-        <div className="text-base">{friend.name}</div>
+        <div className="text-base">{friend.profile_nickname}</div>
       </div>
       <button
         className={

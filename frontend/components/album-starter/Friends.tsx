@@ -3,8 +3,10 @@ import Friend from "./Friend";
 
 interface FriendType {
   id: number;
-  profileImg: string;
-  name: string;
+  uuid: string;
+  favorite: boolean;
+  profile_nickname: string;
+  profile_thumbnail_image: string;
 }
 
 interface Props {
