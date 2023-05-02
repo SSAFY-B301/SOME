@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useEffect, useMemo, useState } from "react";
 import { useRouter } from "next/router";
 import {
   Photo,
@@ -10,6 +10,9 @@ import {
 } from "@/components/photo-detail";
 import BackButtonIcon from "@/public/icons/CaretLeft.svg";
 import styles from "./photo.module.scss";
+import { useQuery } from "react-query";
+import useCustomAxios from "@/features/customAxios";
+import axios from "axios";
 
 const PHOTO = {
   img: "https://images.unsplash.com/photo-1619964550581-a344c6f0c1a0?ixlib=rb-4.0.3&ixid=MnwxMjA3fDB8MHxzZWFyY2h8M3x8dHJ8ZW58MHx8MHx8&auto=format&fit=crop&w=500&q=60",
@@ -28,9 +31,17 @@ const PhotoDetail = (): JSX.Element => {
   const [showDownLoadModal, setDownLoadShowModal] = useState<boolean>(false);
   const [showDeleteModal, setDeleteModal] = useState<boolean>(false);
   const [showVoteModal, setVoteModal] = useState<boolean>(false);
-  const [showConcentrationMode, setConcentrationMode] =
-    useState<boolean>(false);
+  const [showConcentrationMode, setConcentrationMode] = useState<boolean>(false);
 
+  // const { customBoyAxios } = useCustomAxios();
+  
+  //사진 데이터 받아오기
+  const {data : queryData, isSuccess} = useQuery(['photo'], () => axios.get(process.env.NEXT_PUBLIC_FRIEND_BOY_URL+"/photo/detail?photoId=60", {
+    headers : {
+      "access_token" : "r1hRhtB9HgFNUxF8RP2LbK8bM793mX1sePCfgLD1CiolDgAAAYfbZFmR"
+    }
+  }));
+  console.log(queryData?.data.data.albumPhotoDetail)
   /**
    * 다운로드 모달창 생성
    */
@@ -68,24 +79,25 @@ const PhotoDetail = (): JSX.Element => {
    */
 
   return (
-    <div className="w-screen h-screen bg-white flex flex-col items-center">
-      <div className="w-full h-16 z-20 flex justify-center items-center border-b-2">
-        <div className="w-11/12 h-full relative">
+    <div className="flex flex-col items-center w-screen h-screen bg-white">
+      <div className="z-20 flex items-center justify-center w-full h-16 border-b-2">
+        <div className="relative w-11/12 h-full">
           <div onClick={() => router.back()}>
             <BackButtonIcon
-              className="absolute top-1/2 -translate-y-1/2 left-0 text-black text-lg"
+              className="absolute left-0 text-lg text-black -translate-y-1/2 top-1/2"
               stroke={`black`}
             />
           </div>
-          <span className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 text-black text-2xl">
+          <span className="absolute text-2xl text-black -translate-x-1/2 -translate-y-1/2 top-1/2 left-1/2">
             앨범
           </span>
         </div>
       </div>
-      <div className="w-full h-20 z-20 flex justify-center items-center">
+      <div className="z-20 flex items-center justify-center w-full h-20">
         <PhotoFeatures user={USER} photo={PHOTO} />
       </div>
       <Photo
+        imgSrc={queryData?.data.data.albumPhotoDetail.s3Url}
         clickImg={clickImg}
         showConcentrationMode={showConcentrationMode}
       />
