@@ -1,5 +1,6 @@
 package com.ssafy.somefriendboy.entity;
 
+import com.fasterxml.jackson.annotation.JsonProperty;
 import lombok.*;
 
 import javax.persistence.*;
@@ -23,6 +24,9 @@ public class Album {
 
     @Column(name = "recent_photo")
     private Long recentPhoto;
+
+    @Column(name = "thumbnail_photo")
+    private Long thumbnailPhoto;
 
     @Column(name = "album_status")
     @Enumerated(EnumType.STRING)
