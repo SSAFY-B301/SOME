@@ -36,20 +36,31 @@ public class AlbumController {
     }
 
     @GetMapping("/detail/{albumId}")
-    public ResponseEntity<ResponseDto> albumDetail(@PathVariable Long albumId) {
+    public ResponseEntity<ResponseDto> albumDetail(@RequestHeader HttpHeaders headers, @PathVariable Long albumId) {
         log.debug("앨범 상세 정보 GET: /album/detail, albumId : ", albumId);
+        String access_token = headers.get("access_token").toString();
 
-        ResponseDto responseDto = albumService.getAlbumDetail(albumId);
+        ResponseDto responseDto = albumService.getAlbumDetail(access_token, albumId);
         return new ResponseEntity<ResponseDto>(responseDto, HttpStatus.OK);
     }
 
     @Transactional
-    @PutMapping("/modify")
-    public ResponseEntity<ResponseDto> albumModify(@RequestHeader HttpHeaders headers, @RequestBody AlbumModifyDto albumModifyDto) {
-        log.debug("앨범 정보 수정 PUT: /album/modify, albumModifyDto : {}", albumModifyDto);
+    @PutMapping("/modify/name")
+    public ResponseEntity<ResponseDto> albumModifyName(@RequestHeader HttpHeaders headers, @RequestBody AlbumModifyNameDto albumModifyDto) {
+        log.debug("앨범 이름 수정 PUT: /album/modify/name, albumModifyDto : {}", albumModifyDto);
         String access_token = headers.get("access_token").toString();
 
-        ResponseDto responseDto = albumService.modifyAlbum(access_token, albumModifyDto);
+        ResponseDto responseDto = albumService.modifyAlbumName(access_token, albumModifyDto);
+        return new ResponseEntity<ResponseDto>(responseDto, HttpStatus.OK);
+    }
+
+    @Transactional
+    @PutMapping("/modify/thumbnail")
+    public ResponseEntity<ResponseDto> albumModifyThumbnail(@RequestHeader HttpHeaders headers, @RequestBody AlbumModifyThumbnailDto albumModifyThumbnailDto) {
+        log.debug("앨범 썸네일 이미지 수정 PUT: /album/modify/thumbnail, albumModifyThumbnailDto : {}", albumModifyThumbnailDto);
+        String access_token = headers.get("access_token").toString();
+
+        ResponseDto responseDto = albumService.modifyAlbumThumbnail(access_token, albumModifyThumbnailDto);
         return new ResponseEntity<ResponseDto>(responseDto, HttpStatus.OK);
     }
 
@@ -59,6 +70,25 @@ public class AlbumController {
         String access_token = headers.get("access_token").toString();
 
         ResponseDto responseDto = albumService.wholeList(access_token, pageable);
+        return new ResponseEntity<ResponseDto>(responseDto, HttpStatus.OK);
+    }
+
+    @Transactional
+    @PutMapping("/fav/{albumId}")
+    public ResponseEntity<ResponseDto> albumFav(@RequestHeader HttpHeaders headers, @PathVariable Long albumId) {
+        log.debug("앨범 즐겨찾기 PUT: /album/fav, albumId : ", albumId);
+        String access_token = headers.get("access_token").toString();
+
+        ResponseDto responseDto = albumService.favAlbum(access_token, albumId);
+        return new ResponseEntity<ResponseDto>(responseDto, HttpStatus.OK);
+    }
+
+    @GetMapping("/list/fav")
+    public ResponseEntity<ResponseDto> albumFavList(@RequestHeader HttpHeaders headers, Pageable pageable) {
+        log.debug("즐겨찾기한 앨범 리스트 GET: /album/list/fav, pageable : {}", pageable);
+        String access_token = headers.get("access_token").toString();
+
+        ResponseDto responseDto = albumService.getFavAlbumList(access_token, pageable);
         return new ResponseEntity<ResponseDto>(responseDto, HttpStatus.OK);
     }
 
