@@ -33,15 +33,11 @@ const PhotoDetail = (): JSX.Element => {
   const [showVoteModal, setVoteModal] = useState<boolean>(false);
   const [showConcentrationMode, setConcentrationMode] = useState<boolean>(false);
 
-  // const { customBoyAxios } = useCustomAxios();
+  const { customBoyAxios } = useCustomAxios();
   
   //사진 데이터 받아오기
-  const {data : queryData, isSuccess} = useQuery(['photo'], () => axios.get(process.env.NEXT_PUBLIC_FRIEND_BOY_URL+"/photo/detail?photoId=60", {
-    headers : {
-      "access_token" : "r1hRhtB9HgFNUxF8RP2LbK8bM793mX1sePCfgLD1CiolDgAAAYfbZFmR"
-    }
-  }));
-  console.log(queryData?.data.data.albumPhotoDetail)
+  const {data : queryData, isSuccess} = useQuery(['photo'], () => customBoyAxios.get(process.env.NEXT_PUBLIC_FRIEND_BOY_URL+"/photo/detail?photoId=60"));
+  // console.log(queryData?.data.data.albumPhotoDetail)
   /**
    * 다운로드 모달창 생성
    */
