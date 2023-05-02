@@ -12,12 +12,19 @@ $main-color: linear-gradient(
 
 @keyframes slider {
   from {
-    width: 100%;
-    height: 0px;
+    transform: translateY(0px);
+  }
+  to {
+    transform: translateY(80px);
+  }
+}
+
+@keyframes iconSlider {
+  from {
+    width: 0%;
   }
   to {
     width: 100%;
-    height: 80px;
   }
 }
 
@@ -30,15 +37,28 @@ $main-color: linear-gradient(
   }
 }
 
+@keyframes smoothDisappear {
+  from {
+    opacity: 1;
+  }
+  to {
+    opacity: 0;
+  }
+}
+
 .appearFriendDiv {
-  animation: slider 0.2s ease-in-out 0s 1 normal forwards;
+  animation: slider 0.5s ease-in-out 0s 1 normal forwards;
+}
+
+.appearIconDiv {
+  animation: iconSlider 0.5s ease-out 0s 1 normal forwards;
 }
 
 .appearIcon {
   opacity: 0;
-  animation: smoothAppear 0.2s ease-in-out 0.2s 1 normal forwards;
+  animation: smoothAppear 0.5s ease-in-out 0s 1 normal forwards;
 }
 
 .disappearIcon {
-  animation: smoothAppear 1s ease-in-out 0s 1 normal reverse forwards;
+  animation: smoothDisappear 0.2s ease-in-out 0s 1 normal forwards;
 }

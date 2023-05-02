@@ -157,8 +157,8 @@ const InviteFriends = (): JSX.Element => {
   console.log(isActiveFriends);
 
   useEffect(() => {
-    const friends = useGetFriends();
-    console.log(friends);
+    // const friends = useGetFriends();
+    // console.log(friends);
 
     setFriends(FRIENDS);
     setAlbums(ALBUMS.data);
@@ -174,7 +174,7 @@ const InviteFriends = (): JSX.Element => {
     setActiveFriends(tmpSet);
     tmpSet.forEach(function (value) {
       const filtered = friends.filter((friend) => friend.id == value);
-      tmpList = [...tmpList, ...filtered];
+      tmpList = [...filtered, ...tmpList];
     });
     setInvitedFriends(tmpList);
   };
@@ -217,7 +217,7 @@ const InviteFriends = (): JSX.Element => {
     setActiveFriends(tmp);
     tmp.forEach(function (value) {
       const filtered = friends.filter((friend) => friend.id == value);
-      tmpList = [...tmpList, ...filtered];
+      tmpList = [...filtered, ...tmpList];
     });
     setInvitedFriends(tmpList);
   };
@@ -265,18 +265,14 @@ const InviteFriends = (): JSX.Element => {
           >
             확인
           </button>
-          {/* <Link
-            className="absolute right-0 text-lg text-black -translate-y-1/2 top-1/2"
-            href="/"
-          >
-            확인
-          </Link> */}
         </div>
       </div>
       <div className="flex flex-col w-11/12" style={{ height: "780px" }}>
         {invitedFriends.length > 0 ? (
           <div
-            className={`${styles.appearFriendDiv} flex items-center box-border px-2`}
+            className={
+              "absolute w-11/12 h-20 flex items-center box-border px-2"
+            }
           >
             <InvitedGroup
               friends={invitedFriends}
@@ -286,51 +282,57 @@ const InviteFriends = (): JSX.Element => {
         ) : (
           <div></div>
         )}
-        <input
-          className="box-border w-full h-12 pl-3 mt-4 mb-2 bg-gray-100 rounded-lg"
-          placeholder="친구, 앨범 검색"
-          value={inputText}
-          onChange={onChange}
-        ></input>
-        <div className="w-full overflow-y-scroll" style={{ height: 700 }}>
-          <div className="box-border flex flex-col w-full mt-4 border-b-2 h-44">
-            <span className="box-border mb-4 text-base">앨범으로 초대</span>
-            <div className="w-full">
-              {inputText.length > 0 ? (
-                <Albums
-                  albums={filterdAlbums}
-                  isActiveFriends={isActiveFriends}
-                  selectAlbums={selectAlbums}
-                  removeAlbums={removeAlbums}
-                />
-              ) : (
-                <Albums
-                  albums={albums}
-                  isActiveFriends={isActiveFriends}
-                  selectAlbums={selectAlbums}
-                  removeAlbums={removeAlbums}
-                />
-              )}
+        <div
+          className={
+            invitedFriends.length > 0
+              ? `w-full flex flex-col ${styles.appearFriendDiv}`
+              : `w-full flex flex-col`
+          }
+        >
+          <input
+            className="box-border w-full h-12 pl-3 mt-4 mb-2 bg-gray-100 rounded-lg"
+            placeholder="친구, 앨범 검색"
+            value={inputText}
+            onChange={onChange}
+          ></input>
+          <div className="w-full overflow-y-scroll" style={{ height: 700 }}>
+            <div className="box-border flex flex-col w-full mt-4 border-b-2 h-44">
+              <span className="box-border mb-4 text-base">앨범으로 초대</span>
+              <div className="w-full">
+                {inputText.length > 0 ? (
+                  <Albums
+                    albums={filterdAlbums}
+                    isActiveFriends={isActiveFriends}
+                    selectAlbums={selectAlbums}
+                  />
+                ) : (
+                  <Albums
+                    albums={albums}
+                    isActiveFriends={isActiveFriends}
+                    selectAlbums={selectAlbums}
+                  />
+                )}
+              </div>
             </div>
-          </div>
-          <div className="box-border flex flex-col w-full mt-4">
-            <span className="mb-4 text-base">친구</span>
-            <div className="box-border px-2 h-">
-              {inputText.length > 0 ? (
-                <Friends
-                  friends={filterdFriends}
-                  isActiveFriends={isActiveFriends}
-                  selectFriends={selectFriends}
-                  removeFriends={removeFriends}
-                />
-              ) : (
-                <Friends
-                  friends={friends}
-                  isActiveFriends={isActiveFriends}
-                  selectFriends={selectFriends}
-                  removeFriends={removeFriends}
-                />
-              )}
+            <div className="box-border flex flex-col w-full mt-4">
+              <span className="mb-4 text-base">친구</span>
+              <div className="box-border px-2 h-">
+                {inputText.length > 0 ? (
+                  <Friends
+                    friends={filterdFriends}
+                    isActiveFriends={isActiveFriends}
+                    selectFriends={selectFriends}
+                    removeFriends={removeFriends}
+                  />
+                ) : (
+                  <Friends
+                    friends={friends}
+                    isActiveFriends={isActiveFriends}
+                    selectFriends={selectFriends}
+                    removeFriends={removeFriends}
+                  />
+                )}
+              </div>
             </div>
           </div>
         </div>
