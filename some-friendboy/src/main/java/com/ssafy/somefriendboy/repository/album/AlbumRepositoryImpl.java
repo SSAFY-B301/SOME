@@ -1,6 +1,7 @@
 package com.ssafy.somefriendboy.repository.album;
 
 import com.querydsl.jpa.impl.JPAQueryFactory;
+import com.ssafy.somefriendboy.dto.AlbumWholeListDto;
 import com.ssafy.somefriendboy.entity.Album;
 import lombok.RequiredArgsConstructor;
 
