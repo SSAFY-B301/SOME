@@ -56,9 +56,8 @@ public class AlbumPhotoService {
             return setResponseDto(result, "토큰 만료", 450);
         }
 
-        Long photoId = null;
         List<List<Long>> categories = requestToFAST(multipartFiles);
-        List<Long> photoIds = new ArrayList<>();
+        LinkedList<AlbumPhoto> albumPhotos = new LinkedList<>();
 
         for (int i = 0; i < metaDataDtos.size(); i++) {
             InputStream inputStream = multipartFiles.get(i).getInputStream();
@@ -68,7 +67,7 @@ public class AlbumPhotoService {
             AlbumPhoto albumPhoto = AlbumPhoto.builder()
                     .photoId(generateSequence(AlbumPhoto.SEQUENCE_NAME))
                     .uploadedDate(LocalDateTime.now())
-                    .s3Url(metaDataDtos.get(i).getUrl())
+                    .s3Url(metaDataDtos.get(i).getOriginUrl())
                     .categoryId(categories.get(i))
                     .albumId(albumId)
                     .userId(userId)
@@ -93,10 +92,12 @@ public class AlbumPhotoService {
                 albumPhoto.setGpsLongitude(lon);
             }
 
-            albumPhotoRepository.insert(albumPhoto);
-            photoId = albumPhoto.getPhotoId();
-            photoIds.add(photoId);
+            albumPhotos.add(albumPhoto);
         }
+
+        List<AlbumPhoto> albumPhotoList = albumPhotoRepository.insert(albumPhotos);
+        List<Long> photoIds = albumPhotoList.stream().map(AlbumPhoto::getPhotoId).collect(Collectors.toList());
+        Long photoId = albumPhotos.getLast().getPhotoId();
 
         //앨범에 최신 업로드 사진 아이디 갱신하기
         if (photoId != null) {
