@@ -11,10 +11,10 @@ import com.ssafy.somefriendboy.dto.AlbumPhotoDto;
 import com.ssafy.somefriendboy.dto.AlbumPhotoListDto;
 import com.ssafy.somefriendboy.dto.MetaDataDto;
 import com.ssafy.somefriendboy.dto.ResponseDto;
-import com.ssafy.somefriendboy.entity.AlbumPhoto;
-import com.ssafy.somefriendboy.entity.AutoIncrementSequence;
+import com.ssafy.somefriendboy.entity.*;
 import com.ssafy.somefriendboy.repository.AlbumPhoto.AlbumPhotoRepository;
 import com.ssafy.somefriendboy.repository.album.AlbumRepository;
+import com.ssafy.somefriendboy.repository.userPhotoLike.UserPhotoLikeRepository;
 import com.ssafy.somefriendboy.util.HttpUtil;
 import lombok.RequiredArgsConstructor;
 import org.springframework.core.io.ByteArrayResource;
@@ -43,6 +43,7 @@ public class AlbumPhotoService {
 
     private final AlbumPhotoRepository albumPhotoRepository;
     private final AlbumRepository albumRepository;
+    private final UserPhotoLikeRepository userPhotoLikeRepository;
     private final MongoOperations mongoOperations;
     private final HttpUtil httpUtil;
 
@@ -113,6 +114,9 @@ public class AlbumPhotoService {
         AlbumPhoto albumPhoto = albumPhotoRepository.findByPhotoId(photoId);
         AlbumPhotoDto albumPhotoDto = new AlbumPhotoDto(albumPhoto);
 
+        UserPhotoLike userPhotoLike = userPhotoLikeRepository.findUserPhotoLike(userId, photoId);
+        albumPhotoDto.setLikeStatus(userPhotoLike.getUserPhotoLikeStatus());
+
         result.put("albumPhotoDetail", albumPhotoDto);
         return setResponseDto(result, "사진 상세 보기", 200);
     }
@@ -132,6 +136,35 @@ public class AlbumPhotoService {
 
         result.put("albumPhotoList", albumPhotoDtos);
         return setResponseDto(result, "앨범 사진 목록", 200);
+    }
+
+    public ResponseDto updateLikePhoto(String accessToken, Long photoId) {
+        Map<String, Object> result = new HashMap<>();
+        String userId = tokenCheck(accessToken);
+
+        if (userId == null) {
+            return setResponseDto(result, "토큰 만료", 450);
+        }
+
+        UserPhotoLike userPhotoLiked = userPhotoLikeRepository.findUserPhotoLike(userId, photoId);
+
+        if (userPhotoLiked == null) {
+            UserPhotoLikeId userPhotoLikeId = UserPhotoLikeId.builder()
+                    .userId(userId).photoId(photoId).build();
+            UserPhotoLike userPhotoLike = UserPhotoLike.builder()
+                    .userPhotoLikeId(userPhotoLikeId).userPhotoLikeStatus(LikeStatus.LIKE).build();
+            userPhotoLikeRepository.save(userPhotoLike);
+        } else {
+            if (userPhotoLiked.getUserPhotoLikeStatus().equals(LikeStatus.LIKE)) { //좋아요 상태인 경우
+                userPhotoLikeRepository.modifyUserPhotoLike(userPhotoLiked.getUserPhotoLikeId().getUserId(),
+                        userPhotoLiked.getUserPhotoLikeId().getPhotoId(), LikeStatus.CANCEL);
+            } else if (userPhotoLiked.getUserPhotoLikeStatus().equals(LikeStatus.CANCEL)) { //안좋아요 상태인 경우
+                userPhotoLikeRepository.modifyUserPhotoLike(userPhotoLiked.getUserPhotoLikeId().getUserId(),
+                        userPhotoLiked.getUserPhotoLikeId().getPhotoId(), LikeStatus.LIKE);
+            }
+        }
+
+        return setResponseDto(result, "사진 좋아요 등록/해제", 200);
     }
 
     private Long generateSequence(String seqName) {

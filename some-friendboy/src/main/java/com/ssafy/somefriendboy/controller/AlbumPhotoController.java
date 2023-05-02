@@ -70,4 +70,14 @@ public class AlbumPhotoController {
         return new ResponseEntity<ResponseDto>(responseDto, HttpStatus.OK);
     }
 
+    @Transactional
+    @PutMapping("/like")
+    public ResponseEntity<ResponseDto> likePhoto(@RequestHeader HttpHeaders headers, Long photoId) {
+        String accessToken = headers.get("access_token").toString();
+        log.debug("사진 좋아요 등록/해제 PUT: /photo/like, photoId : ", photoId);
+
+        ResponseDto responseDto = albumPhotoService.updateLikePhoto(accessToken, photoId);
+        return new ResponseEntity<ResponseDto>(responseDto, HttpStatus.OK);
+    }
+
 }
