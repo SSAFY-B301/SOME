@@ -22,8 +22,4 @@ public class AlbumMemberId implements Serializable {
 
     @Column(name = "album_id")
     private Long albumId;
-
-    @Column(name = "user_status")
-    @Enumerated(EnumType.STRING)
-    private AlbumMemberStatus albumMemberStatus;
 }

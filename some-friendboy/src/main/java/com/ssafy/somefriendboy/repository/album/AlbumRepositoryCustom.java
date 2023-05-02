@@ -7,6 +7,7 @@ import java.util.List;
 public interface AlbumRepositoryCustom {
 
     long modifyAlbumName(Long albumId, String newName);
+    long modifyAlbumThumbnail(Long albumId, Long photoId);
     long modifyAlbumRecentPhoto(Long albumId, Long photoId);
 
 }
