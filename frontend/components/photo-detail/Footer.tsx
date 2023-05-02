@@ -24,49 +24,49 @@ const Footer = ({
    */
 
   return (
-    <div className="w-9/12 h-full flex justify-between items-center">
+    <div className="flex items-center justify-between w-9/12 h-full">
       <div
-        className="flex flex-col justify-center items-center"
+        className="flex flex-col items-center justify-center"
         onClick={clickDownload}
       >
         <svg
           xmlns="http://www.w3.org/2000/svg"
           fill="none"
           viewBox="0 0 24 24"
-          stroke-width="1.5"
+          strokeWidth="1.5"
           stroke="currentColor"
-          className="w-10 h-10 box-border mb-1"
+          className="box-border w-10 h-10 mb-1"
         >
           <path
-            stroke-linecap="round"
-            stroke-linejoin="round"
+            strokeLinecap="round"
+            strokeLinejoin="round"
             d="M3 16.5v2.25A2.25 2.25 0 005.25 21h13.5A2.25 2.25 0 0021 18.75V16.5M16.5 12L12 16.5m0 0L7.5 12m4.5 4.5V3"
           />
         </svg>
         <span className="text-xs">다운로드</span>
       </div>
       <div
-        className="flex flex-col justify-center items-center"
+        className="flex flex-col items-center justify-center"
         onClick={clickVote}
       >
         <svg
           xmlns="http://www.w3.org/2000/svg"
           fill="none"
           viewBox="0 0 24 24"
-          stroke-width="1.5"
+          strokeWidth="1.5"
           stroke="currentColor"
-          className="w-10 h-10 box-border mb-1"
+          className="box-border w-10 h-10 mb-1"
         >
           <path
-            stroke-linecap="round"
-            stroke-linejoin="round"
+            strokeLinecap="round"
+            strokeLinejoin="round"
             d="M9 12.75L11.25 15 15 9.75M21 12c0 1.268-.63 2.39-1.593 3.068a3.745 3.745 0 01-1.043 3.296 3.745 3.745 0 01-3.296 1.043A3.745 3.745 0 0112 21c-1.268 0-2.39-.63-3.068-1.593a3.746 3.746 0 01-3.296-1.043 3.745 3.745 0 01-1.043-3.296A3.745 3.745 0 013 12c0-1.268.63-2.39 1.593-3.068a3.745 3.745 0 011.043-3.296 3.746 3.746 0 013.296-1.043A3.746 3.746 0 0112 3c1.268 0 2.39.63 3.068 1.593a3.746 3.746 0 013.296 1.043 3.746 3.746 0 011.043 3.296A3.745 3.745 0 0121 12z"
           />
         </svg>
         <span className="text-xs">이거 올릴까?</span>
       </div>
       <div
-        className="flex flex-col justify-center items-center"
+        className="flex flex-col items-center justify-center"
         onClick={clickDelete}
       >
         <svg
@@ -75,7 +75,7 @@ const Footer = ({
           viewBox="0 0 24 24"
           strokeWidth={1.5}
           stroke="currentColor"
-          className="w-10 h-10 box-border mb-1"
+          className="box-border w-10 h-10 mb-1"
         >
           <path
             strokeLinecap="round"
