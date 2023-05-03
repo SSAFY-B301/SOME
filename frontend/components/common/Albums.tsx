@@ -98,6 +98,9 @@ function FavoriteAlbum() {
     mutate(id);
   };
 
+  const default_profile =
+    "https://mblogthumb-phinf.pstatic.net/MjAxODA1MjhfMTA0/MDAxNTI3NDg3MTczOTY5.C2eXPMwTXPN7mN6rhXpLrbLAu36fyR7JDr3Ym8URGl8g.97dxz-n9zjbzgv8KbhDwrICDNbNierqWueC0aRsfgjIg.JPEG.ehfkdl8989/KakaoTalk_Moim_4UjmLsR1AohJhEmSqqNZkX7uHKU0kp.jpg?type=w800";
+
   /**
    * 즐겨찾는 앨범 리스트
    */
@@ -106,8 +109,8 @@ function FavoriteAlbum() {
     getFavorite && getFavorite.length > 0
       ? getFavorite.map((favoriteAlbum: FavoriteAlbumType) => (
           <div
-            onClick={() => router.push(`/album/${favoriteAlbum.id}`)}
-            key={favoriteAlbum.id}
+            onClick={() => router.push(`/album/${favoriteAlbum.album_id}`)}
+            key={favoriteAlbum.album_id}
             className={styles.card}
           >
             <div
@@ -116,20 +119,18 @@ function FavoriteAlbum() {
                 width: "73.846vw",
                 height: "98.462vw",
                 borderRadius: "3.077vw",
-                backgroundImage: "url(" + favoriteAlbum.img + ")",
+                backgroundImage: `url(${
+                  favoriteAlbum.thumbnail_photo_url
+                    ? favoriteAlbum.thumbnail_photo_url
+                    : default_profile
+                })`,
               }}
             >
               <div className="flex justify-end relative top-4 right-4 gap-2">
                 <HeartIcon
-                  onClick={() => clickedHeart(favoriteAlbum.id)}
-                  fill={favoriteAlbum.isLike ? "red" : "none"}
-                  stroke={favoriteAlbum.isLike ? "red" : "white"}
-                  width="6.154vw"
-                  height="6.154vw"
-                />
-                <DotsIcon
-                  fill="white"
-                  stroke="white"
+                  onClick={() => clickedHeart(favoriteAlbum.album_id)}
+                  fill={"red"}
+                  stroke={"red"}
                   width="6.154vw"
                   height="6.154vw"
                 />
@@ -142,13 +143,13 @@ function FavoriteAlbum() {
                   className="text-white text-end"
                   style={{ fontSize: "7.692vw" }}
                 >
-                  {favoriteAlbum.name}
+                  {favoriteAlbum.album_name}
                 </span>
                 <span
                   className="text-white text-end"
                   style={{ fontSize: "2.051vw" }}
                 >
-                  {favoriteAlbum.createdTime}
+                  {favoriteAlbum.album_created_date}
                 </span>
               </div>
             </div>
