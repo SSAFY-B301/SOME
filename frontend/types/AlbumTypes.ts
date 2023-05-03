@@ -50,3 +50,14 @@ export interface previewPhotoType {
   id: number;
   img: string;
 }
+
+// TODO : API 명세서 보고 Type 만들기
+/**
+ * [GET] 사진 정보
+ * @returns
+ */
+export interface requestPhotosType {
+  albumId: number;
+  categoryId: number;
+  userId: number[];
+}
