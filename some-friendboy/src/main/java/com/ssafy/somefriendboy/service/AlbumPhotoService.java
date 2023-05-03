@@ -145,7 +145,10 @@ public class AlbumPhotoService {
                 albumPhotoListOptDto.getCategoryId(), albumPhotoListOptDto.getUserId());
         List<AlbumPhotoListDto> albumPhotoListDtos = albumPhotos.stream()
                 .map(AlbumPhotoListDto::new).collect(Collectors.toList());
+        List<Long> totalPhotoId = albumPhotoListDtos.stream().map(AlbumPhotoListDto::getPhotoId).collect(Collectors.toList());
 
+        result.put("totalPhotoCnt", albumPhotoListDtos.size());
+        result.put("totalPhotoId", totalPhotoId);
         result.put("albumPhotoList", albumPhotoListDtos);
         return setResponseDto(result, "앨범 사진 목록", 200);
     }
