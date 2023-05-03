@@ -1,23 +1,30 @@
 import useCustomAxios from "@/features/customAxios";
-import { useMutation, useQuery } from "react-query";
+import { useMutation, useQuery, useQueryClient } from "react-query";
+
+const {customBoyAxios} = useCustomAxios();
+
 
 
 function getPhoto(){
 
-    const {customBoyAxios} = useCustomAxios();
+    const {data : queryData, isLoading} = useQuery(['photo'], () => customBoyAxios.get(process.env.NEXT_PUBLIC_FRIEND_BOY_URL+"/photo/detail?photoId=75"));
     
-    const {data : queryData} = useQuery(['photo'], () => customBoyAxios.get(process.env.NEXT_PUBLIC_FRIEND_BOY_URL+"/photo/detail?photoId=75"));
-    
-    console.log(queryData?.data.data.albumPhotoDetail)
+    const resultData = queryData?.data.data.albumPhotoDetail;
 
-    return queryData?.data.data.albumPhotoDetail;
+    return {resultData, isLoading};
 }
 
 function likePhoto(){
-    const { customBoyAxios } = useCustomAxios();
-    
-    const likePhoto = useMutation((photoId) => customBoyAxios.post('/photo/like?photoId='+photoId));
+    const queryClient = useQueryClient();
 
+    const {mutate : likeMutation} = useMutation((photoId) => customBoyAxios.put('/photo/like?photoId='+photoId), {
+        onSuccess : () => {
+            console.log("success");
+            queryClient.invalidateQueries('photo'); // queryKey 유효성 제거
+        }
+    });
+    
+    return {likeMutation}
 }
 
 export {getPhoto, likePhoto}
