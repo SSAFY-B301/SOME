@@ -54,7 +54,7 @@ export default function MyPage() {
   // 로그아웃 시 리덕스 값이 바뀌었을 때 페이지 이동
   useEffect(() => {
     if (!isLogin) {
-      router.push("/");
+      router.push("/login");
     }
   }, [isLogin]);
 
