@@ -2,10 +2,6 @@ import axios, { AxiosError, AxiosResponse } from "axios";
 
 import { UseMutationResult, useMutation, useQuery } from "react-query";
 
-// Redux 관련
-import { RootState } from "@/store/configureStore";
-import { useSelector } from "react-redux";
-
 import {
   CurrentAlbumType,
   FavoriteAlbumType,
@@ -13,8 +9,12 @@ import {
   AlbumInfoType,
   PhotoType,
 } from "@/types/AlbumTypes";
+import useCustomAxios from "@/features/customAxios";
 
 const URL = "http://localhost:8080";
+
+const { customBoyAxios } = useCustomAxios();
+
 // 남사친 페이지
 /**
  * [GET] 최근 앨범
@@ -50,20 +50,12 @@ export const useGetFavorite = () => {
  * @returns
  */
 export const useGetTotal = () => {
-  const { userInfo } = useSelector((state: RootState) => state.auth);
-  const custom = axios.create({
-    baseURL: process.env.NEXT_PUBLIC_FRIEND_BOY_URL,
-    headers: {
-      access_token: userInfo.access_token,
-    },
-  });
-
-  const queryKey = `${URL}/whole`;
-  // const queryKey = `album/list/whole`;
+  // const queryKey = `${URL}/whole`;
+  const queryKey = `album/list/whole`;
 
   const { data: getTotal, isLoading: getTotalIsLoading } = useQuery<
     AxiosResponse<TotalAlbumType[]>
-  >(["total"], () => axios.get(queryKey));
+  >(["total"], () => customBoyAxios.get(queryKey));
   console.log(getTotal);
   return { getTotal, getTotalIsLoading };
 };
@@ -82,6 +74,10 @@ export const useGetDetail = () => {
   return { getDetail, getDetailIsLoading };
 };
 
+/**
+ * [PUT] 앨범 상세 정보
+ * @returns
+ */
 export function usePutDetail(): UseMutationResult<
   AlbumInfoType,
   AxiosError,
@@ -89,10 +85,9 @@ export function usePutDetail(): UseMutationResult<
 > {
   return useMutation((value) => axios.put(`${URL}/detail`, value), {
     onSuccess: (data) => {
-      console.log(data); // mutation 이 성공하면 response를 받을 수 있다.
+      console.log(data);
     },
     onError: (error) => {
-      // mutation 이 에러가 났을 경우 error를 받을 수 있다.
       console.error(error);
     },
   });
@@ -104,6 +99,7 @@ export function usePutDetail(): UseMutationResult<
  */
 export const useGetPhotos = () => {
   const queryKey = `${URL}/photos`;
+  // const queryKey = `/photo/album/list`;
 
   const { data: getPhotos, isLoading: getPhotosIsLoading } = useQuery<
     AxiosResponse<PhotoType[]>
@@ -111,3 +107,33 @@ export const useGetPhotos = () => {
 
   return { getPhotos, getPhotosIsLoading };
 };
+
+/**
+ * [PUT] 앨범 즐겨찾기
+ * @returns
+ */
+export function usePutFav(): UseMutationResult<boolean, AxiosError, boolean> {
+  return useMutation((albumId) => axios.put(`/album/fav?photoId=${albumId}`), {
+    onSuccess: (data) => {
+      console.log(data);
+    },
+    onError: (error) => {
+      console.error(error);
+    },
+  });
+}
+
+/**
+ * [POST] 사진 업로드
+ * @returns
+ */
+// export function usePostPhoto(): UseMutationResult<boolean, AxiosError, boolean> {
+//   return useMutation((params) => axios.put(`/album/fav?photoId=${params.multipartFile}`), {
+//     onSuccess: (data) => {
+//       console.log(data);
+//     },
+//     onError: (error) => {
+//       console.error(error);
+//     },
+//   });
+// }

@@ -46,7 +46,9 @@ function TotalAlbumItems() {
   const router = useRouter();
   const { getTotal, getTotalIsLoading } = useGetTotal();
 
-  const totalAlbums: React.ReactNode = getTotal?.data ? (
+  const totalAlbums: React.ReactNode = getTotalIsLoading ? (
+    <p>로딩중</p>
+  ) : getTotal?.data ? (
     getTotal.data.map((album: TotalAlbumType) => (
       <div
         key={album.id}
