@@ -42,13 +42,13 @@ const Friend = ({
 
   return (
     <li className="h-16 flex justify-between items-center" onClick={select}>
-      <div className="w-2/6 flex justify-between items-center">
+      <div className="w-2/3 flex justify-start items-center">
         <img
           src={friend.profile_thumbnail_image}
           alt="img"
-          className="w-12 h-12 border-2 rounded-full"
+          className="w-12 h-12 border-2 rounded-full box-border mr-3"
         />
-        <div className="text-base">{friend.profile_nickname}</div>
+        <div className="text-base truncate">{friend.profile_nickname}</div>
       </div>
       <button
         className={

@@ -21,7 +21,7 @@ const Album = ({ album, selectAlbum, isActiveFriends }: Props): JSX.Element => {
 
   return (
     <div
-      className="w-28 h-28 rounded-xl bg-center bg-cover "
+      className="w-28 h-28 rounded-xl bg-center bg-cover border-2"
       style={{ backgroundImage: "url(" + album.thumbnail_photo_url + ")" }}
       onClick={select}
     >

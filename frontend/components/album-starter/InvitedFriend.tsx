@@ -60,7 +60,9 @@ const InvitedFriend = ({ friend, topRemoveFriends }: Props): JSX.Element => {
             className="absolute left-1/2 top-1/2 -translate-x-1/2 -translate-y-1/2 w-12 h-12 border-2 rounded-full"
           />
         </div>
-        <span className="text-xs">{friend.profile_nickname}</span>
+        <span className="w-14 text-xs truncate flex justify-center">
+          {friend.profile_nickname}
+        </span>
       </div>
     </div>
   );
