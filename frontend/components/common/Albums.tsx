@@ -5,7 +5,7 @@ import { useRouter } from "next/router";
 import ItemBlock from "components/common/ItemBlock";
 
 // API
-import { useGetFavorite, useGetCurrent } from "@/pages/api/albumApi";
+import { useGetFavorite, useGetCurrent, Mutations } from "@/pages/api/albumApi";
 
 // CSS
 import styles from "styles/home.module.scss";
@@ -24,7 +24,7 @@ import { CurrentAlbumType, FavoriteAlbumType } from "@/types/AlbumTypes";
 function CurrentAlbum() {
   const router = useRouter();
 
-  const { getCurrent, getCurrentIsLoading } = useGetCurrent();
+  const { getCurrent } = useGetCurrent();
 
   const currents: React.ReactNode = getCurrent ? (
     getCurrent.map((currentAlbum: CurrentAlbumType) => (
@@ -86,79 +86,85 @@ function FavoriteAlbum() {
 
   const { getFavorite, getFavoriteIsLoading } = useGetFavorite();
 
+  const { mutate } = Mutations().usePutFavHome();
+
   /**
    * 즐겨찾기 토글
    * @param id
    */
   const clickedHeart = (id: number) => {
     // TODO : 즐겨찾기 API 연결
+
+    mutate(id);
   };
 
   /**
    * 즐겨찾는 앨범 리스트
    */
-  const favorites: React.ReactNode = getFavorite
-    ? getFavorite.map((favoriteAlbum: FavoriteAlbumType) => (
-        <div
-          onClick={() => router.push(`/album/${favoriteAlbum.id}`)}
-          key={favoriteAlbum.id}
-          className={styles.card}
-        >
+  const favorites: React.ReactNode =
+    // TODO : 빈 배열인 경우 개선
+    getFavorite && getFavorite.length > 0
+      ? getFavorite.map((favoriteAlbum: FavoriteAlbumType) => (
           <div
-            className="bg-center bg-cover "
-            style={{
-              width: "73.846vw",
-              height: "98.462vw",
-              borderRadius: "3.077vw",
-              backgroundImage: "url(" + favoriteAlbum.img + ")",
-            }}
+            onClick={() => router.push(`/album/${favoriteAlbum.id}`)}
+            key={favoriteAlbum.id}
+            className={styles.card}
           >
-            <div className="flex justify-end relative top-4 right-4 gap-2">
-              <HeartIcon
-                onClick={() => clickedHeart(favoriteAlbum.id)}
-                fill={favoriteAlbum.isLike ? "red" : "none"}
-                stroke={favoriteAlbum.isLike ? "red" : "white"}
-                width="6.154vw"
-                height="6.154vw"
-              />
-              <DotsIcon
-                fill="white"
-                stroke="white"
-                width="6.154vw"
-                height="6.154vw"
-              />
-            </div>
             <div
-              className="flex flex-col relative "
-              style={{ width: "32.821vw", top: "6.154vw", left: "4.103vw" }}
+              className="bg-center bg-cover "
+              style={{
+                width: "73.846vw",
+                height: "98.462vw",
+                borderRadius: "3.077vw",
+                backgroundImage: "url(" + favoriteAlbum.img + ")",
+              }}
             >
-              <span
-                className="text-white text-end"
-                style={{ fontSize: "7.692vw" }}
+              <div className="flex justify-end relative top-4 right-4 gap-2">
+                <HeartIcon
+                  onClick={() => clickedHeart(favoriteAlbum.id)}
+                  fill={favoriteAlbum.isLike ? "red" : "none"}
+                  stroke={favoriteAlbum.isLike ? "red" : "white"}
+                  width="6.154vw"
+                  height="6.154vw"
+                />
+                <DotsIcon
+                  fill="white"
+                  stroke="white"
+                  width="6.154vw"
+                  height="6.154vw"
+                />
+              </div>
+              <div
+                className="flex flex-col relative "
+                style={{ width: "32.821vw", top: "6.154vw", left: "4.103vw" }}
               >
-                {favoriteAlbum.name}
-              </span>
-              <span
-                className="text-white text-end"
-                style={{ fontSize: "2.051vw" }}
-              >
-                {favoriteAlbum.createdTime}
-              </span>
+                <span
+                  className="text-white text-end"
+                  style={{ fontSize: "7.692vw" }}
+                >
+                  {favoriteAlbum.name}
+                </span>
+                <span
+                  className="text-white text-end"
+                  style={{ fontSize: "2.051vw" }}
+                >
+                  {favoriteAlbum.createdTime}
+                </span>
+              </div>
             </div>
           </div>
-        </div>
-      ))
-    : [...Array(3)].map((_, i) => (
-        <div
-          key={i}
-          className={`w-72 h-96 rounded-xl grow flex-shrink-0 ${styles.card}`}
-          style={{ backgroundColor: "#94a3b8" }}
-        >
-          <div>
-            <span>앨범 생성하러 가기</span>
+        ))
+      : [...Array(3)].map((_, i) => (
+          <div
+            key={i}
+            className={`w-72 h-96 rounded-xl grow flex-shrink-0 ${styles.card}`}
+            style={{ backgroundColor: "#94a3b8" }}
+          >
+            <div>
+              <span>앨범 생성하러 가기</span>
+            </div>
           </div>
-        </div>
-      ));
+        ));
   return (
     <ItemBlock width="92.308vw" height="" radius="5.128vw">
       <div
