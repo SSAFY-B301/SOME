@@ -1,6 +1,7 @@
 package com.ssafy.somefriendboy.controller;
 
 import com.drew.imaging.ImageProcessingException;
+import com.ssafy.somefriendboy.dto.AlbumPhotoIdDto;
 import com.ssafy.somefriendboy.dto.AlbumPhotoListOptDto;
 import com.ssafy.somefriendboy.dto.MetaDataDto;
 import com.ssafy.somefriendboy.dto.ResponseDto;
@@ -77,6 +78,16 @@ public class AlbumPhotoController {
         log.debug("사진 좋아요 등록/해제 PUT: /photo/like, photoId : ", photoId);
 
         ResponseDto responseDto = albumPhotoService.updateLikePhoto(accessToken, photoId);
+        return new ResponseEntity<ResponseDto>(responseDto, HttpStatus.OK);
+    }
+
+    @Transactional
+    @PutMapping("/delete")
+    public ResponseEntity<ResponseDto> deletePhoto(@RequestHeader HttpHeaders headers, @RequestBody AlbumPhotoIdDto albumPhotoIdDto) {
+        String accessToken = headers.get("access_token").toString();
+        log.debug("사진 삭제 PUT: /photo/delete, albumPhotoIdDto : {}", albumPhotoIdDto);
+
+        ResponseDto responseDto = albumPhotoService.updatePhotoStatus(accessToken, albumPhotoIdDto);
         return new ResponseEntity<ResponseDto>(responseDto, HttpStatus.OK);
     }
 
