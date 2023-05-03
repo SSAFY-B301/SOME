@@ -37,7 +37,7 @@ export default function MyPage() {
     {
         headers : {
             "Content-Type": "application/x-www-form-urlencoded",
-            "Authorization" : "Bearer " + userInfo.access_token,
+            "Authorization" : "Bearer " + JSON.parse(window.localStorage.getItem("access_token") || "").access_token,
         }
     })
   }
