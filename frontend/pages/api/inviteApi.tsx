@@ -4,6 +4,7 @@ import { useMutation } from "react-query";
 import { useSelector } from "react-redux";
 import { RootState } from "@/store/configureStore";
 import useCustomAxios from "@/features/customAxios";
+import { useRouter } from "next/router";
 
 // 남사친 페이지
 /**
@@ -11,13 +12,11 @@ import useCustomAxios from "@/features/customAxios";
  * @returns
  */
 export const useGetFriends = () => {
-  const queryKey = "/album/list/friend";
-
   const { customBoyAxios } = useCustomAxios();
 
   const { isLoading: getIsLoading, data: Friends } = useQuery(
     ["friends"],
-    () => customBoyAxios.get(queryKey),
+    () => customBoyAxios.get("/album/list/friend"),
     {
       onSuccess: (data) => {
         console.log(data);
@@ -34,14 +33,23 @@ interface AlbumCreateType {
   invite_friend: number[];
 }
 
-export const createAlbum = () => {
-  const queryKey = "/album/create";
+interface InviteFriendType {
+  album_id: number;
+  additional_invite_friend: number[];
+}
 
+export const albumMutation = () => {
   const { customBoyAxios } = useCustomAxios();
+  const router = useRouter();
 
-  return useMutation(
+  // [POST] 앨범 생성
+  const {
+    mutate: createAlbum,
+    isSuccess: createAlbumSuccess,
+    data: AlbumId,
+  } = useMutation(
     (newAlbum: AlbumCreateType) => {
-      return customBoyAxios.post(queryKey, newAlbum);
+      return customBoyAxios.post("/album/create", newAlbum);
     },
     {
       onMutate: (variable) => {
@@ -52,10 +60,42 @@ export const createAlbum = () => {
       },
       onSuccess: (data, variables, context) => {
         console.log("success", data, variables, context);
+        router.push(`/album/${data.data.data.album_id}`);
       },
       onSettled: () => {
         console.log("end");
       },
     }
   );
+
+  // [POST] 친구 추가 초대
+  const { mutate: additionalInviteFriends, isSuccess: inviteSuccess } =
+    useMutation(
+      (inviteInfo: InviteFriendType) => {
+        return customBoyAxios.post("/album/friend/invite", inviteInfo);
+      },
+      {
+        onMutate: (variable) => {
+          console.log("onMutate ", variable);
+        },
+        onError: (error, variable, context) => {
+          //error
+        },
+        onSuccess: (data, variables, context) => {
+          console.log("success", data, variables, context);
+          router.push(`/album/${variables.album_id}`);
+        },
+        onSettled: () => {
+          console.log("end");
+        },
+      }
+    );
+
+  return {
+    createAlbum,
+    createAlbumSuccess,
+    AlbumId,
+    additionalInviteFriends,
+    inviteSuccess,
+  };
 };

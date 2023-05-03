@@ -1,63 +1,16 @@
 import React, { useState, useEffect } from "react";
-import Link from "next/link";
-import styles from "@/styles/inviteFriends.module.scss";
 import { useRouter } from "next/router";
+import styles from "@/styles/inviteFriends.module.scss";
 import BackButtonIcon from "@/public/icons/CaretLeft.svg";
 import Albums from "@/components/album-starter/Albums";
 import Friends from "@/components/album-starter/Friends";
 import InvitedGroup from "@/components/album-starter/InvitedGroup";
-import { createAlbum, useGetFriends } from "./api/inviteApi";
+import { useGetFriends, albumMutation } from "./api/inviteApi";
 
 /**
  * 새로운 앨범에서 들어왔을 때 albumType: "new"
  * 기존 앨범에서 들어왔을 때 albumType: "old"
  */
-
-/**
- * 앨범 더미 데이터
- */
-const ALBUMS = [
-  {
-    id: 1,
-    name: "국내 일주",
-    date: "2023-04-22",
-    thumbNail:
-      "https://images.unsplash.com/photo-1595981234058-a9302fb97229?ixlib=rb-4.0.3&ixid=MnwxMjA3fDB8MHxzZWFyY2h8MXx8YWxidW18ZW58MHx8MHx8&auto=format&fit=crop&w=500&q=60",
-    userIds: [1, 2, 3],
-  },
-  {
-    id: 2,
-    name: "해외 일주",
-    date: "2023-04-21",
-    thumbNail:
-      "https://images.unsplash.com/photo-1524613032530-449a5d94c285?ixlib=rb-4.0.3&ixid=MnwxMjA3fDB8MHxzZWFyY2h8Mnx8YWxidW18ZW58MHx8MHx8&auto=format&fit=crop&w=500&q=60",
-    userIds: [1, 3, 5],
-  },
-  {
-    id: 3,
-    name: "SSAFY 대전 2반",
-    date: "2023-03-22",
-    thumbNail:
-      "https://images.unsplash.com/photo-1500051638674-ff996a0ec29e?ixlib=rb-4.0.3&ixid=MnwxMjA3fDB8MHxzZWFyY2h8MTF8fGFsYnVtfGVufDB8fDB8fA%3D%3D&auto=format&fit=crop&w=500&q=60",
-    userIds: [1, 2, 4],
-  },
-  {
-    id: 4,
-    name: "자율 프로젝트",
-    date: "2023-02-28",
-    thumbNail:
-      "https://images.unsplash.com/photo-1571502189597-d7d3a0f114fd?ixlib=rb-4.0.3&ixid=MnwxMjA3fDB8MHxzZWFyY2h8MTR8fGFsYnVtfGVufDB8fDB8fA%3D%3D&auto=format&fit=crop&w=500&q=60",
-    userIds: [3, 4, 5],
-  },
-  {
-    id: 5,
-    name: "비밀 친구",
-    date: "2023-01-01",
-    thumbNail:
-      "https://images.unsplash.com/photo-1531777992189-ad52457fbe93?ixlib=rb-4.0.3&ixid=MnwxMjA3fDB8MHxzZWFyY2h8MTl8fGFsYnVtfGVufDB8fDB8fA%3D%3D&auto=format&fit=crop&w=500&q=60",
-    userIds: [4, 5, 6],
-  },
-];
 
 interface FriendType {
   id: number;
@@ -79,15 +32,16 @@ const InviteFriends = (): JSX.Element => {
   /**
    * 신규 앨범 이름, 신규 및 기존 앨범 타입 식별 쿼리
    */
-  const router = useRouter(); // {albumName: "", albumType: ""}
+  const router = useRouter(); // {albumName<string>: "", albumType<string>: "new" or "old"}
   const isNewAlbum: string | string[] | undefined = router.query.albumType;
+  const DUMMY_ALBUM_ID: number = 1;
 
   /**
    * 관리할 state
    */
-  const [isActiveFriends, setActiveFriends] = useState<Set<number>>(new Set());
-  const [invitedFriends, setInvitedFriends] = useState<FriendType[]>([]);
-  const [inputText, setInputText] = useState<string>("");
+  const [isActiveFriends, setActiveFriends] = useState<Set<number>>(new Set()); // 선택된 친구 ID 목록
+  const [invitedFriends, setInvitedFriends] = useState<FriendType[]>([]); // 상단에 표시할 친구 목록
+  const [inputText, setInputText] = useState<string>(""); // 검색 하고 있는 텍스트
 
   console.log(isActiveFriends);
   console.log(Array.from(isActiveFriends));
@@ -127,19 +81,25 @@ const InviteFriends = (): JSX.Element => {
   };
 
   /**
-   * 검색 기능 및 필터링 리스트
+   * 검색 기능
    */
   const onChange = (e: React.ChangeEvent<HTMLInputElement>) => {
     e.preventDefault();
     setInputText(e.target.value);
   };
 
+  /**
+   * 검색으로 필터링 된 친구 목록
+   */
   const filterdFriends: FriendType[] = friends
     ? friends.filter((item) =>
         item.profile_nickname.toUpperCase().includes(inputText.toUpperCase())
       )
     : [];
 
+  /**
+   * 검색으로 필터링 된 앨범 목록
+   */
   const filterdAlbums: AlbumType[] = albums
     ? albums.filter((item) =>
         item.album_name.toUpperCase().includes(inputText.toUpperCase())
@@ -162,7 +122,7 @@ const InviteFriends = (): JSX.Element => {
   };
 
   /**
-   * 앨범 멤버 삭제 기능
+   * 앨범 멤버 삭제 기능... 넣을 지 말지...
    */
   const removeAlbums = (ids: number[]) => {
     const tmp = new Set<number>(isActiveFriends);
@@ -171,16 +131,32 @@ const InviteFriends = (): JSX.Element => {
   };
 
   /**
-   * 앨범 생성 요청
-   * album_name: router.query.albumName,
-    invite_friend: invited,
+   * 앨범 생성 확인 or 추가 친구 초대 확인
    */
-  const { mutate } = createAlbum();
+  const { createAlbum, additionalInviteFriends } = albumMutation();
 
-  const createAlbumClick = () => {
-    const invited = Array.from(isActiveFriends);
-    mutate({ album_name: router.query.albumName, invite_friend: invited });
+  const createAlbumClick = async () => {
+    if (isNewAlbum == "new") {
+      const params = {
+        album_name: router.query.albumName,
+        invite_friend: Array.from(isActiveFriends),
+      };
+      createAlbum(params);
+    } else {
+      const params = {
+        album_id: DUMMY_ALBUM_ID,
+        additional_invite_friend: Array.from(isActiveFriends),
+      };
+      additionalInviteFriends(params);
+    }
   };
+
+  /**
+   * API 연결 문제점
+   * #04-1 친구 목록 불러오기
+   * 1. 앨범 선택 시 본인 ID 포함됨 -> 본인 ID 제거된 리스트 요청
+   * 2. (보류) 새 앨범 -> 친구 초대: 전체 친구 리스트, 앨범 -> 친구 초대: 가입된 친구를 제외한 친구 리스트
+   */
 
   return (
     <div
@@ -199,7 +175,7 @@ const InviteFriends = (): JSX.Element => {
             공유 상대 초대
           </span>
           <button
-            onClick={isNewAlbum == "new" ? createAlbumClick : undefined}
+            onClick={createAlbumClick}
             className="absolute right-0 text-lg text-black -translate-y-1/2 top-1/2"
           >
             확인
