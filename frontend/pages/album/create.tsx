@@ -24,7 +24,7 @@ const AlbumCreate = (): JSX.Element => {
             새로운 앨범 생성
           </span>
           <Link
-            className="absolute right-0 text-lg font-thin text-white -translate-y-1/2 top-1/2 opacity-60"
+            className="absolute right-0 text-lg font-thin text-white -translate-y-1/2 top-1/2"
             href={{
               pathname: "/invite",
               query: { albumName: resultName, albumType: "new" },

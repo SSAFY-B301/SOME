@@ -5,10 +5,10 @@ import styles from "@/styles/home.module.scss";
 
 interface AlbumType {
   id: number;
-  name: string;
-  date: string;
-  thumbNail: string;
-  userIds: number[];
+  album_name: string;
+  album_created_date: string;
+  thumbnail_photo_url: string;
+  members: number[];
 }
 
 interface Props {
@@ -24,19 +24,23 @@ const Albums = ({
 }: Props): JSX.Element => {
   return (
     <ItemBlock width="100%" height="" radius="20px">
-      <div className="flex flex-col w-full h-full box-border px-2">
-        <div
-          className={`flex justify-start gap-4 overflow-scroll ${styles.cards}`}
-        >
-          {albums.map((album) => (
-            <Album
-              album={album}
-              isActiveFriends={isActiveFriends}
-              selectAlbum={selectAlbums}
-            />
-          ))}
+      {albums ? (
+        <div className="flex flex-col w-full h-32 box-border px-2">
+          <div
+            className={`flex justify-start gap-4 overflow-scroll ${styles.cards}`}
+          >
+            {albums.map((album) => (
+              <Album
+                album={album}
+                isActiveFriends={isActiveFriends}
+                selectAlbum={selectAlbums}
+              />
+            ))}
+          </div>
         </div>
-      </div>
+      ) : (
+        <div></div>
+      )}
     </ItemBlock>
   );
 };

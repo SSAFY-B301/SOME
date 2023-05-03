@@ -4,11 +4,7 @@ import { useMutation } from "react-query";
 import { useSelector } from "react-redux";
 import { RootState } from "@/store/configureStore";
 import useCustomAxios from "@/features/customAxios";
-
-interface AlbumCreateType {
-  album_name: string | string[] | undefined;
-  invite_friend: string[];
-}
+import { useRouter } from "next/router";
 
 // 남사친 페이지
 /**
@@ -16,34 +12,44 @@ interface AlbumCreateType {
  * @returns
  */
 export const useGetFriends = () => {
-  const queryKey = "/album/list/friend";
+  const { customBoyAxios } = useCustomAxios();
 
-  const {customBoyAxios} = useCustomAxios();
-
-
-  const { isLoading: getIsLoading, data: getFriends } = useQuery(
+  const { isLoading: getIsLoading, data: Friends } = useQuery(
     ["friends"],
-    () => customBoyAxios.get(queryKey),
+    () => customBoyAxios.get("/album/list/friend"),
     {
       onSuccess: (data) => {
         console.log(data);
       },
+      refetchOnWindowFocus: false,
     }
   );
-  return { getFriends, getIsLoading };
 
+  return { Friends, getIsLoading };
 };
 
-export const createAlbum = (requestData: AlbumCreateType) => {
-  const queryKey = "/album/create";
+interface AlbumCreateType {
+  album_name: string | string[] | undefined;
+  invite_friend: number[];
+}
 
-  const { mutate, isLoading, isError, error, isSuccess } = useMutation(
+interface InviteFriendType {
+  album_id: number;
+  additional_invite_friend: number[];
+}
+
+export const albumMutation = () => {
+  const { customBoyAxios } = useCustomAxios();
+  const router = useRouter();
+
+  // [POST] 앨범 생성
+  const {
+    mutate: createAlbum,
+    isSuccess: createAlbumSuccess,
+    data: AlbumId,
+  } = useMutation(
     (newAlbum: AlbumCreateType) => {
-      return axios.post(queryKey, newAlbum, {
-        headers: {
-          access_token: "hi",
-        },
-      });
+      return customBoyAxios.post("/album/create", newAlbum);
     },
     {
       onMutate: (variable) => {
@@ -54,6 +60,7 @@ export const createAlbum = (requestData: AlbumCreateType) => {
       },
       onSuccess: (data, variables, context) => {
         console.log("success", data, variables, context);
+        router.push(`/album/${data.data.data.album_id}`);
       },
       onSettled: () => {
         console.log("end");
@@ -61,5 +68,34 @@ export const createAlbum = (requestData: AlbumCreateType) => {
     }
   );
 
-  mutate(requestData);
+  // [POST] 친구 추가 초대
+  const { mutate: additionalInviteFriends, isSuccess: inviteSuccess } =
+    useMutation(
+      (inviteInfo: InviteFriendType) => {
+        return customBoyAxios.post("/album/friend/invite", inviteInfo);
+      },
+      {
+        onMutate: (variable) => {
+          console.log("onMutate ", variable);
+        },
+        onError: (error, variable, context) => {
+          //error
+        },
+        onSuccess: (data, variables, context) => {
+          console.log("success", data, variables, context);
+          router.push(`/album/${variables.album_id}`);
+        },
+        onSettled: () => {
+          console.log("end");
+        },
+      }
+    );
+
+  return {
+    createAlbum,
+    createAlbumSuccess,
+    AlbumId,
+    additionalInviteFriends,
+    inviteSuccess,
+  };
 };

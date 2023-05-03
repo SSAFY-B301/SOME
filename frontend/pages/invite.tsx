@@ -1,174 +1,64 @@
 import React, { useState, useEffect } from "react";
-import Link from "next/link";
-import styles from "@/styles/inviteFriends.module.scss";
 import { useRouter } from "next/router";
+import styles from "@/styles/inviteFriends.module.scss";
 import BackButtonIcon from "@/public/icons/CaretLeft.svg";
 import Albums from "@/components/album-starter/Albums";
 import Friends from "@/components/album-starter/Friends";
 import InvitedGroup from "@/components/album-starter/InvitedGroup";
-import { createAlbum, useGetFriends } from "./api/inviteApi";
+import { useGetFriends, albumMutation } from "./api/inviteApi";
 
 /**
  * 새로운 앨범에서 들어왔을 때 albumType: "new"
  * 기존 앨범에서 들어왔을 때 albumType: "old"
  */
 
-/**
- * 친구 더미 데이터
- */
-
-const FRIENDS = [
-  {
-    id: 1,
-    profileImg:
-      "https://images.unsplash.com/photo-1511367461989-f85a21fda167?ixlib=rb-4.0.3&ixid=MnwxMjA3fDB8MHxzZWFyY2h8Mnx8cHJvZmlsZXxlbnwwfHwwfHw%3D&auto=format&fit=crop&w=500&q=60",
-    name: "김동욱",
-  },
-  {
-    id: 2,
-    profileImg:
-      "https://images.unsplash.com/photo-1511367461989-f85a21fda167?ixlib=rb-4.0.3&ixid=MnwxMjA3fDB8MHxzZWFyY2h8Mnx8cHJvZmlsZXxlbnwwfHwwfHw%3D&auto=format&fit=crop&w=500&q=60",
-    name: "박서윤",
-  },
-  {
-    id: 3,
-    profileImg:
-      "https://images.unsplash.com/photo-1511367461989-f85a21fda167?ixlib=rb-4.0.3&ixid=MnwxMjA3fDB8MHxzZWFyY2h8Mnx8cHJvZmlsZXxlbnwwfHwwfHw%3D&auto=format&fit=crop&w=500&q=60",
-    name: "오태훈",
-  },
-  {
-    id: 4,
-    profileImg:
-      "https://images.unsplash.com/photo-1511367461989-f85a21fda167?ixlib=rb-4.0.3&ixid=MnwxMjA3fDB8MHxzZWFyY2h8Mnx8cHJvZmlsZXxlbnwwfHwwfHw%3D&auto=format&fit=crop&w=500&q=60",
-    name: "정상민",
-  },
-  {
-    id: 5,
-    profileImg:
-      "https://images.unsplash.com/photo-1511367461989-f85a21fda167?ixlib=rb-4.0.3&ixid=MnwxMjA3fDB8MHxzZWFyY2h8Mnx8cHJvZmlsZXxlbnwwfHwwfHw%3D&auto=format&fit=crop&w=500&q=60",
-    name: "차현경",
-  },
-  {
-    id: 6,
-    profileImg:
-      "https://images.unsplash.com/photo-1511367461989-f85a21fda167?ixlib=rb-4.0.3&ixid=MnwxMjA3fDB8MHxzZWFyY2h8Mnx8cHJvZmlsZXxlbnwwfHwwfHw%3D&auto=format&fit=crop&w=500&q=60",
-    name: "최현인",
-  },
-  {
-    id: 7,
-    profileImg:
-      "https://images.unsplash.com/photo-1511367461989-f85a21fda167?ixlib=rb-4.0.3&ixid=MnwxMjA3fDB8MHxzZWFyY2h8Mnx8cHJvZmlsZXxlbnwwfHwwfHw%3D&auto=format&fit=crop&w=500&q=60",
-    name: "정상민",
-  },
-  {
-    id: 8,
-    profileImg:
-      "https://images.unsplash.com/photo-1511367461989-f85a21fda167?ixlib=rb-4.0.3&ixid=MnwxMjA3fDB8MHxzZWFyY2h8Mnx8cHJvZmlsZXxlbnwwfHwwfHw%3D&auto=format&fit=crop&w=500&q=60",
-    name: "차현경",
-  },
-  {
-    id: 9,
-    profileImg:
-      "https://images.unsplash.com/photo-1511367461989-f85a21fda167?ixlib=rb-4.0.3&ixid=MnwxMjA3fDB8MHxzZWFyY2h8Mnx8cHJvZmlsZXxlbnwwfHwwfHw%3D&auto=format&fit=crop&w=500&q=60",
-    name: "최현인",
-  },
-  {
-    id: 10,
-    profileImg:
-      "https://images.unsplash.com/photo-1511367461989-f85a21fda167?ixlib=rb-4.0.3&ixid=MnwxMjA3fDB8MHxzZWFyY2h8Mnx8cHJvZmlsZXxlbnwwfHwwfHw%3D&auto=format&fit=crop&w=500&q=60",
-    name: "차현경",
-  },
-  {
-    id: 11,
-    profileImg:
-      "https://images.unsplash.com/photo-1511367461989-f85a21fda167?ixlib=rb-4.0.3&ixid=MnwxMjA3fDB8MHxzZWFyY2h8Mnx8cHJvZmlsZXxlbnwwfHwwfHw%3D&auto=format&fit=crop&w=500&q=60",
-    name: "최현인",
-  },
-];
-
-const ALBUMS = {
-  data: [
-    {
-      id: 1,
-      name: "국내 일주",
-      date: "2023-04-22",
-      thumbNail:
-        "https://images.unsplash.com/photo-1595981234058-a9302fb97229?ixlib=rb-4.0.3&ixid=MnwxMjA3fDB8MHxzZWFyY2h8MXx8YWxidW18ZW58MHx8MHx8&auto=format&fit=crop&w=500&q=60",
-      userIds: [1, 2, 3],
-    },
-    {
-      id: 2,
-      name: "해외 일주",
-      date: "2023-04-21",
-      thumbNail:
-        "https://images.unsplash.com/photo-1524613032530-449a5d94c285?ixlib=rb-4.0.3&ixid=MnwxMjA3fDB8MHxzZWFyY2h8Mnx8YWxidW18ZW58MHx8MHx8&auto=format&fit=crop&w=500&q=60",
-      userIds: [1, 3, 5],
-    },
-    {
-      id: 3,
-      name: "SSAFY 대전 2반",
-      date: "2023-03-22",
-      thumbNail:
-        "https://images.unsplash.com/photo-1500051638674-ff996a0ec29e?ixlib=rb-4.0.3&ixid=MnwxMjA3fDB8MHxzZWFyY2h8MTF8fGFsYnVtfGVufDB8fDB8fA%3D%3D&auto=format&fit=crop&w=500&q=60",
-      userIds: [1, 2, 4],
-    },
-    {
-      id: 4,
-      name: "자율 프로젝트",
-      date: "2023-02-28",
-      thumbNail:
-        "https://images.unsplash.com/photo-1571502189597-d7d3a0f114fd?ixlib=rb-4.0.3&ixid=MnwxMjA3fDB8MHxzZWFyY2h8MTR8fGFsYnVtfGVufDB8fDB8fA%3D%3D&auto=format&fit=crop&w=500&q=60",
-      userIds: [3, 4, 5],
-    },
-    {
-      id: 5,
-      name: "비밀 친구",
-      date: "2023-01-01",
-      thumbNail:
-        "https://images.unsplash.com/photo-1531777992189-ad52457fbe93?ixlib=rb-4.0.3&ixid=MnwxMjA3fDB8MHxzZWFyY2h8MTl8fGFsYnVtfGVufDB8fDB8fA%3D%3D&auto=format&fit=crop&w=500&q=60",
-      userIds: [4, 5, 6],
-    },
-  ],
-};
-
 interface FriendType {
   id: number;
-  profileImg: string;
-  name: string;
+  uuid: string;
+  favorite: boolean;
+  profile_nickname: string;
+  profile_thumbnail_image: string;
 }
 
 interface AlbumType {
   id: number;
-  name: string;
-  date: string;
-  thumbNail: string;
-  userIds: number[];
+  album_name: string;
+  album_created_date: string;
+  thumbnail_photo_url: string;
+  members: number[];
 }
 
 const InviteFriends = (): JSX.Element => {
-  const router = useRouter();
-  console.log(router.query);
-  const [friends, setFriends] = useState<FriendType[]>([]);
-  const [albums, setAlbums] = useState<AlbumType[]>([]);
-  const [isActiveFriends, setActiveFriends] = useState<Set<Number>>(new Set());
-  const [invitedFriends, setInvitedFriends] = useState<FriendType[]>([]);
-  const [inputText, setInputText] = useState<string>("");
+  /**
+   * 신규 앨범 이름, 신규 및 기존 앨범 타입 식별 쿼리
+   */
+  const router = useRouter(); // {albumName<string>: "", albumType<string>: "new" or "old"}
+  const isNewAlbum: string | string[] | undefined = router.query.albumType;
+  const DUMMY_ALBUM_ID: number = 1;
+
+  /**
+   * 관리할 state
+   */
+  const [isActiveFriends, setActiveFriends] = useState<Set<number>>(new Set()); // 선택된 친구 ID 목록
+  const [invitedFriends, setInvitedFriends] = useState<FriendType[]>([]); // 상단에 표시할 친구 목록
+  const [inputText, setInputText] = useState<string>(""); // 검색 하고 있는 텍스트
 
   console.log(isActiveFriends);
+  console.log(Array.from(isActiveFriends));
 
-  useEffect(() => {
-    // const friends = useGetFriends();
-    // console.log(friends);
-
-    setFriends(FRIENDS);
-    setAlbums(ALBUMS.data);
-  }, []);
+  /**
+   * 전체 친구, 앨범 목록
+   */
+  const getFriends = useGetFriends();
+  const friends: FriendType[] =
+    getFriends.Friends?.data.data.kakao_friend_list.elements;
+  const albums: AlbumType[] = getFriends.Friends?.data.data.myAlbum_member_list;
 
   /**
    * 친구 선택 기능
    */
   const selectFriends = (id: number) => {
-    const tmpSet = new Set<Number>(isActiveFriends);
+    const tmpSet = new Set<number>(isActiveFriends);
     let tmpList: FriendType[] = [];
     tmpSet.add(id);
     setActiveFriends(tmpSet);
@@ -183,7 +73,7 @@ const InviteFriends = (): JSX.Element => {
    * 친구 선택 취소 기능
    */
   const removeFriends = (id: number) => {
-    const tmp = new Set<Number>(isActiveFriends);
+    const tmp = new Set<number>(isActiveFriends);
     tmp.delete(id);
     const tmpList = invitedFriends.filter((friend) => friend.id != id);
     setActiveFriends(tmp);
@@ -192,26 +82,35 @@ const InviteFriends = (): JSX.Element => {
 
   /**
    * 검색 기능
-   * 검색 중일 땐 filterd를, 그렇지 않을 땐 friends and albums를 props로 전달
    */
   const onChange = (e: React.ChangeEvent<HTMLInputElement>) => {
     e.preventDefault();
     setInputText(e.target.value);
   };
 
-  const filterdFriends = friends.filter((item) =>
-    item.name.toUpperCase().includes(inputText.toUpperCase())
-  );
+  /**
+   * 검색으로 필터링 된 친구 목록
+   */
+  const filterdFriends: FriendType[] = friends
+    ? friends.filter((item) =>
+        item.profile_nickname.toUpperCase().includes(inputText.toUpperCase())
+      )
+    : [];
 
-  const filterdAlbums = albums.filter((item) =>
-    item.name.toUpperCase().includes(inputText.toUpperCase())
-  );
+  /**
+   * 검색으로 필터링 된 앨범 목록
+   */
+  const filterdAlbums: AlbumType[] = albums
+    ? albums.filter((item) =>
+        item.album_name.toUpperCase().includes(inputText.toUpperCase())
+      )
+    : [];
 
   /**
    * 앨범 멤버 선택 기능
    */
   const selectAlbums = (ids: number[]) => {
-    const tmp = new Set<Number>(isActiveFriends);
+    const tmp = new Set<number>(isActiveFriends);
     let tmpList: FriendType[] = [];
     ids.map((id) => tmp.add(id));
     setActiveFriends(tmp);
@@ -223,25 +122,41 @@ const InviteFriends = (): JSX.Element => {
   };
 
   /**
-   * 앨범 멤버 삭제 기능
+   * 앨범 멤버 삭제 기능... 넣을 지 말지...
    */
   const removeAlbums = (ids: number[]) => {
-    const tmp = new Set<Number>(isActiveFriends);
+    const tmp = new Set<number>(isActiveFriends);
     ids.map((id) => tmp.delete(id));
     setActiveFriends(tmp);
   };
 
   /**
-   * 확인 누를 시 router.query.albumName, invitedGroup으로 앨범 생성 요청
-   * 메인 페이지로 이동하도록 설정, 추후 페이지 주소 변동 필요
+   * 앨범 생성 확인 or 추가 친구 초대 확인
    */
+  const { createAlbum, additionalInviteFriends } = albumMutation();
 
-  const createAlbumClick = () => {
-    // createAlbum({
-    //     album_name : router.query.albumName,
-    //     invite_friend : invitedFriends,
-    // })
+  const createAlbumClick = async () => {
+    if (isNewAlbum == "new") {
+      const params = {
+        album_name: router.query.albumName,
+        invite_friend: Array.from(isActiveFriends),
+      };
+      createAlbum(params);
+    } else {
+      const params = {
+        album_id: DUMMY_ALBUM_ID,
+        additional_invite_friend: Array.from(isActiveFriends),
+      };
+      additionalInviteFriends(params);
+    }
   };
+
+  /**
+   * API 연결 문제점
+   * #04-1 친구 목록 불러오기
+   * 1. 앨범 선택 시 본인 ID 포함됨 -> 본인 ID 제거된 리스트 요청
+   * 2. (보류) 새 앨범 -> 친구 초대: 전체 친구 리스트, 앨범 -> 친구 초대: 가입된 친구를 제외한 친구 리스트
+   */
 
   return (
     <div
@@ -296,10 +211,10 @@ const InviteFriends = (): JSX.Element => {
             onChange={onChange}
           ></input>
           <div className="w-full overflow-y-scroll" style={{ height: 700 }}>
-            <div className="box-border flex flex-col w-full mt-4 border-b-2 h-44">
+            <div className="box-border flex flex-col w-full mt-4 border-b-2">
               <span className="box-border mb-4 text-base">앨범으로 초대</span>
               <div className="w-full">
-                {inputText.length > 0 ? (
+                {albums && inputText.length > 0 ? (
                   <Albums
                     albums={filterdAlbums}
                     isActiveFriends={isActiveFriends}
@@ -317,7 +232,7 @@ const InviteFriends = (): JSX.Element => {
             <div className="box-border flex flex-col w-full mt-4">
               <span className="mb-4 text-base">친구</span>
               <div className="box-border px-2 h-">
-                {inputText.length > 0 ? (
+                {friends && inputText.length > 0 ? (
                   <Friends
                     friends={filterdFriends}
                     isActiveFriends={isActiveFriends}
