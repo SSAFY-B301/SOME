@@ -11,6 +11,9 @@ import com.ssafy.somefriendboy.util.HttpUtil;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.log4j.Log4j2;
 import org.springframework.data.domain.Pageable;
+import org.springframework.data.mongodb.core.MongoOperations;
+import org.springframework.data.mongodb.core.query.Query;
+import org.springframework.data.mongodb.core.query.Update;
 import org.springframework.http.*;
 import org.springframework.stereotype.Service;
 import org.springframework.util.LinkedMultiValueMap;
@@ -19,6 +22,9 @@ import org.springframework.web.client.RestTemplate;
 
 import java.time.LocalDateTime;
 import java.util.*;
+
+import static org.springframework.data.mongodb.core.FindAndModifyOptions.options;
+import static org.springframework.data.mongodb.core.query.Criteria.where;
 
 @Service
 @RequiredArgsConstructor
@@ -30,6 +36,7 @@ public class AlbumService {
     private final AlbumFavRepository albumFavRepository;
     private final AlbumMemberRepository albumMemberRepository;
     private final AlbumPhotoRepository albumPhotoRepository;
+    private final MongoOperations mongoOperations;
     private final HttpUtil httpUtil;
 
     public ResponseDto createAlbum(String access_token, AlbumCreateDto albumCreateDto) {
@@ -41,6 +48,7 @@ public class AlbumService {
 
         Album album = Album.builder()
                 .albumName(albumCreateDto.getAlbumName())
+                .recentPhoto(generateSequence(AlbumPhoto.SEQUENCE_NAME))
                 .createdDate(LocalDateTime.now())
                 .status(AlbumStatus.NORMAL)
                 .build();
@@ -181,9 +189,12 @@ public class AlbumService {
 
         // 내가 속한 앨범들의 ID로 Album 정보 불러옴
         List<AlbumWholeListDto> myWholeAlbumList = new ArrayList<>();
+
         for (Long albumId : myAlbumIdList) {
             Album album = albumRepository.findAlbumByAlbumId(albumId);
-            String thumbnailPhotoUrl = albumPhotoRepository.findByPhotoId(album.getThumbnailPhoto()).getS3Url();
+
+            AlbumPhoto albumPhoto = albumPhotoRepository.findByPhotoId(album.getThumbnailPhoto());
+            String thumbnailPhotoUrl = albumPhoto == null ? null : albumPhoto.getS3Url();
 
             AlbumFav albumFav = albumFavRepository.findAlbumFavByAlbumMemberId_AlbumIdAndAlbumMemberId_UserId(albumId, userId);
             AlbumWholeListDto albumWholeListDto;
@@ -192,6 +203,7 @@ public class AlbumService {
                         .albumId(album.getAlbumId())
                         .albumName(album.getAlbumName())
                         .albumCreatedDate(album.getCreatedDate())
+                        .recentPhotoId(album.getRecentPhoto())
                         .thumbnailPhotoUrl(thumbnailPhotoUrl)
                         .isAlbumFav(false)
                         .build();
@@ -201,6 +213,7 @@ public class AlbumService {
                         .albumId(album.getAlbumId())
                         .albumName(album.getAlbumName())
                         .albumCreatedDate(album.getCreatedDate())
+                        .recentPhotoId(album.getRecentPhoto())
                         .thumbnailPhotoUrl(thumbnailPhotoUrl)
                         .isAlbumFav(albumFav.getLikeStatus().equals(LikeStatus.LIKE) ? true : false)
                         .build();
@@ -208,7 +221,13 @@ public class AlbumService {
             myWholeAlbumList.add(albumWholeListDto);
         }
 
-        // TODO :: 가장 최근에 올린 사진의 업로드 날짜를 기준으로 sort
+        // TODO :: 가장 최근에 올린 사진의 업로드 날짜를 기준으로 sort -> Paging 처리할 때 한번에 정렬하자
+        Collections.sort(myWholeAlbumList, new Comparator<AlbumWholeListDto>() {
+            @Override
+            public int compare(AlbumWholeListDto o1, AlbumWholeListDto o2) {
+                return (int) (o2.getRecentPhotoId() - o1.getRecentPhotoId());
+            }
+        });
 
         result.put("myWholeAlbumList", myWholeAlbumList);
         return setResponseDto(result,"앨범 목록",200);
@@ -311,10 +330,13 @@ public class AlbumService {
             Album album = albumRepository.findAlbumByAlbumId(albumId);
             List<String> albumMemberList = albumMemberRepository.findAlbumMemberIdByAlbumId(albumId);
 
+            AlbumPhoto albumPhoto = albumPhotoRepository.findByPhotoId(album.getThumbnailPhoto());
+            String thumbnailPhotoUrl = albumPhoto == null ? null : albumPhoto.getS3Url();
+
             AlbumInfoAndMemberDto albumInfoAndMemberDto = AlbumInfoAndMemberDto.builder()
                     .albumId(album.getAlbumId())
                     .albumName(album.getAlbumName())
-                    .thumbnail_photo_url(albumPhotoRepository.findByPhotoId(album.getAlbumId()).getS3Url())
+                    .thumbnailPhotoUrl(thumbnailPhotoUrl)
                     .albumCreatedDate(album.getCreatedDate())
                     .members(albumMemberList)
                     .build();
@@ -398,4 +420,9 @@ public class AlbumService {
         return httpUtil.requestParingToken(accessToken);
     }
 
+    private Long generateSequence(String seqName) {
+        AutoIncrementSequence counter = mongoOperations.findAndModify(Query.query(where("_id").is(seqName)),
+                new Update().inc("seq", 1), options().returnNew(true).upsert(true), AutoIncrementSequence.class);
+        return !Objects.isNull(counter) ? counter.getSeq() : 1;
+    }
 }
