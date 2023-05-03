@@ -4,6 +4,7 @@ export default function Document() {
   return (
     <Html>
       <Head>
+        <meta name="theme-color" content="#FFFFFF"/>
         <link rel="manifest" href="/manifest.json" />
         <link
           href="/favicons/favicon-16x16.png"
