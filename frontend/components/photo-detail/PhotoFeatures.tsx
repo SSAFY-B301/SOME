@@ -1,21 +1,5 @@
-import { getPhoto } from "@/pages/api/photoDetailApi";
+import { getPhoto, likePhoto } from "@/pages/api/photoDetailApi";
 import React, { useEffect, useState } from "react";
-
-interface UserType {
-  profileImg: string;
-  name: string;
-}
-
-interface PhotoType {
-  img: string;
-  date: string;
-}
-
-interface Props {
-  date: string,
-  userName: string,
-  userProfileImg: string,
-}
 
 /**
  * 사진 상세보기 특징 컴포넌트
@@ -23,24 +7,33 @@ interface Props {
 
 const PhotoFeatures = (): JSX.Element => {
   const [isActive, setIsActive] = useState<boolean>(false);
-  
-  /**
-   * 좋아요 기능 추후 추가
-   */
-  const select = () => {
-    if (isActive == false) {
-      setIsActive(true);
-    } else {
-      setIsActive(false);
-    }
-  };
-
   /**
    * 사진 상세 정보 접근
    * useQuery
    *  queryKey : photo
    */
-  const photoDetail = getPhoto();
+  const {resultData : photoDetail} = getPhoto();
+  
+  /**
+   * 사진 좋아요 기능
+   * useMutation
+   */
+  const {likeMutation} = likePhoto();
+
+  /**
+   * 좋아요 기능 추후 추가
+   */
+  const select = () => {
+    if (isActive == false) {
+      likeMutation(photoDetail.photoId)
+      setIsActive(true);
+    } else {
+      likeMutation(photoDetail.photoId)
+      setIsActive(false);
+    }
+  };
+
+  
 
   /**
    * 투표 완료 기능 추후 추가
@@ -55,10 +48,10 @@ const PhotoFeatures = (): JSX.Element => {
           className="w-10 h-10 rounded-xl"
         />
         <div className="flex flex-col">
-          <span className="text-2xl">{photoDetail?.userName}</span>
-          <span className="text-xs">{photoDetail?.uploadedDate.substring(0,4)+"년 "+
+          <span className="text-2xl">{photoDetail ? photoDetail.userName : ""}</span>
+          <span className="text-xs">{photoDetail ? photoDetail?.uploadedDate.substring(0,4)+"년 "+
                   photoDetail?.uploadedDate.substring(5,7)+"월 "+
-                  photoDetail?.uploadedDate.substring(8,10)+"일"}</span>
+                  photoDetail?.uploadedDate.substring(8,10)+"일" : ""}</span>
         </div>
       </div>
       <div className="flex items-center justify-between w-20">
@@ -81,10 +74,10 @@ const PhotoFeatures = (): JSX.Element => {
         <div>
           <svg
             xmlns="http://www.w3.org/2000/svg"
-            fill={isActive ? "pink" : "none"}
+            fill={photoDetail?.likeStatus === "LIKE" ? "pink" : "none"}
             viewBox="0 0 24 24"
             strokeWidth={1.5}
-            stroke={isActive ? "pink" : "currentColor"}
+            stroke={photoDetail?.likeStatus === "LIKE" ? "pink" : "currentColor"}
             className="w-8 h-8"
             onClick={select}
           >

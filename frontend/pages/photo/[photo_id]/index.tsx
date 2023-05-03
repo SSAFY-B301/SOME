@@ -9,7 +9,7 @@ import {
 } from "@/components/photo-detail";
 import styles from "./photo.module.scss";
 import { InfoBar } from "@/components/common/Nav";
-import { getPhoto } from "@/pages/api/photoDetailApi";
+import { getPhoto, likePhoto } from "@/pages/api/photoDetailApi";
 
 const PhotoDetail = (): JSX.Element => {
   const [showDownLoadModal, setDownLoadShowModal] = useState<boolean>(false);
@@ -22,13 +22,7 @@ const PhotoDetail = (): JSX.Element => {
    * useQuery
    *  queryKey : photo
    */
-  const photoDetail = getPhoto();
-
-  /**
-   * 사진 상세 정보 접근
-   * useQuery
-   *  queryKey : photo
-   */
+  const {resultData: photoDetail} = getPhoto();
 
   /**
    * 다운로드 모달창 생성
