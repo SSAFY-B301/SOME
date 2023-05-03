@@ -280,7 +280,8 @@ public class AlbumService {
         List<AlbumFavDto> albumFavDtoList = new ArrayList<>();
         for (Long albumId : myFavAlbumIdList) {
             Album album = albumRepository.findAlbumByAlbumId(albumId);
-            String thumbnailPhotoUrl = albumPhotoRepository.findByPhotoId(album.getThumbnailPhoto()).getS3Url();
+            AlbumPhoto albumPhoto = albumPhotoRepository.findByPhotoId(album.getThumbnailPhoto());
+            String thumbnailPhotoUrl = albumPhoto == null ? null : albumPhoto.getS3Url();
 
             AlbumFavDto albumFavDto = AlbumFavDto.builder()
                     .albumId(album.getAlbumId())
