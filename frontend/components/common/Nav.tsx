@@ -1,5 +1,6 @@
 // 라이브러리
 import { useTheme } from "next-themes";
+import { useRouter } from "next/router";
 import Link from "next/link";
 
 // 컴포넌트
@@ -24,7 +25,9 @@ interface InfoType {
 
 function NavBar() {
   const { theme, setTheme } = useTheme();
+
   const {userInfo} = useSelector((state : RootState) => state.auth);
+  
   return (
     <nav
       className={`flex flex-row justify-between items-center h-14 mx-6 ${styles.nav_bar}`}
@@ -62,6 +65,7 @@ function NavBar() {
 }
 
 export function InfoBar(props: InfoType) {
+  const router = useRouter()
   return (
     <div
       className={
@@ -75,12 +79,11 @@ export function InfoBar(props: InfoType) {
         style={{ width: "89.744vw" }}
       >
         <div className="absolute top-0 left-0">
-          <Link href={"/"}>
-            
+          <button onClick={() => router.back()}>
             <svg width="6.154vw" height="6.154vw" viewBox="0 0 24 24" fill="none" stroke="transparent" xmlns="http://www.w3.org/2000/svg">
               <path className="stroke-black dark:stroke-white" d="M15 19.5L7.5 12L15 4.5" stroke="transparent" strokeWidth="3" strokeLinecap="round" strokeLinejoin="round"/>
             </svg>
-          </Link>
+          </button>  
         </div>
         <p className="text-xl text-center">{props.title}</p>
       </div>
