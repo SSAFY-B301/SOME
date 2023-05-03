@@ -1,5 +1,7 @@
 package com.ssafy.somefriendboy.service;
 
+import com.querydsl.core.QueryResults;
+import com.querydsl.jpa.impl.JPAQueryFactory;
 import com.ssafy.somefriendboy.dto.*;
 import com.ssafy.somefriendboy.entity.*;
 import com.ssafy.somefriendboy.repository.AlbumPhoto.AlbumPhotoRepository;
@@ -23,6 +25,7 @@ import org.springframework.web.client.RestTemplate;
 import java.time.LocalDateTime;
 import java.util.*;
 
+import static com.ssafy.somefriendboy.entity.QAlbum.album;
 import static org.springframework.data.mongodb.core.FindAndModifyOptions.options;
 import static org.springframework.data.mongodb.core.query.Criteria.where;
 
@@ -38,6 +41,7 @@ public class AlbumService {
     private final AlbumPhotoRepository albumPhotoRepository;
     private final MongoOperations mongoOperations;
     private final HttpUtil httpUtil;
+    private final JPAQueryFactory queryFactory;
 
     public ResponseDto createAlbum(String access_token, AlbumCreateDto albumCreateDto) {
         Map<String,Object> result = new HashMap<>();
@@ -197,27 +201,20 @@ public class AlbumService {
             String thumbnailPhotoUrl = albumPhoto == null ? null : albumPhoto.getS3Url();
 
             AlbumFav albumFav = albumFavRepository.findAlbumFavByAlbumMemberId_AlbumIdAndAlbumMemberId_UserId(albumId, userId);
-            AlbumWholeListDto albumWholeListDto;
-            if (albumFav == null) {
-                albumWholeListDto = AlbumWholeListDto.builder()
-                        .albumId(album.getAlbumId())
-                        .albumName(album.getAlbumName())
-                        .albumCreatedDate(album.getCreatedDate())
-                        .recentPhotoId(album.getRecentPhoto())
-                        .thumbnailPhotoUrl(thumbnailPhotoUrl)
-                        .isAlbumFav(false)
-                        .build();
-            }
-            else {
-                albumWholeListDto = AlbumWholeListDto.builder()
-                        .albumId(album.getAlbumId())
-                        .albumName(album.getAlbumName())
-                        .albumCreatedDate(album.getCreatedDate())
-                        .recentPhotoId(album.getRecentPhoto())
-                        .thumbnailPhotoUrl(thumbnailPhotoUrl)
-                        .isAlbumFav(albumFav.getLikeStatus().equals(LikeStatus.LIKE) ? true : false)
-                        .build();
-            }
+//            boolean isAlbumFav = false;
+//            if (albumFav != null) {
+//                isAlbumFav = albumFav.getLikeStatus().equals(LikeStatus.LIKE) ? true : false;
+//            }
+
+            AlbumWholeListDto albumWholeListDto = AlbumWholeListDto.builder()
+                .albumId(album.getAlbumId())
+                .albumName(album.getAlbumName())
+                .albumCreatedDate(album.getCreatedDate())
+                .recentPhotoId(album.getRecentPhoto())
+                .thumbnailPhotoUrl(thumbnailPhotoUrl)
+                .isAlbumFav(albumFav.getLikeStatus())
+                .build();
+
             myWholeAlbumList.add(albumWholeListDto);
         }
 
