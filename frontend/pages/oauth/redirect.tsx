@@ -45,7 +45,7 @@ export default function AuthRedirect() {
     // dispatch로 로그인 상태 변경 되었음을 감지
     useEffect(() => {
         if (userInfo.user_id !== "") {
-            router.push('/');
+            router.push('/boy-home');
         }
     }, [isLogin])
     
