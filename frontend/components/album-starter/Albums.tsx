@@ -24,7 +24,7 @@ const Albums = ({
 }: Props): JSX.Element => {
   return (
     <ItemBlock width="100%" height="" radius="20px">
-      {albums ? (
+      {albums && albums.length > 0 ? (
         <div className="flex flex-col w-full h-32 box-border px-2">
           <div
             className={`flex justify-start gap-4 overflow-scroll ${styles.cards}`}
