@@ -7,11 +7,7 @@ import com.drew.metadata.exif.ExifSubIFDDirectory;
 import com.drew.metadata.exif.GpsDirectory;
 import com.fasterxml.jackson.databind.JsonNode;
 import com.fasterxml.jackson.databind.ObjectMapper;
-import com.ssafy.somefriendboy.dto.AlbumPhotoDto;
-import com.ssafy.somefriendboy.dto.AlbumPhotoListDto;
-import com.ssafy.somefriendboy.dto.AlbumPhotoListOptDto;
-import com.ssafy.somefriendboy.dto.MetaDataDto;
-import com.ssafy.somefriendboy.dto.ResponseDto;
+import com.ssafy.somefriendboy.dto.*;
 import com.ssafy.somefriendboy.entity.*;
 import com.ssafy.somefriendboy.repository.AlbumPhoto.AlbumPhotoRepository;
 import com.ssafy.somefriendboy.repository.album.AlbumRepository;
@@ -70,6 +66,7 @@ public class AlbumPhotoService {
                     .photoId(generateSequence(AlbumPhoto.SEQUENCE_NAME))
                     .uploadedDate(LocalDateTime.now())
                     .s3Url(metaDataDtos.get(i).getOriginUrl())
+                    .status(PhotoStatus.NORMAL)
                     .categoryId(categories.get(i))
                     .albumId(albumId)
                     .userId(userId)
@@ -184,6 +181,21 @@ public class AlbumPhotoService {
         }
 
         return setResponseDto(result, "사진 좋아요 등록/해제", 200);
+    }
+
+    public ResponseDto updatePhotoStatus(String accessToken, AlbumPhotoIdDto albumPhotoIdDto) {
+        Map<String, Object> result = new HashMap<>();
+        String userId = tokenCheck(accessToken);
+
+        if (userId == null) {
+            return setResponseDto(result, "토큰 만료", 450);
+        }
+
+        albumPhotoRepository.modifyPhotoStatus(albumPhotoIdDto.getPhotoId());
+
+        result.put("photoDeleteId", albumPhotoIdDto.getPhotoId());
+        result.put("photoDeleteStatus", PhotoStatus.DELETED);
+        return setResponseDto(result, "사진 삭제", 200);
     }
 
     private Long generateSequence(String seqName) {
