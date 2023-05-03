@@ -23,19 +23,21 @@ function NavBar({ isSelect, setIsSelect, isTotal, setIsTotal }: NavBarType) {
   const clickSelect = () => {
     setIsSelect(!isSelect);
   };
-  const { getDetail, getDetailIsLoading } = useGetDetail();
+  // TODO : 앨범 ID 넣기
+  const albumId: number = 1;
+  const { getDetail, getDetailIsLoading } = useGetDetail(albumId);
   return (
     <section className={`${styles.nav_bar}`}>
       <div className={`${styles.nav_bar_items}`}>
-        {getDetailIsLoading ? (
-          <p>로딩중</p>
-        ) : (
-          <p
-            className={`absolute w-screen h-full flex justify-center items-center ${styles.title}`}
-          >
-            {getDetail?.data.name}
-          </p>
-        )}
+        <p
+          className={`absolute w-screen h-full flex justify-center items-center ${styles.title}`}
+        >
+          {getDetailIsLoading
+            ? "로딩중"
+            : getDetail
+            ? getDetail.album_name
+            : "데이터 없음"}
+        </p>
         <div className="relative w-screen h-full flex justify-between items-center p-4">
           {isSelect ? (
             <p onClick={() => setIsTotal(!isTotal)}>

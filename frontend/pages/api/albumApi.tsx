@@ -1,6 +1,11 @@
-import axios, { AxiosError, AxiosResponse } from "axios";
+import { AxiosError } from "axios";
 
-import { UseMutationResult, useMutation, useQuery } from "react-query";
+import {
+  UseMutationResult,
+  useMutation,
+  useQuery,
+  useQueryClient,
+} from "react-query";
 
 import {
   CurrentAlbumType,
@@ -8,6 +13,7 @@ import {
   TotalAlbumType,
   AlbumInfoType,
   PhotoType,
+  requestPhotosType,
 } from "@/types/AlbumTypes";
 import useCustomAxios from "@/features/customAxios";
 
@@ -21,12 +27,20 @@ const { customBoyAxios } = useCustomAxios();
  * @returns
  */
 export const useGetCurrent = () => {
-  const queryKey = `${URL}/current`;
+  // const queryKey = `${URL}/current`;
 
-  const { data: getCurrent, isLoading: getCurrentIsLoading } = useQuery<
-    AxiosResponse<CurrentAlbumType[]>
-  >(["current"], () => axios.get(queryKey));
+  // const { data , isLoading: getCurrentIsLoading } = useQuery<
+  //   AxiosResponse<CurrentAlbumType[]>
+  // >(["current"], () => axios.get(queryKey));
 
+  // let getCurrent: CurrentAlbumType[];
+  // if (data) {
+  //   getCurrent = data.data.myFavAlbumList;
+  // } else {
+  //   getCurrent = [];
+  // }
+  const getCurrent: CurrentAlbumType[] = [];
+  const getCurrentIsLoading = true;
   return { getCurrent, getCurrentIsLoading };
 };
 
@@ -35,13 +49,15 @@ export const useGetCurrent = () => {
  * @returns
  */
 export const useGetFavorite = () => {
-  const queryKey = `${URL}/favorite`;
+  const queryKey = `album/list/fav`;
 
-  const { data: getFavorite, isLoading: getFavoriteIsLoading } = useQuery(
-    ["favorite"],
-    () => axios.get(queryKey)
+  const { data, isLoading: getFavoriteIsLoading } = useQuery(["favorite"], () =>
+    customBoyAxios.get(queryKey)
   );
-
+  let getFavorite: FavoriteAlbumType[] | undefined;
+  if (data) {
+    getFavorite = data.data.data.myFavAlbumList;
+  }
   return { getFavorite, getFavoriteIsLoading };
 };
 
@@ -50,77 +66,88 @@ export const useGetFavorite = () => {
  * @returns
  */
 export const useGetTotal = () => {
-  // const queryKey = `${URL}/whole`;
   const queryKey = `album/list/whole`;
 
-  const { data: getTotal, isLoading: getTotalIsLoading } = useQuery<
-    AxiosResponse<TotalAlbumType[]>
-  >(["total"], () => customBoyAxios.get(queryKey));
-  console.log(getTotal);
+  const { data, isLoading: getTotalIsLoading } = useQuery(["total"], () =>
+    customBoyAxios.get(queryKey)
+  );
+  let getTotal: TotalAlbumType[] | undefined;
+  if (data) {
+    getTotal = data.data.data.myWholeAlbumList;
+  }
+  console.log("TOTAL", getTotal);
+
   return { getTotal, getTotalIsLoading };
 };
 
 // 앨범 상세 페이지
 /**
- * [GET] 앨범 정보
+ * [GET] 앨범 상세 정보
  * @returns
  */
-export const useGetDetail = () => {
-  const queryKey = `${URL}/detail`;
-  const { data: getDetail, isLoading: getDetailIsLoading } = useQuery<
-    AxiosResponse<AlbumInfoType>
-  >(["detail"], () => axios.get(queryKey));
+export const useGetDetail = (albumId: number) => {
+  const queryKey = `album/detail/${albumId}`;
+  console.log("LIKE");
+
+  const { data, isLoading: getDetailIsLoading } = useQuery(
+    ["detail", albumId],
+    () => customBoyAxios.get(queryKey)
+  );
+
+  let getDetail: AlbumInfoType | undefined;
+  if (data) {
+    getDetail = data.data.data.albumDetail;
+  }
 
   return { getDetail, getDetailIsLoading };
 };
 
 /**
- * [PUT] 앨범 상세 정보
- * @returns
- */
-export function usePutDetail(): UseMutationResult<
-  AlbumInfoType,
-  AxiosError,
-  AlbumInfoType
-> {
-  return useMutation((value) => axios.put(`${URL}/detail`, value), {
-    onSuccess: (data) => {
-      console.log(data);
-    },
-    onError: (error) => {
-      console.error(error);
-    },
-  });
-}
-
-/**
  * [GET] 사진 정보
  * @returns
  */
-export const useGetPhotos = () => {
-  const queryKey = `${URL}/photos`;
-  // const queryKey = `/photo/album/list`;
+export const useGetPhotos = (Requests: requestPhotosType) => {
+  const queryKey = `/photo/album/list?albumId=${Requests.albumId}&categoryId=${Requests.categoryId}&userId=${Requests.userId}`;
 
-  const { data: getPhotos, isLoading: getPhotosIsLoading } = useQuery<
-    AxiosResponse<PhotoType[]>
-  >(["photos"], () => axios.get(queryKey));
+  const { data, isLoading: getPhotosIsLoading } = useQuery(["photos"], () =>
+    customBoyAxios.get(queryKey)
+  );
 
-  return { getPhotos, getPhotosIsLoading };
+  let getPhotos: PhotoType[] | undefined;
+  let getTotal: number | undefined;
+  let getTotalId: number[] | undefined;
+  if (data) {
+    getPhotos = data.data.data.albumPhotoList;
+    getTotal = data.data.data.totalPhotoCnt;
+    getTotalId = data.data.data.totalPhotoId;
+  }
+
+  return { getPhotos, getTotal, getTotalId, getPhotosIsLoading };
 };
 
-/**
- * [PUT] 앨범 즐겨찾기
- * @returns
- */
-export function usePutFav(): UseMutationResult<boolean, AxiosError, boolean> {
-  return useMutation((albumId) => axios.put(`/album/fav?photoId=${albumId}`), {
-    onSuccess: (data) => {
-      console.log(data);
-    },
-    onError: (error) => {
-      console.error(error);
-    },
-  });
+export function Mutations() {
+  const queryClient = useQueryClient();
+  /**
+   * [PUT] 앨범 즐겨찾기
+   * @returns
+   */
+  function usePutFav(
+    albumId: number
+  ): UseMutationResult<boolean, AxiosError, number> {
+    return useMutation(
+      (albumId) => customBoyAxios.put(`/album/fav/${albumId}`),
+      {
+        onSuccess: (data) => {
+          console.log(data);
+          queryClient.invalidateQueries(["detail", albumId]);
+        },
+        onError: (error) => {
+          console.error(error);
+        },
+      }
+    );
+  }
+  return { usePutFav };
 }
 
 /**
