@@ -1,5 +1,5 @@
 // 라이브러리
-import React from "react";
+import React, { useRef } from "react";
 import { useRouter } from "next/router";
 
 // API
@@ -18,16 +18,18 @@ import UploadIcon from "public/icons/UploadSimple.svg";
 // 인터페이스
 interface TabBarType {
   isSelect: boolean;
+  isAlerts: boolean[];
+  setIsAlerts: React.Dispatch<React.SetStateAction<boolean[]>>;
 }
 
 /**
  * 하단 탭바 컴포넌트
- * @param albumInfo 사진 정보 Object
- * @param setAlbumInfo 사진 정보 Object의 Setter 함수
  * @param isSelect 선택 여부
+ * @param isAlerts
+ * @param setIsAlerts
  * @returns
  */
-function TabBar({ isSelect }: TabBarType) {
+function TabBar({ isSelect, isAlerts, setIsAlerts }: TabBarType) {
   const router = useRouter();
   const albumId: number = Number(router.query.album_id);
   const { getDetail } = useGetDetail(albumId);
@@ -35,19 +37,25 @@ function TabBar({ isSelect }: TabBarType) {
   /**
    * 앨범 좋아요 수정
    */
-  const { usePutFav } = Mutations();
-  const { mutate } = usePutFav(albumId);
+  const { usePutFav, useDeletePhotos } = Mutations();
+  const { mutate: putFavMutate } = usePutFav(albumId);
 
   const clickLike = () => {
-    mutate(albumId);
+    putFavMutate(albumId);
   };
+
+  const openDeleteAlert = (idx: number) => {
+    isAlerts[idx] = true;
+    setIsAlerts([...isAlerts]);
+  };
+
   return (
     <section className={`${styles.tab_bar}`}>
       {isSelect ? (
         <>
-          <UploadIcon />
-          <DownloadIcon />
-          <TrashIcon />
+          <UploadIcon onClick={() => openDeleteAlert(0)} stroke={"black"} />
+          <DownloadIcon onClick={() => openDeleteAlert(1)} stroke={"black"} />
+          <TrashIcon onClick={() => openDeleteAlert(0)} stroke={"black"} />
         </>
       ) : (
         <>
@@ -64,7 +72,12 @@ function TabBar({ isSelect }: TabBarType) {
             }
             fill={getDetail ? (getDetail.isAlbumFav ? "red" : "none") : "none"}
           />
-          <DotsIcon width={"8.205vw"} height={"8.205vw"} stroke={"#061C3D"} />
+          <DotsIcon
+            onClick={() => openDeleteAlert(3)}
+            width={"8.205vw"}
+            height={"8.205vw"}
+            stroke={"#061C3D"}
+          />
         </>
       )}
     </section>

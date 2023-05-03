@@ -162,7 +162,7 @@ $main-color: linear-gradient(
     background: $main-color;
   }
   .no_check {
-    background-color: white;
+    background-color: rgba(255, 255, 255, 0);
     border: 2px solid grey;
   }
   ul {

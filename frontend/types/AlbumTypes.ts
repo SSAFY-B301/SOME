@@ -68,3 +68,13 @@ export interface photosRequest {
   categoryId: number;
   userId: number[];
 }
+
+export interface requestPartType {
+  albumId: number;
+  multipartFile: FormData;
+}
+
+export interface usePutAlbumNameType {
+  album_id: number;
+  new_album_name: string;
+}
