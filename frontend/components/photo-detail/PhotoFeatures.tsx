@@ -1,4 +1,5 @@
-import React, { useState } from "react";
+import { getPhoto } from "@/pages/api/photoDetailApi";
+import React, { useEffect, useState } from "react";
 
 interface UserType {
   profileImg: string;
@@ -11,17 +12,18 @@ interface PhotoType {
 }
 
 interface Props {
-  user: UserType;
-  photo: PhotoType;
+  date: string,
+  userName: string,
+  userProfileImg: string,
 }
 
 /**
  * 사진 상세보기 특징 컴포넌트
  */
 
-const PhotoFeatures = ({ user, photo }: Props): JSX.Element => {
+const PhotoFeatures = (): JSX.Element => {
   const [isActive, setIsActive] = useState<boolean>(false);
-
+  
   /**
    * 좋아요 기능 추후 추가
    */
@@ -34,23 +36,32 @@ const PhotoFeatures = ({ user, photo }: Props): JSX.Element => {
   };
 
   /**
+   * 사진 상세 정보 접근
+   * useQuery
+   *  queryKey : photo
+   */
+  const photoDetail = getPhoto();
+
+  /**
    * 투표 완료 기능 추후 추가
    */
 
   return (
-    <div className="w-11/12 h-full flex justify-between">
-      <div className="w-40 flex justify-between items-center">
+    <div className="flex justify-between w-11/12 h-full">
+      <div className="flex items-center justify-between w-40">
         <img
-          src={user.profileImg}
+          src={photoDetail?.userProfileImg}
           alt="profile"
           className="w-10 h-10 rounded-xl"
         />
         <div className="flex flex-col">
-          <span className="text-2xl">{user.name}</span>
-          <span className="text-xs">{photo.date}</span>
+          <span className="text-2xl">{photoDetail?.userName}</span>
+          <span className="text-xs">{photoDetail?.uploadedDate.substring(0,4)+"년 "+
+                  photoDetail?.uploadedDate.substring(5,7)+"월 "+
+                  photoDetail?.uploadedDate.substring(8,10)+"일"}</span>
         </div>
       </div>
-      <div className="w-20 flex justify-between items-center">
+      <div className="flex items-center justify-between w-20">
         <div>
           <svg
             xmlns="http://www.w3.org/2000/svg"
