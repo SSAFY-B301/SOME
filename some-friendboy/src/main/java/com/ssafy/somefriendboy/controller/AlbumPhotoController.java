@@ -53,7 +53,7 @@ public class AlbumPhotoController {
     }
 
     @GetMapping("/album/list")
-    public ResponseEntity<ResponseDto> getAlbumPhoto(@RequestHeader HttpHeaders headers, @RequestBody AlbumPhotoListOptDto albumPhotoListOptDto) {
+    public ResponseEntity<ResponseDto> getAlbumPhoto(@RequestHeader HttpHeaders headers, AlbumPhotoListOptDto albumPhotoListOptDto) {
         String accessToken = headers.get("access_token").toString();
         log.debug("앨범 목록 정보 GET: /photo/album/list, albumPhotoListOptDto : {}", albumPhotoListOptDto);
 
