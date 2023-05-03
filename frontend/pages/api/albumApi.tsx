@@ -14,10 +14,12 @@ import {
   AlbumInfoType,
   PhotoType,
   requestPhotosType,
+  requestPartType,
+  usePutAlbumNameType,
 } from "@/types/AlbumTypes";
 import useCustomAxios from "@/features/customAxios";
 
-const { customBoyAxios } = useCustomAxios();
+const { customBoyAxios, customBoyFileAxios } = useCustomAxios();
 
 // 남사친 페이지
 /**
@@ -155,7 +157,68 @@ export function Mutations() {
       }
     );
   }
-  return { usePutFav, usePutFavHome };
+
+  function useDeletePhotos(): UseMutationResult<boolean, AxiosError, number[]> {
+    return useMutation(
+      (photos) => customBoyAxios.put(`/photo/delete`, photos),
+      {
+        onSuccess: (data) => {
+          // queryClient.invalidateQueries(["detail", albumId]);
+        },
+        onError: (error) => {
+          console.error(error);
+        },
+      }
+    );
+  }
+
+  function usePutAlbumName(
+    albumId: number
+  ): UseMutationResult<boolean, AxiosError, usePutAlbumNameType> {
+    return useMutation(
+      (body) => customBoyAxios.put(`/album/modify/name`, body),
+      {
+        onSuccess: (data) => {
+          queryClient.invalidateQueries(["detail", albumId]);
+        },
+        onError: (error) => {
+          console.error(error);
+        },
+      }
+    );
+  }
+
+  function usePostPhoto(): UseMutationResult<boolean, AxiosError, FormData> {
+    const headers = {
+      "Content-Type": "multipart/form-data",
+    };
+    // const formData = new FormData();
+    // formData.append("albumId", String(albumId));
+    // Array.from(files).forEach((file) => {
+    //   formData.append("multipartFile", file);
+    // });
+    // console.log("formData", formData.getAll("multipartFile"));
+    // console.log("albumId", formData.getAll("albumId"));
+
+    return useMutation(
+      (formData) => customBoyAxios.post(`/photo/upload`, formData, { headers }),
+      {
+        onSuccess: (data) => {
+          // queryClient.invalidateQueries(["detail", albumId]);
+        },
+        onError: (error) => {
+          console.error(error);
+        },
+      }
+    );
+  }
+  return {
+    usePutFav,
+    usePutFavHome,
+    usePostPhoto,
+    useDeletePhotos,
+    usePutAlbumName,
+  };
 }
 
 /**
