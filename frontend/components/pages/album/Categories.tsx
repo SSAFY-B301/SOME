@@ -11,14 +11,16 @@ interface categoriesTable {
 }
 
 const categoriesTable: categoriesTable = {
-  1: "자연",
-  2: "동물",
-  3: "개인",
-  4: "단체",
-  5: "음식",
+  1: "사람",
+  2: "단체",
+  3: "음식",
+  4: "동물",
+  5: "운동",
+  6: "물건",
+  7: "자연",
 };
 
-const categories: number[] = [1, 2, 3, 4, 5];
+const categories: number[] = [1, 2, 3, 4, 5, 6, 7];
 
 function Categories({ selectedId, setSelectedId }: CategoriesType) {
   /**
@@ -29,7 +31,7 @@ function Categories({ selectedId, setSelectedId }: CategoriesType) {
     setSelectedId(id);
   };
   return (
-    <section className={`${styles.categories}`}>
+    <section className={`${styles.categories} justify-start px-4`}>
       <p
         onClick={() => selectCategory(0)}
         className={selectedId === 0 ? styles.is_selected : ""}

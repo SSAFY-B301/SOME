@@ -55,13 +55,14 @@ $main-color: linear-gradient(
   width: 100vw;
   height: 10.256vw;
   display: flex;
-  justify-content: center;
   align-items: center;
   gap: 8.974vw;
+  overflow: scroll;
 
   p {
     font-size: 4.103vw;
     color: #b1b8c0;
+    flex-shrink: 0;
   }
 }
 
