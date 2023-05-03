@@ -1,24 +1,23 @@
 import React from "react";
 
 interface AlbumType {
-  id: number;
+  album_id: number;
   album_name: string;
   album_created_date: string;
   thumbnail_photo_url: string;
-  members: number[];
+  members: string[];
 }
 
 interface Props {
   album: AlbumType;
   isActiveFriends: Set<Number>;
-  selectAlbum(ids: number[]): void;
+  selectAlbum(ids: string[]): void;
 }
 
 const Album = ({ album, selectAlbum, isActiveFriends }: Props): JSX.Element => {
   const select = () => {
     selectAlbum(album.members);
   };
-  console.log(`${album.album_name} ${album.id}`);
 
   return (
     <div
