@@ -26,6 +26,10 @@ public class AlbumWholeListDto {
     @JsonProperty("thumbnail_photo_url")
     private String thumbnailPhotoUrl;
 
+    // 최근 사진 id
+    @JsonProperty("recent_photo_id")
+    private Long recentPhotoId;
+
     // 즐겨찾기 여부
     @JsonProperty("isAlbumFav")
     private boolean isAlbumFav;
