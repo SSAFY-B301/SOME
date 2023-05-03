@@ -42,6 +42,7 @@ const AlbumCreate = (): JSX.Element => {
           placeholder={defaultName.current}
           value={albumName}
           onChange={onChange}
+          maxLength={8}
         ></input>
       </div>
       <div className="box-border flex justify-center w-full h-20 pt-2">
