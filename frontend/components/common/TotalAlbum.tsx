@@ -46,29 +46,36 @@ function TotalAlbumItems() {
   const router = useRouter();
   const { getTotal, getTotalIsLoading } = useGetTotal();
 
+  const default_profile =
+    "https://mblogthumb-phinf.pstatic.net/MjAxODA1MjhfMTA0/MDAxNTI3NDg3MTczOTY5.C2eXPMwTXPN7mN6rhXpLrbLAu36fyR7JDr3Ym8URGl8g.97dxz-n9zjbzgv8KbhDwrICDNbNierqWueC0aRsfgjIg.JPEG.ehfkdl8989/KakaoTalk_Moim_4UjmLsR1AohJhEmSqqNZkX7uHKU0kp.jpg?type=w800";
+
   const totalAlbums: React.ReactNode = getTotalIsLoading ? (
     <p>로딩중</p>
-  ) : getTotal?.data ? (
-    getTotal.data.map((album: TotalAlbumType) => (
+  ) : getTotal ? (
+    getTotal.map((album: TotalAlbumType) => (
       <div
-        key={album.id}
-        onClick={() => router.push(`/album/${album.id}`)}
+        key={album.album_id}
+        onClick={() => router.push(`/album/${album.album_id}`)}
         className={`flex flex-col items-end justify-between bg-center bg-cover ${styles.total_item}`}
         style={{
-          backgroundImage: "url(" + album.img + ")",
+          backgroundImage: `url(${
+            album.thumbnail_photo_url
+              ? album.thumbnail_photo_url
+              : default_profile
+          })`,
           padding: "2.051vw",
           borderRadius: "3.077vw",
         }}
       >
         <HeartIcon
-          fill={album.isLike ? "red" : "none"}
-          stroke={album.isLike ? "red" : "white"}
+          fill={album.isAlbumFav ? "red" : "none"}
+          stroke={album.isAlbumFav ? "red" : "white"}
           width="6.154vw"
           height="6.154vw"
         />
         <div className="flex flex-col items-end text-white text-left">
-          <span>{album.name}</span>
-          <span>{album.createdTime}</span>
+          <span>{album.album_name}</span>
+          <span>{album.album_created_date}</span>
         </div>
       </div>
     ))
