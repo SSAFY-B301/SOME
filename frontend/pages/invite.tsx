@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from "react";
+import React, { useState } from "react";
 import { useRouter } from "next/router";
 import styles from "@/styles/inviteFriends.module.scss";
 import BackButtonIcon from "@/public/icons/CaretLeft.svg";
@@ -21,11 +21,11 @@ interface FriendType {
 }
 
 interface AlbumType {
-  id: number;
+  album_id: number;
   album_name: string;
   album_created_date: string;
   thumbnail_photo_url: string;
-  members: number[];
+  members: string[];
 }
 
 const InviteFriends = (): JSX.Element => {
@@ -109,10 +109,10 @@ const InviteFriends = (): JSX.Element => {
   /**
    * 앨범 멤버 선택 기능
    */
-  const selectAlbums = (ids: number[]) => {
+  const selectAlbums = (ids: string[]) => {
     const tmp = new Set<number>(isActiveFriends);
     let tmpList: FriendType[] = [];
-    ids.map((id) => tmp.add(id));
+    ids.map((id) => tmp.add(Number(id)));
     setActiveFriends(tmp);
     tmp.forEach(function (value) {
       const filtered = friends.filter((friend) => friend.id == value);
