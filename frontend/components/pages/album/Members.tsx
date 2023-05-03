@@ -32,7 +32,9 @@ interface MemberType {
  * @returns
  */
 function Members({ selectMembers, setSelectMembers, membersId }: MembersType) {
-  const { getDetail, getDetailIsLoading } = useGetDetail();
+  // TODO : albumID 넣기
+  const albumId: number = 1;
+  const { getDetail, getDetailIsLoading } = useGetDetail(albumId);
   const [membersSize, setMembersSize] = useState<number>(membersId.length);
 
   useEffect(() => {
@@ -57,9 +59,10 @@ function Members({ selectMembers, setSelectMembers, membersId }: MembersType) {
    */
   const membersSection: React.ReactNode = getDetailIsLoading ? (
     // TODO : 로딩
-    <p>로딩중</p>
-  ) : getDetail ? (
-    getDetail.data.members.map((member: MemberType) => (
+    <></>
+  ) : (
+    getDetail &&
+    getDetail.members.map((member) => (
       <div
         key={member.id}
         onClick={() => {
@@ -70,18 +73,18 @@ function Members({ selectMembers, setSelectMembers, membersId }: MembersType) {
             ? styles.select_member
             : styles.no_select_member
         }`}
-        style={{ backgroundImage: "url(" + member.img + ")" }}
+        style={{
+          backgroundImage: "url(" + member.profile_img_url + ")",
+        }}
       ></div>
     ))
-  ) : (
-    <p>멤버 없는디..?</p>
   );
-
+  //
   return (
     <section className={`${styles.members}`}>
       {membersSection}
       {/* 새로운 멤버 초대하러 가기 */}
-      <Link href="/album-starter/InviteFriendsPage" as="친구초대">
+      <Link href="/invite" as="친구초대">
         <PlusIcon width="6.154vw" height="6.154vw" />
       </Link>
     </section>

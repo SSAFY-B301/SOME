@@ -9,17 +9,20 @@ import TabBar from "components/pages/album/TabBar";
 import { useEffect, useMemo, useState } from "react";
 
 // API
-import { useGetDetail } from "pages/api/albumApi";
+import { useGetDetail, useGetPhotos } from "pages/api/albumApi";
 
 // CSS
 import styles from "styles/album.module.scss";
 import Preview from "components/pages/album/Preview";
 
 // 타입
-import { previewPhotoType } from "types/AlbumTypes";
+import { previewPhotoType, requestPhotosType } from "types/AlbumTypes";
 
 function AlbumDetail() {
-  const { getDetail, getDetailIsLoading } = useGetDetail();
+  // TODO : albumID 넣기
+  const albumId: number = 1;
+  const { getDetail, getDetailIsLoading } = useGetDetail(albumId);
+
   const [membersId, setMembersId] = useState<number[]>([]);
 
   const [selectedCategory, setSelectedCategory] = useState<number>(0);
@@ -34,10 +37,18 @@ function AlbumDetail() {
   const [isPreview, setIsPreview] = useState<boolean>(false);
   const [previewPhotos, setPreviewPhotos] = useState<previewPhotoType[]>([]);
 
+  const photosRequest: requestPhotosType = {
+    albumId: albumId,
+    categoryId: selectedCategory,
+    userId: Array.from(selectMembers).toString(),
+  };
+
+  const { getTotal, getTotalId } = useGetPhotos(photosRequest);
+
   // 로딩이 완료되면 user id 배열 수정
   useEffect(() => {
     if (getDetail) {
-      setMembersId([...getDetail.data.members.map((member) => member.id)]);
+      setMembersId([...getDetail.members.map((member) => member.id)]);
     }
   }, [getDetailIsLoading]);
 
@@ -46,19 +57,21 @@ function AlbumDetail() {
     setSelectMembers(new Set(membersId));
   }, [membersId]);
 
-  // 전체 선택 누르면 전부 선택 / 해제 누르면 전부 해제
-  useEffect(() => {
-    isTotal
-      ? setSelectedPhotos(new Set(getDetail?.data.totalId))
-      : setSelectedPhotos(new Set());
-    !isSelect && setSelectedPhotos(new Set());
-    !isSelect && setIsTotal(false);
-  }, [isTotal, isSelect]);
+  if (getTotal && getTotalId) {
+    // 전체 선택 누르면 전부 선택 / 해제 누르면 전부 해제
+    useEffect(() => {
+      isTotal
+        ? setSelectedPhotos(new Set(getTotalId))
+        : setSelectedPhotos(new Set());
+      !isSelect && setSelectedPhotos(new Set());
+      !isSelect && setIsTotal(false);
+    }, [isTotal, isSelect]);
 
-  // 전체 크기만큼 선택하면 전체선택 토글
-  useEffect(() => {
-    selectedPhotos.size === getDetail?.data.total && setIsTotal(true);
-  }, [selectedPhotos]);
+    // 전체 크기만큼 선택하면 전체선택 토글
+    useEffect(() => {
+      selectedPhotos.size === getTotal && setIsTotal(true);
+    }, [selectedPhotos]);
+  }
 
   /**
    * size 길이의 배열 반환
@@ -121,7 +134,7 @@ function AlbumDetail() {
           <span>
             {isSelect
               ? `${selectedPhotos.size}장의 사진이 선택됨`
-              : `${getDetail ? getDetail.data.total : 0}장의 사진`}
+              : `${getDetail ? getTotal : 0}장의 사진`}
           </span>
         </div>
       </div>
