@@ -17,10 +17,11 @@ import Preview from "components/pages/album/Preview";
 
 // 타입
 import { previewPhotoType, requestPhotosType } from "types/AlbumTypes";
+import { useRouter } from "next/router";
 
 function AlbumDetail() {
-  // TODO : albumID 넣기
-  const albumId: number = 1;
+  const router = useRouter();
+  const albumId: number = Number(router.query.album_id);
   const { getDetail, getDetailIsLoading } = useGetDetail(albumId);
 
   const [membersId, setMembersId] = useState<number[]>([]);

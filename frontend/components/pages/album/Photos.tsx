@@ -1,5 +1,5 @@
 // 라이브러리
-import React from "react";
+import React, { useEffect, useState } from "react";
 import { useRouter } from "next/router";
 
 // 컴포넌트
@@ -49,12 +49,21 @@ function Photos({
 }: PhotosType) {
   const router = useRouter();
 
-  const albumId: number = 1;
-  const photosRequest: requestPhotosType = {
+  const albumId: number = Number(router.query.album_id);
+
+  const [photosRequest, setPhotosRequest] = useState<requestPhotosType>({
     albumId: albumId,
     categoryId: selectedCategory,
     userId: Array.from(selectMembers).toString(),
-  };
+  });
+
+  useEffect(() => {
+    setPhotosRequest({
+      albumId: albumId,
+      categoryId: selectedCategory,
+      userId: Array.from(selectMembers).toString(),
+    });
+  }, [selectedCategory, selectMembers]);
 
   const { getPhotos, getPhotosIsLoading } = useGetPhotos(photosRequest);
 
