@@ -79,7 +79,13 @@ function Members({ selectMembers, setSelectMembers, membersId }: MembersType) {
     <section className={`${styles.members}`}>
       {membersSection}
       {/* 새로운 멤버 초대하러 가기 */}
-      <Link href="/invite" as="친구초대">
+      <Link
+        href={{
+          pathname: "/invite",
+          query: { albumId: albumId, members: membersId },
+        }}
+        as="친구초대"
+      >
         <PlusIcon width="6.154vw" height="6.154vw" />
       </Link>
     </section>

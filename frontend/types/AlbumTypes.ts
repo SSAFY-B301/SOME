@@ -6,11 +6,10 @@ export interface CurrentAlbumType {
 }
 
 export interface FavoriteAlbumType {
-  id: number;
-  img: string;
-  name: string;
-  createdTime: string;
-  isLike: boolean;
+  album_id: number;
+  thumbnail_photo_url: string;
+  album_name: string;
+  album_created_date: string;
 }
 
 export interface TotalAlbumType {
