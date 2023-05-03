@@ -23,8 +23,8 @@ function NavBar({ isSelect, setIsSelect, isTotal, setIsTotal }: NavBarType) {
   const clickSelect = () => {
     setIsSelect(!isSelect);
   };
-  // TODO : 앨범 ID 넣기
-  const albumId: number = 1;
+
+  const albumId: number = Number(router.query.album_id);
   const { getDetail, getDetailIsLoading } = useGetDetail(albumId);
   return (
     <section className={`${styles.nav_bar}`}>

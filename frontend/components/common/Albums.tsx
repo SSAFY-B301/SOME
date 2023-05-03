@@ -1,5 +1,4 @@
 // 라이브러리
-import { useEffect, useState } from "react";
 import { useRouter } from "next/router";
 
 // 컴포넌트
