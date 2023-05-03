@@ -142,7 +142,20 @@ export function Mutations() {
       }
     );
   }
-  return { usePutFav };
+  function usePutFavHome(): UseMutationResult<boolean, AxiosError, number> {
+    return useMutation(
+      (albumId) => customBoyAxios.put(`/album/fav/${albumId}`),
+      {
+        onSuccess: (data) => {
+          // queryClient.invalidateQueries(["detail", albumId]);
+        },
+        onError: (error) => {
+          console.error(error);
+        },
+      }
+    );
+  }
+  return { usePutFav, usePutFavHome };
 }
 
 /**

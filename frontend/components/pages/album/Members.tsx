@@ -36,7 +36,6 @@ function Members({ selectMembers, setSelectMembers, membersId }: MembersType) {
   useEffect(() => {
     setMembersSize(membersId.length);
   }, [membersId]);
-  console.log(getDetail);
 
   /**
    * 멤버 선택값 변경
