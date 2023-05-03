@@ -20,7 +20,7 @@ const AlbumCreate = (): JSX.Element => {
     >
       <div className="flex items-center justify-center w-full h-16">
         <div className="relative w-11/12 h-12">
-          <span className="absolute text-2xl text-white -translate-x-1/2 -translate-y-1/2 top-1/2 left-1/2">
+          <span className="absolute text-2xl text-white -translate-x-1/2 -translate-y-1/2 top-1/2 left-1/2 whitespace-nowrap">
             새로운 앨범 생성
           </span>
           <Link

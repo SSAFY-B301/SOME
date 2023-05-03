@@ -31,6 +31,7 @@ const Albums = ({
           >
             {albums.map((album) => (
               <Album
+                key={album.id}
                 album={album}
                 isActiveFriends={isActiveFriends}
                 selectAlbum={selectAlbums}
