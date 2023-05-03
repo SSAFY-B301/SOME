@@ -1,5 +1,9 @@
 // 라이브러리
 import React from "react";
+import { useRouter } from "next/router";
+
+// API
+import { Mutations, useGetDetail } from "@/pages/api/albumApi";
 
 //CSS
 import styles from "styles/album.module.scss";
@@ -10,27 +14,10 @@ import DotsIcon from "public/icons/DotsThreeOutline.svg";
 import DownloadIcon from "public/icons/DownloadSimple.svg";
 import TrashIcon from "public/icons/Trash.svg";
 import UploadIcon from "public/icons/UploadSimple.svg";
-import { Mutations, useGetDetail } from "@/pages/api/albumApi";
 
 // 인터페이스
 interface TabBarType {
   isSelect: boolean;
-}
-interface AlbumInfoType {
-  id: number;
-  name: string;
-  members: MemberType[];
-  categories: number[];
-  totalId: number[];
-  total: number;
-  isLike: boolean;
-  createdTime: string;
-}
-
-interface MemberType {
-  id: number;
-  name: string;
-  img: string;
 }
 
 /**
@@ -41,8 +28,8 @@ interface MemberType {
  * @returns
  */
 function TabBar({ isSelect }: TabBarType) {
-  // TODO : albumId 넣기
-  const albumId: number = 1;
+  const router = useRouter();
+  const albumId: number = Number(router.query.album_id);
   const { getDetail } = useGetDetail(albumId);
 
   /**

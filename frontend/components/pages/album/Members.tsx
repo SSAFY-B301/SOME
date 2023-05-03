@@ -8,18 +8,13 @@ import styles from "styles/album.module.scss";
 // 아이콘
 import PlusIcon from "public/icons/PlusMainColor.svg";
 import { useGetDetail } from "@/pages/api/albumApi";
+import { useRouter } from "next/router";
 
 // 인터페이스
 interface MembersType {
   selectMembers: Set<number>;
   setSelectMembers: React.Dispatch<React.SetStateAction<Set<number>>>;
   membersId: number[];
-}
-
-interface MemberType {
-  id: number;
-  name: string;
-  img: string;
 }
 
 /**
@@ -32,8 +27,9 @@ interface MemberType {
  * @returns
  */
 function Members({ selectMembers, setSelectMembers, membersId }: MembersType) {
-  // TODO : albumID 넣기
-  const albumId: number = 1;
+  const router = useRouter();
+
+  const albumId: number = Number(router.query.album_id);
   const { getDetail, getDetailIsLoading } = useGetDetail(albumId);
   const [membersSize, setMembersSize] = useState<number>(membersId.length);
 

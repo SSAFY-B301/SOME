@@ -17,8 +17,6 @@ import {
 } from "@/types/AlbumTypes";
 import useCustomAxios from "@/features/customAxios";
 
-const URL = "http://localhost:8080";
-
 const { customBoyAxios } = useCustomAxios();
 
 // 남사친 페이지
@@ -75,7 +73,6 @@ export const useGetTotal = () => {
   if (data) {
     getTotal = data.data.data.myWholeAlbumList;
   }
-  console.log("TOTAL", getTotal);
 
   return { getTotal, getTotalIsLoading };
 };
@@ -87,7 +84,6 @@ export const useGetTotal = () => {
  */
 export const useGetDetail = (albumId: number) => {
   const queryKey = `album/detail/${albumId}`;
-  console.log("LIKE");
 
   const { data, isLoading: getDetailIsLoading } = useQuery(
     ["detail", albumId],
@@ -138,7 +134,6 @@ export function Mutations() {
       (albumId) => customBoyAxios.put(`/album/fav/${albumId}`),
       {
         onSuccess: (data) => {
-          console.log(data);
           queryClient.invalidateQueries(["detail", albumId]);
         },
         onError: (error) => {
