@@ -30,5 +30,6 @@ public class AlbumPhoto {
     private List<Long> categoryId;
     private String userId;
     private Long albumId;
+    private PhotoStatus status;
 
 }
