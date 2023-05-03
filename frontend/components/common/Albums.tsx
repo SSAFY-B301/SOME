@@ -27,8 +27,8 @@ function CurrentAlbum() {
 
   const { getCurrent, getCurrentIsLoading } = useGetCurrent();
 
-  const currents: React.ReactNode = getCurrent?.data ? (
-    getCurrent.data.map((currentAlbum: CurrentAlbumType) => (
+  const currents: React.ReactNode = getCurrent ? (
+    getCurrent.map((currentAlbum: CurrentAlbumType) => (
       <div
         onClick={() => router.push(`/album/${currentAlbum.id}`)}
         key={currentAlbum.id}
@@ -87,34 +87,19 @@ function FavoriteAlbum() {
 
   const { getFavorite, getFavoriteIsLoading } = useGetFavorite();
 
-  const [Albums, setAlbums] = useState<FavoriteAlbumType[]>(getFavorite?.data);
-  useEffect(() => {
-    !getFavoriteIsLoading && setAlbums(getFavorite?.data);
-  }, [getFavoriteIsLoading]);
-
   /**
    * 즐겨찾기 토글
    * @param id
    */
   const clickedHeart = (id: number) => {
-    const nextAlbums = Albums.map((album, i) => {
-      if (i === id - 1) {
-        return {
-          ...album,
-          isLike: !album.isLike,
-        };
-      } else {
-        return album;
-      }
-    });
-    setAlbums(nextAlbums);
+    // TODO : 즐겨찾기 API 연결
   };
 
   /**
    * 즐겨찾는 앨범 리스트
    */
-  const favorites: React.ReactNode = Albums
-    ? Albums.map((favoriteAlbum: FavoriteAlbumType) => (
+  const favorites: React.ReactNode = getFavorite
+    ? getFavorite.map((favoriteAlbum: FavoriteAlbumType) => (
         <div
           onClick={() => router.push(`/album/${favoriteAlbum.id}`)}
           key={favoriteAlbum.id}

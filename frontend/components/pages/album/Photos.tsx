@@ -9,6 +9,7 @@ import NewPhoto from "components/pages/album/NewPhoto";
 // CSS
 import styles from "styles/album.module.scss";
 import { useGetPhotos } from "@/pages/api/albumApi";
+import { requestPhotosType } from "@/types/AlbumTypes";
 
 // 인터페이스
 interface PhotosType {
@@ -47,7 +48,15 @@ function Photos({
   setInputPhoto,
 }: PhotosType) {
   const router = useRouter();
-  const { getPhotos, getPhotosIsLoading } = useGetPhotos();
+
+  const albumId: number = 1;
+  const photosRequest: requestPhotosType = {
+    albumId: albumId,
+    categoryId: selectedCategory,
+    userId: Array.from(selectMembers).toString(),
+  };
+
+  const { getPhotos, getPhotosIsLoading } = useGetPhotos(photosRequest);
 
   /**
    * 사진 선택 상태 바꾸기
@@ -73,26 +82,28 @@ function Photos({
         <p>로딩중</p>
       ) : (
         <>
-          {getPhotos?.data.map(
-            (photo) =>
-              (selectedCategory === 0 || selectedCategory === photo.category) &&
-              selectMembers.has(photo.user) && (
-                <div
-                  key={photo.id}
-                  onClick={() =>
-                    isSelect ? changeSelect(photo.id) : goPhoto(photo.id)
-                  }
-                >
-                  <Photo
-                    key={photo.id}
-                    width={"22.564vw"}
-                    height={"22.564vw"}
-                    selectedPhotos={selectedPhotos}
-                    photoId={photo.id}
-                    img={photo.img}
-                  />
-                </div>
-              )
+          {getPhotos ? (
+            getPhotos.map((photo) => (
+              <div
+                key={photo.photoId}
+                onClick={() =>
+                  isSelect
+                    ? changeSelect(photo.photoId)
+                    : goPhoto(photo.photoId)
+                }
+              >
+                <Photo
+                  key={photo.photoId}
+                  width={"22.564vw"}
+                  height={"22.564vw"}
+                  selectedPhotos={selectedPhotos}
+                  photoId={photo.photoId}
+                  img={photo.s3Url}
+                />
+              </div>
+            ))
+          ) : (
+            <></>
           )}
           {!isSelect && <NewPhoto setInputPhoto={setInputPhoto} />}
         </>
