@@ -9,7 +9,7 @@ import TabBar from "components/pages/album/TabBar";
 import { useEffect, useMemo, useState } from "react";
 
 // API
-import { useGetDetail, useGetPhotos } from "pages/api/albumApi";
+import { Mutations, useGetDetail, useGetPhotos } from "pages/api/albumApi";
 
 // CSS
 import styles from "styles/album.module.scss";
@@ -18,6 +18,8 @@ import Preview from "components/pages/album/Preview";
 // 타입
 import { previewPhotoType, requestPhotosType } from "types/AlbumTypes";
 import { useRouter } from "next/router";
+import Alert from "@/components/common/Alert";
+import EditAlbumName from "@/components/pages/album/EditAlbumName";
 
 function AlbumDetail() {
   const router = useRouter();
@@ -38,6 +40,10 @@ function AlbumDetail() {
   const [isPreview, setIsPreview] = useState<boolean>(false);
   const [previewPhotos, setPreviewPhotos] = useState<previewPhotoType[]>([]);
 
+  const [isAlerts, setIsAlerts] = useState<boolean[]>(
+    [...Array(4)].fill(false)
+  );
+
   const photosRequest: requestPhotosType = {
     albumId: albumId,
     categoryId: selectedCategory,
@@ -45,6 +51,26 @@ function AlbumDetail() {
   };
 
   const { getTotal, getTotalId } = useGetPhotos(photosRequest);
+
+  const { mutate: deletePhotosMutate } = Mutations().useDeletePhotos();
+
+  const closeAlert = (idx: number) => {
+    isAlerts[idx] = false;
+    setIsAlerts([...isAlerts]);
+  };
+
+  const deletePhotos = () => {
+    console.log("DELETE", Array.from(selectedPhotos));
+
+    deletePhotosMutate(Array.from(selectedPhotos));
+    closeAlert(0);
+  };
+
+  const downloadPhotos = () => {
+    console.log("DOWNLOAD", Array.from(selectedPhotos));
+
+    closeAlert(1);
+  };
 
   // 로딩이 완료되면 user id 배열 수정
   useEffect(() => {
@@ -139,12 +165,38 @@ function AlbumDetail() {
           </span>
         </div>
       </div>
-      <TabBar isSelect={isSelect} />
+      <TabBar
+        isSelect={isSelect}
+        isAlerts={isAlerts}
+        setIsAlerts={setIsAlerts}
+      />
       {isPreview && (
         <Preview
           previewPhotos={previewPhotos}
           photoLength={inputPhoto ? inputPhoto.length : 0}
           setIsPreview={setIsPreview}
+          inputPhoto={inputPhoto}
+        />
+      )}
+      {isAlerts[0] && (
+        <Alert
+          msg="정말 삭제 하시겠습니까?"
+          yesHandler={deletePhotos}
+          noHandler={() => closeAlert(0)}
+        />
+      )}
+      {isAlerts[1] && (
+        <Alert
+          msg="다운로드 하시겠습니까?"
+          yesHandler={downloadPhotos}
+          noHandler={() => closeAlert(1)}
+        />
+      )}
+      {isAlerts[3] && (
+        <EditAlbumName
+          msg="앨범 이름 변경"
+          albumId={albumId}
+          noHandler={() => closeAlert(3)}
         />
       )}
     </section>
