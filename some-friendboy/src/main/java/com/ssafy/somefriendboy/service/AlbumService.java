@@ -11,6 +11,7 @@ import com.ssafy.somefriendboy.repository.user.UserRepository;
 import com.ssafy.somefriendboy.util.HttpUtil;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.log4j.Log4j2;
+import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.data.mongodb.core.MongoOperations;
 import org.springframework.data.mongodb.core.query.Query;
@@ -186,45 +187,57 @@ public class AlbumService {
             return setResponseDto(result,"토큰 만료",450);
         }
 
-        // 내가 속한 전체 앨범들 ID 불러옴
-        List<Long> myAlbumIdList = albumMemberRepository.findMyAlbumIdListByUserId(userId, AlbumMemberStatus.ACCEPT);
+        Page<AlbumWholeListDto> albumWholeList = albumRepository.pageAlbumWholeListDto(userId, pageable);
 
-        // 내가 속한 앨범들의 ID로 Album 정보 불러옴
-        List<AlbumWholeListDto> myWholeAlbumList = new ArrayList<>();
-
-        for (Long albumId : myAlbumIdList) {
-            Album album = albumRepository.findAlbumByAlbumId(albumId);
-
-            AlbumPhoto albumPhoto = albumPhotoRepository.findByPhotoId(album.getThumbnailPhoto());
-            String thumbnailPhotoUrl = albumPhoto == null ? null : albumPhoto.getS3Url();
-
-            AlbumFav albumFav = albumFavRepository.findAlbumFavByAlbumMemberId_AlbumIdAndAlbumMemberId_UserId(albumId, userId);
-            boolean isAlbumFav = false;
-            if (albumFav != null) {
-                isAlbumFav = albumFav.getLikeStatus().equals(LikeStatus.LIKE) ? true : false;
-            }
-
-            AlbumWholeListDto albumWholeListDto = AlbumWholeListDto.builder()
-                .albumId(album.getAlbumId())
-                .albumName(album.getAlbumName())
-                .albumCreatedDate(album.getCreatedDate())
-                .recentPhotoId(album.getRecentPhoto())
-                .thumbnailPhotoUrl(thumbnailPhotoUrl)
-                .isAlbumFav(isAlbumFav)
-                .build();
-
-            myWholeAlbumList.add(albumWholeListDto);
+        // thumbnailPhoto, isAlbumFav 채우기
+        for (AlbumWholeListDto album : albumWholeList) {
         }
 
-        // TODO :: 가장 최근에 올린 사진의 업로드 날짜를 기준으로 sort -> Paging 처리할 때 한번에 정렬하자
-        Collections.sort(myWholeAlbumList, new Comparator<AlbumWholeListDto>() {
-            @Override
-            public int compare(AlbumWholeListDto o1, AlbumWholeListDto o2) {
-                return (int) (o2.getRecentPhotoId() - o1.getRecentPhotoId());
-            }
-        });
+        result.put("albumWholeList",albumWholeList.getContent());
+        result.put("total_page",albumWholeList.getTotalPages());
+        result.put("now_page",albumWholeList.getPageable().getPageNumber());
+        result.put("is_last",albumWholeList.isLast());
+        result.put("is_first",albumWholeList.isFirst());
 
-        result.put("myWholeAlbumList", myWholeAlbumList);
+//        // 내가 속한 전체 앨범들 ID 불러옴
+//        List<Long> myAlbumIdList = albumMemberRepository.findMyAlbumIdListByUserId(userId, AlbumMemberStatus.ACCEPT);
+//
+//        // 내가 속한 앨범들의 ID로 Album 정보 불러옴
+//        List<AlbumWholeListDto> myWholeAlbumList = new ArrayList<>();
+//
+//        for (Long albumId : myAlbumIdList) {
+//            Album album = albumRepository.findAlbumByAlbumId(albumId);
+//
+//            AlbumPhoto albumPhoto = albumPhotoRepository.findByPhotoId(album.getThumbnailPhoto());
+//            String thumbnailPhotoUrl = albumPhoto == null ? null : albumPhoto.getS3Url();
+//
+//            AlbumFav albumFav = albumFavRepository.findAlbumFavByAlbumMemberId_AlbumIdAndAlbumMemberId_UserId(albumId, userId);
+//            boolean isAlbumFav = false;
+//            if (albumFav != null) {
+//                isAlbumFav = albumFav.getLikeStatus().equals(LikeStatus.LIKE) ? true : false;
+//            }
+//
+//            AlbumWholeListDto albumWholeListDto = AlbumWholeListDto.builder()
+//                .albumId(album.getAlbumId())
+//                .albumName(album.getAlbumName())
+//                .albumCreatedDate(album.getCreatedDate())
+//                .recentPhotoId(album.getRecentPhoto())
+//                .thumbnailPhotoUrl(thumbnailPhotoUrl)
+//                .isAlbumFav(isAlbumFav)
+//                .build();
+//
+//            myWholeAlbumList.add(albumWholeListDto);
+//        }
+//
+//        // TODO :: 가장 최근에 올린 사진의 업로드 날짜를 기준으로 sort -> Paging 처리할 때 한번에 정렬하자
+//        Collections.sort(myWholeAlbumList, new Comparator<AlbumWholeListDto>() {
+//            @Override
+//            public int compare(AlbumWholeListDto o1, AlbumWholeListDto o2) {
+//                return (int) (o2.getRecentPhotoId() - o1.getRecentPhotoId());
+//            }
+//        });
+//
+//        result.put("myWholeAlbumList", myWholeAlbumList);
         return setResponseDto(result,"앨범 목록",200);
     }
 
