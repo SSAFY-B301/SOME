@@ -2,7 +2,14 @@ import React, { useState, useRef } from "react";
 import PlusIcon from "@/public/icons/Plus.svg";
 import Link from "next/link";
 
+/**
+ * 앨범 생성 페이지
+ */
 const AlbumCreate = (): JSX.Element => {
+  /**
+   * 애니메이션 관련해서 transition 공부하기
+   */
+
   const defaultName = useRef<string>("새로운 앨범");
   const [albumName, setAlbumName] = useState<string | undefined>("");
 
@@ -27,7 +34,7 @@ const AlbumCreate = (): JSX.Element => {
             className="absolute right-0 text-lg font-thin text-white -translate-y-1/2 top-1/2"
             href={{
               pathname: "/invite",
-              query: { albumName: resultName, albumType: "new" },
+              query: { albumId: "", albumName: resultName },
             }}
             as={`/invite`}
           >

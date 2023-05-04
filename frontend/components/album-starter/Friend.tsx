@@ -23,6 +23,9 @@ const Friend = ({
   removeFriends,
 }: Props): JSX.Element => {
   const [isActive, setIsActive] = useState<boolean>(false);
+  const [thumbnailImg, setThumbnailImg] = useState<string>(
+    friend.profile_thumbnail_image
+  );
 
   useEffect(() => {
     if (isActiveFriends.has(friend.id)) {
@@ -40,13 +43,18 @@ const Friend = ({
     }
   };
 
+  const onErrorImg = () => {
+    setThumbnailImg("/images/default_thumbnail.png");
+  };
+
   return (
     <li className="h-16 flex justify-between items-center" onClick={select}>
       <div className="w-2/3 flex justify-start items-center">
         <img
-          src={friend.profile_thumbnail_image}
-          alt="img"
-          className="w-12 h-12 border-2 rounded-full box-border mr-3"
+          src={thumbnailImg}
+          alt=""
+          onError={onErrorImg}
+          className="w-12 h-12 rounded-full box-border mr-3"
         />
         <div className="text-base truncate">{friend.profile_nickname}</div>
       </div>

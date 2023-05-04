@@ -10,6 +10,10 @@ $main-color: linear-gradient(
   background: $main-color;
 }
 
+.albumText {
+  text-shadow: 0px 0px 10px black;
+}
+
 @keyframes slider {
   from {
     transform: translateY(0px);
@@ -45,6 +49,16 @@ $main-color: linear-gradient(
     opacity: 0;
   }
 }
+
+// animation : 띄어쓰기로 쭉 나열하면 아래의 속성들을 한 번에 지정할 수 있음
+// animation-name : 애니메이션의 중간 상태를 지정하는 이름.  @keyframes 블록에 작성
+// animation-duration : 한 싸이클의 애니메이션이 재생될 시간 지정
+// animation-delay : 애니메이션의 시작을 지연시킬 시간 지정
+// animation-direction : 애니메이션 재생 방향을 지정
+// animation-iteration-count : 애니메이션이 몇 번 반복될지 지정
+// animation-play-state : 애니메이션을 재생 상태. 멈추거나 다시 재생 시킬 수 있음
+// animation-timing-function : 중간 상태들의 전환을 어떤 시간간격으로 진행할지 지정
+// animation-fill-mode : 애니메이션이 재생 전 후의 상태 지정
 
 .appearFriendDiv {
   animation: slider 0.5s ease-in-out 0s 1 normal forwards;
