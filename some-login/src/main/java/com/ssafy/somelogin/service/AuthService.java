@@ -127,22 +127,9 @@ public class AuthService {
             if(byId.isEmpty()){
                 userRepository.save(user);
             }
-            else{
-                User user1 = byId.get();
-                user1.setUserEmail(user.getUserEmail());
-                user1.setUserImg(user.getUserImg());
-                user1.setUserName(user.getUserName());
-            }
-            UserInfoDto userInfoDto = UserInfoDto.builder()
-                    .userId(user.getUserId())
-                    .userName(user.getUserName())
-                    .userImg(user.getUserImg())
-                    .build();
-            resultMap.put("access_token",access_Token);
-            resultMap.put("user_info",userInfoDto);
         }
-        responseDto.setData(resultMap);
-        responseDto.setMessage("로그인 성공, 토큰/회원정보 리턴");
+        responseDto.setData(access_Token);
+        responseDto.setMessage("로그인 성공, 토큰 리턴");
         responseDto.setStatus_code(200);
         return responseDto;
     }
@@ -162,6 +149,24 @@ public class AuthService {
         resultMap.put("user_id",userId);
         responseDto.setData(resultMap);
         responseDto.setMessage("토큰 검증 성공");
+        responseDto.setStatus_code(200);
+        return responseDto;
+    }
+
+    public ResponseDto getUserInfo(String accessToken) {
+        ResponseDto responseDto = new ResponseDto<>();
+
+        String userId = httpUtil.parseToken(accessToken);
+        Optional<User> byId = userRepository.findById(userId);
+        User user = byId.get();
+        UserInfoDto userInfoDto = UserInfoDto.builder()
+                .userId(user.getUserId())
+                .userName(user.getUserName())
+                .userImg(user.getUserImg())
+                .build();
+
+        responseDto.setData(userInfoDto);
+        responseDto.setMessage("회원 정보 리턴 성공");
         responseDto.setStatus_code(200);
         return responseDto;
     }
