@@ -1,6 +1,5 @@
-export interface UserResultType{
+export interface UserTokenType{
     access_token : string,
-    user_info : UserInfoType,
 }
 
 export interface UserInfoType{

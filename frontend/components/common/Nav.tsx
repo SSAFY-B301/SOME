@@ -15,10 +15,6 @@ import LightModeIcon from "public/icons/Sun.svg";
 import DarkModeIcon from "public/icons/Moon.svg";
 import AlarmIcon from "public/icons/Bell.svg";
 
-// 리덕스
-import { useSelector } from "react-redux";
-import { RootState } from "@/store/configureStore";
-
 interface InfoType {
   title: string;
 }
@@ -26,8 +22,7 @@ interface InfoType {
 function NavBar() {
   const { theme, setTheme } = useTheme();
 
-  const {userInfo} = useSelector((state : RootState) => state.auth);
-  
+
   return (
     <nav
       className={`flex flex-row justify-between items-center h-14 mx-6 ${styles.nav_bar}`}
@@ -54,7 +49,7 @@ function NavBar() {
           )}
         </button>
         <Link href={"/profile"}>
-          <Profile img={userInfo.user_img} />
+          <Profile/>
         </Link>
         <Link href={"/notification"}>
           <AlarmIcon fill="grey" stroke="grey" />
