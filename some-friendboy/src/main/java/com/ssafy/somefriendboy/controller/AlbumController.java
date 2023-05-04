@@ -105,7 +105,7 @@ public class AlbumController {
     @PostMapping("/friend/invite")
     public ResponseEntity<ResponseDto> friendInvite(@RequestHeader HttpHeaders headers, @RequestBody AdditionalFriendsInviteDto additionalFriendsInviteDto) {
         String access_token = headers.get("access_token").toString();
-        log.info("앨범 생성 후 친구 초대 POST: /album/friend/invite");
+        log.info("앨범 생성 후 친구 초대 POST: /album/friend/invite, AdditionalFriendsInviteDto : ", additionalFriendsInviteDto);
 
         ResponseDto responseDto = albumService.inviteFriend(access_token, additionalFriendsInviteDto);
         return new ResponseEntity<ResponseDto>(responseDto, HttpStatus.OK);
