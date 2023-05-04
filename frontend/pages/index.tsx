@@ -11,11 +11,13 @@ import { RootState } from "@/store/configureStore";
 
 export default function Home() {
   //로그인 상태인지 확인하고, 로그인 안 되어 있으면 로그인 페이지로 이동
-  const { isLogin, userInfo } = useSelector((state: RootState) => state.auth);
   const router = useRouter();
 
   useEffect(() => {
     let timeout;
+    
+    const isLogin = window.localStorage.getItem("access_token") === null ? false : true;
+    
     if (!isLogin) {
       timeout = setTimeout(() => router.push("login"), 3000);
       
