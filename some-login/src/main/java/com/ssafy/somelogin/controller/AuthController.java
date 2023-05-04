@@ -8,10 +8,7 @@ import lombok.extern.slf4j.Slf4j;
 import org.springframework.http.HttpHeaders;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestHeader;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
 
 import java.io.*;
 
@@ -47,6 +44,15 @@ public class AuthController {
         if(responseDto.getStatus_code() == 400){
             return new ResponseEntity<ResponseDto>(responseDto, HttpStatus.BAD_REQUEST);
         }
+        return new ResponseEntity<ResponseDto>(responseDto, HttpStatus.OK);
+    }
+
+    @GetMapping("/info")
+    public ResponseEntity<ResponseDto> getUserInfo(@RequestHeader HttpHeaders headers){
+        String access_token = headers.get("access_token").toString();
+        log.info("유저 정보 요청 GET: /member/info, access_token : {}",access_token);
+        ResponseDto responseDto = authService.getUserInfo(access_token);
+
         return new ResponseEntity<ResponseDto>(responseDto, HttpStatus.OK);
     }
 }
