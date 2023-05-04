@@ -16,6 +16,7 @@ import com.ssafy.somefriendboy.repository.userPhotoLike.UserPhotoLikeRepository;
 import com.ssafy.somefriendboy.util.HttpUtil;
 import lombok.RequiredArgsConstructor;
 import org.springframework.core.io.ByteArrayResource;
+import org.springframework.data.domain.Pageable;
 import org.springframework.data.mongodb.core.MongoOperations;
 import org.springframework.data.mongodb.core.query.Query;
 import org.springframework.data.mongodb.core.query.Update;
@@ -130,7 +131,7 @@ public class AlbumPhotoService {
         return setResponseDto(result, "사진 상세 보기", 200);
     }
 
-    public ResponseDto selectAlbumPhoto(String accessToken, AlbumPhotoListOptDto albumPhotoListOptDto) {
+    public ResponseDto selectAlbumPhoto(String accessToken, AlbumPhotoListOptDto albumPhotoListOptDto, Pageable pageable) {
         Map<String, Object> result = new HashMap<>();
         String userId = tokenCheck(accessToken);
 
