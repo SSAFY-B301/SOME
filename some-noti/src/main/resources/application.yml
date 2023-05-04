@@ -1,0 +1,27 @@
+server:
+  port: 8080
+  servlet:
+    context-path: /noti
+
+spring:
+  mvc:
+    pathmatch:
+      matching-strategy: ant_path_matcher
+  datasource:
+    url: jdbc:mysql://3.35.18.146:3306/some?serverTimezone=Asia/Seoul&characterEncoding=UTF-8
+    username: some
+    password: '!23Qwe'
+    driver-class-name: com.mysql.cj.jdbc.Driver
+  jpa:
+    hibernate:
+      ddl-auto: none
+    properties:
+      hibernate:
+#        show_sql: true
+        #format_sql: true
+        default_batch_fetch_size: 1000
+    open-in-view: false
+
+logging.level:
+  org.hibernate.SQL: debug
+#  org.hibernate.type: trace
