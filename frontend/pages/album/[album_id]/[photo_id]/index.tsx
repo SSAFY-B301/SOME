@@ -9,7 +9,7 @@ import {
 } from "@/components/photo-detail";
 import styles from "./photo.module.scss";
 import { InfoBar } from "@/components/common/Nav";
-import { getPhoto, likePhoto } from "@/pages/api/photoDetailApi";
+import { getPhoto } from "@/pages/api/photoDetailApi";
 
 const PhotoDetail = (): JSX.Element => {
   const [showDownLoadModal, setDownLoadShowModal] = useState<boolean>(false);

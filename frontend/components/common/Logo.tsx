@@ -3,7 +3,7 @@ import styles from "styles/home.module.scss";
 
 function Logo() {
   return (
-    <Link href="/photo/1">
+    <Link href="/album/4/67">
       <h1 className={`text-3xl ${styles.logo}`}>SOME</h1>
     </Link>
   )

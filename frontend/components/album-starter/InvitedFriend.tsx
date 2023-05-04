@@ -15,6 +15,9 @@ interface Props {
 }
 
 const InvitedFriend = ({ friend, topRemoveFriends }: Props): JSX.Element => {
+  const [thumbnailImg, setThumbnailImg] = useState<string>(
+    friend.profile_thumbnail_image
+  );
   const [appearAnimation, setAppearAnimation] = useState<string>(
     `${styles.appearIcon}`
   );
@@ -29,11 +32,12 @@ const InvitedFriend = ({ friend, topRemoveFriends }: Props): JSX.Element => {
     }, 200);
   };
 
+  const onErrorImg = () => {
+    setThumbnailImg("/images/default_thumbnail.png");
+  };
+
   return (
-    <div
-      className={`w-14 h-20 box-border mr-4 ${sliderAnimation}`}
-      onClick={select}
-    >
+    <div className={`w-14 h-20 box-border ${sliderAnimation}`} onClick={select}>
       <div
         className={`w-14 h-full flex flex-col items-center ${appearAnimation}`}
       >
@@ -55,8 +59,9 @@ const InvitedFriend = ({ friend, topRemoveFriends }: Props): JSX.Element => {
             </svg>
           </button>
           <img
-            src={friend.profile_thumbnail_image}
+            src={thumbnailImg}
             alt="img"
+            onError={onErrorImg}
             className="absolute left-1/2 top-1/2 -translate-x-1/2 -translate-y-1/2 w-12 h-12 border-2 rounded-full"
           />
         </div>
