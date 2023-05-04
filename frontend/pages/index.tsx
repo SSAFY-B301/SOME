@@ -2,12 +2,6 @@
 import React, { useEffect } from "react";
 import { useRouter } from "next/router";
 
-// 컴포넌트
-import NavBar from "@/components/common/Nav";
-import TabBar from "@/components/common/TabBar";
-import TotalAlbum from "@/components/common/TotalAlbum";
-import { CurrentAlbum, FavoriteAlbum } from "@/components/common/Albums";
-
 // CSS
 import styles from "@/styles/home.module.scss";
 
@@ -21,35 +15,31 @@ export default function Home() {
   const router = useRouter();
 
   useEffect(() => {
-    
+    let timeout;
     if (!isLogin) {
-      router.push("login");
-    } else {
+      timeout = setTimeout(() => router.push("login"), 3000);
+      
+    } 
+    else {
       const storageAccessToken = window.localStorage.getItem("access_token");
       if (storageAccessToken) {
         const parseAccessToken = JSON.parse(storageAccessToken);
         console.log("Token : " + parseAccessToken.access_token);
       }
+      timeout = setTimeout(() => router.push("boy-home"), 3000);
     }
     return () => {};
   }, []);
 
   return (
     <div
-      className={`bg-bg-home dark:bg-dark-bg-home relative touch-none ${styles.no_scroll}`}
+      className={`bg-white dark:bg-dark-bg-home flex items-center content-center touch-none ${styles.no_scroll}`}
       style={{ width: "100vw", height: "100vh" }}
     >
-      <NavBar />
-      <section
-        className="flex flex-col items-center"
-        style={{ rowGap: "3.077vw" }}
-      >
-        <CurrentAlbum />
-        <FavoriteAlbum />
-      </section>
-      <div className={`${styles.footer}`}>
-        <TotalAlbum />
-        <TabBar plusBtnUrl={"/album/create"} />
+      <div className="flex-col items-center content-center mx-auto" style={{width : "200px", height : "200px"}}>
+        <img src="/images/splash.png" alt="" />
+        <p className="text-5xl text-center">SOME</p>
+        <p className="mt-4 text-center">함께 만들어가는 앨범</p>
       </div>
     </div>
   );

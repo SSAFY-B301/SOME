@@ -39,10 +39,10 @@ function App({ Component, ...rest }: AppProps) {
   return (
     <ThemeProvider attribute="class">
       <Provider store={store}>
-        <QueryClientProvider client={client}>
-          <Component {...props.pageProps} />
-          <ReactQueryDevtools initialIsOpen={false} position="bottom-right" />
-        </QueryClientProvider>
+          <QueryClientProvider client={client}>
+            <Component {...props.pageProps} />
+            <ReactQueryDevtools initialIsOpen={false} position="bottom-right" />
+          </QueryClientProvider>
       </Provider>
     </ThemeProvider>
   );

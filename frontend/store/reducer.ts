@@ -17,4 +17,5 @@ const rootReducer: typeof combinedReducer = (state, action) => {
     return combinedReducer(state, action);
   }
 };
+
 export default rootReducer;
