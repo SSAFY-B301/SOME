@@ -2,7 +2,7 @@ package com.ssafy.somefriendboy.repository.album;
 
 import com.querydsl.jpa.impl.JPAQueryFactory;
 import com.ssafy.somefriendboy.dto.AlbumWholeListDto;
-import com.ssafy.somefriendboy.dto.QAlbumWholeListDto;
+//import com.ssafy.somefriendboy.dto.QAlbumWholeListDto;
 import com.ssafy.somefriendboy.entity.Album;
 import com.ssafy.somefriendboy.entity.LikeStatus;
 import lombok.RequiredArgsConstructor;
@@ -47,22 +47,22 @@ public class AlbumRepositoryImpl implements AlbumRepositoryCustom{
                 .execute();
     }
 
-    @Override
-    public Page<AlbumWholeListDto> pageAlbumWholeListDto(List<Long> myAlbumIdList, Pageable pageable) {
-        List<AlbumWholeListDto> result = queryFactory
-                .select(new QAlbumWholeListDto(
-                        album.albumId,
-                        album.albumName,
-                        album.createdDate,
-                        albumPhoto.s3Url,
-                        album.recentPhoto,
-                        albumFav
-                ))
-                .from(album)
-                .where()
-                .fetch();
-
-        return null;
-    }
+//    @Override
+//    public Page<AlbumWholeListDto> pageAlbumWholeListDto(List<Long> myAlbumIdList, Pageable pageable) {
+//        List<AlbumWholeListDto> result = queryFactory
+//                .select(new QAlbumWholeListDto(
+//                        album.albumId,
+//                        album.albumName,
+//                        album.createdDate,
+//                        albumPhoto.s3Url,
+//                        album.recentPhoto,
+//                        albumFav
+//                ))
+//                .from(album)
+//                .where()
+//                .fetch();
+//
+//        return null;
+//    }
 
 }

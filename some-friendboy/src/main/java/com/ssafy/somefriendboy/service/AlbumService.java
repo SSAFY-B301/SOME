@@ -201,10 +201,10 @@ public class AlbumService {
             String thumbnailPhotoUrl = albumPhoto == null ? null : albumPhoto.getS3Url();
 
             AlbumFav albumFav = albumFavRepository.findAlbumFavByAlbumMemberId_AlbumIdAndAlbumMemberId_UserId(albumId, userId);
-//            boolean isAlbumFav = false;
-//            if (albumFav != null) {
-//                isAlbumFav = albumFav.getLikeStatus().equals(LikeStatus.LIKE) ? true : false;
-//            }
+            boolean isAlbumFav = false;
+            if (albumFav != null) {
+                isAlbumFav = albumFav.getLikeStatus().equals(LikeStatus.LIKE) ? true : false;
+            }
 
             AlbumWholeListDto albumWholeListDto = AlbumWholeListDto.builder()
                 .albumId(album.getAlbumId())
@@ -212,7 +212,7 @@ public class AlbumService {
                 .albumCreatedDate(album.getCreatedDate())
                 .recentPhotoId(album.getRecentPhoto())
                 .thumbnailPhotoUrl(thumbnailPhotoUrl)
-                .isAlbumFav(albumFav.getLikeStatus())
+                .isAlbumFav(isAlbumFav)
                 .build();
 
             myWholeAlbumList.add(albumWholeListDto);
