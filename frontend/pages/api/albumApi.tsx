@@ -105,7 +105,10 @@ export const useGetDetail = (albumId: number) => {
  * @returns
  */
 export const useGetPhotos = (Requests: requestPhotosType) => {
-  const queryKey = `/photo/album/list?albumId=${Requests.albumId}&categoryId=${Requests.categoryId}&userId=${Requests.userId}`;
+  const queryKey = `/photo/album/list?albumId=${Requests.albumId}&userId=${
+    Requests.userId
+  }&${Requests.categoryId !== 0 && `categoryId = ${Requests.categoryId}`}`;
+  console.log("GET Photos", Requests);
 
   const { data, isLoading: getPhotosIsLoading } = useQuery(["photos"], () =>
     customBoyAxios.get(queryKey)
