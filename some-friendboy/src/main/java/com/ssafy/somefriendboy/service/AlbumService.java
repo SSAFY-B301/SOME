@@ -352,16 +352,18 @@ public class AlbumService {
             return setResponseDto(result,"토큰 만료",450);
         }
 
-        for (String invitedFriendId : additionalFriendsInviteDto.getInviteFriend()) {
-            AlbumMemberId albumMemberId = AlbumMemberId.builder()
-                    .albumId(additionalFriendsInviteDto.getAlbumId())
-                    .userId(invitedFriendId)
-                    .build();
-            AlbumMember albumMember = AlbumMember.builder()
-                    .albumMemberId(albumMemberId)
-                    .albumMemberStatus(AlbumMemberStatus.NOREPLY)
-                    .build();
-            albumMemberRepository.save(albumMember);
+        if (additionalFriendsInviteDto != null) {
+            for (String invitedFriendId : additionalFriendsInviteDto.getInviteFriend()) {
+                AlbumMemberId albumMemberId = AlbumMemberId.builder()
+                        .albumId(additionalFriendsInviteDto.getAlbumId())
+                        .userId(invitedFriendId)
+                        .build();
+                AlbumMember albumMember = AlbumMember.builder()
+                        .albumMemberId(albumMemberId)
+                        .albumMemberStatus(AlbumMemberStatus.NOREPLY)
+                        .build();
+                albumMemberRepository.save(albumMember);
+            }
         }
         return setResponseDto(result,"앨범 생성 후 친구 초대",200);
     }
