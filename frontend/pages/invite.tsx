@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from "react";
+import React, { useState } from "react";
 import { useRouter } from "next/router";
 import styles from "@/styles/inviteFriends.module.scss";
 import BackButtonIcon from "@/public/icons/CaretLeft.svg";
@@ -61,6 +61,7 @@ const InviteFriends = (): JSX.Element => {
       const filtered = friends.filter((friend) => friend.id == value);
       tmpList = [...filtered, ...tmpList];
     });
+    setSlideAnimation(styles.appearFriendDiv);
     setInvitedFriends(tmpList);
   };
 
@@ -71,8 +72,17 @@ const InviteFriends = (): JSX.Element => {
     const tmp = new Set<number>(isActiveFriends);
     tmp.delete(id);
     const tmpList = invitedFriends.filter((friend) => friend.id != id);
-    setActiveFriends(tmp);
-    setInvitedFriends(tmpList);
+    if (tmpList.length > 0) {
+      setActiveFriends(tmp);
+      setInvitedFriends(tmpList);
+    } else {
+      setActiveFriends(tmp);
+      setInvitedFriends(tmpList);
+      setSlideAnimation(styles.disappearFriendDiv);
+      setTimeout(() => {
+        setSlideAnimation("");
+      }, 500);
+    }
   };
 
   /**
@@ -151,20 +161,20 @@ const InviteFriends = (): JSX.Element => {
       className="flex flex-col items-center bg-white overflow-hidden"
       style={{ width: "100vw", height: "100vh" }}
     >
-      <div className="flex items-center justify-center w-full h-16">
-        <div className="relative w-11/12 h-full">
+      <div
+        className={`flex items-center justify-center ${styles.nav_bar} box-border p-4`}
+      >
+        <div className="relative w-full h-full flex justify-between items-center">
           <div onClick={() => router.back()}>
-            <BackButtonIcon
-              className="absolute left-0 text-lg text-black -translate-y-1/2 top-1/2"
-              stroke={`black`}
-            />
+            <BackButtonIcon className="text-lg text-black" stroke={`black`} />
           </div>
-          <span className="absolute text-2xl text-black -translate-x-1/2 -translate-y-1/2 top-1/2 left-1/2">
+          <span className="text-black" style={{ fontSize: "5.128vw" }}>
             공유 상대 초대
           </span>
           <button
             onClick={createAlbumClick}
-            className="absolute right-0 text-lg text-black -translate-y-1/2 top-1/2"
+            className="text-black"
+            style={{ fontSize: "4.103vw" }}
           >
             확인
           </button>
@@ -185,13 +195,7 @@ const InviteFriends = (): JSX.Element => {
         ) : (
           <div></div>
         )}
-        <div
-          className={
-            invitedFriends.length > 0
-              ? `w-full flex flex-col ${styles.appearFriendDiv}`
-              : `w-full flex flex-col`
-          }
-        >
+        <div className={`w-full flex flex-col ${slideAnimation}`}>
           <input
             className="box-border w-full h-12 pl-3 mt-4 mb-2 bg-gray-100 rounded-lg"
             placeholder="친구, 앨범 검색"
