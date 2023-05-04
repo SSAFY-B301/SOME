@@ -11,6 +11,7 @@ import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.core.io.Resource;
 import org.springframework.core.io.ResourceLoader;
+import org.springframework.data.domain.Pageable;
 import org.springframework.http.HttpHeaders;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -32,10 +33,10 @@ public class AlbumPhotoController {
     private final ResourceLoader resourceLoader;
 
     @Transactional
-    @PostMapping("/upload")
+    @PostMapping("/upload/{albumId}")
     public ResponseEntity<ResponseDto> upload(@RequestHeader HttpHeaders headers,
                                               @RequestPart("multipartFile") List<MultipartFile> multipartFiles,
-                                              @RequestPart Long albumId) throws IOException, ImageProcessingException {
+                                              @PathVariable Long albumId) throws IOException, ImageProcessingException {
         String accessToken = headers.get("access_token").toString();
         log.debug("사진 업로드 POST: /photo/upload, albumId : ", albumId);
 
@@ -54,11 +55,11 @@ public class AlbumPhotoController {
     }
 
     @GetMapping("/album/list")
-    public ResponseEntity<ResponseDto> getAlbumPhoto(@RequestHeader HttpHeaders headers, AlbumPhotoListOptDto albumPhotoListOptDto) {
+    public ResponseEntity<ResponseDto> getAlbumPhoto(@RequestHeader HttpHeaders headers, AlbumPhotoListOptDto albumPhotoListOptDto, Pageable pageable) {
         String accessToken = headers.get("access_token").toString();
         log.debug("앨범 목록 정보 GET: /photo/album/list, albumPhotoListOptDto : {}", albumPhotoListOptDto);
 
-        ResponseDto responseDto = albumPhotoService.selectAlbumPhoto(accessToken, albumPhotoListOptDto);
+        ResponseDto responseDto = albumPhotoService.selectAlbumPhoto(accessToken, albumPhotoListOptDto, pageable);
         return new ResponseEntity<ResponseDto>(responseDto, HttpStatus.OK);
     }
 
