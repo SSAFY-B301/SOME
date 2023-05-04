@@ -10,6 +10,11 @@ $main-color: linear-gradient(
   background: $main-color;
 }
 
+.nav_bar {
+  width: 100vw;
+  height: 15.385vw;
+}
+
 .albumText {
   text-shadow: 0px 0px 10px black;
 }
@@ -20,6 +25,15 @@ $main-color: linear-gradient(
   }
   to {
     transform: translateY(80px);
+  }
+}
+
+@keyframes reverseSlider {
+  from {
+    transform: translateY(80px);
+  }
+  to {
+    transform: translateY(0px);
   }
 }
 
@@ -62,6 +76,10 @@ $main-color: linear-gradient(
 
 .appearFriendDiv {
   animation: slider 0.5s ease-in-out 0s 1 normal forwards;
+}
+
+.disappearFriendDiv {
+  animation: reverseSlider 0.5s ease-in-out 0s 1 normal forwards;
 }
 
 .appearIconDiv {
