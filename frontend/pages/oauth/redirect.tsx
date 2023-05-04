@@ -6,7 +6,7 @@ import { useSelector } from "react-redux";
 import axios from "axios";
 
 //인터페이스
-import { UserResultType } from "@/types/UserType";
+import { UserTokenType } from "@/types/UserType";
 
 // next Hooks
 import { useRouter } from "next/router";
@@ -34,20 +34,13 @@ export default function AuthRedirect() {
                         "authorization_code" : paramAuthCode,
                     },
                 });
-            const resultUserInfo : UserResultType = userResult.data.data;
-            if (resultUserInfo !== null){
-                saveAccessToken(resultUserInfo.access_token);
-                dispatch(onLogin(resultUserInfo.user_info));
+            const responseAccessToken : string = userResult.data.data;
+            if (responseAccessToken !== null){
+                saveAccessToken(responseAccessToken);
+                router.push("/boy-home");
             }
         }
     }
-
-    // dispatch로 로그인 상태 변경 되었음을 감지
-    useEffect(() => {
-        if (userInfo.user_id !== "") {
-            router.push('/boy-home');
-        }
-    }, [isLogin])
     
     // 렌더링 되면 authorization code URL에서 파싱
     useEffect(() => {
