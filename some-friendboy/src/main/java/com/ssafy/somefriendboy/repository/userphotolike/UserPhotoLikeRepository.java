@@ -1,4 +1,4 @@
-package com.ssafy.somefriendboy.repository.userPhotoLike;
+package com.ssafy.somefriendboy.repository.userphotolike;
 
 import com.ssafy.somefriendboy.entity.UserPhotoLike;
 import org.springframework.data.jpa.repository.JpaRepository;

@@ -1,4 +1,4 @@
-package com.ssafy.somefriendboy.repository.AlbumPhoto;
+package com.ssafy.somefriendboy.repository.albumphoto;
 
 import com.querydsl.core.types.dsl.BooleanExpression;
 import com.querydsl.jpa.impl.JPAQueryFactory;
