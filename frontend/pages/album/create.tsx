@@ -1,6 +1,7 @@
 import React, { useState, useRef } from "react";
 import PlusIcon from "@/public/icons/Plus.svg";
 import Link from "next/link";
+import styles from "@/styles/inviteFriends.module.scss";
 
 /**
  * 앨범 생성 페이지
@@ -36,13 +37,13 @@ const AlbumCreate = (): JSX.Element => {
 
   return (
     <div
-      className="relative bg-pink-400 "
+      className={`relative bg-pink-400 ${styles.btn}`}
       style={{ width: "100vw", height: "100vh" }}
     >
       <div className="absolute left-1/2 top-1/2 -translate-x-1/2 -translate-y-1/2 flex flex-col justify-between w-9/12 h-24">
         <span className="text-2xl text-white">앨범 제목</span>
         <input
-          className="text-2xl text-white bg-pink-400 border-b-2 h-1/2 placeholder:italic placeholder:text-white placeholder:opacity-60"
+          className="text-2xl text-white bg-inherit border-b-2 h-1/2 placeholder:italic placeholder:text-white placeholder:opacity-60"
           placeholder={defaultName.current}
           value={albumName}
           onChange={onChange}

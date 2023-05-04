@@ -25,6 +25,8 @@ interface AlbumType {
 
 /**
  * 친구 초대 페이지
+ * 이슈
+ * 1. 앨범 선택 시 추가할 ID에 본인 아이디가 계속 유지되서 친구를 전부 제거해도 슬라이드 창이 안올라감
  */
 const InviteFriends = (): JSX.Element => {
   /**
@@ -71,17 +73,16 @@ const InviteFriends = (): JSX.Element => {
   const removeFriends = (id: number) => {
     const tmp = new Set<number>(isActiveFriends);
     tmp.delete(id);
+    setActiveFriends(tmp);
     const tmpList = invitedFriends.filter((friend) => friend.id != id);
-    if (tmpList.length > 0) {
-      setActiveFriends(tmp);
+    if (tmp.size > 0) {
       setInvitedFriends(tmpList);
     } else {
-      setActiveFriends(tmp);
       setInvitedFriends(tmpList);
       setSlideAnimation(styles.disappearFriendDiv);
       setTimeout(() => {
         setSlideAnimation("");
-      }, 500);
+      }, 300);
     }
   };
 
@@ -124,6 +125,7 @@ const InviteFriends = (): JSX.Element => {
       tmpList = [...filtered, ...tmpList];
     });
     setInvitedFriends(tmpList);
+    setSlideAnimation(styles.appearFriendDiv);
   };
 
   /**
