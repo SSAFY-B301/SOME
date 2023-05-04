@@ -19,7 +19,7 @@ import {
 } from "@/types/AlbumTypes";
 import useCustomAxios from "@/features/customAxios";
 
-const { customBoyAxios, customBoyFileAxios } = useCustomAxios();
+const { customBoyAxios } = useCustomAxios();
 
 // 남사친 페이지
 /**
@@ -27,18 +27,6 @@ const { customBoyAxios, customBoyFileAxios } = useCustomAxios();
  * @returns
  */
 export const useGetCurrent = () => {
-  // const queryKey = `${URL}/current`;
-
-  // const { data , isLoading: getCurrentIsLoading } = useQuery<
-  //   AxiosResponse<CurrentAlbumType[]>
-  // >(["current"], () => axios.get(queryKey));
-
-  // let getCurrent: CurrentAlbumType[];
-  // if (data) {
-  //   getCurrent = data.data.myFavAlbumList;
-  // } else {
-  //   getCurrent = [];
-  // }
   const getCurrent: CurrentAlbumType[] = [];
   const getCurrentIsLoading = true;
   return { getCurrent, getCurrentIsLoading };
@@ -107,11 +95,18 @@ export const useGetDetail = (albumId: number) => {
 export const useGetPhotos = (Requests: requestPhotosType) => {
   const queryKey = `/photo/album/list?albumId=${Requests.albumId}&userId=${
     Requests.userId
-  }&${Requests.categoryId !== 0 && `categoryId = ${Requests.categoryId}`}`;
-  console.log("GET Photos", Requests);
+  }&${Requests.categoryId !== 0 && `categoryId=${Requests.categoryId}`}`;
 
-  const { data, isLoading: getPhotosIsLoading } = useQuery(["photos"], () =>
-    customBoyAxios.get(queryKey)
+  const {
+    data,
+    isLoading: getPhotosIsLoading,
+    refetch,
+  } = useQuery(
+    ["photos", Requests.albumId],
+    () => customBoyAxios.get(queryKey),
+    {
+      onSuccess: (data) => {},
+    }
   );
 
   let getPhotos: PhotoType[] | undefined;
@@ -123,7 +118,7 @@ export const useGetPhotos = (Requests: requestPhotosType) => {
     getTotalId = data.data.data.totalPhotoId;
   }
 
-  return { getPhotos, getTotal, getTotalId, getPhotosIsLoading };
+  return { getPhotos, getTotal, getTotalId, getPhotosIsLoading, refetch };
 };
 
 export function Mutations() {
@@ -151,9 +146,7 @@ export function Mutations() {
     return useMutation(
       (albumId) => customBoyAxios.put(`/album/fav/${albumId}`),
       {
-        onSuccess: (data) => {
-          // queryClient.invalidateQueries(["detail", albumId]);
-        },
+        onSuccess: (data) => {},
         onError: (error) => {
           console.error(error);
         },
@@ -161,12 +154,14 @@ export function Mutations() {
     );
   }
 
-  function useDeletePhotos(): UseMutationResult<boolean, AxiosError, number[]> {
+  function useDeletePhotos(
+    albumId: number
+  ): UseMutationResult<boolean, AxiosError, number[]> {
     return useMutation(
-      (photos) => customBoyAxios.put(`/photo/delete`, photos),
+      (photos) => customBoyAxios.put(`/photo/delete`, { photoId: photos }),
       {
         onSuccess: (data) => {
-          // queryClient.invalidateQueries(["detail", albumId]);
+          queryClient.invalidateQueries(["photos", albumId]);
         },
         onError: (error) => {
           console.error(error);
@@ -191,23 +186,23 @@ export function Mutations() {
     );
   }
 
-  function usePostPhoto(): UseMutationResult<boolean, AxiosError, FormData> {
+  function usePostPhoto(
+    albumId: number
+  ): UseMutationResult<boolean, AxiosError, requestPartType> {
     const headers = {
       "Content-Type": "multipart/form-data",
     };
-    // const formData = new FormData();
-    // formData.append("albumId", String(albumId));
-    // Array.from(files).forEach((file) => {
-    //   formData.append("multipartFile", file);
-    // });
-    // console.log("formData", formData.getAll("multipartFile"));
-    // console.log("albumId", formData.getAll("albumId"));
 
     return useMutation(
-      (formData) => customBoyAxios.post(`/photo/upload`, formData, { headers }),
+      (requestData) =>
+        customBoyAxios.post(
+          `/photo/upload/${requestData.albumId}`,
+          requestData.formData,
+          { headers }
+        ),
       {
         onSuccess: (data) => {
-          // queryClient.invalidateQueries(["detail", albumId]);
+          queryClient.invalidateQueries(["photos", albumId]);
         },
         onError: (error) => {
           console.error(error);
@@ -223,18 +218,3 @@ export function Mutations() {
     usePutAlbumName,
   };
 }
-
-/**
- * [POST] 사진 업로드
- * @returns
- */
-// export function usePostPhoto(): UseMutationResult<boolean, AxiosError, boolean> {
-//   return useMutation((params) => axios.put(`/album/fav?photoId=${params.multipartFile}`), {
-//     onSuccess: (data) => {
-//       console.log(data);
-//     },
-//     onError: (error) => {
-//       console.error(error);
-//     },
-//   });
-// }

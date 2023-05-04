@@ -71,7 +71,7 @@ export interface photosRequest {
 
 export interface requestPartType {
   albumId: number;
-  multipartFile: FormData;
+  formData: FormData;
 }
 
 export interface usePutAlbumNameType {

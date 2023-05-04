@@ -15,8 +15,6 @@ function NewPhoto({ setInputPhoto }: NewPhotoType) {
 
   const changeInputPhoto = (e: React.ChangeEvent<HTMLInputElement>) => {
     // TODO : 콘솔 지우기
-    // console.log(e.target.files);
-    // console.log(typeof e.target.files);
     e.target.files && setInputPhoto(e.target.files);
   };
 

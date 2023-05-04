@@ -12,7 +12,6 @@ import styles from "styles/home.module.scss";
 
 // 아이콘
 import HeartIcon from "public/icons/Heart.svg";
-import DotsIcon from "public/icons/DotsThreeOutline.svg";
 import RightIcon from "public/icons/CaretRight.svg";
 
 // 타입

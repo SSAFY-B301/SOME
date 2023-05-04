@@ -1,5 +1,5 @@
 // 라이브러리
-import React, { useEffect, useState } from "react";
+import React from "react";
 import { useRouter } from "next/router";
 
 // 컴포넌트
@@ -14,11 +14,10 @@ import { requestPhotosType } from "@/types/AlbumTypes";
 // 인터페이스
 interface PhotosType {
   isSelect: boolean;
-  selectedCategory: number;
   selectedPhotos: Set<number>;
   setSelectedPhotos: React.Dispatch<React.SetStateAction<Set<number>>>;
-  selectMembers: Set<number>;
   setInputPhoto: React.Dispatch<React.SetStateAction<FileList | null>>;
+  photosRequest: requestPhotosType;
 }
 
 interface PhotoType {
@@ -32,38 +31,19 @@ interface PhotoType {
 /**
  * 사진들이 표시되는 컴포넌트
  * @param isSelect 선택 여부
- * @param selectedCategory 선택된 카테고리 id
  * @param selectedPhotos 선택된 사진들 Set
  * @param setSelectedPhotos 선택된 사진들 Set의 Setter 함수
- * @param selectMembers 선택된 멤버들 Set
  * @param setInputPhoto 선택된 멤버들 Set의 Setter 함수
  * @returns
  */
 function Photos({
   isSelect,
-  selectedCategory,
   selectedPhotos,
   setSelectedPhotos,
-  selectMembers,
   setInputPhoto,
+  photosRequest,
 }: PhotosType) {
   const router = useRouter();
-
-  const albumId: number = Number(router.query.album_id);
-
-  const [photosRequest, setPhotosRequest] = useState<requestPhotosType>({
-    albumId: albumId,
-    categoryId: selectedCategory,
-    userId: Array.from(selectMembers).toString(),
-  });
-
-  useEffect(() => {
-    setPhotosRequest({
-      albumId: albumId,
-      categoryId: selectedCategory,
-      userId: Array.from(selectMembers).toString(),
-    });
-  }, [selectedCategory, selectMembers]);
 
   const { getPhotos, getPhotosIsLoading } = useGetPhotos(photosRequest);
 
@@ -81,7 +61,7 @@ function Photos({
    * @param id 사진 id
    */
   const goPhoto = (id: number) => {
-    router.push(`/photo/${id}`);
+    router.push(`${router.asPath}/${id}`);
   };
 
   return (
