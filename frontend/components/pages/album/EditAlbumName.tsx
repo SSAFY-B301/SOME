@@ -21,7 +21,6 @@ export default function EditAlbumName(props: AlertType) {
       album_id: props.albumId,
       new_album_name: inputData,
     };
-    console.log("EditAlbumName", body);
     mutate(body);
     props.noHandler();
   };

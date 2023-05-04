@@ -9,6 +9,7 @@ import styles from "styles/album.module.scss";
 import CheckIcon from "public/icons/Check.svg";
 import { Mutations } from "@/pages/api/albumApi";
 import { useRouter } from "next/router";
+import { requestPartType } from "@/types/AlbumTypes";
 
 // 인터페이스
 interface PreviewType {
@@ -46,7 +47,7 @@ function Preview({
     const router = useRouter();
     const albumId: number = Number(router.query.album_id);
 
-    const { mutate } = Mutations().usePostPhoto();
+    const { mutate } = Mutations().usePostPhoto(albumId);
 
     /**
      * 미리보기 닫기
@@ -69,11 +70,10 @@ function Preview({
      */
     const uploadPhotos = () => {
       const uploadPhotos = previewPhotos.filter((photo) => isChecks[photo.id]);
-      console.log(uploadPhotos);
 
       // TODO : 사진 업로드 api
       const formData = new FormData();
-      formData.append("albumId", String(albumId));
+      // formData.append("albumId", String(albumId));
       let cnt: number = 0;
       Array.from(inputPhoto).forEach((file) => {
         if (isChecks[cnt]) {
@@ -81,10 +81,12 @@ function Preview({
         }
         cnt += 1;
       });
-      console.log("formData", formData.getAll("multipartFile"));
-      console.log("albumId", formData.getAll("albumId"));
+      const requestData: requestPartType = {
+        formData: formData,
+        albumId: albumId,
+      };
 
-      mutate(formData);
+      mutate(requestData);
       closePreview();
     };
 

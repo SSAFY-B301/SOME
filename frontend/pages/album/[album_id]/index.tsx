@@ -16,7 +16,7 @@ import styles from "styles/album.module.scss";
 import Preview from "components/pages/album/Preview";
 
 // 타입
-import { previewPhotoType, requestPhotosType } from "types/AlbumTypes";
+import { previewPhotoType } from "types/AlbumTypes";
 import { useRouter } from "next/router";
 import Alert from "@/components/common/Alert";
 import EditAlbumName from "@/components/pages/album/EditAlbumName";
@@ -24,7 +24,11 @@ import axios from "axios";
 
 function AlbumDetail() {
   const router = useRouter();
-  const albumId: number = Number(router.query.album_id);
+  const albumId = useMemo(
+    () => Number(router.query.album_id),
+    [router.query.album_id]
+  );
+
   const { getDetail, getDetailIsLoading } = useGetDetail(albumId);
 
   const [membersId, setMembersId] = useState<number[]>([]);
@@ -45,15 +49,26 @@ function AlbumDetail() {
     [...Array(4)].fill(false)
   );
 
-  const photosRequest: requestPhotosType = {
-    albumId: albumId,
-    categoryId: selectedCategory,
-    userId: Array.from(selectMembers).toString(),
+  const makeRequest = () => {
+    return {
+      albumId: albumId,
+      categoryId: selectedCategory,
+      userId: Array.from(selectMembers).toString(),
+    };
   };
 
-  const { getTotal, getTotalId } = useGetPhotos(photosRequest);
+  const photosRequest = useMemo(
+    () => makeRequest(),
+    [albumId, selectedCategory, selectMembers]
+  );
 
-  const { mutate: deletePhotosMutate } = Mutations().useDeletePhotos();
+  const { getTotal, getTotalId, refetch } = useGetPhotos(photosRequest);
+
+  useEffect(() => {
+    refetch();
+  }, [photosRequest]);
+
+  const { mutate: deletePhotosMutate } = Mutations().useDeletePhotos(albumId);
 
   const closeAlert = (idx: number) => {
     isAlerts[idx] = false;
@@ -61,14 +76,14 @@ function AlbumDetail() {
   };
 
   const deletePhotos = () => {
-    console.log("DELETE", Array.from(selectedPhotos));
+    // TODO : 삭제
 
     deletePhotosMutate(Array.from(selectedPhotos));
+    setIsSelect(false);
     closeAlert(0);
   };
 
   function download() {
-    console.log("download");
     axios({
       url: "https://k8b301-bucket.s3.ap-northeast-2.amazonaws.com/%25EB%25A7%2588%25EB%25A3%25A8.jpg",
       method: "GET",
@@ -85,7 +100,6 @@ function AlbumDetail() {
   }
 
   const downloadPhotos = () => {
-    console.log("DOWNLOAD", Array.from(selectedPhotos));
     // TODO : 다운로드
     const downUrl =
       "https://k8b301-bucket.s3.ap-northeast-2.amazonaws.com/%25EB%25A7%2588%25EB%25A3%25A8.jpg";
@@ -105,21 +119,19 @@ function AlbumDetail() {
     setSelectMembers(new Set(membersId));
   }, [membersId]);
 
-  if (getTotal && getTotalId) {
-    // 전체 선택 누르면 전부 선택 / 해제 누르면 전부 해제
-    useEffect(() => {
-      isTotal
-        ? setSelectedPhotos(new Set(getTotalId))
-        : setSelectedPhotos(new Set());
-      !isSelect && setSelectedPhotos(new Set());
-      !isSelect && setIsTotal(false);
-    }, [isTotal, isSelect]);
+  // 전체 선택 누르면 전부 선택 / 해제 누르면 전부 해제
+  useEffect(() => {
+    isTotal
+      ? setSelectedPhotos(new Set(getTotalId))
+      : setSelectedPhotos(new Set());
+    !isSelect && setSelectedPhotos(new Set());
+    !isSelect && setIsTotal(false);
+  }, [isTotal, isSelect]);
 
-    // 전체 크기만큼 선택하면 전체선택 토글
-    useEffect(() => {
-      selectedPhotos.size === getTotal && setIsTotal(true);
-    }, [selectedPhotos]);
-  }
+  // 전체 크기만큼 선택하면 전체선택 토글
+  useEffect(() => {
+    selectedPhotos.size === getTotal && setIsTotal(true);
+  }, [selectedPhotos]);
   // useMemo(() => selectedPhotos.size === getTotal && true, [selectedPhotos])
 
   /**
@@ -134,7 +146,6 @@ function AlbumDetail() {
 
   // 사진 미리보기
   useEffect(() => {
-    console.log(inputPhoto);
     if (inputPhoto) {
       range(inputPhoto.length).forEach((idx) => {
         setIsPreview(true);
@@ -144,7 +155,6 @@ function AlbumDetail() {
           img: URL.createObjectURL(inputPhoto.item(idx)!),
         });
       });
-      console.log("PREVIEW", previewPhotos);
     }
     setPreviewPhotos([...previewPhotos]);
   }, [inputPhoto]);
@@ -173,18 +183,11 @@ function AlbumDetail() {
         />
         <Photos
           isSelect={isSelect}
-          selectedCategory={selectedCategory}
           selectedPhotos={selectedPhotos}
           setSelectedPhotos={setSelectedPhotos}
-          selectMembers={selectMembers}
           setInputPhoto={setInputPhoto}
+          photosRequest={photosRequest}
         />
-        <a
-          href="blob:http://192.168.137.1:3000/5490c48f-1ecc-4b25-a477-6b9e09166f1d"
-          download="file.jpg"
-        >
-          다운로드
-        </a>
         <div className={`${styles.total_count}`}>
           <span>
             {isSelect
