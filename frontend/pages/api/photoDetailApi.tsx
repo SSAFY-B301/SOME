@@ -28,7 +28,6 @@ function useMutationPhoto() {
     () => customBoyAxios.put("/photo/like?photoId=" + photoId),
     {
       onSuccess: () => {
-        console.log("좋아요 상태 변경 성공");
         queryClient.invalidateQueries("photo"); // queryKey 유효성 제거
       },
     }
