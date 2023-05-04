@@ -1,9 +1,6 @@
 package com.ssafy.somefriendboy.dto;
 
 import com.fasterxml.jackson.annotation.JsonProperty;
-import com.querydsl.core.annotations.QueryProjection;
-import com.ssafy.somefriendboy.entity.AlbumFav;
-import com.ssafy.somefriendboy.entity.LikeStatus;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Data;
@@ -13,7 +10,7 @@ import java.time.LocalDateTime;
 
 @Data
 @Builder
-//@AllArgsConstructor
+@AllArgsConstructor
 @NoArgsConstructor
 public class AlbumWholeListDto {
     @JsonProperty("album_id")
@@ -35,15 +32,15 @@ public class AlbumWholeListDto {
 
     // 즐겨찾기 여부
     @JsonProperty("isAlbumFav")
-    private LikeStatus isAlbumFav;
+    private Boolean isAlbumFav;
 
-    @QueryProjection
-    public AlbumWholeListDto(Long albumId, String albumName, LocalDateTime albumCreatedDate, String thumbnailPhotoUrl, Long recentPhotoId, AlbumFav isAlbumFav) {
-        this.albumId = albumId;
-        this.albumName = albumName;
-        this.albumCreatedDate = albumCreatedDate;
-        this.thumbnailPhotoUrl = thumbnailPhotoUrl;
-        this.recentPhotoId = recentPhotoId;
-        this.isAlbumFav = isAlbumFav == null ? LikeStatus.CANCEL : isAlbumFav.getLikeStatus();
-    }
+//    @QueryProjection
+//    public AlbumWholeListDto(Long albumId, String albumName, LocalDateTime albumCreatedDate, String thumbnailPhotoUrl, Long recentPhotoId, AlbumFav isAlbumFav) {
+//        this.albumId = albumId;
+//        this.albumName = albumName;
+//        this.albumCreatedDate = albumCreatedDate;
+//        this.thumbnailPhotoUrl = thumbnailPhotoUrl;
+//        this.recentPhotoId = recentPhotoId;
+//        this.isAlbumFav = isAlbumFav == null ? LikeStatus.CANCEL : isAlbumFav.getLikeStatus();
+//    }
 }
