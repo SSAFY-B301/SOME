@@ -1,4 +1,4 @@
-package com.ssafy.somefriendboy.repository.AlbumPhoto;
+package com.ssafy.somefriendboy.repository.albumphoto;
 
 import com.ssafy.somefriendboy.entity.AlbumPhoto;
 
