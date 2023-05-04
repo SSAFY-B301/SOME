@@ -11,8 +11,6 @@ import "slick-carousel/slick/slick-theme.css";
 import "@/styles/globals.scss";
 import { Provider } from "react-redux";
 import { useEffect } from "react";
-import { PersistGate } from "redux-persist/integration/react";
-import { persistStore } from "redux-persist";
 
 const client = new QueryClient({
   defaultOptions: {
@@ -24,7 +22,6 @@ const client = new QueryClient({
 
 function App({ Component, ...rest }: AppProps) {
   const {store, props} = wrapper.useWrappedStore(rest);
-  const persistor = persistStore(store);
   useEffect(() => {
     if("serviceWorker" in navigator) {
       window.addEventListener("load", function () {
@@ -42,12 +39,10 @@ function App({ Component, ...rest }: AppProps) {
   return (
     <ThemeProvider attribute="class">
       <Provider store={store}>
-        <PersistGate loading={null} persistor={persistor}>
           <QueryClientProvider client={client}>
             <Component {...props.pageProps} />
             <ReactQueryDevtools initialIsOpen={false} position="bottom-right" />
           </QueryClientProvider>
-        </PersistGate>
       </Provider>
     </ThemeProvider>
   );
