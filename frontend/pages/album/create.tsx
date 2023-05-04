@@ -46,7 +46,7 @@ const AlbumCreate = (): JSX.Element => {
         ></input>
       </div>
       <div className="box-border flex justify-center w-full h-20 pt-2">
-        <Link href={"/"}>
+        <Link href={"/boy-home"}>
           <PlusIcon className="origin-center rotate-45" />
         </Link>
       </div>

@@ -18,7 +18,13 @@ function useCustomAxios() {
             "access_token" : parseToken,
         }
     });
-    return {customBoyAxios, customGirlAxios}
+    const customAuthAxios = axios.create({
+        baseURL: process.env.NEXT_PUBLIC_SOME_AUTH_URL,
+        headers: {
+            "access_token" : parseToken,
+        }
+    });
+    return {customBoyAxios, customGirlAxios, customAuthAxios}
 }
 
 export default useCustomAxios;

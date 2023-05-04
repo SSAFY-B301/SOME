@@ -1,22 +1,13 @@
-import { useEffect, useState } from "react"
-import { onLogin } from "@/features/authSlice";
-import { RootState, useAppDispatch } from "@/store/configureStore";
-import { useSelector } from "react-redux";
+import { useEffect } from "react"
 // axios
 import axios from "axios";
 
-//인터페이스
-import { UserResultType } from "@/types/UserType";
 
 // next Hooks
 import { useRouter } from "next/router";
 
 //로그인 완료 페이지니까 리덕스에 state 저장해주고 이동할 수 있도록
 export default function AuthRedirect() {
-    // redux dispatch
-    const dispatch = useAppDispatch();
-    // redux state 변경 감지를 위해 state 값 가져오기
-    const {isLogin, userInfo} = useSelector((state : RootState) => state.auth);
     // router 객체 생성
     const router = useRouter();
 
@@ -34,20 +25,16 @@ export default function AuthRedirect() {
                         "authorization_code" : paramAuthCode,
                     },
                 });
-            const resultUserInfo : UserResultType = userResult.data.data;
-            if (resultUserInfo !== null){
-                saveAccessToken(resultUserInfo.access_token);
-                dispatch(onLogin(resultUserInfo.user_info));
+            const responseAccessToken = userResult.data.data;
+
+            console.log(responseAccessToken);
+
+            if (responseAccessToken !== null){
+                saveAccessToken(responseAccessToken);
+                router.push("/boy-home");
             }
         }
     }
-
-    // dispatch로 로그인 상태 변경 되었음을 감지
-    useEffect(() => {
-        if (userInfo.user_id !== "") {
-            router.push('/');
-        }
-    }, [isLogin])
     
     // 렌더링 되면 authorization code URL에서 파싱
     useEffect(() => {

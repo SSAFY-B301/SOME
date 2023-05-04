@@ -4,27 +4,22 @@ import Alert from "@/components/common/Alert";
 import ToggleList from "@/components/pages/profile/ToggleList";
 
 // react Hooks, next Hooks
-import { useEffect, useState } from "react";
+import { useState } from "react";
 import { useRouter } from "next/router";
 
 // svg 아이콘
 import ProfileModify from "public/icons/ProfileModify.svg";
 
-// Redux 관련
-import { RootState, useAppDispatch } from "@/store/configureStore";
-import { useSelector } from "react-redux";
-import { onLogout } from "@/features/authSlice";
-
 // Axios
 import axios from "axios";
+import { userQuery } from "./api/userApi";
 
 export default function MyPage() {
-    const router = useRouter();
-    
-    const dispatch = useAppDispatch();
-    const { isLogin, userInfo } = useSelector((state: RootState) => state.auth);
-    
-    const [isModalOpen, setIsModalOpen] = useState<boolean>(false);
+  const router = useRouter();
+  
+  const [isModalOpen, setIsModalOpen] = useState<boolean>(false);
+
+  const { getUserInfo } = userQuery()
   
   //모달 창 열고 닫기
   function onModalClick() {
@@ -46,17 +41,12 @@ export default function MyPage() {
   function logout() {
     //카카오 로그아웃
     kakaoLogout();
-    
-    //리덕스 초기화
-    dispatch(onLogout());
-  }
 
-  // 로그아웃 시 리덕스 값이 바뀌었을 때 페이지 이동
-  useEffect(() => {
-    if (!isLogin) {
-      router.push("/");
-    }
-  }, [isLogin]);
+    //로컬 스토리지 ACCESS_TOKEN 비우기
+    window.localStorage.removeItem('access_token');
+    
+    router.push("/login");
+  }
 
   return (
     <div className="bg-bg-home dark:bg-dark-bg-home" style={{ width: "100vw", height: "100vh" }}>
@@ -73,14 +63,19 @@ export default function MyPage() {
             </div>
           </div>
           <div className="flex items-center gap-x-10">
-            <img
+            {getUserInfo === undefined && 
+              <div className="w-24 h-24 rounded-full bg-gray-300"> </div>
+            }
+            {getUserInfo && 
+              <img
               className="w-24 h-24 rounded-full "
-              src={userInfo.user_img}
-              alt=""
-            />
+              src={getUserInfo ? getUserInfo.user_img : ""}
+              alt=""/>
+            }
+            
             <div className="flex flex-col justify-center items-left">
               <p className="text-gray-300">닉네임</p>
-              <p className="text-2xl font-bold">{userInfo.user_name}</p>
+              <p className="text-2xl font-bold">{getUserInfo? getUserInfo.user_name : ""}</p>
             </div>
           </div>
         </div>
