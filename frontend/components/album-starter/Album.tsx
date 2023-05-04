@@ -1,10 +1,11 @@
-import React from "react";
+import React, { useState } from "react";
+import styles from "@/styles/inviteFriends.module.scss";
 
 interface AlbumType {
   album_id: number;
   album_name: string;
   album_created_date: string;
-  thumbnail_photo_url: string;
+  thumbnail_photo_url: string | null;
   members: string[];
 }
 
@@ -20,18 +21,24 @@ const Album = ({ album, selectAlbum, isActiveFriends }: Props): JSX.Element => {
   };
 
   return (
-    <div
-      className="w-28 h-28 rounded-xl bg-center bg-cover border-2"
-      style={{ backgroundImage: "url(" + album.thumbnail_photo_url + ")" }}
-      onClick={select}
-    >
+    <div className="relative w-28 h-28 rounded-xl border-2" onClick={select}>
+      <img
+        src={
+          album.thumbnail_photo_url
+            ? album.thumbnail_photo_url
+            : "/images/default_album_thumbnail.png"
+        }
+        className="absolute z-10 w-full h-full object-cover rounded-xl"
+      />
       <div className="w-28 h-28 flex justify-center items-center">
-        <div className="w-24 h-24 flex flex-col justify-end items-center">
-          <span className="w-full text-base text-black text-center truncate">
+        <div className="z-20 w-24 h-24 flex flex-col justify-end items-center">
+          <span
+            className={`w-full text-base text-white text-center truncate ${styles.albumText}`}
+          >
             {album.album_name}
           </span>
           <span
-            className="w-full text-black text-center "
+            className={`w-full text-white text-center ${styles.albumText}`}
             style={{ fontSize: "8px" }}
           >
             {album.album_created_date.split("T", 1)}
