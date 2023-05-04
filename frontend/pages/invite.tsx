@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useState, useEffect } from "react";
 import { useRouter } from "next/router";
 import styles from "@/styles/inviteFriends.module.scss";
 import BackButtonIcon from "@/public/icons/CaretLeft.svg";
@@ -6,11 +6,6 @@ import Albums from "@/components/album-starter/Albums";
 import Friends from "@/components/album-starter/Friends";
 import InvitedGroup from "@/components/album-starter/InvitedGroup";
 import { useGetFriends, albumMutation } from "./api/inviteApi";
-
-/**
- * 새로운 앨범에서 들어왔을 때 albumType: "new"
- * 기존 앨범에서 들어왔을 때 albumType: "old"
- */
 
 interface FriendType {
   id: number;
@@ -28,13 +23,15 @@ interface AlbumType {
   members: string[];
 }
 
+/**
+ * 친구 초대 페이지
+ */
 const InviteFriends = (): JSX.Element => {
   /**
    * 신규 앨범 이름, 신규 및 기존 앨범 타입 식별 쿼리
    */
   const router = useRouter(); // {albumName<string>: "", albumType<string>: "new" or "old"}
-  const isNewAlbum: string | string[] | undefined = router.query.albumType;
-  const DUMMY_ALBUM_ID: number = 1;
+  const isNewAlbum: string | string[] | undefined = router.query.albumId;
 
   /**
    * 관리할 state
@@ -42,9 +39,7 @@ const InviteFriends = (): JSX.Element => {
   const [isActiveFriends, setActiveFriends] = useState<Set<number>>(new Set()); // 선택된 친구 ID 목록
   const [invitedFriends, setInvitedFriends] = useState<FriendType[]>([]); // 상단에 표시할 친구 목록
   const [inputText, setInputText] = useState<string>(""); // 검색 하고 있는 텍스트
-
-  console.log(isActiveFriends);
-  console.log(Array.from(isActiveFriends));
+  const [slideAnimation, setSlideAnimation] = useState<string>(""); // 친구 및 앨범 리스트 상하단 슬라이드 셋팅 값
 
   /**
    * 전체 친구, 앨범 목록
@@ -136,7 +131,7 @@ const InviteFriends = (): JSX.Element => {
   const { createAlbum, additionalInviteFriends } = albumMutation();
 
   const createAlbumClick = async () => {
-    if (isNewAlbum == "new") {
+    if (isNewAlbum == "") {
       const params = {
         album_name: router.query.albumName,
         invite_friend: Array.from(isActiveFriends),
@@ -144,23 +139,16 @@ const InviteFriends = (): JSX.Element => {
       createAlbum(params);
     } else {
       const params = {
-        album_id: DUMMY_ALBUM_ID,
-        additional_invite_friend: Array.from(isActiveFriends),
+        album_id: Number(isNewAlbum),
+        additional_invited_friend: Array.from(isActiveFriends),
       };
       additionalInviteFriends(params);
     }
   };
 
-  /**
-   * API 연결 문제점
-   * #04-1 친구 목록 불러오기
-   * 1. 앨범 선택 시 본인 ID 포함됨 -> 본인 ID 제거된 리스트 요청
-   * 2. (보류) 새 앨범 -> 친구 초대: 전체 친구 리스트, 앨범 -> 친구 초대: 가입된 친구를 제외한 친구 리스트
-   */
-
   return (
     <div
-      className="flex flex-col items-center bg-white"
+      className="flex flex-col items-center bg-white overflow-hidden"
       style={{ width: "100vw", height: "100vh" }}
     >
       <div className="flex items-center justify-center w-full h-16">

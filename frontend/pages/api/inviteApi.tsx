@@ -35,7 +35,7 @@ interface AlbumCreateType {
 
 interface InviteFriendType {
   album_id: number;
-  additional_invite_friend: number[];
+  additional_invited_friend: number[];
 }
 
 export const albumMutation = () => {
@@ -43,11 +43,7 @@ export const albumMutation = () => {
   const router = useRouter();
 
   // [POST] 앨범 생성
-  const {
-    mutate: createAlbum,
-    isSuccess: createAlbumSuccess,
-    data: AlbumId,
-  } = useMutation(
+  const { mutate: createAlbum } = useMutation(
     (newAlbum: AlbumCreateType) => {
       return customBoyAxios.post("/album/create", newAlbum);
     },
@@ -69,33 +65,29 @@ export const albumMutation = () => {
   );
 
   // [POST] 친구 추가 초대
-  const { mutate: additionalInviteFriends, isSuccess: inviteSuccess } =
-    useMutation(
-      (inviteInfo: InviteFriendType) => {
-        return customBoyAxios.post("/album/friend/invite", inviteInfo);
+  const { mutate: additionalInviteFriends } = useMutation(
+    (inviteInfo: InviteFriendType) => {
+      return customBoyAxios.post("/album/friend/invite", inviteInfo);
+    },
+    {
+      onMutate: (variable) => {
+        console.log("onMutate ", variable);
       },
-      {
-        onMutate: (variable) => {
-          console.log("onMutate ", variable);
-        },
-        onError: (error, variable, context) => {
-          //error
-        },
-        onSuccess: (data, variables, context) => {
-          console.log("success", data, variables, context);
-          router.push(`/album/${variables.album_id}`);
-        },
-        onSettled: () => {
-          console.log("end");
-        },
-      }
-    );
+      onError: (error, variable, context) => {
+        console.log(error);
+      },
+      onSuccess: (data, variables, context) => {
+        console.log("success", data, variables, context);
+        router.push(`/album/${variables.album_id}`);
+      },
+      onSettled: () => {
+        console.log("end");
+      },
+    }
+  );
 
   return {
     createAlbum,
-    createAlbumSuccess,
-    AlbumId,
     additionalInviteFriends,
-    inviteSuccess,
   };
 };
