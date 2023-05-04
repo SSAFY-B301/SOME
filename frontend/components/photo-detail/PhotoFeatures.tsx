@@ -1,4 +1,4 @@
-import { getPhoto, likePhoto } from "@/pages/api/photoDetailApi";
+import { getPhoto, useMutationPhoto } from "@/pages/api/photoDetailApi";
 import React, { useEffect, useState } from "react";
 
 /**
@@ -18,7 +18,7 @@ const PhotoFeatures = (): JSX.Element => {
    * 사진 좋아요 기능
    * useMutation
    */
-  const {likeMutation} = likePhoto();
+  const {likeMutation} = useMutationPhoto();
 
   /**
    * 좋아요 기능 추후 추가

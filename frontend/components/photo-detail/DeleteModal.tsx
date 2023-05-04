@@ -1,3 +1,4 @@
+import { useMutationPhoto } from "@/pages/api/photoDetailApi";
 import React from "react";
 
 interface Props {
@@ -9,26 +10,30 @@ interface Props {
  */
 
 const DeleteModal = ({ clickDelete }: Props): JSX.Element => {
+  const { deleteMutation } = useMutationPhoto()
   /**
    * 사진 삭제 기능 추가
    */
+  function photoDelete(){
+    deleteMutation();
+  }
 
   return (
     <div
-      className="fixed left-0 top-0 w-screen h-screen z-20 bg-black/50 flex justify-center items-center"
+      className="fixed top-0 left-0 z-20 flex items-center justify-center w-screen h-screen bg-black/50"
       onClick={clickDelete}
     >
-      <div className="w-11/12 h-full flex flex-col justify-end items-center">
-        <div className="w-full h-36 bg-white rounded-xl flex flex-col justify-center items-center">
-          <div className="w-full h-1/2 border-b-2 flex justify-center items-center text-gray-400">
+      <div className="flex flex-col items-center justify-end w-11/12 h-full">
+        <div onClick={(e) => e.stopPropagation()} className="flex flex-col items-center justify-center w-full bg-white h-36 rounded-xl">
+          <div className="flex items-center justify-center w-full text-gray-400 border-b-2 h-1/2">
             사진이 앨범에서 삭제됩니다.
           </div>
-          <button className="w-full h-1/2 flex justify-center items-center text-2xl font-bold text-rose-500">
+          <button onClick={photoDelete} className="flex items-center justify-center w-full text-2xl font-bold h-1/2 text-rose-500">
             삭제
           </button>
         </div>
         <button
-          className="w-full h-16 bg-white rounded-xl flex justify-center items-center box-border mt-2 mb-8 text-2xl font-bold"
+          className="box-border flex items-center justify-center w-full h-16 mt-2 mb-8 text-2xl font-bold bg-white rounded-xl"
           onClick={clickDelete}
         >
           취소
