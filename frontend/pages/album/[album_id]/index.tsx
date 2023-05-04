@@ -20,6 +20,7 @@ import { previewPhotoType, requestPhotosType } from "types/AlbumTypes";
 import { useRouter } from "next/router";
 import Alert from "@/components/common/Alert";
 import EditAlbumName from "@/components/pages/album/EditAlbumName";
+import axios from "axios";
 
 function AlbumDetail() {
   const router = useRouter();
@@ -66,9 +67,29 @@ function AlbumDetail() {
     closeAlert(0);
   };
 
+  function download() {
+    console.log("download");
+    axios({
+      url: "https://k8b301-bucket.s3.ap-northeast-2.amazonaws.com/%25EB%25A7%2588%25EB%25A3%25A8.jpg",
+      method: "GET",
+      responseType: "blob",
+    }).then((response) => {
+      const url = window.URL.createObjectURL(new Blob([response.data]));
+      const link = document.createElement("a");
+      link.href = url;
+      link.setAttribute("download", "image.jpg");
+      document.body.appendChild(link);
+      link.click();
+      document.body.removeChild(link);
+    });
+  }
+
   const downloadPhotos = () => {
     console.log("DOWNLOAD", Array.from(selectedPhotos));
-
+    // TODO : 다운로드
+    const downUrl =
+      "https://k8b301-bucket.s3.ap-northeast-2.amazonaws.com/%25EB%25A7%2588%25EB%25A3%25A8.jpg";
+    download();
     closeAlert(1);
   };
 
@@ -99,6 +120,7 @@ function AlbumDetail() {
       selectedPhotos.size === getTotal && setIsTotal(true);
     }, [selectedPhotos]);
   }
+  // useMemo(() => selectedPhotos.size === getTotal && true, [selectedPhotos])
 
   /**
    * size 길이의 배열 반환
@@ -112,9 +134,8 @@ function AlbumDetail() {
 
   // 사진 미리보기
   useEffect(() => {
+    console.log(inputPhoto);
     if (inputPhoto) {
-      console.log(inputPhoto);
-
       range(inputPhoto.length).forEach((idx) => {
         setIsPreview(true);
         setPreviewPhotos([]);
@@ -123,8 +144,9 @@ function AlbumDetail() {
           img: URL.createObjectURL(inputPhoto.item(idx)!),
         });
       });
-      setPreviewPhotos([...previewPhotos]);
+      console.log("PREVIEW", previewPhotos);
     }
+    setPreviewPhotos([...previewPhotos]);
   }, [inputPhoto]);
 
   useEffect(() => {
@@ -157,6 +179,12 @@ function AlbumDetail() {
           selectMembers={selectMembers}
           setInputPhoto={setInputPhoto}
         />
+        <a
+          href="blob:http://192.168.137.1:3000/5490c48f-1ecc-4b25-a477-6b9e09166f1d"
+          download="file.jpg"
+        >
+          다운로드
+        </a>
         <div className={`${styles.total_count}`}>
           <span>
             {isSelect
