@@ -16,7 +16,7 @@ interface Props {
 
 const InvitedGroup = ({ friends, topRemoveFriends }: Props): JSX.Element => {
   return (
-    <div className="flex flex-nowrap overflow-scroll">
+    <div className="flex flex-nowrap gap-4 overflow-scroll">
       {friends.map((friend) => (
         <InvitedFriend
           key={friend.id}
