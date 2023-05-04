@@ -6,7 +6,7 @@ const { customAuthAxios } = useCustomAxios();
 
 export const userQuery = () => {
     // TODO : API 나오면 CONTEXT PATH
-    const queryKey = "";
+    const queryKey = "/user/info";
     
     const { data : queryData, isLoading: getUserIsLoading } = useQuery(["userInfo"], () =>
         customAuthAxios.get(queryKey)
