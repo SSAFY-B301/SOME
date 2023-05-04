@@ -1,12 +1,11 @@
 package com.ssafy.somefriendboy.service;
 
-import com.querydsl.core.QueryResults;
 import com.querydsl.jpa.impl.JPAQueryFactory;
 import com.ssafy.somefriendboy.dto.*;
 import com.ssafy.somefriendboy.entity.*;
-import com.ssafy.somefriendboy.repository.AlbumPhoto.AlbumPhotoRepository;
+import com.ssafy.somefriendboy.repository.albumphoto.AlbumPhotoRepository;
 import com.ssafy.somefriendboy.repository.album.AlbumRepository;
-import com.ssafy.somefriendboy.repository.albumFav.AlbumFavRepository;
+import com.ssafy.somefriendboy.repository.albumfav.AlbumFavRepository;
 import com.ssafy.somefriendboy.repository.albummember.AlbumMemberRepository;
 import com.ssafy.somefriendboy.repository.user.UserRepository;
 import com.ssafy.somefriendboy.util.HttpUtil;
@@ -25,7 +24,6 @@ import org.springframework.web.client.RestTemplate;
 import java.time.LocalDateTime;
 import java.util.*;
 
-import static com.ssafy.somefriendboy.entity.QAlbum.album;
 import static org.springframework.data.mongodb.core.FindAndModifyOptions.options;
 import static org.springframework.data.mongodb.core.query.Criteria.where;
 
