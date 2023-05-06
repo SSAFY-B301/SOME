@@ -87,7 +87,7 @@ public class AlbumService {
         // 가입되어있는 친구라면 초대알림
         // 가입되어있지 않은 친구라면 초대 메시지
 
-        return setResponseDto(result,"앨범 생성 완료",200);
+        return setResponseDto(result,"앨범 생성",200);
     }
 
     public ResponseDto getAlbumDetail(String access_token, Long albumId) {
@@ -151,7 +151,7 @@ public class AlbumService {
                 albumRepository.modifyAlbumName(albumModifyDto.getAlbumId(), albumModifyDto.getNewAlbumName());
                 result.put("albumId", albumId);
                 result.put("newAlbumName", albumModifyDto.getNewAlbumName());
-                return setResponseDto(result,"앨범 이름 수정",200);
+                return setResponseDto(result,"앨범 이름 변경",200);
             }
         }
         // 속하지 않는다면 수정 권한 없음 return
@@ -173,7 +173,7 @@ public class AlbumService {
                 albumRepository.modifyAlbumThumbnail(albumModifyThumbnailDto.getAlbumId(), albumModifyThumbnailDto.getNewAlbumThumbnailId());
                 result.put("albumId", albumId);
                 result.put("newAlbumThumbnail", albumModifyThumbnailDto.getNewAlbumThumbnailId());
-                return setResponseDto(result,"앨범 정보 수정",200);
+                return setResponseDto(result,"앨범 썸네일 이미지 변경",200);
             }
         }
         // 속하지 않는다면 수정 권한 없음 return
@@ -212,7 +212,7 @@ public class AlbumService {
         result.put("is_last",albumWholeList.isLast());
         result.put("is_first",albumWholeList.isFirst());
 
-        return setResponseDto(result,"앨범 목록",200);
+        return setResponseDto(result,"전체 앨범 목록",200);
     }
 
     public ResponseDto favAlbum(String access_token, Long albumId) {
@@ -248,7 +248,7 @@ public class AlbumService {
                result.put("FavStatus", LikeStatus.LIKE);
            }
         }
-        return setResponseDto(result,"앨범 즐겨찾기 등록",200);
+        return setResponseDto(result,"즐겨찾는 앨범 등록",200);
     }
 
     public ResponseDto getFavAlbumList(String access_token, Pageable pageable) {
@@ -276,7 +276,7 @@ public class AlbumService {
         }
         result.put("myFavAlbumList", albumFavDtoList);
 
-        return setResponseDto(result,"앨범 즐겨찾기 등록",200);
+        return setResponseDto(result,"즐겨찾는 앨범 리스트",200);
     }
 
     public ResponseDto getfriendList(String access_token) {
@@ -327,7 +327,7 @@ public class AlbumService {
             albumInfoAndMemberDtoList.add(albumInfoAndMemberDto);
         }
         result.put("myAlbum_member_list",albumInfoAndMemberDtoList);
-        return setResponseDto(result,"친구 목록 리턴",200);
+        return setResponseDto(result,"친구 목록",200);
     }
 
     public ResponseDto inviteFriend(String access_token, AdditionalFriendsInviteDto additionalFriendsInviteDto) {
@@ -350,7 +350,7 @@ public class AlbumService {
                 albumMemberRepository.save(albumMember);
             }
         }
-        return setResponseDto(result,"앨범 생성 후 친구 초대",200);
+        return setResponseDto(result,"앨범 생성 후 추가 친구 초대",200);
     }
 
     public ResponseDto getInvitedAlbumList(String access_token) {
@@ -369,7 +369,7 @@ public class AlbumService {
             myInvitedAlbumIdListMapList.add(myInvitedAlbumIdListMap);
         }
         result.put("invitedAlbumIdList", myInvitedAlbumIdListMapList);
-        return setResponseDto(result,"앨범 초대 목록",200);
+        return setResponseDto(result,"앨범 초대요청 목록",200);
     }
 
     public ResponseDto replyInvitedAlbum(String access_token, AlbumInviteReplyDto albumInviteReplyDto) {
@@ -390,7 +390,7 @@ public class AlbumService {
             result.put("reply", "decline");
         }
 
-        return setResponseDto(result,"앨범 초대 응답",200);
+        return setResponseDto(result,"앨범 초대요청 응답",200);
     }
 
     private ResponseDto setResponseDto(Map<String,Object> result, String message, int statusCode){
