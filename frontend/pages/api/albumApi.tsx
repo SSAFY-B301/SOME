@@ -146,7 +146,9 @@ export function Mutations() {
     return useMutation(
       (albumId) => customBoyAxios.put(`/album/fav/${albumId}`),
       {
-        onSuccess: (data) => {},
+        onSuccess: () => {
+          queryClient.invalidateQueries(["favorite"]);
+        },
         onError: (error) => {
           console.error(error);
         },

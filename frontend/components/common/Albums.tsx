@@ -107,12 +107,9 @@ function FavoriteAlbum() {
     // TODO : 빈 배열인 경우 개선
     getFavorite && getFavorite.length > 0
       ? getFavorite.map((favoriteAlbum: FavoriteAlbumType) => (
-          <div
-            onClick={() => router.push(`/album/${favoriteAlbum.album_id}`)}
-            key={favoriteAlbum.album_id}
-            className={styles.card}
-          >
+          <div key={favoriteAlbum.album_id} className={styles.card}>
             <div
+              onClick={() => router.push(`/album/${favoriteAlbum.album_id}`)}
               className="bg-center bg-cover "
               style={{
                 width: "73.846vw",
@@ -124,7 +121,8 @@ function FavoriteAlbum() {
                     : default_profile
                 })`,
               }}
-            >
+            ></div>
+            <div className="relative" style={{ top: "-97.436vw" }}>
               <div className="flex justify-end relative top-4 right-4 gap-2">
                 <HeartIcon
                   onClick={() => clickedHeart(favoriteAlbum.album_id)}
@@ -136,7 +134,11 @@ function FavoriteAlbum() {
               </div>
               <div
                 className="flex flex-col relative "
-                style={{ width: "32.821vw", top: "6.154vw", left: "4.103vw" }}
+                style={{
+                  width: "32.821vw",
+                  top: "6.154vw",
+                  left: "4.103vw",
+                }}
               >
                 <span
                   className="text-white text-end"
@@ -148,7 +150,9 @@ function FavoriteAlbum() {
                   className="text-white text-end"
                   style={{ fontSize: "2.051vw" }}
                 >
-                  {favoriteAlbum.album_created_date}
+                  {favoriteAlbum.album_created_date
+                    .slice(0, 10)
+                    .replaceAll("-", ".")}
                 </span>
               </div>
             </div>
