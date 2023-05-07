@@ -16,6 +16,7 @@ import com.ssafy.somefriendboy.repository.userphotolike.UserPhotoLikeRepository;
 import com.ssafy.somefriendboy.util.HttpUtil;
 import lombok.RequiredArgsConstructor;
 import org.springframework.core.io.ByteArrayResource;
+import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.data.mongodb.core.MongoOperations;
 import org.springframework.data.mongodb.core.query.Query;
@@ -44,7 +45,6 @@ public class AlbumPhotoService {
     private final AlbumRepository albumRepository;
     private final UserPhotoLikeRepository userPhotoLikeRepository;
     private final UserRepository userRepository;
-    private final MongoOperations mongoOperations;
     private final HttpUtil httpUtil;
 
     public ResponseDto insertPhoto(List<MultipartFile> multipartFiles, List<MetaDataDto> metaDataDtos, Long albumId, String accessToken) throws ImageProcessingException, IOException {
@@ -64,9 +64,10 @@ public class AlbumPhotoService {
             inputStream.close();
 
             AlbumPhoto albumPhoto = AlbumPhoto.builder()
-                    .photoId(generateSequence(AlbumPhoto.SEQUENCE_NAME))
+                    .photoId(metaDataDtos.get(i).getPhotoId())
                     .uploadedDate(LocalDateTime.now())
-                    .s3Url(metaDataDtos.get(i).getOriginUrl())
+                    .originUrl(metaDataDtos.get(i).getOriginUrl())
+                    .resizeUrl(metaDataDtos.get(i).getResizeUrl())
                     .status(PhotoStatus.NORMAL)
                     .categoryId(categories.get(i))
                     .albumId(albumId)
@@ -78,7 +79,6 @@ public class AlbumPhotoService {
 
             if (exifSubIFDDirectory != null && exifSubIFDDirectory.containsTag(ExifSubIFDDirectory.TAG_DATETIME_ORIGINAL)) {
                 Date date = exifSubIFDDirectory.getDateOriginal();
-                System.out.println(date);
                 albumPhoto.setShootDate(date);
             }
 
@@ -139,15 +139,10 @@ public class AlbumPhotoService {
             return setResponseDto(result, "토큰 만료", 450);
         }
 
-        List<AlbumPhoto> albumPhotos = albumPhotoRepository.findAlbumPhoto(albumPhotoListOptDto.getAlbumId(),
-                albumPhotoListOptDto.getCategoryId(), albumPhotoListOptDto.getUserId());
-        List<AlbumPhotoListDto> albumPhotoListDtos = albumPhotos.stream()
-                .map(AlbumPhotoListDto::new).collect(Collectors.toList());
-        List<Long> totalPhotoId = albumPhotoListDtos.stream().map(AlbumPhotoListDto::getPhotoId).collect(Collectors.toList());
+        Page<AlbumPhotoListDto> albumPhotoList = albumPhotoRepository.findAlbumPhoto(albumPhotoListOptDto.getAlbumId(),
+                albumPhotoListOptDto.getCategoryId(), albumPhotoListOptDto.getUserId(), pageable);
 
-        result.put("totalPhotoCnt", albumPhotoListDtos.size());
-        result.put("totalPhotoId", totalPhotoId);
-        result.put("albumPhotoList", albumPhotoListDtos);
+        result.put("albumPhotoList", albumPhotoList);
         return setResponseDto(result, "앨범 사진 목록", 200);
     }
 
@@ -197,12 +192,6 @@ public class AlbumPhotoService {
         result.put("photoDeleteId", albumPhotoIdDto.getPhotoId());
         result.put("photoDeleteStatus", PhotoStatus.DELETED);
         return setResponseDto(result, "사진 삭제", 200);
-    }
-
-    private Long generateSequence(String seqName) {
-        AutoIncrementSequence counter = mongoOperations.findAndModify(Query.query(where("_id").is(seqName)),
-                new Update().inc("seq", 1), options().returnNew(true).upsert(true), AutoIncrementSequence.class);
-        return !Objects.isNull(counter) ? counter.getSeq() : 1;
     }
 
     private List<List<Long>> requestToFAST(List<MultipartFile> multipartFiles) throws IOException {
