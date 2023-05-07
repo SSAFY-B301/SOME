@@ -193,7 +193,7 @@ public class AlbumService {
         for (AlbumWholeListDto albumDto : albumWholeList) {
             Album album = albumRepository.findAlbumByAlbumId(albumDto.getAlbumId());
             if (albumRepository.findAlbumByAlbumId(albumDto.getAlbumId()).getThumbnailPhoto() != null) {
-                String thumbnailPhotoUrl = albumPhotoRepository.findByPhotoId(album.getThumbnailPhoto()).getS3Url();
+                String thumbnailPhotoUrl = albumPhotoRepository.findByPhotoId(album.getThumbnailPhoto()).getResizeUrl();
                 albumDto.setThumbnailPhotoUrl(thumbnailPhotoUrl);
             }
 
@@ -263,7 +263,7 @@ public class AlbumService {
         for (Long albumId : myFavAlbumIdList) {
             Album album = albumRepository.findAlbumByAlbumId(albumId);
             AlbumPhoto albumPhoto = albumPhotoRepository.findByPhotoId(album.getThumbnailPhoto());
-            String thumbnailPhotoUrl = albumPhoto == null ? null : albumPhoto.getS3Url();
+            String thumbnailPhotoUrl = albumPhoto == null ? null : albumPhoto.getResizeUrl();
 
             AlbumFavDto albumFavDto = AlbumFavDto.builder()
                     .albumId(album.getAlbumId())
@@ -314,7 +314,7 @@ public class AlbumService {
             List<String> albumMemberList = albumMemberRepository.findAlbumMemberIdByAlbumId(albumId);
 
             AlbumPhoto albumPhoto = albumPhotoRepository.findByPhotoId(album.getThumbnailPhoto());
-            String thumbnailPhotoUrl = albumPhoto == null ? null : albumPhoto.getS3Url();
+            String thumbnailPhotoUrl = albumPhoto == null ? null : albumPhoto.getResizeUrl();
 
             AlbumInfoAndMemberDto albumInfoAndMemberDto = AlbumInfoAndMemberDto.builder()
                     .albumId(album.getAlbumId())
