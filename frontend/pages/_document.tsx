@@ -107,6 +107,7 @@ export default function Document() {
           media="screen and (device-width: 744px) and (device-height: 1133px) and (-webkit-device-pixel-ratio: 2) and (orientation: portrait)"
           href="/splash_screens/8.3__iPad_Mini_portrait.png"
         />
+        <script type="text/javascript" src={`//dapi.kakao.com/v2/maps/sdk.js?appkey=${process.env.NEXT_PUBLIC_KAKAO_JAVASCRIPT_KEY}`}></script>
       </Head>
 
       <body className="text-black bg-white dark:bg-neutral-800 dark:text-white">
