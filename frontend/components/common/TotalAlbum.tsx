@@ -75,7 +75,9 @@ function TotalAlbumItems() {
         />
         <div className="flex flex-col items-end text-white text-left">
           <span>{album.album_name}</span>
-          <span>{album.album_created_date}</span>
+          <span>
+            {album.album_created_date.slice(0, 10).replaceAll("-", ".")}
+          </span>
         </div>
       </div>
     ))
