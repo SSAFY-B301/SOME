@@ -35,7 +35,11 @@ export default function EditAlbumName(props: AlertType) {
         className="flex flex-col items-center justify-center w-64 bg-white rounded-lg h-32 gap-y-4"
       >
         <p>{props.msg}</p>
-        <input type="text" onChange={(e) => onChange(e.target.value)} />
+        <input
+          type="text"
+          onChange={(e) => onChange(e.target.value)}
+          className="border border-black rounded-2xl px-2"
+        />
         <div className="flex items-center justify-center gap-x-4">
           <button onClick={editAlbumName} className="w-24 rounded-lg shadow">
             수정
