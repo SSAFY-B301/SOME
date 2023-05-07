@@ -1,6 +1,7 @@
 package com.ssafy.somefriendboy.controller;
 
 import com.drew.imaging.ImageProcessingException;
+import com.drew.metadata.MetadataException;
 import com.ssafy.somefriendboy.dto.AlbumPhotoIdDto;
 import com.ssafy.somefriendboy.dto.AlbumPhotoListOptDto;
 import com.ssafy.somefriendboy.dto.MetaDataDto;
@@ -36,11 +37,11 @@ public class AlbumPhotoController {
     @PostMapping("/upload/{albumId}")
     public ResponseEntity<ResponseDto> upload(@RequestHeader HttpHeaders headers,
                                               @RequestPart("multipartFile") List<MultipartFile> multipartFiles,
-                                              @PathVariable Long albumId) throws IOException, ImageProcessingException {
+                                              @PathVariable Long albumId) throws IOException, ImageProcessingException, MetadataException {
         String accessToken = headers.get("access_token").toString();
         log.info("사진 업로드 POST: /photo/upload, albumId : ", albumId);
 
-        List<MetaDataDto> metaDataDtos = amazonS3Service.uploadFile(multipartFiles);
+        List<MetaDataDto> metaDataDtos = amazonS3Service.uploadFile(multipartFiles, albumId);
         ResponseDto responseDto = albumPhotoService.insertPhoto(multipartFiles, metaDataDtos, albumId, accessToken);
         return new ResponseEntity<ResponseDto>(responseDto, HttpStatus.OK);
     }
