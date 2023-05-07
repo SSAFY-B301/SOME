@@ -29,7 +29,7 @@ const InvitedFriend = ({ friend, topRemoveFriends }: Props): JSX.Element => {
     setAppearAnimation(`${styles.disappearIcon}`);
     setTimeout(() => {
       topRemoveFriends(friend.id);
-    }, 200);
+    }, 300);
   };
 
   const onErrorImg = () => {

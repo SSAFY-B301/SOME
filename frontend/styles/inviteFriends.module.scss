@@ -10,6 +10,11 @@ $main-color: linear-gradient(
   background: $main-color;
 }
 
+.nav_bar {
+  width: 100vw;
+  height: 15.385vw;
+}
+
 .albumText {
   text-shadow: 0px 0px 10px black;
 }
@@ -20,6 +25,15 @@ $main-color: linear-gradient(
   }
   to {
     transform: translateY(80px);
+  }
+}
+
+@keyframes reverseSlider {
+  from {
+    transform: translateY(80px);
+  }
+  to {
+    transform: translateY(0px);
   }
 }
 
@@ -61,18 +75,22 @@ $main-color: linear-gradient(
 // animation-fill-mode : 애니메이션이 재생 전 후의 상태 지정
 
 .appearFriendDiv {
-  animation: slider 0.5s ease-in-out 0s 1 normal forwards;
+  animation: slider 0.3s ease-in-out 0s 1 normal forwards;
+}
+
+.disappearFriendDiv {
+  animation: reverseSlider 0.3s ease-in-out 0s 1 normal forwards;
 }
 
 .appearIconDiv {
-  animation: iconSlider 0.5s ease-out 0s 1 normal forwards;
+  animation: iconSlider 0.3s ease-out 0s 1 normal forwards;
 }
 
 .appearIcon {
   opacity: 0;
-  animation: smoothAppear 0.5s ease-in-out 0s 1 normal forwards;
+  animation: smoothAppear 0.3s ease-in-out 0s 1 normal forwards;
 }
 
 .disappearIcon {
-  animation: smoothDisappear 0.2s ease-in-out 0s 1 normal forwards;
+  animation: smoothDisappear 0.3s ease-in-out 0s 1 normal forwards;
 }
