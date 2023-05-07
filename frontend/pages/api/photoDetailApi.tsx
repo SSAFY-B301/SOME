@@ -1,4 +1,5 @@
 import useCustomAxios from "@/features/customAxios";
+import { PhotoType } from "@/types/AlbumTypes";
 import { useRouter } from "next/router";
 import { useMutation, useQuery, useQueryClient } from "react-query";
 
@@ -16,8 +17,22 @@ function getPhoto() {
   );
 
   const resultData = queryData?.data.data.albumPhotoDetail;
-
+  console.log(resultData);
   return { resultData, isLoading };
+}
+
+function getSnsPhoto(photoId :number | undefined) {
+
+  let snsResultData : PhotoType;
+  const { data: snsPhotoData} = useQuery(["sns"], () => 
+    customBoyAxios.get(
+      process.env.NEXT_PUBLIC_FRIEND_BOY_URL + "/photo/detail?photoId=5"
+    ),
+  );
+
+  snsResultData = snsPhotoData?.data.data.albumPhotoDetail;
+  return {snsResultData};
+
 }
 
 function useMutationPhoto() {
@@ -49,4 +64,4 @@ function useMutationPhoto() {
   return { likeMutation, deleteMutation };
 }
 
-export { getPhoto, useMutationPhoto };
+export { getPhoto, getSnsPhoto, useMutationPhoto };
