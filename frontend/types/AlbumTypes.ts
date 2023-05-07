@@ -55,12 +55,18 @@ export interface PhotosType {
   albumPhotoList: PhotoType[];
 }
 export interface PhotoType {
-  photoId: number;
-  s3Url: string;
-  userId: number;
-  categoryId: number[];
-  uploadedDate: string;
-  albumId: number;
+  albumId : number,
+  categoryId : number[],
+  gpsLatitude : string | null,
+  gpsLongitude : string | null,
+  likeStatus : string,
+  photoId : number, 
+  s3Url : string,
+  shootDate : string,
+  uploadedDate : string,
+  userId : string,
+  userName : string, 
+  userProfileImg : string, 
 }
 
 export interface photosRequest {
