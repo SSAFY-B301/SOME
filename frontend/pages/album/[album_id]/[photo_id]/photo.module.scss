@@ -19,3 +19,14 @@
   border-radius: 3.077vw 3.077vw 0px 0px;
   padding: 8.205vw;
 }
+
+.defaultScale {
+  transform: scale(1);
+}
+
+.doubleTapScale {
+  top: 0;
+  left: 0;
+  transform: scale(2);
+  transform-origin: center center;
+}

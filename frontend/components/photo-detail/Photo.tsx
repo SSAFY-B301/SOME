@@ -1,12 +1,29 @@
-import React from "react";
+import React, { useState, useEffect } from "react";
+import styles from "@/pages/album/[album_id]/[photo_id]/photo.module.scss";
 
 interface Props {
-  imgSrc : string,
+  imgSrc: string;
   clickImg(): void;
   showConcentrationMode: boolean;
+  isZoom: boolean;
 }
 
-const Photo = ({ imgSrc, clickImg, showConcentrationMode }: Props): JSX.Element => {
+const Photo = ({
+  imgSrc,
+  clickImg,
+  showConcentrationMode,
+  isZoom,
+}: Props): JSX.Element => {
+  const [doubleTap, setDoubleTap] = useState<string>(styles.defaultScale);
+
+  useEffect(() => {
+    if (isZoom) {
+      setDoubleTap(styles.doubleTapScale);
+    } else {
+      setDoubleTap(styles.defaultScale);
+    }
+  });
+
   return (
     <div
       className={
@@ -16,14 +33,14 @@ const Photo = ({ imgSrc, clickImg, showConcentrationMode }: Props): JSX.Element 
       }
       onClick={clickImg}
     >
-      <div className="w-screen h-screen">
+      <div
+        className="relative overflow-hidden"
+        style={{ width: "100vw", height: "100vh" }}
+      >
         <div
-          className="w-full h-full bg-center bg-no-repeat bg-contain"
+          className={`absolute w-full h-full bg-center bg-no-repeat bg-contain ${doubleTap}`}
           style={{
-            backgroundImage:
-              "url(" +
-              imgSrc +
-              ")",
+            backgroundImage: "url(" + imgSrc + ")",
           }}
         ></div>
       </div>

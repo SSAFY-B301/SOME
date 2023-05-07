@@ -17,6 +17,7 @@ const PhotoDetail = (): JSX.Element => {
   const [showVoteModal, setVoteModal] = useState<boolean>(false);
   const [showConcentrationMode, setConcentrationMode] =
     useState<boolean>(false);
+  const [isZoom, setIsZoom] = useState<boolean>(false);
 
   /**
    * 사진 상세 정보 접근
@@ -61,7 +62,13 @@ const PhotoDetail = (): JSX.Element => {
     setTimeout(() => {
       if (clickCount == 2) {
         clickCount = 0;
-        console.log("더블클릭");
+        if (isZoom) {
+          setIsZoom(false);
+          console.log("줌 아웃");
+        } else {
+          setIsZoom(true);
+          console.log("줌 인");
+        }
       } else if (clickCount == 1) {
         clickCount = 0;
         showConcentrationMode
@@ -90,6 +97,7 @@ const PhotoDetail = (): JSX.Element => {
         imgSrc={photoDetail?.s3Url}
         clickImg={clickImg}
         showConcentrationMode={showConcentrationMode}
+        isZoom={isZoom}
       />
       <div className={`z-20 ${styles.footer}`}>
         <Footer
