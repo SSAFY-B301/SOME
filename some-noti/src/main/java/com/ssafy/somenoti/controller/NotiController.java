@@ -1,9 +1,6 @@
 package com.ssafy.somenoti.controller;
 
-import com.ssafy.somenoti.dto.NotiStatusDto;
-import com.ssafy.somenoti.dto.ResponseDto;
-import com.ssafy.somenoti.dto.NotiInviteCreateDto;
-import com.ssafy.somenoti.dto.NotiSnsCreateDto;
+import com.ssafy.somenoti.dto.*;
 import com.ssafy.somenoti.service.NotiService;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
@@ -35,6 +32,14 @@ public class NotiController {
         ResponseDto responseDto = notiService.sendInviteNoti(notiCreateDto);
         return new ResponseEntity<ResponseDto>(responseDto, HttpStatus.OK);
     }
+    @PutMapping("/invite")
+    public ResponseEntity<ResponseDto> albumInviteResponse(@RequestHeader HttpHeaders headers, @RequestBody InviteResponseDto inviteResponseDto) {
+        log.info("앨범 초대 응답 요청 PUT: /noti/invite, InviteResponseDto : {}", inviteResponseDto);
+        String access_token = headers.get("access_token").toString();
+        ResponseDto responseDto = notiService.replyInviteNoti(access_token,inviteResponseDto);
+        return new ResponseEntity<ResponseDto>(responseDto, HttpStatus.OK);
+    }
+
     @PostMapping("/sns")
     public ResponseEntity<ResponseDto> photoSns(@RequestBody NotiSnsCreateDto notiCreateDto) {
         log.info("SNS동의 요청 알림 생성 요청 POST: /noti/sns, NotiSnsCreateDto : {}", notiCreateDto);
