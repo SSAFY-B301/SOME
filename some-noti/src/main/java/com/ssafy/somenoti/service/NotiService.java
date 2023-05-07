@@ -1,10 +1,7 @@
 package com.ssafy.somenoti.service;
 
 import com.ssafy.somenoti.dto.*;
-import com.ssafy.somenoti.entity.NotiStatus;
-import com.ssafy.somenoti.entity.NotiType;
-import com.ssafy.somenoti.entity.Notification;
-import com.ssafy.somenoti.entity.User;
+import com.ssafy.somenoti.entity.*;
 import com.ssafy.somenoti.repository.albummember.AlbumMemberRepository;
 import com.ssafy.somenoti.repository.noti.EmitterRepository;
 import com.ssafy.somenoti.repository.noti.NotificationRepository;
@@ -102,7 +99,6 @@ public class NotiService {
         return setResponseDto(result,"알림 내역 불러오기",200);
     }
     public ResponseDto changeNotiStatus(String accessToken,NotiStatusDto notiStatusDto) {
-        Map<String,Object> result = new HashMap<>();
         String userId = tokenCheck(accessToken);
         if(userId == null){
             return setResponseDto(false,"토큰 만료",450);
@@ -112,6 +108,23 @@ public class NotiService {
 
         return setResponseDto(true,"알림 상태 변경",200);
     }
+    public ResponseDto replyInviteNoti(String accessToken, InviteResponseDto inviteResponseDto) {
+        String userId = tokenCheck(accessToken);
+        if(userId == null){
+            return setResponseDto(false,"토큰 만료",450);
+        }
+        if(inviteResponseDto.getStatus() == AlbumMemberStatus.ACCEPT){
+            albumMemberRepository.acceptInvitedAlbumStatus(inviteResponseDto.getAlbumId(),userId);
+        }
+        else if(inviteResponseDto.getStatus() == AlbumMemberStatus.DECLINE){
+            albumMemberRepository.declineInvitedAlbumStatus(inviteResponseDto.getAlbumId(), userId);
+        }
+        Notification notification = notificationRepository.findById(inviteResponseDto.getNotiId()).get();
+        notification.setStatus(NotiStatus.DONE);
+
+        return setResponseDto(true,"앨범 초대 응답 완료",200);
+    }
+
     private void sendToClient(SseEmitter emitter, String emitterId, Object data) {
         try {
             emitter.send(SseEmitter.event()
@@ -122,7 +135,6 @@ public class NotiService {
             emitterRepository.deleteById(emitterId);
         }
     }
-
     private void sendNoti(NotiType notiType, List<String> receivers,User sender,Long id){
         for (String receiverId : receivers) {
             User receiver = userRepository.findById(receiverId).get();
@@ -157,6 +169,7 @@ public class NotiService {
             );
         }
     }
+
     private HashMap<String,Object> setNotiData(Notification notification){
         HashMap<String,Object> result = new HashMap<>();
         result.put("content",notification.getMessage());
