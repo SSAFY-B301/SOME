@@ -6,7 +6,7 @@ import styles from "@/styles/notification.module.scss"
 import { getAlarms } from "./api/notiApi";
 import { NotiType } from "@/types/NotiType";
 import { Dispatch, MouseEventHandler, SetStateAction, useState } from "react";
-import SnsNotiModal from "@/components/pages/notification/snsModal";
+import SnsNotiModal from "@/components/pages/notification/SnsModal";
 import InviteModal from "@/components/pages/notification/InviteModal";
 
 interface SnsHandlerParamType{
