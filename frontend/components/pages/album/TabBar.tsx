@@ -44,7 +44,7 @@ function TabBar({ isSelect, isAlerts, setIsAlerts }: TabBarType) {
     putFavMutate(albumId);
   };
 
-  const openDeleteAlert = (idx: number) => {
+  const openAlert = (idx: number) => {
     isAlerts[idx] = true;
     setIsAlerts([...isAlerts]);
   };
@@ -53,9 +53,9 @@ function TabBar({ isSelect, isAlerts, setIsAlerts }: TabBarType) {
     <section className={`${styles.tab_bar}`}>
       {isSelect ? (
         <>
-          <UploadIcon onClick={() => openDeleteAlert(0)} stroke={"black"} />
-          <DownloadIcon onClick={() => openDeleteAlert(1)} stroke={"black"} />
-          <TrashIcon onClick={() => openDeleteAlert(0)} stroke={"black"} />
+          <UploadIcon onClick={() => openAlert(0)} stroke={"black"} />
+          <DownloadIcon onClick={() => openAlert(1)} stroke={"black"} />
+          <TrashIcon onClick={() => openAlert(0)} stroke={"black"} />
         </>
       ) : (
         <>
@@ -73,7 +73,7 @@ function TabBar({ isSelect, isAlerts, setIsAlerts }: TabBarType) {
             fill={getDetail ? (getDetail.isAlbumFav ? "red" : "none") : "none"}
           />
           <DotsIcon
-            onClick={() => openDeleteAlert(3)}
+            onClick={() => openAlert(3)}
             width={"8.205vw"}
             height={"8.205vw"}
             stroke={"#061C3D"}

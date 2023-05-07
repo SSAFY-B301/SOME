@@ -29,7 +29,7 @@ function TabBar({ plusBtnUrl }: TabBarType) {
         className={`flex flex-col justify-center items-center bg-white dark:bg-dark-block ${styles.tab_bar_block}`}
         style={{ gap: "1.026vw", borderRadius: "4.103vw 4.103vw 0px 0px" }}
       >
-        {router.pathname === "/" ? (
+        {router.pathname === "/boy-home" ? (
           <MfriendSelectedIcon width="8.205vw" height="7.436vw" />
         ) : (
           <MfriendIcon fill="#B1B8C0" />
