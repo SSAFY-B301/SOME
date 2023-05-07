@@ -21,7 +21,7 @@ public class AlbumPhotoListDto {
     public AlbumPhotoListDto(AlbumPhoto albumPhoto) {
         this.photoId = albumPhoto.getPhotoId();
         this.uploadedDate = albumPhoto.getUploadedDate();
-        this.s3Url = albumPhoto.getS3Url();
+        this.s3Url = albumPhoto.getResizeUrl();
         this.categoryId = albumPhoto.getCategoryId();
         this.userId = albumPhoto.getUserId();
         this.albumId = albumPhoto.getAlbumId();
