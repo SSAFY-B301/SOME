@@ -24,7 +24,13 @@ function useCustomAxios() {
             "access_token" : parseToken,
         }
     });
-    return {customBoyAxios, customGirlAxios, customAuthAxios}
+    const customNotiAxios = axios.create({
+        baseURL: process.env.NEXT_PUBLIC_SOME_NOTI_URL,
+        headers: {
+            "access_token" : parseToken,
+        }
+    });
+    return {customBoyAxios, customGirlAxios, customAuthAxios, customNotiAxios}
 }
 
 export default useCustomAxios;
