@@ -26,7 +26,7 @@ public class AmazonS3Service {
     @Value("${cloud.aws.s3.bucket}")
     private String S3Bucket;
     private final AmazonS3Client amazonS3Client;
-
+    private static Long photoId;
     public List<MetaDataDto> uploadFile(List<MultipartFile> multipartFiles) throws IOException {
         List<MetaDataDto> metaDataDtos = new ArrayList<>();
 
