@@ -24,7 +24,8 @@ public class AlbumPhoto {
     private Long photoId;
     private LocalDateTime uploadedDate;
     private Date shootDate;
-    private String s3Url;
+    private String originUrl;
+    private String resizeUrl;
     private Double gpsLatitude;
     private Double gpsLongitude;
     private List<Long> categoryId;

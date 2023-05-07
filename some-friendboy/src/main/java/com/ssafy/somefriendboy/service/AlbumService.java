@@ -11,6 +11,7 @@ import com.ssafy.somefriendboy.repository.user.UserRepository;
 import com.ssafy.somefriendboy.util.HttpUtil;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.log4j.Log4j2;
+import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.data.mongodb.core.MongoOperations;
 import org.springframework.data.mongodb.core.query.Query;
@@ -86,7 +87,7 @@ public class AlbumService {
         // 가입되어있는 친구라면 초대알림
         // 가입되어있지 않은 친구라면 초대 메시지
 
-        return setResponseDto(result,"앨범 생성 완료",200);
+        return setResponseDto(result,"앨범 생성",200);
     }
 
     public ResponseDto getAlbumDetail(String access_token, Long albumId) {
@@ -150,7 +151,7 @@ public class AlbumService {
                 albumRepository.modifyAlbumName(albumModifyDto.getAlbumId(), albumModifyDto.getNewAlbumName());
                 result.put("albumId", albumId);
                 result.put("newAlbumName", albumModifyDto.getNewAlbumName());
-                return setResponseDto(result,"앨범 이름 수정",200);
+                return setResponseDto(result,"앨범 이름 변경",200);
             }
         }
         // 속하지 않는다면 수정 권한 없음 return
@@ -172,7 +173,7 @@ public class AlbumService {
                 albumRepository.modifyAlbumThumbnail(albumModifyThumbnailDto.getAlbumId(), albumModifyThumbnailDto.getNewAlbumThumbnailId());
                 result.put("albumId", albumId);
                 result.put("newAlbumThumbnail", albumModifyThumbnailDto.getNewAlbumThumbnailId());
-                return setResponseDto(result,"앨범 정보 수정",200);
+                return setResponseDto(result,"앨범 썸네일 이미지 변경",200);
             }
         }
         // 속하지 않는다면 수정 권한 없음 return
@@ -186,46 +187,32 @@ public class AlbumService {
             return setResponseDto(result,"토큰 만료",450);
         }
 
-        // 내가 속한 전체 앨범들 ID 불러옴
-        List<Long> myAlbumIdList = albumMemberRepository.findMyAlbumIdListByUserId(userId, AlbumMemberStatus.ACCEPT);
+        Page<AlbumWholeListDto> albumWholeList = albumRepository.pageAlbumWholeListDto(userId, pageable);
 
-        // 내가 속한 앨범들의 ID로 Album 정보 불러옴
-        List<AlbumWholeListDto> myWholeAlbumList = new ArrayList<>();
-
-        for (Long albumId : myAlbumIdList) {
-            Album album = albumRepository.findAlbumByAlbumId(albumId);
-
-            AlbumPhoto albumPhoto = albumPhotoRepository.findByPhotoId(album.getThumbnailPhoto());
-            String thumbnailPhotoUrl = albumPhoto == null ? null : albumPhoto.getS3Url();
-
-            AlbumFav albumFav = albumFavRepository.findAlbumFavByAlbumMemberId_AlbumIdAndAlbumMemberId_UserId(albumId, userId);
-            boolean isAlbumFav = false;
-            if (albumFav != null) {
-                isAlbumFav = albumFav.getLikeStatus().equals(LikeStatus.LIKE) ? true : false;
+        // thumbnailPhotoUrl, isAlbumFav 채우기
+        for (AlbumWholeListDto albumDto : albumWholeList) {
+            Album album = albumRepository.findAlbumByAlbumId(albumDto.getAlbumId());
+            if (albumRepository.findAlbumByAlbumId(albumDto.getAlbumId()).getThumbnailPhoto() != null) {
+                String thumbnailPhotoUrl = albumPhotoRepository.findByPhotoId(album.getThumbnailPhoto()).getResizeUrl();
+                albumDto.setThumbnailPhotoUrl(thumbnailPhotoUrl);
             }
 
-            AlbumWholeListDto albumWholeListDto = AlbumWholeListDto.builder()
-                .albumId(album.getAlbumId())
-                .albumName(album.getAlbumName())
-                .albumCreatedDate(album.getCreatedDate())
-                .recentPhotoId(album.getRecentPhoto())
-                .thumbnailPhotoUrl(thumbnailPhotoUrl)
-                .isAlbumFav(isAlbumFav)
-                .build();
-
-            myWholeAlbumList.add(albumWholeListDto);
+            AlbumFav albumFav = albumFavRepository.findAlbumFavByAlbumMemberId_AlbumIdAndAlbumMemberId_UserId(albumDto.getAlbumId(), userId);
+            albumDto.setIsAlbumFav(false);
+            if (albumFav != null) {
+                if (albumFav.getLikeStatus().equals(LikeStatus.LIKE)) {
+                    albumDto.setIsAlbumFav(true);
+                }
+            }
         }
 
-        // TODO :: 가장 최근에 올린 사진의 업로드 날짜를 기준으로 sort -> Paging 처리할 때 한번에 정렬하자
-        Collections.sort(myWholeAlbumList, new Comparator<AlbumWholeListDto>() {
-            @Override
-            public int compare(AlbumWholeListDto o1, AlbumWholeListDto o2) {
-                return (int) (o2.getRecentPhotoId() - o1.getRecentPhotoId());
-            }
-        });
+        result.put("albumWholeList",albumWholeList.getContent());
+        result.put("total_page",albumWholeList.getTotalPages());
+        result.put("now_page",albumWholeList.getPageable().getPageNumber());
+        result.put("is_last",albumWholeList.isLast());
+        result.put("is_first",albumWholeList.isFirst());
 
-        result.put("myWholeAlbumList", myWholeAlbumList);
-        return setResponseDto(result,"앨범 목록",200);
+        return setResponseDto(result,"전체 앨범 목록",200);
     }
 
     public ResponseDto favAlbum(String access_token, Long albumId) {
@@ -261,7 +248,7 @@ public class AlbumService {
                result.put("FavStatus", LikeStatus.LIKE);
            }
         }
-        return setResponseDto(result,"앨범 즐겨찾기 등록",200);
+        return setResponseDto(result,"즐겨찾는 앨범 등록",200);
     }
 
     public ResponseDto getFavAlbumList(String access_token, Pageable pageable) {
@@ -276,7 +263,7 @@ public class AlbumService {
         for (Long albumId : myFavAlbumIdList) {
             Album album = albumRepository.findAlbumByAlbumId(albumId);
             AlbumPhoto albumPhoto = albumPhotoRepository.findByPhotoId(album.getThumbnailPhoto());
-            String thumbnailPhotoUrl = albumPhoto == null ? null : albumPhoto.getS3Url();
+            String thumbnailPhotoUrl = albumPhoto == null ? null : albumPhoto.getResizeUrl();
 
             AlbumFavDto albumFavDto = AlbumFavDto.builder()
                     .albumId(album.getAlbumId())
@@ -289,7 +276,7 @@ public class AlbumService {
         }
         result.put("myFavAlbumList", albumFavDtoList);
 
-        return setResponseDto(result,"앨범 즐겨찾기 등록",200);
+        return setResponseDto(result,"즐겨찾는 앨범 리스트",200);
     }
 
     public ResponseDto getfriendList(String access_token) {
@@ -327,7 +314,7 @@ public class AlbumService {
             List<String> albumMemberList = albumMemberRepository.findAlbumMemberIdByAlbumId(albumId);
 
             AlbumPhoto albumPhoto = albumPhotoRepository.findByPhotoId(album.getThumbnailPhoto());
-            String thumbnailPhotoUrl = albumPhoto == null ? null : albumPhoto.getS3Url();
+            String thumbnailPhotoUrl = albumPhoto == null ? null : albumPhoto.getResizeUrl();
 
             AlbumInfoAndMemberDto albumInfoAndMemberDto = AlbumInfoAndMemberDto.builder()
                     .albumId(album.getAlbumId())
@@ -340,7 +327,7 @@ public class AlbumService {
             albumInfoAndMemberDtoList.add(albumInfoAndMemberDto);
         }
         result.put("myAlbum_member_list",albumInfoAndMemberDtoList);
-        return setResponseDto(result,"친구 목록 리턴",200);
+        return setResponseDto(result,"친구 목록",200);
     }
 
     public ResponseDto inviteFriend(String access_token, AdditionalFriendsInviteDto additionalFriendsInviteDto) {
@@ -363,7 +350,7 @@ public class AlbumService {
                 albumMemberRepository.save(albumMember);
             }
         }
-        return setResponseDto(result,"앨범 생성 후 친구 초대",200);
+        return setResponseDto(result,"앨범 생성 후 추가 친구 초대",200);
     }
 
     public ResponseDto getInvitedAlbumList(String access_token) {
@@ -382,7 +369,7 @@ public class AlbumService {
             myInvitedAlbumIdListMapList.add(myInvitedAlbumIdListMap);
         }
         result.put("invitedAlbumIdList", myInvitedAlbumIdListMapList);
-        return setResponseDto(result,"앨범 초대 목록",200);
+        return setResponseDto(result,"앨범 초대요청 목록",200);
     }
 
     public ResponseDto replyInvitedAlbum(String access_token, AlbumInviteReplyDto albumInviteReplyDto) {
@@ -403,7 +390,7 @@ public class AlbumService {
             result.put("reply", "decline");
         }
 
-        return setResponseDto(result,"앨범 초대 응답",200);
+        return setResponseDto(result,"앨범 초대요청 응답",200);
     }
 
     private ResponseDto setResponseDto(Map<String,Object> result, String message, int statusCode){
