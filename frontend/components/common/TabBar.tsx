@@ -26,6 +26,7 @@ function TabBar({ plusBtnUrl }: TabBarType) {
     >
       {/* 남사친 */}
       <div
+        onClick={() => router.push("/boy-home")}
         className={`flex flex-col justify-center items-center bg-white dark:bg-dark-block ${styles.tab_bar_block}`}
         style={{ gap: "1.026vw", borderRadius: "4.103vw 4.103vw 0px 0px" }}
       >
@@ -53,10 +54,11 @@ function TabBar({ plusBtnUrl }: TabBarType) {
 
       {/* 여사친 */}
       <div
+        onClick={() => router.push("/girl-home")}
         className={`flex flex-col justify-center items-center bg-white dark:bg-dark-block ${styles.tab_bar_block}`}
         style={{ gap: "1.026vw", borderRadius: "4.103vw 4.103vw 0px 0px" }}
       >
-        {router.pathname === "/f-friend" ? (
+        {router.pathname === "/girl-home" ? (
           <FfriendSelectedIcon />
         ) : (
           <FfriendIcon fill="#B1B8C0" />
