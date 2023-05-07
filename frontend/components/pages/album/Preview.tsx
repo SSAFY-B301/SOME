@@ -1,5 +1,5 @@
 // 라이브러리
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import Slider, { Settings } from "react-slick";
 
 // CSS
@@ -10,10 +10,10 @@ import CheckIcon from "public/icons/Check.svg";
 import { Mutations } from "@/pages/api/albumApi";
 import { useRouter } from "next/router";
 import { requestPartType } from "@/types/AlbumTypes";
+import { userQuery } from "@/pages/api/userApi";
 
 // 인터페이스
 interface PreviewType {
-  previewPhotos: previewPhotoType[];
   photoLength: number;
   setIsPreview: React.Dispatch<React.SetStateAction<boolean>>;
   inputPhoto: FileList | null;
@@ -24,18 +24,32 @@ interface previewPhotoType {
 }
 /**
  * 업로드 사진 미리보기
- * @param previewPhotos 미리보기 사진 목록
  * @param photoLength 미리보기 사진 총 개수
  * @param setIsPreview 미리보기 여부
  * @param inputPhoto input 파일들
  * @returns
  */
-function Preview({
-  previewPhotos,
-  photoLength,
-  setIsPreview,
-  inputPhoto,
-}: PreviewType) {
+function Preview({ photoLength, setIsPreview, inputPhoto }: PreviewType) {
+  const range = (size: number, start = 0) => {
+    return Array.from({ length: size }, (_, index) => index + start);
+  };
+  const [previewPhotos, setPreviewPhotos] = useState<previewPhotoType[]>([]);
+
+  // 사진 미리보기
+  useEffect(() => {
+    if (previewPhotos.length === 0 && inputPhoto) {
+      console.log(inputPhoto);
+
+      range(inputPhoto.length).forEach((idx) => {
+        previewPhotos.push({
+          id: idx,
+          img: URL.createObjectURL(inputPhoto.item(idx)!),
+        });
+      });
+    }
+    setPreviewPhotos([...previewPhotos]);
+  }, [inputPhoto]);
+
   if (inputPhoto) {
     // 현재 이미지 id
     const [viewId, setViewId] = useState<number>(0);
@@ -68,16 +82,27 @@ function Preview({
     /**
      * 사진 업로드
      */
-    const uploadPhotos = () => {
-      const uploadPhotos = previewPhotos.filter((photo) => isChecks[photo.id]);
-
+    const { getUserInfo } = userQuery();
+    const uploadPhotos = async () => {
       // TODO : 사진 업로드 api
       const formData = new FormData();
-      // formData.append("albumId", String(albumId));
       let cnt: number = 0;
-      Array.from(inputPhoto).forEach((file) => {
+      let userId: string;
+      if (getUserInfo) {
+        userId = getUserInfo.user_id;
+      } else {
+        userId = "00000";
+      }
+      Array.from(inputPhoto).forEach((oldFile) => {
         if (isChecks[cnt]) {
-          formData.append("multipartFile", file);
+          // TODO : 아이폰에서 업로드 되는 경우만 파일 이름 수정하도록 변경
+          const fileType = oldFile.type.replace("image/", "");
+          const newFile = new File(
+            [oldFile],
+            oldFile.lastModified + userId + "." + fileType,
+            { type: oldFile.type }
+          );
+          formData.append("multipartFile", newFile);
         }
         cnt += 1;
       });
@@ -86,7 +111,10 @@ function Preview({
         albumId: albumId,
       };
 
-      mutate(requestData);
+      await mutate(requestData);
+
+      // TODO : 파일 업로드 로딩 화면 표시
+
       closePreview();
     };
 

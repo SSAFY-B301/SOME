@@ -16,7 +16,6 @@ import styles from "styles/album.module.scss";
 import Preview from "components/pages/album/Preview";
 
 // 타입
-import { previewPhotoType } from "types/AlbumTypes";
 import { useRouter } from "next/router";
 import Alert from "@/components/common/Alert";
 import EditAlbumName from "@/components/pages/album/EditAlbumName";
@@ -43,7 +42,6 @@ function AlbumDetail() {
   );
   const [inputPhoto, setInputPhoto] = useState<FileList | null>(null);
   const [isPreview, setIsPreview] = useState<boolean>(false);
-  const [previewPhotos, setPreviewPhotos] = useState<previewPhotoType[]>([]);
 
   const [isAlerts, setIsAlerts] = useState<boolean[]>(
     [...Array(4)].fill(false)
@@ -140,28 +138,16 @@ function AlbumDetail() {
    * @param start
    * @returns
    */
-  const range = (size: number, start = 0) => {
-    return Array.from({ length: size }, (_, index) => index + start);
-  };
 
-  // 사진 미리보기
   useEffect(() => {
     if (inputPhoto) {
-      range(inputPhoto.length).forEach((idx) => {
-        setIsPreview(true);
-        setPreviewPhotos([]);
-        previewPhotos.push({
-          id: idx,
-          img: URL.createObjectURL(inputPhoto.item(idx)!),
-        });
-      });
+      console.log("INPUT");
+      setIsPreview(true);
     }
-    setPreviewPhotos([...previewPhotos]);
   }, [inputPhoto]);
 
-  useEffect(() => {
-    !isPreview && setPreviewPhotos([]);
-  }, [isPreview]);
+  console.log(isPreview);
+  console.log(inputPhoto);
 
   return (
     <section>
@@ -185,6 +171,7 @@ function AlbumDetail() {
           isSelect={isSelect}
           selectedPhotos={selectedPhotos}
           setSelectedPhotos={setSelectedPhotos}
+          inputPhoto={inputPhoto}
           setInputPhoto={setInputPhoto}
           photosRequest={photosRequest}
         />
@@ -203,7 +190,6 @@ function AlbumDetail() {
       />
       {isPreview && (
         <Preview
-          previewPhotos={previewPhotos}
           photoLength={inputPhoto ? inputPhoto.length : 0}
           setIsPreview={setIsPreview}
           inputPhoto={inputPhoto}

@@ -16,6 +16,7 @@ interface PhotosType {
   isSelect: boolean;
   selectedPhotos: Set<number>;
   setSelectedPhotos: React.Dispatch<React.SetStateAction<Set<number>>>;
+  inputPhoto: FileList | null;
   setInputPhoto: React.Dispatch<React.SetStateAction<FileList | null>>;
   photosRequest: requestPhotosType;
 }
@@ -40,6 +41,7 @@ function Photos({
   isSelect,
   selectedPhotos,
   setSelectedPhotos,
+  inputPhoto,
   setInputPhoto,
   photosRequest,
 }: PhotosType) {
@@ -94,7 +96,9 @@ function Photos({
           ) : (
             <></>
           )}
-          {!isSelect && <NewPhoto setInputPhoto={setInputPhoto} />}
+          {!isSelect && (
+            <NewPhoto inputPhoto={inputPhoto} setInputPhoto={setInputPhoto} />
+          )}
         </>
       )}
     </section>
