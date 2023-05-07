@@ -2,6 +2,7 @@ import { useRouter } from "next/router";
 import styles from "styles/album.module.scss";
 import LeftIcon from "public/icons/CaretLeft.svg";
 import { useGetDetail } from "@/pages/api/albumApi";
+import Link from "next/link";
 
 interface NavBarType {
   isSelect: boolean;
@@ -44,7 +45,9 @@ function NavBar({ isSelect, setIsSelect, isTotal, setIsTotal }: NavBarType) {
               {isTotal ? "선택 해제" : "전체선택"}
             </p>
           ) : (
-            <LeftIcon onClick={() => router.back()} stroke="black" />
+            <Link href={"/boy-home"}>
+              <LeftIcon stroke="black" />
+            </Link>
           )}
           <div onClick={clickSelect}>
             {isSelect ? (
