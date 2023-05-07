@@ -10,19 +10,24 @@ interface AlertType {
 
 export default function EditAlbumName(props: AlertType) {
   const [inputData, setInputData] = useState<string>("");
-
+  const [isBlank, setIsBlank] = useState(false);
   const onChange = (value: string) => {
     setInputData(value);
+    setIsBlank(false);
   };
 
   const { mutate } = Mutations().usePutAlbumName(props.albumId);
   const editAlbumName = () => {
-    const body: usePutAlbumNameType = {
-      album_id: props.albumId,
-      new_album_name: inputData,
-    };
-    mutate(body);
-    props.noHandler();
+    if (inputData) {
+      const body: usePutAlbumNameType = {
+        album_id: props.albumId,
+        new_album_name: inputData,
+      };
+      mutate(body);
+      props.noHandler();
+    } else {
+      setIsBlank(true);
+    }
   };
   return (
     <div
@@ -38,7 +43,12 @@ export default function EditAlbumName(props: AlertType) {
         <input
           type="text"
           onChange={(e) => onChange(e.target.value)}
-          className="border border-black rounded-2xl px-2"
+          placeholder={`${isBlank ? "이름을 입력해 주세요." : ""}`}
+          className={`border ${
+            isBlank
+              ? " border-red-600 placeholder:text-red-600 placeholder:text-base placeholder:text-opacity-80"
+              : "border-black"
+          } rounded-2xl px-2 `}
         />
         <div className="flex items-center justify-center gap-x-4">
           <button onClick={editAlbumName} className="w-24 rounded-lg shadow">
