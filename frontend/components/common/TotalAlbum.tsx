@@ -63,16 +63,6 @@ function TotalAlbumItems(props: TotalAlbumItemsType) {
     "https://images.unsplash.com/photo-1683406164037-5c97ea978964?ixlib=rb-4.0.3&ixid=MnwxMjA3fDB8MHxlZGl0b3JpYWwtZmVlZHw0fHx8ZW58MHx8fHw%3D&auto=format&fit=crop&w=500&q=60",
     "https://images.unsplash.com/photo-1661956602926-db6b25f75947?ixlib=rb-4.0.3&ixid=MnwxMjA3fDF8MHxlZGl0b3JpYWwtZmVlZHwyMXx8fGVufDB8fHx8&auto=format&fit=crop&w=500&q=60",
   ];
-  useEffect(() => {
-    console.log(
-      "isMoveEnd",
-      props.moveEnd,
-      "isTotal",
-      props.isTotal,
-      "getTotalIsLoading",
-      getTotalIsLoading
-    );
-  }, [props.moveEnd, props.isTotal, getTotalIsLoading]);
 
   const totalAlbums: React.ReactNode =
     getTotalIsLoading || !props.isTotal || !props.moveEnd ? (

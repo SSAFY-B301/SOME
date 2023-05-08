@@ -128,7 +128,11 @@ export interface AlbumPhotosType {
 }
 
 export interface PhotoPageType {
-  content: {
+  is_last: boolean;
+  total_page: number;
+  is_first: boolean;
+  now_page: number;
+  albumPhotoList: {
     photoId: number;
     uploadedDate: string;
     s3Url: string;
@@ -136,29 +140,4 @@ export interface PhotoPageType {
     userId: string;
     albumId: number;
   }[];
-  pageable: {
-    sort: {
-      empty: boolean;
-      sorted: boolean;
-      unsorted: boolean;
-    };
-    offset: 1;
-    pageNumber: 1;
-    pageSize: 1;
-    paged: true;
-    unpaged: false;
-  };
-  totalPages: 2;
-  totalElements: 2;
-  last: true;
-  size: 1;
-  number: 1;
-  sort: {
-    empty: true;
-    sorted: false;
-    unsorted: true;
-  };
-  numberOfElements: 1;
-  first: false;
-  empty: false;
 }
