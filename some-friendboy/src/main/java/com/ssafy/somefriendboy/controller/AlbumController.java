@@ -44,15 +44,6 @@ public class AlbumController {
         return new ResponseEntity<ResponseDto>(responseDto, HttpStatus.OK);
     }
 
-//    @GetMapping("/search/{albumName}")
-//    public ResponseEntity<ResponseDto> albumSearch(@RequestHeader HttpHeaders headers, @PathVariable String albumName) {
-//        log.info("앨범 이름으로 검색 GET: /album/search, albumName : ", albumName);
-//        String access_token = headers.get("access_token").toString();
-//
-//        ResponseDto responseDto = albumService.searchAlbum(access_token, albumName);
-//        return new ResponseEntity<ResponseDto>(responseDto, HttpStatus.OK);
-//    }
-
     @Transactional
     @PutMapping("/modify/name")
     public ResponseEntity<ResponseDto> albumModifyName(@RequestHeader HttpHeaders headers, @RequestBody AlbumModifyNameDto albumModifyDto) {

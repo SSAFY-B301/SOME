@@ -40,8 +40,6 @@ public class AlbumWholeListDto {
         this.albumId = albumId;
         this.albumName = albumName;
         this.albumCreatedDate = albumCreatedDate;
-//        this.thumbnailPhotoUrl = thumbnailPhotoUrl;
         this.recentPhotoId = recentPhotoId;
-//        this.isAlbumFav = isAlbumFav == null ? LikeStatus.CANCEL : isAlbumFav.getLikeStatus();
     }
 }
