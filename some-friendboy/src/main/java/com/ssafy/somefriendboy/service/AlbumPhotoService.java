@@ -142,7 +142,7 @@ public class AlbumPhotoService {
         Page<AlbumPhotoListDto> albumPhotoList = albumPhotoRepository.findAlbumPhoto(albumPhotoListOptDto.getAlbumId(),
                 albumPhotoListOptDto.getCategoryId(), albumPhotoListOptDto.getUserId(), pageable);
 
-        result.put("albumPhotoList", albumPhotoList);
+        result.put("albumPhotoList", albumPhotoList.getContent());
         result.put("total_page", albumPhotoList.getTotalPages());
         result.put("now_page", albumPhotoList.getPageable().getPageNumber());
         result.put("is_last", albumPhotoList.isLast());
