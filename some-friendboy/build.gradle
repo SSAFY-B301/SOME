@@ -42,6 +42,8 @@ dependencies {
 
 	//querydsl 추가
 	implementation "com.querydsl:querydsl-jpa:${queryDslVersion}"
+	implementation "com.querydsl:querydsl-apt:${queryDslVersion}"
+
 	annotationProcessor "com.querydsl:querydsl-apt:${queryDslVersion}"
 	implementation "com.querydsl:querydsl-mongodb:${queryDslVersion}"
 
@@ -57,12 +59,13 @@ tasks.named('test') {
 }
 
 //querydsl 추가 시작
-def querydslDir = "$buildDir/generated/querydsl"
+def querydslDir = "src/querydsl"
 
 querydsl {
 	jpa = true
 	springDataMongo = true
 	querydslSourcesDir = querydslDir
+//	excludeTasks "cleanQuerydslSourcesDir","initQuerydslSourcesDir","cleanQuerydsl","compileQuerydsl"
 }
 sourceSets {
 	main.java.srcDir querydslDir
