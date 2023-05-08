@@ -143,6 +143,10 @@ public class AlbumPhotoService {
                 albumPhotoListOptDto.getCategoryId(), albumPhotoListOptDto.getUserId(), pageable);
 
         result.put("albumPhotoList", albumPhotoList);
+        result.put("total_page", albumPhotoList.getTotalPages());
+        result.put("now_page", albumPhotoList.getPageable().getPageNumber());
+        result.put("is_last", albumPhotoList.isLast());
+        result.put("is_first", albumPhotoList.isFirst());
         return setResponseDto(result, "앨범 사진 목록", 200);
     }
 
