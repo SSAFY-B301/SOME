@@ -1,5 +1,5 @@
 // 라이브러리
-import { useEffect, useState } from "react";
+import { useEffect, useMemo, useRef, useState } from "react";
 import Slider, { Settings } from "react-slick";
 
 // CSS
@@ -34,12 +34,11 @@ function Preview({ photoLength, setIsPreview, inputPhoto }: PreviewType) {
     return Array.from({ length: size }, (_, index) => index + start);
   };
   const [previewPhotos, setPreviewPhotos] = useState<previewPhotoType[]>([]);
+  const [uploadCount, setUploadCount] = useState(0);
 
   // 사진 미리보기
   useEffect(() => {
     if (previewPhotos.length === 0 && inputPhoto) {
-      console.log(inputPhoto);
-
       range(inputPhoto.length).forEach((idx) => {
         previewPhotos.push({
           id: idx,
@@ -58,10 +57,19 @@ function Preview({ photoLength, setIsPreview, inputPhoto }: PreviewType) {
     const [isChecks, setIsChecks] = useState<boolean[]>(
       [...Array(photoLength)].fill(true)
     );
+
+    const countCheck = (isChecks: boolean[]) => {
+      return isChecks.filter((isCheck) => isCheck).length;
+    };
+
+    const uploadLength = useMemo(() => countCheck(isChecks), [isChecks]);
+
     const router = useRouter();
     const albumId: number = Number(router.query.album_id);
 
-    const { mutate } = Mutations().usePostPhoto(albumId);
+    const { mutate } = Mutations().usePostPhoto(albumId, setUploadCount);
+
+    const isUploading = useRef(false);
 
     /**
      * 미리보기 닫기
@@ -82,45 +90,72 @@ function Preview({ photoLength, setIsPreview, inputPhoto }: PreviewType) {
     /**
      * 사진 업로드
      */
-    const { getUserInfo } = userQuery();
-    const uploadPhotos = async () => {
-      // TODO : 사진 업로드 api
-      const formData = new FormData();
-      let cnt: number = 0;
-      let userId: string;
-      if (getUserInfo) {
-        userId = getUserInfo.user_id;
-      } else {
-        userId = "00000";
-      }
-      Array.from(inputPhoto).forEach((oldFile) => {
-        if (isChecks[cnt]) {
-          // TODO : 아이폰에서 업로드 되는 경우만 파일 이름 수정하도록 변경
-          if (oldFile.name === "image.jpg") {
-            const fileType = oldFile.type.replace("image/", "");
-            const newFile = new File(
-              [oldFile],
-              oldFile.lastModified + userId + "." + fileType,
-              { type: oldFile.type }
-            );
-            formData.append("multipartFile", newFile);
-          } else {
-            formData.append("multipartFile", oldFile);
-          }
-        }
-        cnt += 1;
-      });
-      const requestData: requestPartType = {
-        formData: formData,
-        albumId: albumId,
-      };
+    // const { getUserInfo } = userQuery();
+    // const uploadPhotos = async () => {
+    //   // TODO : 사진 업로드 api
+    //   const formData = new FormData();
+    //   let cnt: number = 0;
+    //   let userId: string;
+    //   if (getUserInfo) {
+    //     userId = getUserInfo.user_id;
+    //   } else {
+    //     userId = "00000";
+    //   }
+    //   Array.from(inputPhoto).forEach((oldFile) => {
+    //     if (isChecks[cnt]) {
+    //       // TODO : 아이폰에서 업로드 되는 경우만 파일 이름 수정하도록 변경
+    //       if (oldFile.name === "image.jpg") {
+    //         const fileType = oldFile.type.replace("image/", "");
+    //         const newFile = new File(
+    //           [oldFile],
+    //           oldFile.lastModified + userId + "." + fileType,
+    //           { type: oldFile.type }
+    //         );
+    //         formData.append("multipartFile", newFile);
+    //       } else {
+    //         formData.append("multipartFile", oldFile);
+    //       }
+    //     }
+    //     cnt += 1;
+    //   });
+    //   const requestData: requestPartType = {
+    //     formData: formData,
+    //     albumId: albumId,
+    //   };
 
-      await mutate(requestData);
+    //   mutate(requestData);
+
+    //   // TODO : 파일 업로드 로딩 화면 표시
+
+    //   closePreview();
+    // };
+    const uploadPhotos = () => {
+      isUploading.current = true;
+      // TODO : 사진 업로드 api
+      Array.from(inputPhoto).forEach((file, index) => {
+        if (isChecks[index]) {
+          let formData = new FormData();
+          formData.append("multipartFile", file);
+          const requestData: requestPartType = {
+            formData: formData,
+            albumId: albumId,
+          };
+          mutate(requestData);
+        }
+      });
 
       // TODO : 파일 업로드 로딩 화면 표시
-
-      closePreview();
+      // setUploadCount(0);
+      // closePreview();
     };
+
+    useEffect(() => {
+      if (uploadCount === uploadLength) {
+        setUploadCount(0);
+        isUploading.current = false;
+        closePreview();
+      }
+    }, [uploadCount]);
 
     // react-slick 설정
     const settings: Settings = {
@@ -150,48 +185,61 @@ function Preview({ photoLength, setIsPreview, inputPhoto }: PreviewType) {
     };
 
     return (
-      <section
-        className={`${styles.preview} bg-white text-black dark:bg-dark-bg-home dark:text-white`}
-      >
-        {/* 네브바 */}
-        <nav>
-          <p onClick={closePreview}>취소</p>
-          <p>{`${viewId + 1}/${photoLength}`}</p>
-          <p onClick={uploadPhotos}>확인</p>
-        </nav>
+      <>
+        <section
+          className={`${styles.preview} bg-white text-black dark:bg-dark-bg-home dark:text-white`}
+        >
+          {/* 네브바 */}
+          <nav>
+            <p onClick={closePreview}>취소</p>
+            <p>{`${viewId + 1}/${photoLength}`}</p>
+            <p onClick={uploadPhotos}>확인</p>
+          </nav>
 
-        <div style={{ maxWidth: "100vw", width: "100vw" }}>
-          {/* // TODO : 에러 해결 */}
-          <Slider {...settings}>
-            {previewPhotos.map((photo) => (
-              <div key={photo.id}>
-                <div
-                  key={photo.id}
-                  className={`bg-contain bg-center bg-no-repeat justify-end ${styles.view_photo}`}
-                  style={{ backgroundImage: `url(${photo.img})` }}
-                >
+          <div style={{ maxWidth: "100vw", width: "100vw" }}>
+            {/* // TODO : 에러 해결 */}
+            <Slider {...settings}>
+              {previewPhotos.map((photo) => (
+                <div key={photo.id}>
                   <div
-                    onClick={() => {
-                      changeCheck(photo.id);
-                    }}
-                    className={`${styles.check_box} ${
-                      isChecks[photo.id] ? styles.is_check : styles.no_check
-                    }`}
+                    key={photo.id}
+                    className={`bg-contain bg-center bg-no-repeat justify-end ${styles.view_photo}`}
+                    style={{ backgroundImage: `url(${photo.img})` }}
                   >
-                    {isChecks[photo.id] && (
-                      <CheckIcon
-                        width={"24px"}
-                        height={"24px"}
-                        fill={"white"}
-                      />
-                    )}
+                    <div
+                      onClick={() => {
+                        changeCheck(photo.id);
+                      }}
+                      className={`${styles.check_box} ${
+                        isChecks[photo.id] ? styles.is_check : styles.no_check
+                      }`}
+                    >
+                      {isChecks[photo.id] && (
+                        <CheckIcon
+                          width={"24px"}
+                          height={"24px"}
+                          fill={"white"}
+                        />
+                      )}
+                    </div>
                   </div>
                 </div>
-              </div>
-            ))}
-          </Slider>
-        </div>
-      </section>
+              ))}
+            </Slider>
+          </div>
+        </section>
+        {isUploading.current && (
+          <>
+            <div
+              className="absolute top-0 flex items-center justify-center bg-black bg-opacity-40 z-20 text-white text-xl"
+              style={{ width: "100vw", height: "100vh" }}
+            >
+              {/* // TODO : 나중에 조금더 발전시키기*/}
+              {`${uploadCount} / ${uploadLength}`}
+            </div>
+          </>
+        )}
+      </>
     );
   } else {
     return <></>;

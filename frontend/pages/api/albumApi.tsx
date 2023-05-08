@@ -234,7 +234,8 @@ export function Mutations() {
   }
 
   function usePostPhoto(
-    albumId: number
+    albumId: number,
+    setUploadCount: React.Dispatch<React.SetStateAction<number>>
   ): UseMutationResult<boolean, AxiosError, requestPartType> {
     const headers = {
       "Content-Type": "multipart/form-data",
@@ -249,7 +250,8 @@ export function Mutations() {
         ),
       {
         onSuccess: (data) => {
-          queryClient.invalidateQueries(["photos", albumId]);
+          setUploadCount((prev) => prev + 1);
+          // queryClient.invalidateQueries(["photos", albumId]);
         },
         onError: (error) => {
           console.error(error);
