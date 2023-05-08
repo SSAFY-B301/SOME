@@ -33,7 +33,7 @@ export default function EditAlbumName(props: AlertType) {
   return (
     <div
       onClick={props.noHandler}
-      className="absolute top-0 flex items-center justify-center bg-black bg-opacity-40"
+      className=" top-0 flex items-center justify-center bg-black bg-opacity-40 z-10 fixed"
       style={{ width: "100vw", height: "100vh" }}
     >
       <div

@@ -4,9 +4,14 @@ import Categories from "components/pages/album/Categories";
 import Members from "components/pages/album/Members";
 import NavBar from "components/pages/album/NavBar";
 import TabBar from "components/pages/album/TabBar";
+import Alert from "components/pages/album/Alert";
+import EditAlbumName from "components/pages/album/EditAlbumName";
+import { LoadingCount } from "components/common/Loading";
 
 // 라이브러리
 import { useEffect, useMemo, useState } from "react";
+import { useRouter } from "next/router";
+import axios from "axios";
 
 // API
 import {
@@ -19,13 +24,6 @@ import {
 // CSS
 import styles from "styles/album.module.scss";
 import Preview from "components/pages/album/Preview";
-
-// 타입
-import { useRouter } from "next/router";
-import Alert from "@/components/common/Alert";
-import EditAlbumName from "@/components/pages/album/EditAlbumName";
-import axios from "axios";
-import { LoadingCount } from "@/components/common/Loading";
 
 function AlbumDetail() {
   const router = useRouter();
