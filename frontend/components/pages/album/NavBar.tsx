@@ -3,12 +3,14 @@ import styles from "styles/album.module.scss";
 import LeftIcon from "public/icons/CaretLeft.svg";
 import { useGetDetail } from "@/pages/api/albumApi";
 import Link from "next/link";
+import { LoadingTitle } from "@/components/common/Loading";
 
 interface NavBarType {
   isSelect: boolean;
   setIsSelect: React.Dispatch<React.SetStateAction<boolean>>;
   isTotal: boolean;
   setIsTotal: React.Dispatch<React.SetStateAction<boolean>>;
+  isAlbumLoading: () => boolean;
 }
 
 /**
@@ -19,26 +21,34 @@ interface NavBarType {
  * @param setIsTotal 전체 선택 여부 Setter 함수
  * @returns
  */
-function NavBar({ isSelect, setIsSelect, isTotal, setIsTotal }: NavBarType) {
+function NavBar({
+  isSelect,
+  setIsSelect,
+  isTotal,
+  setIsTotal,
+  isAlbumLoading,
+}: NavBarType) {
   const router = useRouter();
   const clickSelect = () => {
     setIsSelect(!isSelect);
   };
 
   const albumId: number = Number(router.query.album_id);
-  const { getDetail, getDetailIsLoading } = useGetDetail(albumId);
+  const { getDetail } = useGetDetail(albumId);
   return (
     <section className={`${styles.nav_bar}`}>
       <div className={`${styles.nav_bar_items}`}>
-        <p
+        <div
           className={`absolute w-screen h-full flex justify-center items-center ${styles.title}`}
         >
-          {getDetailIsLoading
-            ? "로딩중"
-            : getDetail
-            ? getDetail.album_name
-            : "데이터 없음"}
-        </p>
+          {isAlbumLoading() ? (
+            <LoadingTitle />
+          ) : getDetail ? (
+            <span>{getDetail.album_name}</span>
+          ) : (
+            <span>데이터 없음</span>
+          )}
+        </div>
         <div className="relative w-screen h-full flex justify-between items-center p-4">
           {isSelect ? (
             <p onClick={() => setIsTotal(!isTotal)}>
