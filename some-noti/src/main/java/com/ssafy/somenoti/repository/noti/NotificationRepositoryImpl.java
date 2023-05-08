@@ -28,7 +28,8 @@ public class NotificationRepositoryImpl implements NotificationRepositoryCustom{
                         notification.sender.userName,
                         notification.albumOrPhotoId,
                         notification.status,
-                        notification.type
+                        notification.type,
+                        notification.createdDate
                 ))
                 .from(notification)
                 .where(
