@@ -46,7 +46,7 @@ public class AlbumPhotoService {
     private final UserPhotoLikeRepository userPhotoLikeRepository;
     private final UserRepository userRepository;
     private final HttpUtil httpUtil;
-
+    private final NotiService notiService;
     public ResponseDto insertPhoto(List<MultipartFile> multipartFiles, List<MetaDataDto> metaDataDtos, Long albumId, String accessToken) throws ImageProcessingException, IOException {
         Map<String, Object> result = new HashMap<>();
         String userId = tokenCheck(accessToken);
@@ -94,9 +94,11 @@ public class AlbumPhotoService {
 
             albumPhotos.add(albumPhoto);
         }
-
         List<AlbumPhoto> albumPhotoList = albumPhotoRepository.insert(albumPhotos);
         List<Long> photoIds = albumPhotoList.stream().map(AlbumPhoto::getPhotoId).collect(Collectors.toList());
+        for (Long photoId : photoIds) {
+            notiService.uploadNoti(userId,photoId,albumId);
+        }
         Long photoId = albumPhotos.getLast().getPhotoId();
 
         //앨범에 최신 업로드 사진 아이디 갱신하기
