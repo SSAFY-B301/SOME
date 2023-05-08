@@ -51,7 +51,6 @@ const PhotoDetail = (): JSX.Element => {
 
   /**
    * 클릭 이벤트 분기 로직
-   * 이미지를 누른 시점과 그 다음 누른 시점의 딜레이를 체크하고 싶은데 로직을 어떻게 짜야할 지 막막함
    */
 
   let clickCount = 0;
@@ -85,7 +84,7 @@ const PhotoDetail = (): JSX.Element => {
   return (
     <div className="flex flex-col items-center w-screen h-screen bg-white">
       <div
-        className={`z-20 flex items-center justify-center border-b-2 box-border p-4 ${styles.info_bar}`}
+        className={`z-20 flex items-center justify-center border-b-2 box-border p-4 bg-white ${styles.info_bar}`}
       >
         <Nav title="앨범" />
       </div>
