@@ -19,6 +19,11 @@ export default function List(params : GirlListParamType) {
                 <p>100+</p>
                 {/* TODO : 정렬 기준 들어가야됨 */}
             </div>
+            <Map
+                center={{lat : 33.5563, lng: 126.79581}}
+                style={{width : "100vw", height:"45vh"}}
+                level={1}>
+            </Map>
             <div className="grid w-full grid-cols-4 gap-1 px-2">
                 <div className="col-span-1 bg-cover" style={{width : "88px", height: "88px", backgroundImage : `url(${"https://plus.unsplash.com/premium_photo-1668799886418-2335be7716e9?ixlib=rb-4.0.3&ixid=MnwxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8&auto=format&fit=crop&w=1158&q=80"})`}}></div>
                 <div className="col-span-1 bg-cover" style={{width : "88px", height: "88px", backgroundImage : `url(${"https://plus.unsplash.com/premium_photo-1668799886418-2335be7716e9?ixlib=rb-4.0.3&ixid=MnwxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8&auto=format&fit=crop&w=1158&q=80"})`}}></div>
@@ -33,11 +38,7 @@ export default function List(params : GirlListParamType) {
                 <div className="col-span-1 bg-cover" style={{width : "88px", height: "88px", backgroundImage : `url(${"https://plus.unsplash.com/premium_photo-1668799886418-2335be7716e9?ixlib=rb-4.0.3&ixid=MnwxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8&auto=format&fit=crop&w=1158&q=80"})`}}></div>
                 <div className="col-span-1 bg-cover" style={{width : "88px", height: "88px", backgroundImage : `url(${"https://plus.unsplash.com/premium_photo-1668799886418-2335be7716e9?ixlib=rb-4.0.3&ixid=MnwxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8&auto=format&fit=crop&w=1158&q=80"})`}}></div>
             </div>
-            <Map
-                center={{lat : params.lat, lng: params.lng}}
-                style={{width : "100vw", height:"50vh"}}
-                level={1}>
-            </Map>
+            
         </div>
     )
 };
