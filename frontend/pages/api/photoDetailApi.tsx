@@ -6,33 +6,32 @@ import { useMutation, useQuery, useQueryClient } from "react-query";
 const { customBoyAxios } = useCustomAxios();
 
 function getPhoto() {
-
   const router = useRouter();
   const photoId = router.query.photo_id;
 
   const { data: queryData, isLoading } = useQuery(["photo"], () =>
     customBoyAxios.get(
-      process.env.NEXT_PUBLIC_FRIEND_BOY_URL + "/photo/detail?photoId="+photoId
+      process.env.NEXT_PUBLIC_FRIEND_BOY_URL +
+        "/photo/detail?photoId=" +
+        photoId
     )
   );
 
   const resultData = queryData?.data.data.albumPhotoDetail;
-  console.log(resultData);
+  // console.log(resultData);
   return { resultData, isLoading };
 }
 
-function getSnsPhoto(photoId :number | undefined) {
-
-  let snsResultData : PhotoType;
-  const { data: snsPhotoData} = useQuery(["sns"], () => 
+function getSnsPhoto(photoId: number | undefined) {
+  let snsResultData: PhotoType;
+  const { data: snsPhotoData } = useQuery(["sns"], () =>
     customBoyAxios.get(
       process.env.NEXT_PUBLIC_FRIEND_BOY_URL + "/photo/detail?photoId=5"
-    ),
+    )
   );
 
   snsResultData = snsPhotoData?.data.data.albumPhotoDetail;
-  return {snsResultData};
-
+  return { snsResultData };
 }
 
 function useMutationPhoto() {
@@ -47,11 +46,12 @@ function useMutationPhoto() {
       },
     }
   );
-  
+
   const { mutate: deleteMutation } = useMutation(
-    () => customBoyAxios.put("/photo/delete", {
-      "photoId" : [photoId],
-    }),
+    () =>
+      customBoyAxios.put("/photo/delete", {
+        photoId: [photoId],
+      }),
     {
       onSuccess: () => {
         alert("사진 삭제 성공");
