@@ -149,12 +149,12 @@ export const useInfinitePhotos = (
     Requests.categoryId !== 0 && `categoryId=${Requests.categoryId}`
   }&size=${size}`;
 
-  const { data, fetchNextPage, hasNextPage, isLoading, isError } =
+  const { data, fetchNextPage, hasNextPage, isLoading, isError, refetch } =
     useInfiniteQuery(
-      ["photos", Requests.albumId, "test"],
+      ["photos", Requests.albumId, Requests.categoryId, Requests.userId],
       ({ pageParam = page }) => {
         const temp = customBoyAxios.get(queryKey + `&page=${pageParam}`);
-        return temp.then((data) => data.data.data.albumPhotoList);
+        return temp.then((data) => data.data.data);
       },
       {
         // cacheTime: 5000,

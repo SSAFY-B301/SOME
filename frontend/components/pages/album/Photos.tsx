@@ -92,7 +92,7 @@ function Photos({
           )}
           {getPhotosPages ? (
             getPhotosPages.pages.map((page: PhotoPageType) =>
-              page.content.map((photo) => (
+              page.albumPhotoList.map((photo) => (
                 <div
                   key={photo.photoId}
                   onClick={() =>
