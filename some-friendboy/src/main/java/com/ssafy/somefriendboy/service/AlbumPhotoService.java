@@ -46,7 +46,7 @@ public class AlbumPhotoService {
     private final UserPhotoLikeRepository userPhotoLikeRepository;
     private final UserRepository userRepository;
     private final HttpUtil httpUtil;
-
+    private final NotiService notiService;
     public ResponseDto insertPhoto(List<MultipartFile> multipartFiles, List<MetaDataDto> metaDataDtos, Long albumId, String accessToken) throws ImageProcessingException, IOException {
         Map<String, Object> result = new HashMap<>();
         String userId = tokenCheck(accessToken);
@@ -94,9 +94,11 @@ public class AlbumPhotoService {
 
             albumPhotos.add(albumPhoto);
         }
-
         List<AlbumPhoto> albumPhotoList = albumPhotoRepository.insert(albumPhotos);
         List<Long> photoIds = albumPhotoList.stream().map(AlbumPhoto::getPhotoId).collect(Collectors.toList());
+        for (Long photoId : photoIds) {
+            notiService.uploadNoti(userId,photoId,albumId);
+        }
         Long photoId = albumPhotos.getLast().getPhotoId();
 
         //앨범에 최신 업로드 사진 아이디 갱신하기
@@ -142,7 +144,11 @@ public class AlbumPhotoService {
         Page<AlbumPhotoListDto> albumPhotoList = albumPhotoRepository.findAlbumPhoto(albumPhotoListOptDto.getAlbumId(),
                 albumPhotoListOptDto.getCategoryId(), albumPhotoListOptDto.getUserId(), pageable);
 
-        result.put("albumPhotoList", albumPhotoList);
+        result.put("albumPhotoList", albumPhotoList.getContent());
+        result.put("total_page", albumPhotoList.getTotalPages());
+        result.put("now_page", albumPhotoList.getPageable().getPageNumber());
+        result.put("is_last", albumPhotoList.isLast());
+        result.put("is_first", albumPhotoList.isFirst());
         return setResponseDto(result, "앨범 사진 목록", 200);
     }
 

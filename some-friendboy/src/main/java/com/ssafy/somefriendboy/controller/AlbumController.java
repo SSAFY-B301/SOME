@@ -44,15 +44,6 @@ public class AlbumController {
         return new ResponseEntity<ResponseDto>(responseDto, HttpStatus.OK);
     }
 
-//    @GetMapping("/search/{albumName}")
-//    public ResponseEntity<ResponseDto> albumSearch(@RequestHeader HttpHeaders headers, @PathVariable String albumName) {
-//        log.info("앨범 이름으로 검색 GET: /album/search, albumName : ", albumName);
-//        String access_token = headers.get("access_token").toString();
-//
-//        ResponseDto responseDto = albumService.searchAlbum(access_token, albumName);
-//        return new ResponseEntity<ResponseDto>(responseDto, HttpStatus.OK);
-//    }
-
     @Transactional
     @PutMapping("/modify/name")
     public ResponseEntity<ResponseDto> albumModifyName(@RequestHeader HttpHeaders headers, @RequestBody AlbumModifyNameDto albumModifyDto) {
@@ -136,17 +127,6 @@ public class AlbumController {
         log.info("앨범 초대요청 응답 PUT: /album/reply/invite, albumId : ", albumInviteReplyDto.getAlbumId());
 
         ResponseDto responseDto = albumService.replyInvitedAlbum(access_token, albumInviteReplyDto);
-        return new ResponseEntity<ResponseDto>(responseDto, HttpStatus.OK);
-    }
-
-
-    @PostMapping("/test")
-    public ResponseEntity<ResponseDto> test(@RequestHeader HttpHeaders headers) {
-        String access_token = headers.get("access_token").toString();
-        log.info("TEST POST: /album/test, access_token : {}",access_token);
-        String s = httpUtil.requestParingToken(access_token);
-
-        ResponseDto responseDto = new ResponseDto();
         return new ResponseEntity<ResponseDto>(responseDto, HttpStatus.OK);
     }
 }
