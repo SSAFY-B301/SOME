@@ -37,8 +37,8 @@ function TabBar({ isSelect, isAlerts, setIsAlerts }: TabBarType) {
   /**
    * 앨범 좋아요 수정
    */
-  const { usePutFav, useDeletePhotos } = Mutations();
-  const { mutate: putFavMutate } = usePutFav(albumId);
+  const { usePutFav } = Mutations();
+  const { mutate: putFavMutate } = usePutFav("album", albumId);
 
   const clickLike = () => {
     putFavMutate(albumId);

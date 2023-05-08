@@ -39,8 +39,13 @@ export const useGetCurrent = () => {
 export const useGetFavorite = () => {
   const queryKey = `album/list/fav`;
 
-  const { data, isLoading: getFavoriteIsLoading } = useQuery(["favorite"], () =>
-    customBoyAxios.get(queryKey)
+  const { data, isLoading: getFavoriteIsLoading } = useQuery(
+    ["favorite"],
+    () => customBoyAxios.get(queryKey),
+    {
+      cacheTime: 5000,
+      refetchInterval: 5000,
+    }
   );
   let getFavorite: FavoriteAlbumType[] | undefined;
   if (data) {
@@ -56,12 +61,17 @@ export const useGetFavorite = () => {
 export const useGetTotal = () => {
   const queryKey = `album/list/whole`;
 
-  const { data, isLoading: getTotalIsLoading } = useQuery(["total"], () =>
-    customBoyAxios.get(queryKey)
+  const { data, isLoading: getTotalIsLoading } = useQuery(
+    ["total"],
+    () => customBoyAxios.get(queryKey),
+    {
+      cacheTime: 5000,
+      refetchInterval: 5000,
+    }
   );
   let getTotal: TotalAlbumType[] | undefined;
   if (data) {
-    getTotal = data.data.data.myWholeAlbumList;
+    getTotal = data.data.data.albumWholeList;
   }
 
   return { getTotal, getTotalIsLoading };
@@ -92,7 +102,11 @@ export const useGetDetail = (albumId: number) => {
  * [GET] 사진 정보
  * @returns
  */
-export const useGetPhotos = (Requests: requestPhotosType) => {
+export const useGetPhotos = (
+  Requests: requestPhotosType,
+  page?: number,
+  size?: number
+) => {
   const queryKey = `/photo/album/list?albumId=${Requests.albumId}&userId=${
     Requests.userId
   }&${Requests.categoryId !== 0 && `categoryId=${Requests.categoryId}`}`;
@@ -105,6 +119,8 @@ export const useGetPhotos = (Requests: requestPhotosType) => {
     ["photos", Requests.albumId],
     () => customBoyAxios.get(queryKey),
     {
+      cacheTime: 5000,
+      refetchInterval: 5000,
       onSuccess: (data) => {},
     }
   );
@@ -113,7 +129,7 @@ export const useGetPhotos = (Requests: requestPhotosType) => {
   let getTotal: number | undefined;
   let getTotalId: number[] | undefined;
   if (data) {
-    getPhotos = data.data.data.albumPhotoList;
+    getPhotos = data.data.data.albumPhotoList.content;
     getTotal = data.data.data.totalPhotoCnt;
     getTotalId = data.data.data.totalPhotoId;
   }
@@ -128,26 +144,21 @@ export function Mutations() {
    * @returns
    */
   function usePutFav(
-    albumId: number
+    page: string,
+    albumId?: number
   ): UseMutationResult<boolean, AxiosError, number> {
     return useMutation(
       (albumId) => customBoyAxios.put(`/album/fav/${albumId}`),
       {
-        onSuccess: (data) => {
-          queryClient.invalidateQueries(["detail", albumId]);
-        },
-        onError: (error) => {
-          console.error(error);
-        },
-      }
-    );
-  }
-  function usePutFavHome(): UseMutationResult<boolean, AxiosError, number> {
-    return useMutation(
-      (albumId) => customBoyAxios.put(`/album/fav/${albumId}`),
-      {
         onSuccess: () => {
-          queryClient.invalidateQueries(["favorite"]);
+          switch (page) {
+            case "favorite":
+              queryClient.invalidateQueries(["favorite"]);
+            case "album":
+              queryClient.invalidateQueries(["detail", albumId]);
+            case "total":
+              queryClient.invalidateQueries(["total"]);
+          }
         },
         onError: (error) => {
           console.error(error);
@@ -214,7 +225,6 @@ export function Mutations() {
   }
   return {
     usePutFav,
-    usePutFavHome,
     usePostPhoto,
     useDeletePhotos,
     usePutAlbumName,
