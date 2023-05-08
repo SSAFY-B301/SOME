@@ -41,6 +41,16 @@ public class AlbumPhotoRepositoryImpl implements AlbumPhotoRepositoryCustom {
     }
 
     @Override
+    public List<AlbumPhoto> findAllAlbumPhoto(Long albumId, Long categoryId, List<String> userId) {
+        Query query = new Query();
+        query.addCriteria(Criteria.where(MongoQueryUtil.parse(albumPhoto.albumId)).is(albumId));
+        query.addCriteria(Criteria.where(MongoQueryUtil.parse(albumPhoto.status)).is(PhotoStatus.NORMAL));
+        if (categoryId != null) query.addCriteria(Criteria.where(MongoQueryUtil.parse(albumPhoto.categoryId)).in(categoryId));
+        if (userId != null && userId.size() != 0) query.addCriteria(Criteria.where(MongoQueryUtil.parse(albumPhoto.userId)).in(userId));
+        return mongoTemplate.find(query, AlbumPhoto.class);
+    }
+
+    @Override
     public List<Long> findCategoryName(List<String> categoryName) {
         return queryFactory.select(photoCategory.categoryId).from(photoCategory)
                 .where(photoCategory.categoryName.in(categoryName)).fetch();

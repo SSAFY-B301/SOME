@@ -146,11 +146,18 @@ public class AlbumPhotoService {
         List<AlbumPhotoListDto> albumPhotoListDtos = albumPhotos.getContent().stream()
                 .map(AlbumPhotoListDto::new).collect(Collectors.toList());
 
+        List<AlbumPhoto> albumPhotoList = albumPhotoRepository.findAllAlbumPhoto(albumPhotoListOptDto.getAlbumId(),
+                albumPhotoListOptDto.getCategoryId(), albumPhotoListOptDto.getUserId());
+        List<Long> totalPhotoId = albumPhotoList.stream().map(AlbumPhoto::getPhotoId).collect(Collectors.toList());
+
+        result.put("totalPhotoCnt", totalPhotoId.size());
+        result.put("totalPhotoId", totalPhotoId);
         result.put("albumPhotoList", albumPhotoListDtos);
         result.put("total_page", albumPhotos.getTotalPages());
         result.put("now_page", albumPhotos.getPageable().getPageNumber());
         result.put("is_last", albumPhotos.isLast());
         result.put("is_first", albumPhotos.isFirst());
+
         return setResponseDto(result, "앨범 사진 목록", 200);
     }
 
