@@ -42,11 +42,23 @@ public class NotiController {
 
     @PostMapping("/sns")
     public ResponseEntity<ResponseDto> photoSns(@RequestBody NotiSnsCreateDto notiCreateDto) {
-        log.info("SNS동의 요청 알림 생성 요청 POST: /noti/sns, NotiSnsCreateDto : {}", notiCreateDto);
+        log.info("SNS동의 요청 알림 생성 POST: /noti/sns, NotiSnsCreateDto : {}", notiCreateDto);
         ResponseDto responseDto = notiService.sendSnsNoti(notiCreateDto);
         return new ResponseEntity<ResponseDto>(responseDto, HttpStatus.OK);
     }
-
+    @PutMapping("/sns")
+    public ResponseEntity<ResponseDto> photoSnsResponse(@RequestHeader HttpHeaders headers, @RequestBody SnsResponseDto SnsResponseDto) {
+        log.info("SNS동의 요청 응답 PUT: /noti/sns, SnsResponseDto : {}", SnsResponseDto);
+        String access_token = headers.get("access_token").toString();
+        ResponseDto responseDto = notiService.replySnsNoti(access_token, SnsResponseDto);
+        return new ResponseEntity<ResponseDto>(responseDto, HttpStatus.OK);
+    }
+    @PostMapping("/upload")
+    public ResponseEntity<ResponseDto> photoUpload(@RequestBody NotiUploadCreateDto notiUploadCreateDto) {
+        log.info("사진 업로드 알림 생성 POST: /noti/upload, NotiUploadCreateDto : {}", notiUploadCreateDto);
+        ResponseDto responseDto = notiService.sendUploadNoti(notiUploadCreateDto);
+        return new ResponseEntity<ResponseDto>(responseDto, HttpStatus.OK);
+    }
     @GetMapping("/list")
     public ResponseEntity<ResponseDto> listNotiSnsInvite(@RequestHeader HttpHeaders headers, Pageable pageable) {
         log.info("GET: /noti/list, offset : {}, limit : {}",pageable.getOffset(),pageable.getPageSize());

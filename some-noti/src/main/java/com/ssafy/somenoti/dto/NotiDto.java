@@ -6,6 +6,8 @@ import com.ssafy.somenoti.entity.NotiStatus;
 import com.ssafy.somenoti.entity.NotiType;
 import lombok.Data;
 
+import java.time.LocalDateTime;
+
 @Data
 public class NotiDto {
     @JsonProperty("noti_id")
@@ -16,13 +18,14 @@ public class NotiDto {
     private Long photoOrAlbumid;
     private NotiStatus status;
     private NotiType type;
-
+    private LocalDateTime date;
     @QueryProjection
-    public NotiDto(Long notiId,String senderName, Long id, NotiStatus status, NotiType type){
+    public NotiDto(Long notiId,String senderName, Long id, NotiStatus status, NotiType type,LocalDateTime date){
         this.notiId = notiId;
         this.senderName = senderName;
         this.photoOrAlbumid = id;
         this.status = status;
         this.type = type;
+        this.date = date;
     }
 }
