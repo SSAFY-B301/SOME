@@ -10,22 +10,17 @@ import NewPhoto from "components/pages/album/NewPhoto";
 import styles from "styles/album.module.scss";
 import { useGetPhotos } from "@/pages/api/albumApi";
 import { requestPhotosType } from "@/types/AlbumTypes";
+import { LoadingPhoto } from "@/components/common/Loading";
 
 // 인터페이스
 interface PhotosType {
   isSelect: boolean;
   selectedPhotos: Set<number>;
   setSelectedPhotos: React.Dispatch<React.SetStateAction<Set<number>>>;
+  inputPhoto: FileList | null;
   setInputPhoto: React.Dispatch<React.SetStateAction<FileList | null>>;
   photosRequest: requestPhotosType;
-}
-
-interface PhotoType {
-  id: number;
-  img: string;
-  user: number;
-  category: number;
-  createdTime: string;
+  isAlbumLoading: () => boolean;
 }
 
 /**
@@ -40,12 +35,14 @@ function Photos({
   isSelect,
   selectedPhotos,
   setSelectedPhotos,
+  inputPhoto,
   setInputPhoto,
   photosRequest,
+  isAlbumLoading,
 }: PhotosType) {
   const router = useRouter();
 
-  const { getPhotos, getPhotosIsLoading } = useGetPhotos(photosRequest);
+  const { getPhotos } = useGetPhotos(photosRequest);
 
   /**
    * 사진 선택 상태 바꾸기
@@ -66,9 +63,13 @@ function Photos({
 
   return (
     <section className={`${styles.photos} grid grid-cols-4`}>
-      {getPhotosIsLoading ? (
+      {isAlbumLoading() ? (
         // TODO : 로딩중
-        <p>로딩중</p>
+        <>
+          {[...Array(10)].map((_, i) => (
+            <LoadingPhoto key={i} />
+          ))}
+        </>
       ) : (
         <>
           {getPhotos ? (
@@ -94,7 +95,9 @@ function Photos({
           ) : (
             <></>
           )}
-          {!isSelect && <NewPhoto setInputPhoto={setInputPhoto} />}
+          {!isSelect && (
+            <NewPhoto inputPhoto={inputPhoto} setInputPhoto={setInputPhoto} />
+          )}
         </>
       )}
     </section>

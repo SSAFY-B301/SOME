@@ -16,11 +16,11 @@ import styles from "styles/album.module.scss";
 import Preview from "components/pages/album/Preview";
 
 // 타입
-import { previewPhotoType } from "types/AlbumTypes";
 import { useRouter } from "next/router";
 import Alert from "@/components/common/Alert";
 import EditAlbumName from "@/components/pages/album/EditAlbumName";
 import axios from "axios";
+import { LoadingCount } from "@/components/common/Loading";
 
 function AlbumDetail() {
   const router = useRouter();
@@ -43,7 +43,6 @@ function AlbumDetail() {
   );
   const [inputPhoto, setInputPhoto] = useState<FileList | null>(null);
   const [isPreview, setIsPreview] = useState<boolean>(false);
-  const [previewPhotos, setPreviewPhotos] = useState<previewPhotoType[]>([]);
 
   const [isAlerts, setIsAlerts] = useState<boolean[]>(
     [...Array(4)].fill(false)
@@ -62,7 +61,8 @@ function AlbumDetail() {
     [albumId, selectedCategory, selectMembers]
   );
 
-  const { getTotal, getTotalId, refetch } = useGetPhotos(photosRequest);
+  const { getPhotos, getTotal, getTotalId, getPhotosIsLoading, refetch } =
+    useGetPhotos(photosRequest);
 
   useEffect(() => {
     refetch();
@@ -83,9 +83,13 @@ function AlbumDetail() {
     closeAlert(0);
   };
 
-  function download() {
+  const isAlbumLoading = () => {
+    return getPhotosIsLoading || getDetailIsLoading;
+  };
+
+  function download(imageUrl: string) {
     axios({
-      url: "https://k8b301-bucket.s3.ap-northeast-2.amazonaws.com/%25EB%25A7%2588%25EB%25A3%25A8.jpg",
+      url: imageUrl,
       method: "GET",
       responseType: "blob",
     }).then((response) => {
@@ -101,9 +105,12 @@ function AlbumDetail() {
 
   const downloadPhotos = () => {
     // TODO : 다운로드
-    const downUrl =
-      "https://k8b301-bucket.s3.ap-northeast-2.amazonaws.com/%25EB%25A7%2588%25EB%25A3%25A8.jpg";
-    download();
+    Array.from(selectedPhotos).map((photoId) => {
+      const imageUrl = getPhotos?.find(
+        (photo) => photo.photoId === photoId
+      )?.s3Url;
+      imageUrl && download(imageUrl);
+    });
     closeAlert(1);
   };
 
@@ -140,28 +147,12 @@ function AlbumDetail() {
    * @param start
    * @returns
    */
-  const range = (size: number, start = 0) => {
-    return Array.from({ length: size }, (_, index) => index + start);
-  };
 
-  // 사진 미리보기
   useEffect(() => {
     if (inputPhoto) {
-      range(inputPhoto.length).forEach((idx) => {
-        setIsPreview(true);
-        setPreviewPhotos([]);
-        previewPhotos.push({
-          id: idx,
-          img: URL.createObjectURL(inputPhoto.item(idx)!),
-        });
-      });
+      setIsPreview(true);
     }
-    setPreviewPhotos([...previewPhotos]);
   }, [inputPhoto]);
-
-  useEffect(() => {
-    !isPreview && setPreviewPhotos([]);
-  }, [isPreview]);
 
   return (
     <section>
@@ -170,12 +161,14 @@ function AlbumDetail() {
         setIsSelect={setIsSelect}
         isTotal={isTotal}
         setIsTotal={setIsTotal}
+        isAlbumLoading={isAlbumLoading}
       />
       <div className={`${styles.container}`}>
         <Members
           selectMembers={selectMembers}
           setSelectMembers={setSelectMembers}
           membersId={membersId}
+          isAlbumLoading={isAlbumLoading}
         />
         <Categories
           selectedId={selectedCategory}
@@ -185,14 +178,20 @@ function AlbumDetail() {
           isSelect={isSelect}
           selectedPhotos={selectedPhotos}
           setSelectedPhotos={setSelectedPhotos}
+          inputPhoto={inputPhoto}
           setInputPhoto={setInputPhoto}
           photosRequest={photosRequest}
+          isAlbumLoading={isAlbumLoading}
         />
         <div className={`${styles.total_count}`}>
           <span>
-            {isSelect
-              ? `${selectedPhotos.size}장의 사진이 선택됨`
-              : `${getDetail ? getTotal : 0}장의 사진`}
+            {isSelect ? (
+              `${selectedPhotos.size}장의 사진이 선택됨`
+            ) : isAlbumLoading() ? (
+              <LoadingCount />
+            ) : (
+              `${getTotal}장의 사진`
+            )}
           </span>
         </div>
       </div>
@@ -203,7 +202,6 @@ function AlbumDetail() {
       />
       {isPreview && (
         <Preview
-          previewPhotos={previewPhotos}
           photoLength={inputPhoto ? inputPhoto.length : 0}
           setIsPreview={setIsPreview}
           inputPhoto={inputPhoto}

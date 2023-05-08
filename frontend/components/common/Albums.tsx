@@ -13,9 +13,11 @@ import styles from "styles/home.module.scss";
 // 아이콘
 import HeartIcon from "public/icons/Heart.svg";
 import RightIcon from "public/icons/CaretRight.svg";
+import PlusIcon from "public/icons/Plus.svg";
 
 // 타입
 import { CurrentAlbumType, FavoriteAlbumType } from "@/types/AlbumTypes";
+import Link from "next/link";
 
 /**
  * 최근 업로드된 앨범
@@ -85,7 +87,7 @@ function FavoriteAlbum() {
 
   const { getFavorite, getFavoriteIsLoading } = useGetFavorite();
 
-  const { mutate } = Mutations().usePutFavHome();
+  const { mutate } = Mutations().usePutFav("favorite");
 
   /**
    * 즐겨찾기 토글
@@ -97,9 +99,12 @@ function FavoriteAlbum() {
     mutate(id);
   };
 
-  const default_profile =
-    "https://mblogthumb-phinf.pstatic.net/MjAxODA1MjhfMTA0/MDAxNTI3NDg3MTczOTY5.C2eXPMwTXPN7mN6rhXpLrbLAu36fyR7JDr3Ym8URGl8g.97dxz-n9zjbzgv8KbhDwrICDNbNierqWueC0aRsfgjIg.JPEG.ehfkdl8989/KakaoTalk_Moim_4UjmLsR1AohJhEmSqqNZkX7uHKU0kp.jpg?type=w800";
-
+  const default_profile = [
+    "https://images.unsplash.com/photo-1661956602116-aa6865609028?ixlib=rb-4.0.3&ixid=MnwxMjA3fDF8MHxlZGl0b3JpYWwtZmVlZHwxMXx8fGVufDB8fHx8&auto=format&fit=crop&w=500&q=60",
+    "https://images.unsplash.com/photo-1683319586943-766e45c00e3f?ixlib=rb-4.0.3&ixid=MnwxMjA3fDB8MHxlZGl0b3JpYWwtZmVlZHw3M3x8fGVufDB8fHx8&auto=format&fit=crop&w=500&q=60",
+    "https://images.unsplash.com/photo-1683406164037-5c97ea978964?ixlib=rb-4.0.3&ixid=MnwxMjA3fDB8MHxlZGl0b3JpYWwtZmVlZHw0fHx8ZW58MHx8fHw%3D&auto=format&fit=crop&w=500&q=60",
+    "https://images.unsplash.com/photo-1661956602926-db6b25f75947?ixlib=rb-4.0.3&ixid=MnwxMjA3fDF8MHxlZGl0b3JpYWwtZmVlZHwyMXx8fGVufDB8fHx8&auto=format&fit=crop&w=500&q=60",
+  ];
   /**
    * 즐겨찾는 앨범 리스트
    */
@@ -107,10 +112,10 @@ function FavoriteAlbum() {
     // TODO : 빈 배열인 경우 개선
     getFavorite && getFavorite.length > 0
       ? getFavorite.map((favoriteAlbum: FavoriteAlbumType) => (
-          <div key={favoriteAlbum.album_id} className={styles.card}>
+          <div key={favoriteAlbum.album_id} className={`${styles.card}`}>
             <div
               onClick={() => router.push(`/album/${favoriteAlbum.album_id}`)}
-              className="bg-center bg-cover "
+              className="bg-center bg-cover"
               style={{
                 width: "73.846vw",
                 height: "98.462vw",
@@ -118,7 +123,7 @@ function FavoriteAlbum() {
                 backgroundImage: `url(${
                   favoriteAlbum.thumbnail_photo_url
                     ? favoriteAlbum.thumbnail_photo_url
-                    : default_profile
+                    : default_profile[favoriteAlbum.album_id % 4]
                 })`,
               }}
             ></div>
@@ -159,15 +164,22 @@ function FavoriteAlbum() {
           </div>
         ))
       : [...Array(3)].map((_, i) => (
-          <div
-            key={i}
-            className={`w-72 h-96 rounded-xl grow flex-shrink-0 ${styles.card}`}
-            style={{ backgroundColor: "#94a3b8" }}
-          >
-            <div>
-              <span>앨범 생성하러 가기</span>
+          <Link href={"/album/create"} key={i}>
+            <div
+              className={`w-72 h-96 rounded-xl grow flex-shrink-0 flex flex-col justify-center items-center gap-4 text-xl ${styles.card}`}
+              style={{ backgroundColor: "#94a3b8" }}
+            >
+              <div
+                className={`flex justify-center items-center rounded-full border-4 border-white`}
+                style={{ width: "16.41vw", height: "16.41vw" }}
+              >
+                <PlusIcon />
+              </div>
+              <div>
+                <span className={`text-white`}>앨범 생성하러 가기</span>
+              </div>
             </div>
-          </div>
+          </Link>
         ));
   return (
     <ItemBlock width="92.308vw" height="" radius="5.128vw">
@@ -182,10 +194,12 @@ function FavoriteAlbum() {
           <h1 className="font-bold" style={{ fontSize: "5.128vw" }}>
             즐겨찾는 앨범
           </h1>
-          <RightIcon stroke="#B1B8C0" width="5.128vw" height="5.128vw" />
+          {/* <RightIcon stroke="#B1B8C0" width="5.128vw" height="5.128vw" /> */}
         </div>
         <div
-          className={`flex justify-start overflow-scroll ${styles.cards}`}
+          className={`flex ${
+            getFavorite?.length === 1 ? "justify-center" : "justify-start"
+          } overflow-scroll ${styles.cards}`}
           style={{ gap: "4.103vw" }}
         >
           {favorites}

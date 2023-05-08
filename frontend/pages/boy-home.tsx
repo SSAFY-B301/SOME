@@ -1,6 +1,5 @@
 // 라이브러리
-import React, { useEffect } from "react";
-import { useRouter } from "next/router";
+import React from "react";
 
 // 컴포넌트
 import NavBar from "@/components/common/Nav";
