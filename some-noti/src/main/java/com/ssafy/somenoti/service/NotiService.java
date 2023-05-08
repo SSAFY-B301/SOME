@@ -3,6 +3,7 @@ package com.ssafy.somenoti.service;
 import com.ssafy.somenoti.dto.*;
 import com.ssafy.somenoti.entity.*;
 import com.ssafy.somenoti.repository.albummember.AlbumMemberRepository;
+import com.ssafy.somenoti.repository.albumphotosns.AlbumPhotoSNSRepository;
 import com.ssafy.somenoti.repository.noti.EmitterRepository;
 import com.ssafy.somenoti.repository.noti.NotificationRepository;
 import com.ssafy.somenoti.repository.user.UserRepository;
@@ -31,6 +32,7 @@ public class NotiService {
     private final UserRepository userRepository;
     private final NotificationRepository notificationRepository;
     private final AlbumMemberRepository albumMemberRepository;
+    private final AlbumPhotoSNSRepository albumPhotoSNSRepository;
     private final HttpUtil httpUtil;
 
     public SseEmitter subscribe(String userId, String lastEventId) {
@@ -53,36 +55,43 @@ public class NotiService {
         return emitter;
     }
     public ResponseDto sendInviteNoti(NotiInviteCreateDto notiCreateDto) {
-        ResponseDto responseDto = new ResponseDto();
         List<String> receivers = notiCreateDto.getReceivers();
         Optional<User> byId = userRepository.findById(notiCreateDto.getSenderId());
         if(byId.isEmpty()){
-            responseDto.setStatusCode(400);
-            responseDto.setMessage("유저 정보 없음");
-            return responseDto;
+            return setResponseDto(false,"유저 정보 없음",400);
         }
         User sender = byId.get();
         sendNoti(NotiType.Invite,receivers,sender,notiCreateDto.getAlbumId());
-
-        responseDto.setStatusCode(200);
-        responseDto.setMessage("앨범 초대 알림 성공");
-        return responseDto;
+        return setResponseDto(true,"앨범 초대 알림 성공",200);
     }
 
     public ResponseDto sendSnsNoti(NotiSnsCreateDto notiSnsDto){
-        ResponseDto responseDto = new ResponseDto<>();
         Optional<User> byId = userRepository.findById(notiSnsDto.getSenderId());
         if(byId.isEmpty()){
-            responseDto.setStatusCode(400);
-            responseDto.setMessage("유저 정보 없음");
-            return responseDto;
+            return setResponseDto(false,"유저 정보 없음",400);
         }
         User sender = byId.get();
         List<String> receivers = albumMemberRepository.findAlbumMemberIdByAlbumId(notiSnsDto.getAlbumId());
+        for (String receiver : receivers) {
+            AlbumPhotoSnsId albumPhotoSnsId = new AlbumPhotoSnsId(receiver, notiSnsDto.getPhotoId());
+            AlbumPhotoSNS albumPhotoSNS = AlbumPhotoSNS.builder()
+                    .albumPhotoSnsId(albumPhotoSnsId)
+                    .status(AlbumPhotoSnsStatus.NOREPLY)
+                    .build();
+            albumPhotoSNSRepository.save(albumPhotoSNS);
+        }
         sendNoti(NotiType.SNS,receivers,sender, notiSnsDto.getPhotoId());
-        responseDto.setStatusCode(200);
-        responseDto.setMessage("SNS동의 요청 알림 성공");
-        return responseDto;
+        return setResponseDto(true,"SNS동의 요청 알림 성공",200);
+    }
+    public ResponseDto sendUploadNoti(NotiUploadCreateDto notiUploadCreateDto) {
+        Optional<User> byId = userRepository.findById(notiUploadCreateDto.getSenderId());
+        if(byId.isEmpty()){
+            return setResponseDto(false,"유저 정보 없음",400);
+        }
+        User sender = byId.get();
+        List<String> receivers = albumMemberRepository.findAlbumMemberIdByAlbumId(notiUploadCreateDto.getAlbumId());
+        sendNoti(NotiType.Upload,receivers,sender, notiUploadCreateDto.getPhotoId());
+        return setResponseDto(true,"사진 업로드 알림 성공",200);
     }
     public ResponseDto listNotiSnsInvite(String accessToken, Pageable pageable) {
         Map<String,Object> result = new HashMap<>();
@@ -108,6 +117,7 @@ public class NotiService {
 
         return setResponseDto(true,"알림 상태 변경",200);
     }
+
     public ResponseDto replyInviteNoti(String accessToken, InviteResponseDto inviteResponseDto) {
         String userId = tokenCheck(accessToken);
         if(userId == null){
@@ -124,6 +134,22 @@ public class NotiService {
 
         return setResponseDto(true,"앨범 초대 응답 완료",200);
     }
+    public ResponseDto replySnsNoti(String accessToken, SnsResponseDto snsResponseDto) {
+        String userId = tokenCheck(accessToken);
+        if(userId == null){
+            return setResponseDto(false,"토큰 만료",450);
+        }
+        AlbumPhotoSnsId albumPhotoSnsId = new AlbumPhotoSnsId(userId, snsResponseDto.getPhotoId());
+        Optional<AlbumPhotoSNS> byId = albumPhotoSNSRepository.findById(albumPhotoSnsId);
+        if(byId.isPresent()){
+            AlbumPhotoSNS albumPhotoSNS = byId.get();
+            albumPhotoSNS.setStatus(snsResponseDto.getStatus());
+            Notification notification = notificationRepository.findById(snsResponseDto.getNotiId()).get();
+            notification.setStatus(NotiStatus.DONE);
+            return setResponseDto(true,"사진 SNS 요청 응답 성공",200);
+        }
+        return setResponseDto("해당 요청 없음 , 다시하세요","사진 SNS 요청 응답 실패",401);
+    }
 
     private void sendToClient(SseEmitter emitter, String emitterId, Object data) {
         try {
@@ -135,6 +161,7 @@ public class NotiService {
             emitterRepository.deleteById(emitterId);
         }
     }
+
     private void sendNoti(NotiType notiType, List<String> receivers,User sender,Long id){
         for (String receiverId : receivers) {
             User receiver = userRepository.findById(receiverId).get();
