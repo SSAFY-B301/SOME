@@ -96,13 +96,17 @@ function Preview({ photoLength, setIsPreview, inputPhoto }: PreviewType) {
       Array.from(inputPhoto).forEach((oldFile) => {
         if (isChecks[cnt]) {
           // TODO : 아이폰에서 업로드 되는 경우만 파일 이름 수정하도록 변경
-          const fileType = oldFile.type.replace("image/", "");
-          const newFile = new File(
-            [oldFile],
-            oldFile.lastModified + userId + "." + fileType,
-            { type: oldFile.type }
-          );
-          formData.append("multipartFile", newFile);
+          if (oldFile.name === "image.jpg") {
+            const fileType = oldFile.type.replace("image/", "");
+            const newFile = new File(
+              [oldFile],
+              oldFile.lastModified + userId + "." + fileType,
+              { type: oldFile.type }
+            );
+            formData.append("multipartFile", newFile);
+          } else {
+            formData.append("multipartFile", oldFile);
+          }
         }
         cnt += 1;
       });

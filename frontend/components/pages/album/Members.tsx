@@ -9,12 +9,14 @@ import styles from "styles/album.module.scss";
 import PlusIcon from "public/icons/PlusMainColor.svg";
 import { useGetDetail } from "@/pages/api/albumApi";
 import { useRouter } from "next/router";
+import { LoadingProfile } from "@/components/common/Loading";
 
 // 인터페이스
 interface MembersType {
   selectMembers: Set<number>;
   setSelectMembers: React.Dispatch<React.SetStateAction<Set<number>>>;
   membersId: number[];
+  isAlbumLoading: () => boolean;
 }
 
 /**
@@ -26,11 +28,16 @@ interface MembersType {
  * @param membersId 멤버들의 id
  * @returns
  */
-function Members({ selectMembers, setSelectMembers, membersId }: MembersType) {
+function Members({
+  selectMembers,
+  setSelectMembers,
+  membersId,
+  isAlbumLoading,
+}: MembersType) {
   const router = useRouter();
 
   const albumId: number = Number(router.query.album_id);
-  const { getDetail, getDetailIsLoading } = useGetDetail(albumId);
+  const { getDetail } = useGetDetail(albumId);
   const [membersSize, setMembersSize] = useState<number>(membersId.length);
 
   useEffect(() => {
@@ -52,9 +59,13 @@ function Members({ selectMembers, setSelectMembers, membersId }: MembersType) {
   /**
    * 멤버 리스트 랜더
    */
-  const membersSection: React.ReactNode = getDetailIsLoading ? (
+  const membersSection: React.ReactNode = isAlbumLoading() ? (
     // TODO : 로딩
-    <></>
+    <>
+      {[...Array(3)].map((_, i) => (
+        <LoadingProfile key={i} />
+      ))}
+    </>
   ) : (
     getDetail &&
     getDetail.members.map((member) => (
@@ -69,7 +80,7 @@ function Members({ selectMembers, setSelectMembers, membersId }: MembersType) {
             : styles.no_select_member
         }`}
         style={{
-          backgroundImage: "url(" + member.profile_img_url + ")",
+          backgroundImage: `url(${member.profile_img_url})`,
         }}
       ></div>
     ))
