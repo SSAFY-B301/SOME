@@ -1,7 +1,6 @@
 FROM openjdk:11-jdk
 ARG JAR_FILE=build/libs/*.jar
 
-# EXPOSE 8080
 
 # Set the timezone to Korea
 RUN apt-get update && \
