@@ -24,6 +24,7 @@ const PhotoDetail = (): JSX.Element => {
    */
   const [showConcentrationMode, setConcentrationMode] =
     useState<boolean>(false); // 집중 모드
+  const [ratio, setRatio] = useState<number>(1);
   const [isZoom, setIsZoom] = useState<boolean>(false); // 줌 상태 판별
 
   /**
@@ -94,9 +95,11 @@ const PhotoDetail = (): JSX.Element => {
         clickCount = 0;
         if (isZoom) {
           setIsZoom(false);
+          setRatio(1);
           console.log("줌 아웃");
         } else {
           setIsZoom(true);
+          setRatio(2);
           console.log("줌 인");
         }
       } else if (clickCount == 1) {
@@ -105,7 +108,7 @@ const PhotoDetail = (): JSX.Element => {
           ? setConcentrationMode(false)
           : setConcentrationMode(true);
       }
-    }, 250);
+    }, 300);
   };
 
   /**
@@ -128,6 +131,7 @@ const PhotoDetail = (): JSX.Element => {
         clickImg={clickImg}
         showConcentrationMode={showConcentrationMode}
         isZoom={isZoom}
+        ratio={ratio}
         onTouchEnd={onTouchEnd}
         onTouchStart={onTouchStart}
       />

@@ -6,6 +6,7 @@ interface Props {
   clickImg(): void;
   showConcentrationMode: boolean;
   isZoom: boolean;
+  ratio: number;
   onTouchEnd(e: React.TouchEvent): void;
   onTouchStart(e: React.TouchEvent): void;
 }
@@ -15,6 +16,7 @@ const Photo = ({
   clickImg,
   showConcentrationMode,
   isZoom,
+  ratio,
   onTouchEnd,
   onTouchStart,
 }: Props): JSX.Element => {
@@ -82,23 +84,19 @@ const Photo = ({
       onTouchStart={onTouchStart}
       onTouchEnd={onTouchEnd}
     >
-      <div
-        className="relative overflow-hidden top-0 left-0 origin-top-left"
-        // style={{
-        //   width: `${(props) => 200 / props.ratio}%`,
-        //   height: `${(props) => 200 / props.ratio}%`,
-        //   transform: `scale(${(props) => props.ratio})`,
-        // }}
-        onDragStart={moveScreenStart}
-        // onDrag={moveScreen}
-        // onDragEnd={moveScreenEnd}
-        draggable="true"
-      >
+      <div className="relative w-screen h-screen overflow-hidden top-0 left-0">
         <div
-          className={`absolute w-full h-full bg-center bg-no-repeat bg-contain ${doubleTap}`}
+          className={`absolute bg-center bg-no-repeat bg-contain origin-center ${doubleTap}`}
           style={{
             backgroundImage: "url(" + imgSrc + ")",
+            width: `${100 * ratio}%`,
+            height: `${100 * ratio}%`,
+            transform: `scale(${ratio})`,
           }}
+          onDragStart={moveScreenStart}
+          // onDrag={moveScreen}
+          // onDragEnd={moveScreenEnd}
+          draggable="true"
         ></div>
       </div>
     </div>
