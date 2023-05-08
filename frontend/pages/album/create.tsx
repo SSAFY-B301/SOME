@@ -23,18 +23,6 @@ const AlbumCreate = (): JSX.Element => {
 
   const resultName = albumName ? albumName : defaultName.current;
 
-  /* <div className="relative w-11/12 h-12">
-          <Link
-            className="absolute right-0 text-lg font-thin text-white -translate-y-1/2 top-1/2"
-            href={{
-              pathname: "/invite",
-              query: { albumId: "", albumName: resultName },
-            }}
-            as={`/invite`}
-          >
-            다음
-          </Link> */
-
   return (
     <div
       className={`relative bg-pink-400 ${styles.btn}`}
@@ -57,7 +45,28 @@ const AlbumCreate = (): JSX.Element => {
           }}
           as={`/invite`}
         >
-          다음
+          <svg
+            width="24"
+            height="24"
+            viewBox="0 0 24 24"
+            fill="none"
+            xmlns="http://www.w3.org/2000/svg"
+          >
+            <path
+              d="M5.25 4.5L12.75 12L5.25 19.5"
+              stroke="#FFFFFF"
+              stroke-width="1.5"
+              stroke-linecap="round"
+              stroke-linejoin="round"
+            />
+            <path
+              d="M12.75 4.5L20.25 12L12.75 19.5"
+              stroke="#FFFFFF"
+              stroke-width="1.5"
+              stroke-linecap="round"
+              stroke-linejoin="round"
+            />
+          </svg>
         </Link>
       </div>
       <div className="absolute bottom-0 box-border flex justify-center w-full h-20 pt-2">
