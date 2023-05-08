@@ -1,4 +1,4 @@
-package com.ssafy.somefriendboy.repository.albumFav;
+package com.ssafy.somefriendboy.repository.albumfav;
 
 import com.ssafy.somefriendboy.entity.LikeStatus;
 

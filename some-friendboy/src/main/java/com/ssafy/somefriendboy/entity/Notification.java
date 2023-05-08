@@ -1,5 +1,7 @@
 package com.ssafy.somefriendboy.entity;
 
+import lombok.AllArgsConstructor;
+import lombok.Builder;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 
@@ -9,6 +11,8 @@ import java.time.LocalDateTime;
 @Entity
 @NoArgsConstructor
 @Getter
+@Builder
+@AllArgsConstructor
 public class Notification {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
@@ -28,15 +32,7 @@ public class Notification {
 
     @Enumerated(EnumType.STRING)
     private NotiStatus status;
-    private String content;
+    private String message;
     private LocalDateTime createdDate;
-
-    public Notification createNoti(User sender,User receiver){
-        Notification notification = new Notification();
-        notification.sender = sender;
-        notification.receiver = receiver;
-        notification.createdDate = LocalDateTime.now();
-        notification.status = NotiStatus.UNCHECKED;
-        return notification;
-    }
+    private Long albumOrPhotoId;
 }
