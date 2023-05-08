@@ -1,4 +1,4 @@
-import React, { useEffect, useMemo, useState } from "react";
+import React, { ReactEventHandler, useEffect, useMemo, useState } from "react";
 import {
   Photo,
   PhotoFeatures,
@@ -6,23 +6,25 @@ import {
   DownloadModal,
   DeleteModal,
   VoteModal,
+  Nav,
 } from "@/components/photo-detail";
 import styles from "./photo.module.scss";
-import { InfoBar } from "@/components/common/Nav";
 import { getPhoto } from "@/pages/api/photoDetailApi";
 
 const PhotoDetail = (): JSX.Element => {
   const [showDownLoadModal, setDownLoadShowModal] = useState<boolean>(false);
   const [showDeleteModal, setDeleteModal] = useState<boolean>(false);
   const [showVoteModal, setVoteModal] = useState<boolean>(false);
-  const [showConcentrationMode, setConcentrationMode] = useState<boolean>(false);
+  const [showConcentrationMode, setConcentrationMode] =
+    useState<boolean>(false);
+  const [isZoom, setIsZoom] = useState<boolean>(false);
 
   /**
    * 사진 상세 정보 접근
    * useQuery
    *  queryKey : photo
    */
-  const {resultData: photoDetail} = getPhoto();
+  const { resultData: photoDetail } = getPhoto();
 
   /**
    * 다운로드 모달창 생성
@@ -48,12 +50,31 @@ const PhotoDetail = (): JSX.Element => {
   };
 
   /**
-   * 집중 모드 모달창 생성
+   * 클릭 이벤트 분기 로직
    */
+
+  let clickCount = 0;
+
   const clickImg = () => {
-    showConcentrationMode
-      ? setConcentrationMode(false)
-      : setConcentrationMode(true);
+    clickCount += 1;
+
+    setTimeout(() => {
+      if (clickCount == 2) {
+        clickCount = 0;
+        if (isZoom) {
+          setIsZoom(false);
+          console.log("줌 아웃");
+        } else {
+          setIsZoom(true);
+          console.log("줌 인");
+        }
+      } else if (clickCount == 1) {
+        clickCount = 0;
+        showConcentrationMode
+          ? setConcentrationMode(false)
+          : setConcentrationMode(true);
+      }
+    }, 250);
   };
 
   /**
@@ -62,21 +83,22 @@ const PhotoDetail = (): JSX.Element => {
 
   return (
     <div className="flex flex-col items-center w-screen h-screen bg-white">
-      <div className="z-20 flex items-center justify-center w-full h-16 border-b-2">
-        <InfoBar title="앨범" />
+      <div
+        className={`z-20 flex items-center justify-center border-b-2 box-border p-4 bg-white ${styles.info_bar}`}
+      >
+        <Nav title="앨범" />
       </div>
-      
-      <div className="z-20 flex items-center justify-center w-full h-20">
+
+      <div className="z-20 flex items-center justify-center w-full h-20 bg-white">
         <PhotoFeatures />
       </div>
       <Photo
         imgSrc={photoDetail?.s3Url}
         clickImg={clickImg}
         showConcentrationMode={showConcentrationMode}
+        isZoom={isZoom}
       />
-      <div
-        className={`w-full h-24 fixed bottom-0 border-t-2 z-20 rounded-t-2xl flex justify-center items-center ${styles.footer}`}
-      >
+      <div className={`z-20 ${styles.footer}`}>
         <Footer
           clickDownload={clickDownload}
           clickDelete={clickDelete}
