@@ -138,15 +138,4 @@ public class AlbumController {
         ResponseDto responseDto = albumService.replyInvitedAlbum(access_token, albumInviteReplyDto);
         return new ResponseEntity<ResponseDto>(responseDto, HttpStatus.OK);
     }
-
-
-    @PostMapping("/test")
-    public ResponseEntity<ResponseDto> test(@RequestHeader HttpHeaders headers) {
-        String access_token = headers.get("access_token").toString();
-        log.info("TEST POST: /album/test, access_token : {}",access_token);
-        String s = httpUtil.requestParingToken(access_token);
-
-        ResponseDto responseDto = new ResponseDto();
-        return new ResponseEntity<ResponseDto>(responseDto, HttpStatus.OK);
-    }
 }
