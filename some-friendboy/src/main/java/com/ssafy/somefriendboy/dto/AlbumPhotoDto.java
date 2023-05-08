@@ -29,7 +29,7 @@ public class AlbumPhotoDto {
         this.photoId = albumPhoto.getPhotoId();
         this.uploadedDate = albumPhoto.getUploadedDate();
         this.shootDate = albumPhoto.getShootDate();
-        this.s3Url = albumPhoto.getS3Url();
+        this.s3Url = albumPhoto.getOriginUrl();
         this.gpsLatitude = albumPhoto.getGpsLatitude();
         this.gpsLongitude = albumPhoto.getGpsLongitude();
         this.categoryId = albumPhoto.getCategoryId();
