@@ -1,6 +1,7 @@
 // 라이브러리
 import React from "react";
 import { useRouter } from "next/router";
+import InfiniteScroll from "react-infinite-scroller";
 
 // 컴포넌트
 import Photo from "components/common/Photo";
@@ -8,8 +9,12 @@ import NewPhoto from "components/pages/album/NewPhoto";
 
 // CSS
 import styles from "styles/album.module.scss";
-import { useGetPhotos } from "@/pages/api/albumApi";
-import { requestPhotosType } from "@/types/AlbumTypes";
+import { useGetPhotos, useInfinitePhotos } from "@/pages/api/albumApi";
+import {
+  PhotoPageType,
+  PhotoType,
+  requestPhotosType,
+} from "@/types/AlbumTypes";
 import { LoadingPhoto } from "@/components/common/Loading";
 
 // 인터페이스
@@ -42,7 +47,14 @@ function Photos({
 }: PhotosType) {
   const router = useRouter();
 
-  const { getPhotos } = useGetPhotos(photosRequest);
+  // const { getPhotos } = useGetPhotos(photosRequest);
+  const {
+    data: getPhotosPages,
+    fetchNextPage,
+    hasNextPage,
+    isLoading,
+    isError,
+  } = useInfinitePhotos(photosRequest);
 
   /**
    * 사진 선택 상태 바꾸기
@@ -62,45 +74,63 @@ function Photos({
   };
 
   return (
-    <section className={`${styles.photos} grid grid-cols-4`}>
+    <InfiniteScroll
+      className={`${styles.photos} grid grid-cols-4`}
+      hasMore={hasNextPage}
+      loadMore={() => fetchNextPage()}
+      // isReverse={true}
+      loader={<LoadingPhotos />}
+      threshold={100}
+    >
       {isAlbumLoading() ? (
         // TODO : 로딩중
-        <>
-          {[...Array(10)].map((_, i) => (
-            <LoadingPhoto key={i} />
-          ))}
-        </>
+        <LoadingPhotos />
       ) : (
         <>
-          {getPhotos ? (
-            getPhotos.map((photo) => (
-              <div
-                key={photo.photoId}
-                onClick={() =>
-                  isSelect
-                    ? changeSelect(photo.photoId)
-                    : goPhoto(photo.photoId)
-                }
-              >
-                <Photo
-                  key={photo.photoId}
-                  width={"22.564vw"}
-                  height={"22.564vw"}
-                  selectedPhotos={selectedPhotos}
-                  photoId={photo.photoId}
-                  img={photo.s3Url}
-                />
-              </div>
-            ))
-          ) : (
-            <></>
-          )}
           {!isSelect && (
             <NewPhoto inputPhoto={inputPhoto} setInputPhoto={setInputPhoto} />
           )}
+          {getPhotosPages ? (
+            getPhotosPages.pages.map((page: PhotoPageType) =>
+              page.content.map((photo) => (
+                <div
+                  key={photo.photoId}
+                  onClick={() =>
+                    isSelect
+                      ? changeSelect(photo.photoId)
+                      : goPhoto(photo.photoId)
+                  }
+                >
+                  <Photo
+                    key={photo.photoId}
+                    width={"22.564vw"}
+                    height={"22.564vw"}
+                    selectedPhotos={selectedPhotos}
+                    photoId={photo.photoId}
+                    img={photo.s3Url}
+                  />
+                </div>
+              ))
+            )
+          ) : (
+            <></>
+          )}
+          {/* {!isSelect && (
+            <NewPhoto inputPhoto={inputPhoto} setInputPhoto={setInputPhoto} />
+          )} */}
         </>
       )}
-    </section>
+    </InfiniteScroll>
+  );
+}
+
+function LoadingPhotos() {
+  return (
+    <>
+      {[...Array(10)].map((_, i) => (
+        <LoadingPhoto key={i} />
+      ))}
+    </>
   );
 }
 

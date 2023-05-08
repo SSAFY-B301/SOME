@@ -4,12 +4,13 @@ import { useState } from "react";
 
 interface AlertType {
   msg: string;
+  prev: string;
   albumId: number;
   noHandler: () => void;
 }
 
 export default function EditAlbumName(props: AlertType) {
-  const [inputData, setInputData] = useState<string>("");
+  const [inputData, setInputData] = useState<string>(props.prev);
   const [isBlank, setIsBlank] = useState(false);
   const onChange = (value: string) => {
     setInputData(value);
@@ -44,6 +45,7 @@ export default function EditAlbumName(props: AlertType) {
           type="text"
           onChange={(e) => onChange(e.target.value)}
           placeholder={`${isBlank ? "이름을 입력해 주세요." : ""}`}
+          value={inputData}
           className={`border ${
             isBlank
               ? " border-red-600 placeholder:text-red-600 placeholder:text-base placeholder:text-opacity-80"
