@@ -2,6 +2,7 @@ import { AxiosError } from "axios";
 
 import {
   UseMutationResult,
+  useInfiniteQuery,
   useMutation,
   useQuery,
   useQueryClient,
@@ -135,6 +136,39 @@ export const useGetPhotos = (
   }
 
   return { getPhotos, getTotal, getTotalId, getPhotosIsLoading, refetch };
+};
+
+export const useInfinitePhotos = (
+  Requests: requestPhotosType,
+  page: number = 0,
+  size: number = 27
+) => {
+  const queryKey = `/photo/album/list?albumId=${Requests.albumId}&userId=${
+    Requests.userId
+  }&${
+    Requests.categoryId !== 0 && `categoryId=${Requests.categoryId}`
+  }&size=${size}`;
+
+  const { data, fetchNextPage, hasNextPage, isLoading, isError } =
+    useInfiniteQuery(
+      ["photos", Requests.albumId, "test"],
+      ({ pageParam = page }) => {
+        const temp = customBoyAxios.get(queryKey + `&page=${pageParam}`);
+        return temp.then((data) => data.data.data.albumPhotoList);
+      },
+      {
+        // cacheTime: 5000,
+        // refetchInterval: 5000,
+        onSuccess: (data) => {},
+        getNextPageParam: (lastPage, allPosts) => {
+          return lastPage.number !== allPosts[0].totalPages
+            ? lastPage.number + 1
+            : undefined;
+        },
+      }
+    );
+
+  return { data, fetchNextPage, hasNextPage, isLoading, isError };
 };
 
 export function Mutations() {

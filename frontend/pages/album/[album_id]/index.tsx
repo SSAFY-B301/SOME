@@ -9,7 +9,12 @@ import TabBar from "components/pages/album/TabBar";
 import { useEffect, useMemo, useState } from "react";
 
 // API
-import { Mutations, useGetDetail, useGetPhotos } from "pages/api/albumApi";
+import {
+  Mutations,
+  useGetDetail,
+  useGetPhotos,
+  useInfinitePhotos,
+} from "pages/api/albumApi";
 
 // CSS
 import styles from "styles/album.module.scss";
@@ -61,8 +66,11 @@ function AlbumDetail() {
     [albumId, selectedCategory, selectMembers]
   );
 
+  // TODO : 지우기
   const { getPhotos, getTotal, getTotalId, getPhotosIsLoading, refetch } =
     useGetPhotos(photosRequest);
+
+  const { data: getPhotosPages, isLoading } = useInfinitePhotos(photosRequest);
 
   useEffect(() => {
     refetch();
@@ -224,6 +232,7 @@ function AlbumDetail() {
       {isAlerts[3] && (
         <EditAlbumName
           msg="앨범 이름 변경"
+          prev={getDetail ? getDetail.album_name : ""}
           albumId={albumId}
           noHandler={() => closeAlert(3)}
         />
