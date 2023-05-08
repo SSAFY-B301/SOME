@@ -4,3 +4,4 @@ export { default as PhotoFeatures } from "./PhotoFeatures";
 export { default as DeleteModal } from "./DeleteModal";
 export { default as DownloadModal } from "./DownloadModal";
 export { default as VoteModal } from "./VoteModal";
+export { default as Nav } from "./Nav";

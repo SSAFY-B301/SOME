@@ -12,28 +12,26 @@ const PhotoFeatures = (): JSX.Element => {
    * useQuery
    *  queryKey : photo
    */
-  const {resultData : photoDetail} = getPhoto();
-  
+  const { resultData: photoDetail } = getPhoto();
+
   /**
    * 사진 좋아요 기능
    * useMutation
    */
-  const {likeMutation} = useMutationPhoto();
+  const { likeMutation } = useMutationPhoto();
 
   /**
    * 좋아요 기능 추후 추가
    */
   const select = () => {
     if (isActive == false) {
-      likeMutation(photoDetail.photoId)
+      likeMutation(photoDetail.photoId);
       setIsActive(true);
     } else {
-      likeMutation(photoDetail.photoId)
+      likeMutation(photoDetail.photoId);
       setIsActive(false);
     }
   };
-
-  
 
   /**
    * 투표 완료 기능 추후 추가
@@ -48,10 +46,19 @@ const PhotoFeatures = (): JSX.Element => {
           className="w-10 h-10 rounded-xl"
         />
         <div className="flex flex-col">
-          <span className="text-2xl">{photoDetail ? photoDetail.userName : ""}</span>
-          <span className="text-xs">{photoDetail ? photoDetail?.uploadedDate.substring(0,4)+"년 "+
-                  photoDetail?.uploadedDate.substring(5,7)+"월 "+
-                  photoDetail?.uploadedDate.substring(8,10)+"일" : ""}</span>
+          <span className="text-2xl">
+            {photoDetail ? photoDetail.userName : ""}
+          </span>
+          <span className="text-xs">
+            {photoDetail
+              ? photoDetail?.uploadedDate.substring(0, 4) +
+                "년 " +
+                photoDetail?.uploadedDate.substring(5, 7) +
+                "월 " +
+                photoDetail?.uploadedDate.substring(8, 10) +
+                "일"
+              : ""}
+          </span>
         </div>
       </div>
       <div className="flex items-center justify-between w-20">
@@ -77,7 +84,9 @@ const PhotoFeatures = (): JSX.Element => {
             fill={photoDetail?.likeStatus === "LIKE" ? "pink" : "none"}
             viewBox="0 0 24 24"
             strokeWidth={1.5}
-            stroke={photoDetail?.likeStatus === "LIKE" ? "pink" : "currentColor"}
+            stroke={
+              photoDetail?.likeStatus === "LIKE" ? "pink" : "currentColor"
+            }
             className="w-8 h-8"
             onClick={select}
           >
