@@ -1,0 +1,19 @@
+.loader,
+
+.loader:after {
+    animation: 3s infinite ease-in-out;
+}
+
+.inner{
+    animation: none;
+}
+
+
+.loader_back { background: linear-gradient(238.55deg, rgba(244, 114, 182, 0.3) 15.98%, rgba(145, 153, 217, 0.3) 55.85%, rgba(56, 189, 248, 0.3) 84.59%), linear-gradient(134.36deg, rgba(244, 114, 182, 0.45) 15.23%, rgba(151, 151, 215, 0.45) 49.79%, rgba(56, 189, 248, 0.45) 84.77%) }
+
+.loader_animation { animation-name: loader; }
+
+@keyframes loader {
+    from { transform: scale(0); opacity: 1; }
+    to   { transform: scale(1); opacity: 0; }
+}
