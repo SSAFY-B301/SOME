@@ -40,7 +40,7 @@ public class AlbumService {
     private final AlbumPhotoRepository albumPhotoRepository;
     private final MongoOperations mongoOperations;
     private final HttpUtil httpUtil;
-    private final JPAQueryFactory queryFactory;
+    private final NotiService notiService;
 
     public ResponseDto createAlbum(String access_token, AlbumCreateDto albumCreateDto) {
         Map<String,Object> result = new HashMap<>();
@@ -82,7 +82,7 @@ public class AlbumService {
                 .albumMemberStatus(AlbumMemberStatus.ACCEPT)
                 .build();
         albumMemberRepository.save(albumMember);
-
+        notiService.inviteNoti(userId,albumCreateDto.getInviteFriend(),savedAlbum.getAlbumId());
         // TODO :: 친구 초대 알림
         // 가입되어있는 친구라면 초대알림
         // 가입되어있지 않은 친구라면 초대 메시지
@@ -350,6 +350,8 @@ public class AlbumService {
                 albumMemberRepository.save(albumMember);
             }
         }
+        notiService.inviteNoti(userId,additionalFriendsInviteDto.getInviteFriend(),additionalFriendsInviteDto.getAlbumId());
+
         return setResponseDto(result,"앨범 생성 후 추가 친구 초대",200);
     }
 
