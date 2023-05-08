@@ -4,23 +4,17 @@ import com.querydsl.core.QueryResults;
 import com.querydsl.jpa.JPAExpressions;
 import com.querydsl.jpa.impl.JPAQueryFactory;
 import com.ssafy.somefriendboy.dto.AlbumWholeListDto;
-//import com.ssafy.somefriendboy.dto.QAlbumWholeListDto;
 import com.ssafy.somefriendboy.dto.QAlbumWholeListDto;
-import com.ssafy.somefriendboy.entity.Album;
 import com.ssafy.somefriendboy.entity.AlbumMemberStatus;
-import com.ssafy.somefriendboy.entity.LikeStatus;
 import lombok.RequiredArgsConstructor;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageImpl;
 import org.springframework.data.domain.Pageable;
 
-import javax.transaction.Transactional;
 import java.util.List;
 
 import static com.ssafy.somefriendboy.entity.QAlbum.album;
-import static com.ssafy.somefriendboy.entity.QAlbumFav.albumFav;
 import static com.ssafy.somefriendboy.entity.QAlbumMember.albumMember;
-import static com.ssafy.somefriendboy.entity.QAlbumPhoto.albumPhoto;
 
 @RequiredArgsConstructor
 public class AlbumRepositoryImpl implements AlbumRepositoryCustom{
