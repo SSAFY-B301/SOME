@@ -4,6 +4,7 @@ import com.querydsl.core.QueryResults;
 import com.querydsl.jpa.impl.JPAQueryFactory;
 import com.ssafy.somenoti.dto.NotiDto;
 import com.ssafy.somenoti.dto.QNotiDto;
+import com.ssafy.somenoti.entity.NotiStatus;
 import com.ssafy.somenoti.entity.NotiType;
 import com.ssafy.somenoti.entity.QNotification;
 import lombok.RequiredArgsConstructor;
@@ -34,7 +35,8 @@ public class NotificationRepositoryImpl implements NotificationRepositoryCustom{
                 .from(notification)
                 .where(
                         notification.receiver.userId.eq(userId),
-                        notification.type.ne(NotiType.UPLOAD)
+                        notification.type.ne(NotiType.UPLOAD),
+                        notification.status.ne(NotiStatus.DONE)
                 )
                 .offset(pageable.getOffset())
                 .limit(pageable.getPageSize())
