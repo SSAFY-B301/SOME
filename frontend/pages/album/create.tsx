@@ -28,16 +28,16 @@ const AlbumCreate = (): JSX.Element => {
       className={`relative bg-pink-400 ${styles.btn}`}
       style={{ width: "100vw", height: "100vh" }}
     >
-      <div className="absolute left-1/2 top-1/2 -translate-x-1/2 -translate-y-1/2 flex flex-col justify-between w-9/12 h-24">
-        <span className="text-2xl text-white">앨범 제목</span>
+      <div className="absolute left-1/2 top-1/2 -translate-x-1/2 -translate-y-1/2 flex flex-col justify-between w-9/12">
+        <span className="text-2xl text-white box-border mb-4">앨범 제목</span>
         <input
-          className="text-2xl text-white bg-inherit border-b-2 h-1/2 placeholder:italic placeholder:text-white placeholder:opacity-60"
+          className="text-2xl text-white bg-inherit border-b-2 h-1/2 placeholder:italic placeholder:text-white placeholder:opacity-60 box-border mb-2"
           placeholder={defaultName.current}
           value={albumName}
           onChange={onChange}
           maxLength={8}
         ></input>
-        <div className="text-lg font-thin text-white flex justify-end">
+        <div className="text-xl font-extralight text-white flex justify-end">
           <Link
             href={{
               pathname: "/invite",
@@ -45,28 +45,7 @@ const AlbumCreate = (): JSX.Element => {
             }}
             as={`/invite`}
           >
-            <svg
-              width="24"
-              height="24"
-              viewBox="0 0 24 24"
-              fill="none"
-              xmlns="http://www.w3.org/2000/svg"
-            >
-              <path
-                d="M5.25 4.5L12.75 12L5.25 19.5"
-                stroke="#FFFFFF"
-                stroke-width="1.5"
-                stroke-linecap="round"
-                stroke-linejoin="round"
-              />
-              <path
-                d="M12.75 4.5L20.25 12L12.75 19.5"
-                stroke="#FFFFFF"
-                stroke-width="1.5"
-                stroke-linecap="round"
-                stroke-linejoin="round"
-              />
-            </svg>
+            다음
           </Link>
         </div>
       </div>
