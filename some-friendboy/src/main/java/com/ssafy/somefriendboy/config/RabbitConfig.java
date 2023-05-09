@@ -32,7 +32,11 @@ public class RabbitConfig {
     @Bean
     RabbitTemplate rabbitTemplate(ConnectionFactory connectionFactory, MessageConverter messageConverter) {
         RabbitTemplate rabbitTemplate = new RabbitTemplate(connectionFactory);
-        rabbitTemplate.setMessageConverter(new Jackson2JsonMessageConverter());
+        rabbitTemplate.setMessageConverter(messageConverter);
         return rabbitTemplate;
+    }
+    @Bean
+    MessageConverter messageConverter() {
+        return new Jackson2JsonMessageConverter();
     }
 }
