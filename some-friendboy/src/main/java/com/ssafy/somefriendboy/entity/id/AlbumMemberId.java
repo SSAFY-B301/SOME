@@ -1,4 +1,4 @@
-package com.ssafy.somefriendboy.entity;
+package com.ssafy.somefriendboy.entity.id;
 
 import lombok.AllArgsConstructor;
 import lombok.Builder;

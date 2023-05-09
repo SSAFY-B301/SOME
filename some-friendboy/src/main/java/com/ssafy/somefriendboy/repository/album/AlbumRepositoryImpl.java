@@ -5,7 +5,7 @@ import com.querydsl.jpa.JPAExpressions;
 import com.querydsl.jpa.impl.JPAQueryFactory;
 import com.ssafy.somefriendboy.dto.AlbumWholeListDto;
 import com.ssafy.somefriendboy.dto.QAlbumWholeListDto;
-import com.ssafy.somefriendboy.entity.AlbumMemberStatus;
+import com.ssafy.somefriendboy.entity.status.AlbumMemberStatus;
 import lombok.RequiredArgsConstructor;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageImpl;

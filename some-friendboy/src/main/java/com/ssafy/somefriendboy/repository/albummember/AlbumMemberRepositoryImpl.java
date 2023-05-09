@@ -1,8 +1,7 @@
 package com.ssafy.somefriendboy.repository.albummember;
 
 import com.querydsl.jpa.impl.JPAQueryFactory;
-import com.ssafy.somefriendboy.entity.AlbumMemberStatus;
-import com.ssafy.somefriendboy.entity.QAlbumMember;
+import com.ssafy.somefriendboy.entity.status.AlbumMemberStatus;
 import lombok.RequiredArgsConstructor;
 
 import java.util.List;

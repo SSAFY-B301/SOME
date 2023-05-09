@@ -23,8 +23,6 @@ import java.util.Map;
 @Service
 @RequiredArgsConstructor
 public class NotiService {
-    private static final Long DEFAULT_TIMEOUT = 60L * 1000 * 60;
-    private final EmitterRepository emitterRepository;
 
     public void inviteNoti(String sender_id,String[] receiver_ids,Long album_id){
         String url = "http://3.35.18.146:9003/noti/noti/invite";

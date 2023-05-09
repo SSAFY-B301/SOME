@@ -1,5 +1,7 @@
 package com.ssafy.somefriendboy.entity;
 
+import com.ssafy.somefriendboy.entity.id.AlbumPhotoSnsId;
+import com.ssafy.somefriendboy.entity.status.AlbumPhotoSnsStatus;
 import lombok.*;
 
 import javax.persistence.EmbeddedId;
