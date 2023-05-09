@@ -42,7 +42,7 @@ public class QAlbumPhoto extends EntityPathBase<AlbumPhoto> {
 
     public final DateTimePath<java.util.Date> shootDate = createDateTime("shootDate", java.util.Date.class);
 
-    public final EnumPath<PhotoStatus> status = createEnum("status", PhotoStatus.class);
+    public final EnumPath<com.ssafy.somefriendboy.entity.status.PhotoStatus> status = createEnum("status", com.ssafy.somefriendboy.entity.status.PhotoStatus.class);
 
     public final DateTimePath<java.time.LocalDateTime> uploadedDate = createDateTime("uploadedDate", java.time.LocalDateTime.class);
 

@@ -1,8 +1,12 @@
 package com.ssafy.somefriendboy.service;
 
-import com.querydsl.jpa.impl.JPAQueryFactory;
 import com.ssafy.somefriendboy.dto.*;
 import com.ssafy.somefriendboy.entity.*;
+import com.ssafy.somefriendboy.entity.id.AlbumMemberId;
+import com.ssafy.somefriendboy.entity.id.AutoIncrementSequence;
+import com.ssafy.somefriendboy.entity.status.AlbumMemberStatus;
+import com.ssafy.somefriendboy.entity.status.AlbumStatus;
+import com.ssafy.somefriendboy.entity.status.LikeStatus;
 import com.ssafy.somefriendboy.repository.albumphoto.AlbumPhotoRepository;
 import com.ssafy.somefriendboy.repository.album.AlbumRepository;
 import com.ssafy.somefriendboy.repository.albumfav.AlbumFavRepository;
@@ -82,10 +86,9 @@ public class AlbumService {
                 .albumMemberStatus(AlbumMemberStatus.ACCEPT)
                 .build();
         albumMemberRepository.save(albumMember);
+        // 친구 초대 알림
         notiService.inviteNoti(userId,albumCreateDto.getInviteFriend(),savedAlbum.getAlbumId());
-        // TODO :: 친구 초대 알림
-        // 가입되어있는 친구라면 초대알림
-        // 가입되어있지 않은 친구라면 초대 메시지
+
 
         return setResponseDto(result,"앨범 생성",200);
     }

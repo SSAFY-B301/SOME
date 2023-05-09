@@ -1,5 +1,7 @@
 package com.ssafy.somefriendboy.entity;
 
+import com.ssafy.somefriendboy.entity.status.NotiStatus;
+import com.ssafy.somefriendboy.entity.status.NotiType;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Getter;

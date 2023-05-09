@@ -22,9 +22,9 @@ public class QAlbumFav extends EntityPathBase<AlbumFav> {
 
     public static final QAlbumFav albumFav = new QAlbumFav("albumFav");
 
-    public final QAlbumMemberId albumMemberId;
+    public final com.ssafy.somefriendboy.entity.id.QAlbumMemberId albumMemberId;
 
-    public final EnumPath<LikeStatus> likeStatus = createEnum("likeStatus", LikeStatus.class);
+    public final EnumPath<com.ssafy.somefriendboy.entity.status.LikeStatus> likeStatus = createEnum("likeStatus", com.ssafy.somefriendboy.entity.status.LikeStatus.class);
 
     public QAlbumFav(String variable) {
         this(AlbumFav.class, forVariable(variable), INITS);
@@ -44,7 +44,7 @@ public class QAlbumFav extends EntityPathBase<AlbumFav> {
 
     public QAlbumFav(Class<? extends AlbumFav> type, PathMetadata metadata, PathInits inits) {
         super(type, metadata, inits);
-        this.albumMemberId = inits.isInitialized("albumMemberId") ? new QAlbumMemberId(forProperty("albumMemberId")) : null;
+        this.albumMemberId = inits.isInitialized("albumMemberId") ? new com.ssafy.somefriendboy.entity.id.QAlbumMemberId(forProperty("albumMemberId")) : null;
     }
 
 }

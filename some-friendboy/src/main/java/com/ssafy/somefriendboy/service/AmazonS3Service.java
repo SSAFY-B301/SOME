@@ -12,7 +12,7 @@ import com.drew.metadata.MetadataException;
 import com.drew.metadata.exif.ExifIFD0Directory;
 import com.ssafy.somefriendboy.dto.MetaDataDto;
 import com.ssafy.somefriendboy.entity.AlbumPhoto;
-import com.ssafy.somefriendboy.entity.AutoIncrementSequence;
+import com.ssafy.somefriendboy.entity.id.AutoIncrementSequence;
 import lombok.RequiredArgsConstructor;
 import org.imgscalr.Scalr;
 import org.springframework.beans.factory.annotation.Value;

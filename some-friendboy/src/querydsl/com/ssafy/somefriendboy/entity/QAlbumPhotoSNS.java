@@ -22,9 +22,9 @@ public class QAlbumPhotoSNS extends EntityPathBase<AlbumPhotoSNS> {
 
     public static final QAlbumPhotoSNS albumPhotoSNS = new QAlbumPhotoSNS("albumPhotoSNS");
 
-    public final QAlbumPhotoSnsId albumPhotoSnsId;
+    public final com.ssafy.somefriendboy.entity.id.QAlbumPhotoSnsId albumPhotoSnsId;
 
-    public final EnumPath<AlbumPhotoSnsStatus> status = createEnum("status", AlbumPhotoSnsStatus.class);
+    public final EnumPath<com.ssafy.somefriendboy.entity.status.AlbumPhotoSnsStatus> status = createEnum("status", com.ssafy.somefriendboy.entity.status.AlbumPhotoSnsStatus.class);
 
     public QAlbumPhotoSNS(String variable) {
         this(AlbumPhotoSNS.class, forVariable(variable), INITS);
@@ -44,7 +44,7 @@ public class QAlbumPhotoSNS extends EntityPathBase<AlbumPhotoSNS> {
 
     public QAlbumPhotoSNS(Class<? extends AlbumPhotoSNS> type, PathMetadata metadata, PathInits inits) {
         super(type, metadata, inits);
-        this.albumPhotoSnsId = inits.isInitialized("albumPhotoSnsId") ? new QAlbumPhotoSnsId(forProperty("albumPhotoSnsId")) : null;
+        this.albumPhotoSnsId = inits.isInitialized("albumPhotoSnsId") ? new com.ssafy.somefriendboy.entity.id.QAlbumPhotoSnsId(forProperty("albumPhotoSnsId")) : null;
     }
 
 }
