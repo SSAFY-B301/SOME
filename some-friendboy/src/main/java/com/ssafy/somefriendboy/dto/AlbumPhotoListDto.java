@@ -13,7 +13,8 @@ public class AlbumPhotoListDto {
 
     private Long photoId;
     private LocalDateTime uploadedDate;
-    private String s3Url;
+    private String originUrl;
+    private String resizeUrl;
     private List<Long> categoryId;
     private String userId;
     private Long albumId;
@@ -21,7 +22,8 @@ public class AlbumPhotoListDto {
     public AlbumPhotoListDto(AlbumPhoto albumPhoto) {
         this.photoId = albumPhoto.getPhotoId();
         this.uploadedDate = albumPhoto.getUploadedDate();
-        this.s3Url = albumPhoto.getResizeUrl();
+        this.originUrl = albumPhoto.getOriginUrl();
+        this.resizeUrl = albumPhoto.getResizeUrl();
         this.categoryId = albumPhoto.getCategoryId();
         this.userId = albumPhoto.getUserId();
         this.albumId = albumPhoto.getAlbumId();
