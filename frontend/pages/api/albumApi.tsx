@@ -17,6 +17,7 @@ import {
   requestPhotosType,
   requestPartType,
   usePutAlbumNameType,
+  PhotoPageType,
 } from "@/types/AlbumTypes";
 import useCustomAxios from "@/features/customAxios";
 
@@ -160,9 +161,12 @@ export const useInfinitePhotos = (
         // cacheTime: 5000,
         // refetchInterval: 5000,
         onSuccess: (data) => {},
-        getNextPageParam: (lastPage, allPosts) => {
-          return lastPage.number !== allPosts[0].totalPages
-            ? lastPage.number + 1
+        getNextPageParam: (
+          lastPage: PhotoPageType,
+          allPosts: PhotoPageType[]
+        ) => {
+          return lastPage.now_page !== allPosts[0].total_page
+            ? lastPage.now_page + 1
             : undefined;
         },
       }

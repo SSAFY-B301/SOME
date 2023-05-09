@@ -89,46 +89,27 @@ export interface AlbumPhotosType {
   status_code: number;
   message: string;
   data: {
+    totalPhotoId: number[];
+    is_last: boolean;
+    totalPhotoCnt: number;
+    total_page: number;
+    is_first: boolean;
+    now_page: number;
     albumPhotoList: {
-      content: {
-        photoId: number;
-        uploadedDate: string;
-        s3Url: string;
-        categoryId: number[];
-        userId: string;
-        albumId: number;
-      }[];
-      pageable: {
-        sort: {
-          empty: boolean;
-          sorted: boolean;
-          unsorted: boolean;
-        };
-        offset: 1;
-        pageNumber: 1;
-        pageSize: 1;
-        paged: true;
-        unpaged: false;
-      };
-      totalPages: 2;
-      totalElements: 2;
-      last: true;
-      size: 1;
-      number: 1;
-      sort: {
-        empty: true;
-        sorted: false;
-        unsorted: true;
-      };
-      numberOfElements: 1;
-      first: false;
-      empty: false;
-    };
+      photoId: number;
+      uploadedDate: string;
+      s3Url: string;
+      categoryId: number[];
+      userId: string;
+      albumId: number;
+    }[];
   };
 }
 
 export interface PhotoPageType {
+  totalPhotoId: number[];
   is_last: boolean;
+  totalPhotoCnt: number;
   total_page: number;
   is_first: boolean;
   now_page: number;
@@ -139,5 +120,5 @@ export interface PhotoPageType {
     categoryId: number[];
     userId: string;
     albumId: number;
-  }[];
+  };
 }

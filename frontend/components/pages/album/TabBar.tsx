@@ -50,7 +50,7 @@ function TabBar({ isSelect, isAlerts, setIsAlerts }: TabBarType) {
   };
 
   return (
-    <section className={`${styles.tab_bar}`}>
+    <section className={`${styles.tab_bar} bg-white dark:bg-dark-block`}>
       {isSelect ? (
         <>
           <UploadIcon onClick={() => openAlert(0)} stroke={"black"} />

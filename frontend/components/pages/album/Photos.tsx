@@ -80,7 +80,7 @@ function Photos({
       loadMore={() => fetchNextPage()}
       // isReverse={true}
       loader={<LoadingPhotos />}
-      threshold={100}
+      // threshold={100}
     >
       {isAlbumLoading() ? (
         // TODO : 로딩중
