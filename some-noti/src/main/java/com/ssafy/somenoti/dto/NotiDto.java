@@ -19,13 +19,15 @@ public class NotiDto {
     private NotiStatus status;
     private NotiType type;
     private LocalDateTime date;
+    private String message;
     @QueryProjection
-    public NotiDto(Long notiId,String senderName, Long id, NotiStatus status, NotiType type,LocalDateTime date){
+    public NotiDto(Long notiId,String senderName, Long id, NotiStatus status, NotiType type,LocalDateTime date,String message){
         this.notiId = notiId;
         this.senderName = senderName;
         this.photoOrAlbumid = id;
         this.status = status;
         this.type = type;
         this.date = date;
+        this.message = message;
     }
 }
