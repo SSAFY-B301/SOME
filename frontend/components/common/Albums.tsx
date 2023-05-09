@@ -115,7 +115,7 @@ function FavoriteAlbum() {
           <div key={favoriteAlbum.album_id} className={`${styles.card}`}>
             <div
               onClick={() => router.push(`/album/${favoriteAlbum.album_id}`)}
-              className="bg-center bg-cover"
+              className="bg-center bg-cover pt-10"
               style={{
                 width: "73.846vw",
                 height: "98.462vw",
@@ -126,21 +126,11 @@ function FavoriteAlbum() {
                     : default_profile[favoriteAlbum.album_id % 4]
                 })`,
               }}
-            ></div>
-            <div className="relative" style={{ top: "-97.436vw" }}>
-              <div className="flex justify-end relative top-4 right-4 gap-2">
-                <HeartIcon
-                  onClick={() => clickedHeart(favoriteAlbum.album_id)}
-                  fill={"red"}
-                  stroke={"red"}
-                  width="6.154vw"
-                  height="6.154vw"
-                />
-              </div>
+            >
               <div
                 className="flex flex-col relative "
                 style={{
-                  width: "32.821vw",
+                  width: "38.974vw",
                   top: "6.154vw",
                   left: "4.103vw",
                 }}
@@ -161,9 +151,20 @@ function FavoriteAlbum() {
                 </span>
               </div>
             </div>
+            <div className="relative" style={{ top: "-97.436vw" }}>
+              <div className="flex justify-end relative top-4 right-4 gap-2">
+                <HeartIcon
+                  onClick={() => clickedHeart(favoriteAlbum.album_id)}
+                  fill={"red"}
+                  stroke={"red"}
+                  width="6.154vw"
+                  height="6.154vw"
+                />
+              </div>
+            </div>
           </div>
         ))
-      : [...Array(3)].map((_, i) => (
+      : [...Array(1)].map((_, i) => (
           <Link href={"/album/create"} key={i}>
             <div
               className={`w-72 h-96 rounded-xl grow flex-shrink-0 flex flex-col justify-center items-center gap-4 text-xl ${styles.card}`}
@@ -198,7 +199,9 @@ function FavoriteAlbum() {
         </div>
         <div
           className={`flex ${
-            getFavorite?.length === 1 ? "justify-center" : "justify-start"
+            getFavorite?.length === 1 || getFavorite?.length === 0
+              ? "justify-center"
+              : "justify-start"
           } overflow-scroll ${styles.cards}`}
           style={{ gap: "4.103vw" }}
         >
