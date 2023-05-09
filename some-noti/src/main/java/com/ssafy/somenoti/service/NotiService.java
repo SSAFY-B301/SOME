@@ -61,7 +61,7 @@ public class NotiService {
             return setResponseDto(false,"유저 정보 없음",400);
         }
         User sender = byId.get();
-        sendNoti(NotiType.Invite,receivers,sender,notiCreateDto.getAlbumId());
+        sendNoti(NotiType.INVITE,receivers,sender,notiCreateDto.getAlbumId());
         return setResponseDto(true,"앨범 초대 알림 성공",200);
     }
 
@@ -90,7 +90,7 @@ public class NotiService {
         }
         User sender = byId.get();
         List<String> receivers = albumMemberRepository.findAlbumMemberIdByAlbumId(notiUploadCreateDto.getAlbumId());
-        sendNoti(NotiType.Upload,receivers,sender, notiUploadCreateDto.getPhotoId());
+        sendNoti(NotiType.UPLOAD,receivers,sender, notiUploadCreateDto.getPhotoId());
         return setResponseDto(true,"사진 업로드 알림 성공",200);
     }
     public ResponseDto listNotiSnsInvite(String accessToken, Pageable pageable) {
@@ -177,10 +177,10 @@ public class NotiService {
             if(notiType.equals(NotiType.SNS)){
                 notification.setMessage(sender.getUserName()+"님이 SNS 포스팅 동의 요청을 보냈습니다.");
             }
-            else if(notiType.equals(NotiType.Invite)){
+            else if(notiType.equals(NotiType.INVITE)){
                 notification.setMessage(sender.getUserName()+"님이 공유앨범에 초대했습니다.");
             }
-            else if(notiType.equals(NotiType.Upload)){
+            else if(notiType.equals(NotiType.UPLOAD)){
                 notification.setMessage(sender.getUserName()+"님이 공유앨범에 사진을 업로드 했습니다.");
             }
             notificationRepository.save(notification);
