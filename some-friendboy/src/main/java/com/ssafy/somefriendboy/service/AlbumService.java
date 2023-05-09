@@ -327,10 +327,10 @@ public class AlbumService {
         for (Long albumId : myAlbumIdList) {
             Album album = albumRepository.findAlbumByAlbumId(albumId);
             List<String> albumMemberList = albumMemberRepository.findAlbumMemberIdByAlbumId(albumId);
+            albumMemberList.remove(userId);
 
             AlbumPhoto albumPhoto = albumPhotoRepository.findByPhotoId(album.getThumbnailPhoto());
             String thumbnailPhotoUrl = albumPhoto == null ? null : albumPhoto.getResizeUrl();
-
             AlbumInfoAndMemberDto albumInfoAndMemberDto = AlbumInfoAndMemberDto.builder()
                     .albumId(album.getAlbumId())
                     .albumName(album.getAlbumName())
