@@ -1,6 +1,5 @@
 import useCustomAxios from "@/features/customAxios";
-import { AlbumInviteRequestType, NotiType, SnsRequestType } from "@/types/NotiType";
-import { useRouter } from "next/router";
+import { AlbumInviteRequestType, NotiType, SnsRequestType, statusChangeRequestType } from "@/types/NotiType";
 import { useMutation, useQuery, useQueryClient } from "react-query";
 
 const { customNotiAxios } = useCustomAxios();
@@ -9,7 +8,7 @@ function getAlarms() {
 
   const { data: queryData, isLoading } = useQuery(["alarm"], () =>
     customNotiAxios.get(
-      process.env.NEXT_PUBLIC_FRIEND_NOTI_URL + "/noti/list?page=0&size=6"
+      process.env.NEXT_PUBLIC_FRIEND_NOTI_URL + "/noti/list?page=0&size=10"
     )
   );
 
@@ -19,7 +18,6 @@ function getAlarms() {
 
 function useMutationNoti() {
   const queryClient = useQueryClient();
-  const router = useRouter();
   
   const { mutate: inviteMutation, isSuccess : inviteSuccess } = useMutation(
     (requestData : AlbumInviteRequestType) => customNotiAxios.put(
@@ -43,8 +41,10 @@ function useMutationNoti() {
     }
   );
   
+  /** status 변경 api */
   const { mutate: statusMutation } = useMutation(
-    (requestData) => customNotiAxios.put("/noti/status", requestData),
+    (requestData : statusChangeRequestType) => customNotiAxios.put(
+      process.env.NEXT_PUBLIC_FRIEND_NOTI_URL + "/noti/status", requestData),
     {
       onSuccess: () => {
         queryClient.invalidateQueries("alarm"); // queryKey 유효성 제거

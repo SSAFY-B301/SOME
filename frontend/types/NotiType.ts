@@ -4,6 +4,8 @@ export interface NotiType{
     sender : string,
     status : string,
     type : string,
+    date : string,
+    message : string
 }
 
 export interface AlbumInviteRequestType{
