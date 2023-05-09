@@ -328,6 +328,7 @@ public class AlbumService {
             Album album = albumRepository.findAlbumByAlbumId(albumId);
             List<String> albumMemberList = albumMemberRepository.findAlbumMemberIdByAlbumId(albumId);
             albumMemberList.remove(userId);
+            if(albumMemberList.size() == 0) continue;
 
             AlbumPhoto albumPhoto = albumPhotoRepository.findByPhotoId(album.getThumbnailPhoto());
             String thumbnailPhotoUrl = albumPhoto == null ? null : albumPhoto.getResizeUrl();
