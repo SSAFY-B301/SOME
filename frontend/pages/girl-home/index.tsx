@@ -103,7 +103,7 @@ export default function Home() {
 
       </Map>
       <div className={`${homeStyles.footer}`}>
-        <TabBar plusBtnUrl={"/album/create"} />
+        <TabBar/>
       </div>
     </div>
   );
