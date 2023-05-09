@@ -10,7 +10,6 @@ import CheckIcon from "public/icons/Check.svg";
 import { Mutations } from "@/pages/api/albumApi";
 import { useRouter } from "next/router";
 import { requestPartType } from "@/types/AlbumTypes";
-import { userQuery } from "@/pages/api/userApi";
 
 // 인터페이스
 interface PreviewType {
@@ -35,6 +34,7 @@ function Preview({ photoLength, setIsPreview, inputPhoto }: PreviewType) {
   };
   const [previewPhotos, setPreviewPhotos] = useState<previewPhotoType[]>([]);
   const [uploadCount, setUploadCount] = useState(0);
+  const isUploading = useRef(false);
 
   // 사진 미리보기
   useEffect(() => {
@@ -69,8 +69,6 @@ function Preview({ photoLength, setIsPreview, inputPhoto }: PreviewType) {
 
     const { mutate } = Mutations().usePostPhoto(albumId, setUploadCount);
 
-    const isUploading = useRef(false);
-
     /**
      * 미리보기 닫기
      */
@@ -87,48 +85,6 @@ function Preview({ photoLength, setIsPreview, inputPhoto }: PreviewType) {
       setIsChecks([...isChecks]);
     };
 
-    /**
-     * 사진 업로드
-     */
-    // const { getUserInfo } = userQuery();
-    // const uploadPhotos = async () => {
-    //   // TODO : 사진 업로드 api
-    //   const formData = new FormData();
-    //   let cnt: number = 0;
-    //   let userId: string;
-    //   if (getUserInfo) {
-    //     userId = getUserInfo.user_id;
-    //   } else {
-    //     userId = "00000";
-    //   }
-    //   Array.from(inputPhoto).forEach((oldFile) => {
-    //     if (isChecks[cnt]) {
-    //       // TODO : 아이폰에서 업로드 되는 경우만 파일 이름 수정하도록 변경
-    //       if (oldFile.name === "image.jpg") {
-    //         const fileType = oldFile.type.replace("image/", "");
-    //         const newFile = new File(
-    //           [oldFile],
-    //           oldFile.lastModified + userId + "." + fileType,
-    //           { type: oldFile.type }
-    //         );
-    //         formData.append("multipartFile", newFile);
-    //       } else {
-    //         formData.append("multipartFile", oldFile);
-    //       }
-    //     }
-    //     cnt += 1;
-    //   });
-    //   const requestData: requestPartType = {
-    //     formData: formData,
-    //     albumId: albumId,
-    //   };
-
-    //   mutate(requestData);
-
-    //   // TODO : 파일 업로드 로딩 화면 표시
-
-    //   closePreview();
-    // };
     const uploadPhotos = () => {
       isUploading.current = true;
       // TODO : 사진 업로드 api
@@ -143,10 +99,6 @@ function Preview({ photoLength, setIsPreview, inputPhoto }: PreviewType) {
           mutate(requestData);
         }
       });
-
-      // TODO : 파일 업로드 로딩 화면 표시
-      // setUploadCount(0);
-      // closePreview();
     };
 
     useEffect(() => {
