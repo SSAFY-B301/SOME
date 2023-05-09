@@ -46,7 +46,7 @@ export default function List(params : GirlListParamType) {
                 {Dummy.imgList.map((img, index) => {
                     return(
                         <div key={index} className="flex items-center justify-center w-full h-full">
-                            <div onClick={() => router.push("/girl-home/1/1")} className="col-span-1 bg-cover" style={{width : "80px", height: "80px", backgroundImage : `url(${img})`}}></div>
+                            <div onClick={() => router.push("/girl-home/list/1")} className="col-span-1 bg-cover" style={{width : "80px", height: "80px", backgroundImage : `url(${img})`}}></div>
                         </div>
                     )
                 })}

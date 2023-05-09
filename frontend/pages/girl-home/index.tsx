@@ -50,7 +50,7 @@ export default function Home() {
           </div>
         </CustomOverlayMap>
         <CustomOverlayMap key={1} position={{lat : userLocation.lat+0.0005, lng:userLocation.lng+0.00037}}>
-          <div onClick={()=>router.push("/girl-home/1")} className="relative w-24 h-24 bg-white rounded-lg shadow-md">
+          <div onClick={()=>router.push("/girl-home/list")} className="relative w-24 h-24 bg-white rounded-lg shadow-md">
             <div style={{background : "linear-gradient(238.55deg, rgba(244, 114, 182, 0.75) 15.98%, rgba(145, 153, 217, 0.75) 55.85%, rgba(56, 189, 248, 0.75) 84.59%), linear-gradient(134.36deg, #F472B6 15.23%, #9797D7 49.79%, #38BDF8 84.77%)"}} className="absolute flex items-center justify-center w-6 h-6 bg-red-500 rounded-full -right-2 -top-2">
               <p className="text-xs text-white">{girlDummy[0].count}</p>
             </div>
