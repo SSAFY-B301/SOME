@@ -28,18 +28,26 @@ public class AlbumPhotoRepositoryImpl implements AlbumPhotoRepositoryCustom {
     private final MongoTemplate mongoTemplate;
 
     @Override
-    public Page<AlbumPhotoListDto> findAlbumPhoto(Long albumId, Long categoryId, List<String> userId, Pageable pageable) {
+    public Page<AlbumPhoto> findAlbumPhoto(Long albumId, Long categoryId, List<String> userId, Pageable pageable) {
         Query query = new Query().with(pageable);
         query.addCriteria(Criteria.where(MongoQueryUtil.parse(albumPhoto.albumId)).is(albumId));
         query.addCriteria(Criteria.where(MongoQueryUtil.parse(albumPhoto.status)).is(PhotoStatus.NORMAL));
         if (categoryId != null) query.addCriteria(Criteria.where(MongoQueryUtil.parse(albumPhoto.categoryId)).in(categoryId));
         if (userId != null && userId.size() != 0) query.addCriteria(Criteria.where(MongoQueryUtil.parse(albumPhoto.userId)).in(userId));
         List<AlbumPhoto> albumPhotos = mongoTemplate.find(query, AlbumPhoto.class);
-        List<AlbumPhotoListDto> albumPhotoListDtos = albumPhotos.stream()
-                .map(AlbumPhotoListDto::new).collect(Collectors.toList());
 
-        return PageableExecutionUtils.getPage(albumPhotoListDtos, pageable,
-                () -> mongoTemplate.count(Query.of(query).limit(-1).skip(-1), AlbumPhotoListDto.class));
+        return PageableExecutionUtils.getPage(albumPhotos, pageable,
+                () -> mongoTemplate.count(Query.of(query).limit(-1).skip(-1), AlbumPhoto.class));
+    }
+
+    @Override
+    public List<AlbumPhoto> findAllAlbumPhoto(Long albumId, Long categoryId, List<String> userId) {
+        Query query = new Query();
+        query.addCriteria(Criteria.where(MongoQueryUtil.parse(albumPhoto.albumId)).is(albumId));
+        query.addCriteria(Criteria.where(MongoQueryUtil.parse(albumPhoto.status)).is(PhotoStatus.NORMAL));
+        if (categoryId != null) query.addCriteria(Criteria.where(MongoQueryUtil.parse(albumPhoto.categoryId)).in(categoryId));
+        if (userId != null && userId.size() != 0) query.addCriteria(Criteria.where(MongoQueryUtil.parse(albumPhoto.userId)).in(userId));
+        return mongoTemplate.find(query, AlbumPhoto.class);
     }
 
     @Override
