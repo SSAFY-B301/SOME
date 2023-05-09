@@ -25,18 +25,34 @@ import {
 import styles from "styles/album.module.scss";
 import Preview from "components/pages/album/Preview";
 
+// 리덕스
+import { useDispatch, useSelector } from "react-redux";
+import { RootState } from "@/store/configureStore";
+import { StateType } from "@/types/StateType";
+import {
+  setALbumIdState,
+  setInit,
+  setUserIdState,
+} from "@/features/photoListSlice";
+
 function AlbumDetail() {
   const router = useRouter();
-  const albumId = useMemo(
-    () => Number(router.query.album_id),
-    [router.query.album_id]
+  const albumId = useSelector((state: StateType) => state.photoList.albumId);
+  const categoryId = useSelector(
+    (state: StateType) => state.photoList.categoryId
   );
+  const userId = useSelector((state: StateType) => state.photoList.userId);
+
+  const [membersId, setMembersId] = useState<number[]>([]);
+  let dispatch = useDispatch();
+  useEffect(() => {
+    dispatch(setInit());
+    dispatch(setALbumIdState({ albumId: Number(router.query.album_id) }));
+    dispatch(setUserIdState({ userId: new Set(membersId) }));
+  }, [membersId, router.query.album_id]);
 
   const { getDetail, getDetailIsLoading } = useGetDetail(albumId);
 
-  const [membersId, setMembersId] = useState<number[]>([]);
-
-  const [selectedCategory, setSelectedCategory] = useState<number>(0);
   const [isSelect, setIsSelect] = useState<boolean>(false);
   const [selectedPhotos, setSelectedPhotos] = useState<Set<number>>(new Set());
   const [isTotal, setIsTotal] = useState<boolean>(false);
@@ -57,14 +73,14 @@ function AlbumDetail() {
   const makeRequest = () => {
     return {
       albumId: albumId,
-      categoryId: selectedCategory,
+      categoryId: categoryId,
       userId: Array.from(selectMembers).toString(),
     };
   };
 
   const photosRequest = useMemo(
     () => makeRequest(),
-    [albumId, selectedCategory, selectMembers]
+    [albumId, categoryId, selectMembers]
   );
 
   // TODO : 지우기
@@ -182,16 +198,8 @@ function AlbumDetail() {
         isUploading={isUploading}
       />
       <div className={`${styles.container}`}>
-        <Members
-          selectMembers={selectMembers}
-          setSelectMembers={setSelectMembers}
-          membersId={membersId}
-          isAlbumLoading={isAlbumLoading}
-        />
-        <Categories
-          selectedId={selectedCategory}
-          setSelectedId={setSelectedCategory}
-        />
+        <Members membersId={membersId} isAlbumLoading={isAlbumLoading} />
+        <Categories />
         <Photos
           isSelect={isSelect}
           selectedPhotos={selectedPhotos}

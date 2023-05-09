@@ -1,10 +1,10 @@
 import React from "react";
 import styles from "styles/album.module.scss";
 
-interface CategoriesType {
-  selectedId: number;
-  setSelectedId: React.Dispatch<React.SetStateAction<number>>;
-}
+// 리덕스
+import { useDispatch, useSelector } from "react-redux";
+import { StateType } from "@/types/StateType";
+import { setCategoryState } from "@/features/photoListSlice";
 
 interface categoriesTable {
   [index: number]: string;
@@ -22,19 +22,24 @@ const categoriesTable: categoriesTable = {
 
 const categories: number[] = [1, 2, 3, 4, 5, 6, 7];
 
-function Categories({ selectedId, setSelectedId }: CategoriesType) {
+function Categories() {
+  let dispatch = useDispatch();
+  const categoryId = useSelector(
+    (state: StateType) => state.photoList.categoryId
+  );
+
   /**
    * 선택된 카테고리 변경
    * @param id 카테고리 id
    */
   const selectCategory = (id: number) => {
-    setSelectedId(id);
+    dispatch(setCategoryState({ categoryId: id }));
   };
   return (
     <section className={`${styles.categories} justify-start px-4`}>
       <p
         onClick={() => selectCategory(0)}
-        className={selectedId === 0 ? styles.is_selected : ""}
+        className={categoryId === 0 ? styles.is_selected : ""}
       >
         전체
       </p>
@@ -42,7 +47,7 @@ function Categories({ selectedId, setSelectedId }: CategoriesType) {
       {categories.map((category: number) => (
         <p
           onClick={() => selectCategory(category)}
-          className={selectedId === category ? styles.is_selected : ""}
+          className={categoryId === category ? styles.is_selected : ""}
           key={category}
         >
           {categoriesTable[category]}

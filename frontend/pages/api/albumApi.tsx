@@ -21,6 +21,11 @@ import {
   thumbnailBodyType,
 } from "@/types/AlbumTypes";
 import useCustomAxios from "@/features/customAxios";
+import { PhotoListType } from "@/types/StateType";
+
+// 리덕스
+import { useSelector } from "react-redux";
+import { StateType } from "@/types/StateType";
 
 const { customBoyAxios } = useCustomAxios();
 
@@ -239,13 +244,12 @@ export function Mutations() {
   }
 
   function usePostPhoto(
-    albumId: number,
     setUploadCount: React.Dispatch<React.SetStateAction<number>>
   ): UseMutationResult<boolean, AxiosError, requestPartType> {
     const headers = {
       "Content-Type": "multipart/form-data",
     };
-
+    const getPhotosKey = useSelector((state: StateType) => state.photoList);
     return useMutation(
       (requestData) =>
         customBoyAxios.post(
@@ -256,7 +260,12 @@ export function Mutations() {
       {
         onSuccess: (data) => {
           setUploadCount((prev) => prev + 1);
-          // queryClient.invalidateQueries(["photos", albumId]);
+          queryClient.invalidateQueries([
+            "photos",
+            getPhotosKey.albumId,
+            getPhotosKey.categoryId,
+            Array.from(getPhotosKey.userId).toString(),
+          ]);
         },
         onError: (error) => {
           console.error(error);
