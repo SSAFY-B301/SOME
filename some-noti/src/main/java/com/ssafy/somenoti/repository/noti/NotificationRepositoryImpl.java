@@ -38,6 +38,7 @@ public class NotificationRepositoryImpl implements NotificationRepositoryCustom{
                         notification.type.ne(NotiType.UPLOAD),
                         notification.status.ne(NotiStatus.DONE)
                 )
+                .orderBy(notification.createdDate.desc())
                 .offset(pageable.getOffset())
                 .limit(pageable.getPageSize())
                 .fetchResults();
