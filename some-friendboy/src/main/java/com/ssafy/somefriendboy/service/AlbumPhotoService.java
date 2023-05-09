@@ -44,6 +44,7 @@ public class AlbumPhotoService {
     private final UserRepository userRepository;
     private final HttpUtil httpUtil;
     private final NotiService notiService;
+
     public ResponseDto insertPhoto(List<MultipartFile> multipartFiles, List<MetaDataDto> metaDataDtos, Long albumId, String accessToken) throws ImageProcessingException, IOException {
         Map<String, Object> result = new HashMap<>();
         String userId = tokenCheck(accessToken);
