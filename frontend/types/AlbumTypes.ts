@@ -124,3 +124,8 @@ export interface PhotoPageType {
     albumId: number;
   }[];
 }
+
+export interface thumbnailBodyType {
+  album_id: number;
+  new_album_thumbnail_id: number;
+}

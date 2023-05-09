@@ -13,6 +13,8 @@ import { getPhoto } from "@/pages/api/photoDetailApi";
 import Slider from "react-slick";
 import "slick-carousel/slick/slick.css";
 import "slick-carousel/slick/slick-theme.css";
+import { Mutations } from "@/pages/api/albumApi";
+import { thumbnailBodyType } from "@/types/AlbumTypes";
 
 const PhotoDetail = (): JSX.Element => {
   /**
@@ -85,6 +87,19 @@ const PhotoDetail = (): JSX.Element => {
     showVoteModal ? setVoteModal(false) : setVoteModal(true);
   };
 
+  const { mutate: mutateThumbnail } = Mutations().usePutThumbnail();
+
+  /**
+   * 썸네일 수정 API
+   */
+  const clickPutThumbnail = () => {
+    const body: thumbnailBodyType = {
+      album_id: photoDetail.albumId,
+      new_album_thumbnail_id: photoDetail.photoId,
+    };
+    mutateThumbnail(body);
+  };
+
   /**
    * 클릭 이벤트 분기 로직
    */
@@ -144,6 +159,7 @@ const PhotoDetail = (): JSX.Element => {
           clickDownload={clickDownload}
           clickDelete={clickDelete}
           clickVote={clickVote}
+          clickPutThumbnail={clickPutThumbnail}
         />
       </div>
       {showDownLoadModal && <DownloadModal clickDownload={clickDownload} />}

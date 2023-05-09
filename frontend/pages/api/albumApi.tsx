@@ -18,6 +18,7 @@ import {
   requestPartType,
   usePutAlbumNameType,
   PhotoPageType,
+  thumbnailBodyType,
 } from "@/types/AlbumTypes";
 import useCustomAxios from "@/features/customAxios";
 
@@ -264,7 +265,11 @@ export function Mutations() {
     );
   }
 
-  function usePutThumbnail() {
+  function usePutThumbnail(): UseMutationResult<
+    boolean,
+    AxiosError,
+    thumbnailBodyType
+  > {
     return useMutation((body) =>
       customBoyAxios.put(`album/modify/thumbnail`, body)
     );
