@@ -1,7 +1,7 @@
 package com.ssafy.somefriendboy.repository.albumfav;
 
 import com.ssafy.somefriendboy.entity.AlbumFav;
-import com.ssafy.somefriendboy.entity.AlbumMemberId;
+import com.ssafy.somefriendboy.entity.id.AlbumMemberId;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.stereotype.Repository;
 

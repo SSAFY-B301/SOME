@@ -2,9 +2,8 @@ package com.ssafy.somefriendboy.repository.albumphoto;
 
 import com.querydsl.core.types.dsl.BooleanExpression;
 import com.querydsl.jpa.impl.JPAQueryFactory;
-import com.ssafy.somefriendboy.dto.AlbumPhotoListDto;
 import com.ssafy.somefriendboy.entity.AlbumPhoto;
-import com.ssafy.somefriendboy.entity.PhotoStatus;
+import com.ssafy.somefriendboy.entity.status.PhotoStatus;
 import com.ssafy.somefriendboy.util.MongoQueryUtil;
 import lombok.RequiredArgsConstructor;
 import org.springframework.data.domain.Page;
@@ -16,7 +15,6 @@ import org.springframework.data.mongodb.core.query.Update;
 import org.springframework.data.support.PageableExecutionUtils;
 
 import java.util.List;
-import java.util.stream.Collectors;
 
 import static com.ssafy.somefriendboy.entity.QAlbumPhoto.albumPhoto;
 import static com.ssafy.somefriendboy.entity.QPhotoCategory.photoCategory;

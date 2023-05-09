@@ -1,7 +1,7 @@
 package com.ssafy.somefriendboy.repository.userphotolike;
 
 import com.querydsl.jpa.impl.JPAQueryFactory;
-import com.ssafy.somefriendboy.entity.LikeStatus;
+import com.ssafy.somefriendboy.entity.status.LikeStatus;
 import com.ssafy.somefriendboy.entity.UserPhotoLike;
 import lombok.RequiredArgsConstructor;
 

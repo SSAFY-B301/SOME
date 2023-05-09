@@ -1,7 +1,7 @@
 package com.ssafy.somefriendboy.dto;
 
 import com.ssafy.somefriendboy.entity.AlbumPhoto;
-import com.ssafy.somefriendboy.entity.LikeStatus;
+import com.ssafy.somefriendboy.entity.status.LikeStatus;
 import lombok.*;
 import java.time.LocalDateTime;
 

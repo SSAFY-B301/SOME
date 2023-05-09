@@ -1,7 +1,6 @@
 package com.ssafy.somefriendboy.dto;
 
 import com.fasterxml.jackson.annotation.JsonProperty;
-import com.ssafy.somefriendboy.entity.NotiType;
 import lombok.Builder;
 import lombok.Data;
 
