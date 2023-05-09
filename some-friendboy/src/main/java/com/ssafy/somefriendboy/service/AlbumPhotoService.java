@@ -11,6 +11,7 @@ import com.ssafy.somefriendboy.dto.*;
 import com.ssafy.somefriendboy.entity.*;
 import com.ssafy.somefriendboy.entity.id.UserPhotoLikeId;
 import com.ssafy.somefriendboy.entity.status.LikeStatus;
+import com.ssafy.somefriendboy.entity.status.NotiType;
 import com.ssafy.somefriendboy.entity.status.PhotoStatus;
 import com.ssafy.somefriendboy.repository.albumphoto.AlbumPhotoRepository;
 import com.ssafy.somefriendboy.repository.album.AlbumRepository;
@@ -18,6 +19,7 @@ import com.ssafy.somefriendboy.repository.user.UserRepository;
 import com.ssafy.somefriendboy.repository.userphotolike.UserPhotoLikeRepository;
 import com.ssafy.somefriendboy.util.HttpUtil;
 import lombok.RequiredArgsConstructor;
+import org.springframework.amqp.rabbit.core.RabbitTemplate;
 import org.springframework.core.io.ByteArrayResource;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
@@ -44,7 +46,8 @@ public class AlbumPhotoService {
     private final UserRepository userRepository;
     private final HttpUtil httpUtil;
     private final NotiService notiService;
-
+    private final RabbitTemplate rabbitTemplate;
+    private static final String EXCHANGE_NAME = "test.exchange";
     public ResponseDto insertPhoto(List<MultipartFile> multipartFiles, List<MetaDataDto> metaDataDtos, Long albumId, String accessToken) throws ImageProcessingException, IOException {
         Map<String, Object> result = new HashMap<>();
         String userId = tokenCheck(accessToken);
@@ -95,7 +98,17 @@ public class AlbumPhotoService {
         List<AlbumPhoto> albumPhotoList = albumPhotoRepository.insert(albumPhotos);
         List<Long> photoIds = albumPhotoList.stream().map(AlbumPhoto::getPhotoId).collect(Collectors.toList());
         for (Long photoId : photoIds) {
-            notiService.uploadNoti(userId,photoId,albumId);
+            //notiService.uploadNoti(userId,photoId,albumId);
+            NotiUploadCreateDto notiUploadCreateDto = NotiUploadCreateDto.builder()
+                    .senderId(userId)
+                    .photoId(photoId)
+                    .albumId(albumId)
+                    .build();
+            MQDto mqDto = MQDto.builder()
+                    .type(NotiType.UPLOAD)
+                    .data(notiUploadCreateDto)
+                    .build();
+            rabbitTemplate.convertAndSend(EXCHANGE_NAME, "test.route.#", mqDto);
         }
         Long photoId = albumPhotos.getLast().getPhotoId();
 
