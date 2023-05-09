@@ -11,10 +11,13 @@ import { useGetDetail } from "@/pages/api/albumApi";
 import { useRouter } from "next/router";
 import { LoadingProfile } from "@/components/common/Loading";
 
+// 리덕스
+import { useDispatch, useSelector } from "react-redux";
+import { StateType } from "@/types/StateType";
+import { setUserIdState } from "@/features/photoListSlice";
+
 // 인터페이스
 interface MembersType {
-  selectMembers: Set<number>;
-  setSelectMembers: React.Dispatch<React.SetStateAction<Set<number>>>;
   membersId: number[];
   isAlbumLoading: () => boolean;
 }
@@ -22,21 +25,16 @@ interface MembersType {
 /**
  * 앨범의 멤버들 컴포넌트
  * @param members 멤버 리스트
- * @param selectMembers 선택된 멤버가 저장되는 Set
- * @param setSelectMembers 선택된 멤버가 저장되는 Set의 Setter 함수
  * @param membersSize 멤버 수
  * @param membersId 멤버들의 id
  * @returns
  */
-function Members({
-  selectMembers,
-  setSelectMembers,
-  membersId,
-  isAlbumLoading,
-}: MembersType) {
+function Members({ membersId, isAlbumLoading }: MembersType) {
   const router = useRouter();
+  let dispatch = useDispatch();
+  const albumId = useSelector((state: StateType) => state.photoList.albumId);
 
-  const albumId: number = Number(router.query.album_id);
+  const userId = useSelector((state: StateType) => state.photoList.userId);
   const { getDetail } = useGetDetail(albumId);
   const [membersSize, setMembersSize] = useState<number>(membersId.length);
 
@@ -49,11 +47,11 @@ function Members({
    * @param id 멤버 id
    */
   const changeSelect = (id: number) => {
-    selectMembers.size === membersSize && selectMembers.clear();
-    selectMembers.has(id) ? selectMembers.delete(id) : selectMembers.add(id);
-    selectMembers.size === 0
-      ? setSelectMembers(new Set(membersId))
-      : setSelectMembers(new Set(selectMembers));
+    userId.size === membersSize && userId.clear();
+    userId.has(id) ? userId.delete(id) : userId.add(id);
+    userId.size === 0
+      ? dispatch(setUserIdState({ userId: new Set(membersId) }))
+      : dispatch(setUserIdState({ userId: new Set(userId) }));
   };
 
   /**
@@ -75,9 +73,7 @@ function Members({
           changeSelect(member.id);
         }}
         className={`${styles.member} ${
-          selectMembers.has(member.id)
-            ? styles.select_member
-            : styles.no_select_member
+          userId.has(member.id) ? styles.select_member : styles.no_select_member
         }`}
         style={{
           backgroundImage: `url(${member.profile_img_url})`,
