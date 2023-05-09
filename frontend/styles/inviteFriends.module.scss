@@ -6,8 +6,44 @@ $main-color: linear-gradient(
   ),
   linear-gradient(134.36deg, #f472b6 15.23%, #9797d7 49.79%, #38bdf8 84.77%);
 
-.btn {
-  background: $main-color;
+@keyframes transitionFrame {
+  from {
+    position: absolute;
+    bottom: 22px;
+    left: 50%;
+    transform: translateX(-50%);
+    width: 64.06px;
+    height: 64.06px;
+    border-radius: 50%;
+    transform-origin: center center;
+  }
+  to {
+    position: absolute;
+    bottom: 0px;
+    left: 50%;
+    transform: translateX(-50%);
+    width: 100vw;
+    height: 100vh;
+    transform-origin: center center;
+  }
+}
+
+@keyframes rotateFrame {
+  from {
+    transform: rotate(0deg);
+  }
+  to {
+    transform: rotate(675deg);
+  }
+}
+
+@keyframes opacityFrame {
+  from {
+    opacity: 0;
+  }
+  to {
+    opacity: 1;
+  }
 }
 
 .nav_bar {
@@ -73,6 +109,30 @@ $main-color: linear-gradient(
 // animation-play-state : 애니메이션을 재생 상태. 멈추거나 다시 재생 시킬 수 있음
 // animation-timing-function : 중간 상태들의 전환을 어떤 시간간격으로 진행할지 지정
 // animation-fill-mode : 애니메이션이 재생 전 후의 상태 지정
+
+.createPageBg {
+  background: $main-color;
+  animation: transitionFrame 0.7s ease-in-out 0s 1 normal forwards;
+}
+
+.createPageTitle {
+  opacity: 0;
+  animation: opacityFrame 0.3s ease-in-out 0.7s 1 normal forwards;
+}
+
+.createPageInput {
+  opacity: 0;
+  animation: opacityFrame 0.3s ease-in-out 0.8s 1 normal forwards;
+}
+
+.createPageNextBtn {
+  opacity: 0;
+  animation: opacityFrame 0.3s ease-in-out 0.9s 1 normal forwards;
+}
+
+.rotateBtn {
+  animation: rotateFrame 0.7s ease-in-out 0s 1 normal forwards;
+}
 
 .appearFriendDiv {
   animation: slider 0.3s ease-in-out 0s 1 normal forwards;

@@ -24,34 +24,41 @@ const AlbumCreate = (): JSX.Element => {
   const resultName = albumName ? albumName : defaultName.current;
 
   return (
-    <div
-      className={`relative bg-pink-400 ${styles.btn}`}
-      style={{ width: "100vw", height: "100vh" }}
-    >
-      <div className="absolute left-1/2 top-1/2 -translate-x-1/2 -translate-y-1/2 flex flex-col justify-between w-9/12">
-        <span className="text-2xl text-white box-border mb-4">앨범 제목</span>
-        <input
-          className="text-2xl text-white bg-inherit border-b-2 h-1/2 placeholder:italic placeholder:text-white placeholder:opacity-60 box-border mb-2"
-          placeholder={defaultName.current}
-          value={albumName}
-          onChange={onChange}
-          maxLength={8}
-        ></input>
-        <div className="text-xl font-extralight text-white flex justify-end">
-          <Link
-            href={{
-              pathname: "/invite",
-              query: { albumId: "", albumName: resultName },
-            }}
-            as={`/invite`}
+    <div className="w-screen h-screen">
+      <div className={`relative bg-pink-400 ${styles.createPageBg}`}>
+        <div
+          className={`absolute left-1/2 top-1/2 -translate-x-1/2 -translate-y-1/2 flex flex-col justify-between w-9/12`}
+        >
+          <span
+            className={`text-2xl text-white box-border mb-4 ${styles.createPageTitle}`}
           >
-            다음
-          </Link>
+            앨범 제목
+          </span>
+          <input
+            className={`text-2xl text-white bg-inherit border-b-2 h-1/2 placeholder:italic placeholder:text-white placeholder:opacity-60 box-border mb-2 ${styles.createPageInput}`}
+            placeholder={defaultName.current}
+            value={albumName}
+            onChange={onChange}
+            maxLength={8}
+          ></input>
+          <div
+            className={`text-xl font-extralight text-white flex justify-end ${styles.createPageNextBtn}`}
+          >
+            <Link
+              href={{
+                pathname: "/invite",
+                query: { albumId: "", albumName: resultName },
+              }}
+              as={`/invite`}
+            >
+              다음
+            </Link>
+          </div>
         </div>
       </div>
       <div className="absolute bottom-0 box-border flex justify-center w-full h-20 pt-2">
         <Link href={"/boy-home"}>
-          <PlusIcon className="origin-center rotate-45" />
+          <PlusIcon className={`origin-center ${styles.rotateBtn}`} />
         </Link>
       </div>
     </div>
