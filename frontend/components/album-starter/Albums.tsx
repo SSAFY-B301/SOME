@@ -40,7 +40,9 @@ const Albums = ({
           </div>
         </div>
       ) : (
-        <div></div>
+        <div className="w-full flex justify-center items-center box-border mb-4">
+          친구랑 공유 중인 앨범이 없어요...
+        </div>
       )}
     </ItemBlock>
   );

@@ -1,4 +1,7 @@
 import React, { ReactEventHandler, useEffect, useMemo, useState } from "react";
+import Slider from "react-slick";
+import "slick-carousel/slick/slick.css";
+import "slick-carousel/slick/slick-theme.css";
 import {
   Photo,
   PhotoFeatures,
@@ -10,9 +13,6 @@ import {
 } from "@/components/photo-detail";
 import styles from "./photo.module.scss";
 import { getPhoto } from "@/pages/api/photoDetailApi";
-import Slider from "react-slick";
-import "slick-carousel/slick/slick.css";
-import "slick-carousel/slick/slick-theme.css";
 
 const PhotoDetail = (): JSX.Element => {
   /**
@@ -46,21 +46,21 @@ const PhotoDetail = (): JSX.Element => {
   /**
    * 페이지 이동 슬라이더 구현
    */
-  const onTouchStart = (e: React.TouchEvent) => {
-    setTouchedX(e.changedTouches[0].pageX);
-    setTouchedY(e.changedTouches[0].pageY);
-  };
+  // const onTouchStart = (e: React.TouchEvent) => {
+  //   setTouchedX(e.changedTouches[0].pageX);
+  //   setTouchedY(e.changedTouches[0].pageY);
+  // };
 
-  const onTouchEnd = (e: React.TouchEvent) => {
-    const distanceX = touchedX - e.changedTouches[0].pageX;
-    const distanceY = touchedY - e.changedTouches[0].pageY;
+  // const onTouchEnd = (e: React.TouchEvent) => {
+  //   const distanceX = touchedX - e.changedTouches[0].pageX;
+  //   const distanceY = touchedY - e.changedTouches[0].pageY;
 
-    if (distanceX > 30 && isZoom == false) {
-      console.log("다음 사진!");
-    } else if (distanceX < -30 && isZoom == false) {
-      console.log("이전 사진!");
-    }
-  };
+  //   if (distanceX > 30 && isZoom == false) {
+  //     console.log("다음 사진!");
+  //   } else if (distanceX < -30 && isZoom == false) {
+  //     console.log("이전 사진!");
+  //   }
+  // };
 
   /**
    * 다운로드 모달창 생성
@@ -99,11 +99,11 @@ const PhotoDetail = (): JSX.Element => {
         clickCount = 0;
         if (isZoom) {
           setIsZoom(false);
-          setRatio(1);
+          setRatio(0.7);
           console.log("줌 아웃");
         } else {
           setIsZoom(true);
-          setRatio(1.5);
+          setRatio(3);
           console.log("줌 인");
         }
       } else if (clickCount == 1) {
@@ -116,29 +116,70 @@ const PhotoDetail = (): JSX.Element => {
   };
 
   /**
+   * Slider 세팅값
+   */
+  const sliderSet = {
+    dots: false,
+    infinite: false,
+    speed: 500,
+    slidesToShow: 1,
+    slidesToScroll: 1,
+  };
+
+  /**
    * 공유 요청 알림을 통해서 들어왔을 때 승인 모달 생성 필요
    */
 
   return (
-    <div className="flex flex-col items-center w-screen h-screen bg-white">
+    <div className="w-screen h-screen bg-white overflow-hidden">
       <div
-        className={`z-20 flex items-center justify-center border-b-2 box-border p-4 bg-white ${styles.info_bar}`}
+        className={`z-20 fixed flex items-center justify-center border-b-2 box-border p-4 bg-white ${styles.info_bar}`}
       >
         <Nav title="앨범" />
       </div>
-
-      <div className="z-20 flex items-center justify-center w-full h-20 bg-white">
-        <PhotoFeatures />
-      </div>
-      <Photo
-        imgSrc={photoDetail?.s3Url}
-        clickImg={clickImg}
-        showConcentrationMode={showConcentrationMode}
-        isZoom={isZoom}
-        ratio={ratio}
-        onTouchEnd={onTouchEnd}
-        onTouchStart={onTouchStart}
-      />
+      <Slider
+        className={
+          showConcentrationMode
+            ? "w-screen h-screen z-30 bg-black"
+            : "w-screen h-screen"
+        }
+        {...sliderSet}
+      >
+        <div className="w-screen h-screen">
+          <div
+            className="absolute w-full h-20 z-20 flex items-center justify-center bg-white"
+            style={{ top: "15.385vw" }}
+          >
+            <PhotoFeatures />
+          </div>
+          <Photo
+            imgSrc={photoDetail?.s3Url}
+            clickImg={clickImg}
+            showConcentrationMode={showConcentrationMode}
+            isZoom={isZoom}
+            ratio={ratio}
+            // onTouchEnd={onTouchEnd}
+            // onTouchStart={onTouchStart}
+          />
+        </div>
+        <div className="w-screen h-screen">
+          <div
+            className="absolute w-full h-20 z-20 flex items-center justify-center bg-white"
+            style={{ top: "15.385vw" }}
+          >
+            <PhotoFeatures />
+          </div>
+          <Photo
+            imgSrc={photoDetail?.s3Url}
+            clickImg={clickImg}
+            showConcentrationMode={showConcentrationMode}
+            isZoom={isZoom}
+            ratio={ratio}
+            // onTouchEnd={onTouchEnd}
+            // onTouchStart={onTouchStart}
+          />
+        </div>
+      </Slider>
       <div className={`z-20 ${styles.footer}`}>
         <Footer
           clickDownload={clickDownload}
