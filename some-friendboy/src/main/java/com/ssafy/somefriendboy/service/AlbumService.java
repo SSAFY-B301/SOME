@@ -7,6 +7,7 @@ import com.ssafy.somefriendboy.entity.id.AutoIncrementSequence;
 import com.ssafy.somefriendboy.entity.status.AlbumMemberStatus;
 import com.ssafy.somefriendboy.entity.status.AlbumStatus;
 import com.ssafy.somefriendboy.entity.status.LikeStatus;
+import com.ssafy.somefriendboy.entity.status.NotiType;
 import com.ssafy.somefriendboy.repository.albumphoto.AlbumPhotoRepository;
 import com.ssafy.somefriendboy.repository.album.AlbumRepository;
 import com.ssafy.somefriendboy.repository.albumfav.AlbumFavRepository;
@@ -15,6 +16,7 @@ import com.ssafy.somefriendboy.repository.user.UserRepository;
 import com.ssafy.somefriendboy.util.HttpUtil;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.log4j.Log4j2;
+import org.springframework.amqp.rabbit.core.RabbitTemplate;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.data.mongodb.core.MongoOperations;
@@ -45,7 +47,8 @@ public class AlbumService {
     private final MongoOperations mongoOperations;
     private final HttpUtil httpUtil;
     private final NotiService notiService;
-
+    private final RabbitTemplate rabbitTemplate;
+    private static final String EXCHANGE_NAME = "test.exchange";
     public ResponseDto createAlbum(String access_token, AlbumCreateDto albumCreateDto) {
         Map<String,Object> result = new HashMap<>();
         String userId = tokenCheck(access_token);
@@ -87,8 +90,17 @@ public class AlbumService {
                 .build();
         albumMemberRepository.save(albumMember);
         // 친구 초대 알림
-        notiService.inviteNoti(userId,albumCreateDto.getInviteFriend(),savedAlbum.getAlbumId());
-
+        //notiService.inviteNoti(userId,albumCreateDto.getInviteFriend(),savedAlbum.getAlbumId());
+        NotiInviteCreateDto notiInviteCreateDto = NotiInviteCreateDto.builder()
+                .senderId(userId)
+                .receivers(List.of(albumCreateDto.getInviteFriend()))
+                .albumId(savedAlbum.getAlbumId())
+                .build();
+        MQDto mqDto = MQDto.builder()
+                .type(NotiType.INVITE)
+                .data(notiInviteCreateDto)
+                .build();
+        rabbitTemplate.convertAndSend(EXCHANGE_NAME, "test.route.#", mqDto);
 
         return setResponseDto(result,"앨범 생성",200);
     }
@@ -353,8 +365,17 @@ public class AlbumService {
                 albumMemberRepository.save(albumMember);
             }
         }
-        notiService.inviteNoti(userId,additionalFriendsInviteDto.getInviteFriend(),additionalFriendsInviteDto.getAlbumId());
-
+        //notiService.inviteNoti(userId,additionalFriendsInviteDto.getInviteFriend(),additionalFriendsInviteDto.getAlbumId());
+        NotiInviteCreateDto notiInviteCreateDto = NotiInviteCreateDto.builder()
+                .senderId(userId)
+                .receivers(List.of(additionalFriendsInviteDto.getInviteFriend()))
+                .albumId(additionalFriendsInviteDto.getAlbumId())
+                .build();
+        MQDto mqDto = MQDto.builder()
+                .type(NotiType.INVITE)
+                .data(notiInviteCreateDto)
+                .build();
+        rabbitTemplate.convertAndSend(EXCHANGE_NAME, "test.route.#", mqDto);
         return setResponseDto(result,"앨범 생성 후 추가 친구 초대",200);
     }
 
