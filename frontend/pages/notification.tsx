@@ -5,9 +5,10 @@ import { InfoBar } from "@/components/common/Nav";
 import styles from "@/styles/notification.module.scss"
 import { getAlarms } from "./api/notiApi";
 import { NotiType } from "@/types/NotiType";
-import { Dispatch, MouseEventHandler, SetStateAction, useState } from "react";
+import { useEffect, useState } from "react";
 import SnsNotiModal from "@/components/pages/notification/SnsModal";
 import InviteModal from "@/components/pages/notification/InviteModal";
+import AlarmTime from "@/components/pages/notification/AlarmTime";
 
 interface SnsHandlerParamType{
     photoId : number,
@@ -37,9 +38,11 @@ export default function Notification() {
         setInviteModalOpen(!inviteModalOpen);   
     }
 
-    function goAlbum() {
-        
-    }
+    useEffect(() => {
+      return () => {
+      }
+    }, [resultData])
+    
     
     return(
         <div className="flex flex-col justify-start h-screen bg-white dark:bg-dark-bg-home">
@@ -47,26 +50,27 @@ export default function Notification() {
             <div className="notiList">
                 {resultData !== undefined &&
                     resultData.map((noti : NotiType) => {
-                        if (noti.status !== "DONE") {
-                            return(
-                                <div key={noti.noti_id} onClick={noti.type === "SNS" ? () => snsAlarmHandler({photoId : noti.photo_or_album_id, notiId :  noti.noti_id}) 
-                                                                                    : () => inviteModalHandler({albumId : noti.photo_or_album_id, notiId : noti.noti_id})} className={noti.status === "UNCHECKED" ? `py-4 px-6 ${styles.on_read}` : `py-4 px-6`}>
-                                    <div className="flex justify-between">
-                                        <div className="flex">
-                                            {noti.type === "SNS" && <p className={noti.status === "UNCHECKED" ? "text-sm text-gray-600 dark:text-gray-200" :  "text-sm text-gray-300 dark:text-gray-600"}>SNS 공유 요청</p>}
-                                            {noti.type === "Invite" && <p className={noti.status === "UNCHECKED" ? "text-sm text-gray-600 dark:text-gray-200" : "text-sm text-gray-300 dark:text-gray-600"}>앨범 초대</p>}
-                                        </div>
-                                        <p className={noti.status === "UNCKECKED" ? "text-sm text-gray-300 dark:text-gray-600" : "text-sm text-gray-600 dark:text-gray-200" }>시간</p>
+                        return(
+                            <div 
+                                key={noti.noti_id} 
+                                onClick={noti.type === "SNS" ? () => snsAlarmHandler({photoId : noti.photo_or_album_id, notiId :  noti.noti_id}) 
+                                                             : () => inviteModalHandler({albumId : noti.photo_or_album_id, notiId : noti.noti_id})} className={noti.status === "UNCHECKED" ? `py-4 px-6 ${styles.on_read}` : `py-4 px-6 shadow-sm`}>
+                                <div className="flex justify-between">
+                                    <div className="flex">
+                                        {noti.type === "SNS" && <p className={"dark:text-gray-200"}>SNS 공유 요청</p>}
+                                        {noti.type === "INVITE" && <p className={"dark:text-gray-200"}>새로운 앨범 초대</p>}
                                     </div>
-                                    <div className={noti.status === "UNCKECKED" ? "flex justify-between items-center mt-2 text-gray-300 dark:text-gray-600" : "mt-2 flex justify-between text-gray-600 dark:text-gray-200" }>
-                                        <div className="flex items-center justify-center h-12">
-                                            {noti.type === "SNS" && <p className="text-sm">{noti.sender}님이 SNS에 올리기를 요청했습니다!</p>}
-                                            {noti.type === "Invite" && <p className="text-sm">{noti.sender}님이 새로운 앨범에 초대했습니다!</p>}
-                                        </div>
+                                    <div className="flex items-end">
+                                        <AlarmTime time={noti.date}></AlarmTime>
                                     </div>
                                 </div>
-                            )
-                        }
+                                <div className={"flex justify-between items-center mt-2 dark:text-gray-200"}>
+                                    <div className="flex items-center justify-center h-12">
+                                        <p className="text-sm">{noti.message}</p>
+                                    </div>
+                                </div>
+                            </div>
+                        )
                     })
                 }
             </div>
