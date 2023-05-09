@@ -37,37 +37,38 @@ const AlbumCreate = (): JSX.Element => {
           onChange={onChange}
           maxLength={8}
         ></input>
-        <Link
-          className="text-lg font-thin text-white flex justify-end"
-          href={{
-            pathname: "/invite",
-            query: { albumId: "", albumName: resultName },
-          }}
-          as={`/invite`}
-        >
-          <svg
-            width="24"
-            height="24"
-            viewBox="0 0 24 24"
-            fill="none"
-            xmlns="http://www.w3.org/2000/svg"
+        <div className="text-lg font-thin text-white flex justify-end">
+          <Link
+            href={{
+              pathname: "/invite",
+              query: { albumId: "", albumName: resultName },
+            }}
+            as={`/invite`}
           >
-            <path
-              d="M5.25 4.5L12.75 12L5.25 19.5"
-              stroke="#FFFFFF"
-              stroke-width="1.5"
-              stroke-linecap="round"
-              stroke-linejoin="round"
-            />
-            <path
-              d="M12.75 4.5L20.25 12L12.75 19.5"
-              stroke="#FFFFFF"
-              stroke-width="1.5"
-              stroke-linecap="round"
-              stroke-linejoin="round"
-            />
-          </svg>
-        </Link>
+            <svg
+              width="24"
+              height="24"
+              viewBox="0 0 24 24"
+              fill="none"
+              xmlns="http://www.w3.org/2000/svg"
+            >
+              <path
+                d="M5.25 4.5L12.75 12L5.25 19.5"
+                stroke="#FFFFFF"
+                stroke-width="1.5"
+                stroke-linecap="round"
+                stroke-linejoin="round"
+              />
+              <path
+                d="M12.75 4.5L20.25 12L12.75 19.5"
+                stroke="#FFFFFF"
+                stroke-width="1.5"
+                stroke-linecap="round"
+                stroke-linejoin="round"
+              />
+            </svg>
+          </Link>
+        </div>
       </div>
       <div className="absolute bottom-0 box-border flex justify-center w-full h-20 pt-2">
         <Link href={"/boy-home"}>
