@@ -71,7 +71,7 @@ public class NotiService {
             return setResponseDto(false,"유저 정보 없음",400);
         }
         User sender = byId.get();
-        List<String> receivers = albumMemberRepository.findAlbumMemberIdByAlbumId(notiSnsDto.getAlbumId());
+        List<String> receivers = albumMemberRepository.findAlbumMemberIdByAlbumId(notiSnsDto.getAlbumId(),sender.getUserId());
         for (String receiver : receivers) {
             AlbumPhotoSnsId albumPhotoSnsId = new AlbumPhotoSnsId(receiver, notiSnsDto.getPhotoId());
             AlbumPhotoSNS albumPhotoSNS = AlbumPhotoSNS.builder()
@@ -89,7 +89,7 @@ public class NotiService {
             return setResponseDto(false,"유저 정보 없음",400);
         }
         User sender = byId.get();
-        List<String> receivers = albumMemberRepository.findAlbumMemberIdByAlbumId(notiUploadCreateDto.getAlbumId());
+        List<String> receivers = albumMemberRepository.findAlbumMemberIdByAlbumId(notiUploadCreateDto.getAlbumId(),sender.getUserId());
         sendNoti(NotiType.UPLOAD,receivers,sender, notiUploadCreateDto.getPhotoId());
         return setResponseDto(true,"사진 업로드 알림 성공",200);
     }
