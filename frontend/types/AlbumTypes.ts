@@ -98,7 +98,8 @@ export interface AlbumPhotosType {
     albumPhotoList: {
       photoId: number;
       uploadedDate: string;
-      s3Url: string;
+      originUrl: string;
+      resizeUrl: string;
       categoryId: number[];
       userId: string;
       albumId: number;
@@ -116,7 +117,8 @@ export interface PhotoPageType {
   albumPhotoList: {
     photoId: number;
     uploadedDate: string;
-    s3Url: string;
+    originUrl: string;
+    resizeUrl: string;
     categoryId: number[];
     userId: string;
     albumId: number;

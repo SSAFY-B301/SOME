@@ -81,7 +81,6 @@ $main-color: linear-gradient(
   -webkit-background-clip: text;
   -webkit-text-fill-color: transparent;
   background-clip: text;
-  text-fill-color: transparent;
   background-blend-mode: lighten, normal;
   font-weight: 500;
 }
@@ -198,4 +197,44 @@ $main-color: linear-gradient(
 .paging_photo {
   width: 104px;
   height: 104px;
+}
+
+.loading {
+  position: relative;
+  width: 32px;
+  height: 32px;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  div {
+    position: absolute;
+    width: 28px;
+    height: 28px;
+    border-radius: 999px;
+    // border: solid black 1px;
+    // background: $main-color;
+    // background-blend-mode: lighten, normal;
+    background-color: #ffffff00;
+
+    border: 3px solid #909090;
+    border-bottom-color: #ff3d00;
+    display: inline-block;
+    box-sizing: border-box;
+    animation: rotation 1s linear infinite;
+  }
+  span {
+    position: absolute;
+  }
+}
+.loadingText {
+  color: black;
+}
+
+@keyframes rotation {
+  0% {
+    transform: rotate(0deg);
+  }
+  100% {
+    transform: rotate(360deg);
+  }
 }
