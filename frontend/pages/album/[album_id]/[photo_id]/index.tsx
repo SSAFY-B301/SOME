@@ -10,6 +10,9 @@ import {
 } from "@/components/photo-detail";
 import styles from "./photo.module.scss";
 import { getPhoto } from "@/pages/api/photoDetailApi";
+import Slider from "react-slick";
+import "slick-carousel/slick/slick.css";
+import "slick-carousel/slick/slick-theme.css";
 
 const PhotoDetail = (): JSX.Element => {
   /**
@@ -30,8 +33,8 @@ const PhotoDetail = (): JSX.Element => {
   /**
    * 드래그 모션 state
    */
-  const [tochedX, setTochedX] = useState(0);
-  const [tochedY, setTochedY] = useState(0);
+  const [touchedX, setTouchedX] = useState(0);
+  const [touchedY, setTouchedY] = useState(0);
 
   /**
    * 사진 상세 정보 접근
@@ -44,12 +47,13 @@ const PhotoDetail = (): JSX.Element => {
    * 페이지 이동 슬라이더 구현
    */
   const onTouchStart = (e: React.TouchEvent) => {
-    setTochedX(e.changedTouches[0].pageX);
-    setTochedY(e.changedTouches[0].pageY);
+    setTouchedX(e.changedTouches[0].pageX);
+    setTouchedY(e.changedTouches[0].pageY);
   };
+
   const onTouchEnd = (e: React.TouchEvent) => {
-    const distanceX = tochedX - e.changedTouches[0].pageX;
-    const distanceY = tochedY - e.changedTouches[0].pageY;
+    const distanceX = touchedX - e.changedTouches[0].pageX;
+    const distanceY = touchedY - e.changedTouches[0].pageY;
 
     if (distanceX > 30 && isZoom == false) {
       console.log("다음 사진!");
@@ -99,7 +103,7 @@ const PhotoDetail = (): JSX.Element => {
           console.log("줌 아웃");
         } else {
           setIsZoom(true);
-          setRatio(2);
+          setRatio(1.5);
           console.log("줌 인");
         }
       } else if (clickCount == 1) {
