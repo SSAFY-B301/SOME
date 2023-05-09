@@ -9,12 +9,8 @@ import NewPhoto from "components/pages/album/NewPhoto";
 
 // CSS
 import styles from "styles/album.module.scss";
-import { useGetPhotos, useInfinitePhotos } from "@/pages/api/albumApi";
-import {
-  PhotoPageType,
-  PhotoType,
-  requestPhotosType,
-} from "@/types/AlbumTypes";
+import { useInfinitePhotos } from "@/pages/api/albumApi";
+import { PhotoPageType, requestPhotosType } from "@/types/AlbumTypes";
 import { LoadingPhoto } from "@/components/common/Loading";
 
 // 인터페이스
