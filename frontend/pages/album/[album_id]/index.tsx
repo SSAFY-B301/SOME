@@ -9,7 +9,7 @@ import EditAlbumName from "components/pages/album/EditAlbumName";
 import { LoadingCount } from "components/common/Loading";
 
 // 라이브러리
-import { useEffect, useMemo, useState } from "react";
+import { useEffect, useMemo, useRef, useState } from "react";
 import { useRouter } from "next/router";
 import axios from "axios";
 
@@ -50,6 +50,9 @@ function AlbumDetail() {
   const [isAlerts, setIsAlerts] = useState<boolean[]>(
     [...Array(4)].fill(false)
   );
+
+  const [uploadCount, setUploadCount] = useState(0);
+  const isUploading = useRef(false);
 
   const makeRequest = () => {
     return {
@@ -111,12 +114,19 @@ function AlbumDetail() {
 
   const downloadPhotos = () => {
     // TODO : 다운로드
-    Array.from(selectedPhotos).map((photoId) => {
-      const imageUrl = getPhotos?.find(
-        (photo) => photo.photoId === photoId
-      )?.s3Url;
-      imageUrl && download(imageUrl);
+    let downloads: string[] = [];
+    getPhotosPages?.pages.map((photosPage) => {
+      photosPage.albumPhotoList.forEach((photo) => {
+        if (selectedPhotos.has(photo.photoId)) {
+          downloads.push(photo.originUrl);
+        }
+      });
     });
+
+    downloads.forEach((url) => {
+      download(url);
+    });
+
     closeAlert(1);
   };
 
@@ -168,6 +178,8 @@ function AlbumDetail() {
         isTotal={isTotal}
         setIsTotal={setIsTotal}
         isAlbumLoading={isAlbumLoading}
+        uploadCount={uploadCount}
+        isUploading={isUploading}
       />
       <div className={`${styles.container}`}>
         <Members
@@ -211,6 +223,9 @@ function AlbumDetail() {
           photoLength={inputPhoto ? inputPhoto.length : 0}
           setIsPreview={setIsPreview}
           inputPhoto={inputPhoto}
+          uploadCount={uploadCount}
+          setUploadCount={setUploadCount}
+          isUploading={isUploading}
         />
       )}
       {isAlerts[0] && (

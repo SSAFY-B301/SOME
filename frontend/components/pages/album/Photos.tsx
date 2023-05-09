@@ -91,6 +91,7 @@ function Photos({
               page.albumPhotoList.map((photo) => (
                 <div
                   key={photo.photoId}
+                  onTouchMove={(e) => isSelect && console.log(e.currentTarget)}
                   onClick={() =>
                     isSelect
                       ? changeSelect(photo.photoId)
@@ -103,7 +104,7 @@ function Photos({
                     height={"22.564vw"}
                     selectedPhotos={selectedPhotos}
                     photoId={photo.photoId}
-                    img={photo.s3Url}
+                    img={photo.resizeUrl}
                   />
                 </div>
               ))

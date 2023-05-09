@@ -5,6 +5,7 @@ import { useGetDetail } from "@/pages/api/albumApi";
 import Link from "next/link";
 import { LoadingTitle } from "@/components/common/Loading";
 import { useTheme } from "next-themes";
+import { MutableRefObject } from "react";
 
 interface NavBarType {
   isSelect: boolean;
@@ -12,6 +13,8 @@ interface NavBarType {
   isTotal: boolean;
   setIsTotal: React.Dispatch<React.SetStateAction<boolean>>;
   isAlbumLoading: () => boolean;
+  uploadCount: number;
+  isUploading: MutableRefObject<boolean>;
 }
 
 /**
@@ -28,6 +31,8 @@ function NavBar({
   isTotal,
   setIsTotal,
   isAlbumLoading,
+  uploadCount,
+  isUploading,
 }: NavBarType) {
   const router = useRouter();
   const clickSelect = () => {
@@ -65,12 +70,23 @@ function NavBar({
               <LeftIcon stroke={theme === "dark" ? "white" : "black"} />
             </Link>
           )}
-          <div onClick={clickSelect}>
-            {isSelect ? (
-              <span className={`${styles.selectBtn}`}>취소</span>
-            ) : (
-              <span className={`${styles.selectBtn}`}>사진 선택</span>
+          <div className="flex gap-2">
+            {isUploading.current && (
+              <div className={`${styles.loading}`}>
+                <div></div>
+                <span className={`${styles.loadingText}`}>{uploadCount}</span>
+              </div>
             )}
+            <div
+              onClick={clickSelect}
+              className="flex justify-center items-center"
+            >
+              {isSelect ? (
+                <span className={`${styles.selectBtn}`}>취소</span>
+              ) : (
+                <span className={`${styles.selectBtn}`}>사진 선택</span>
+              )}
+            </div>
           </div>
         </div>
       </div>
