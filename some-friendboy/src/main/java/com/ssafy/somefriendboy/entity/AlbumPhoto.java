@@ -28,6 +28,10 @@ public class AlbumPhoto {
     private String resizeUrl;
     private Double gpsLatitude;
     private Double gpsLongitude;
+    private Double mapLatitude;
+    private Double mapLongitude;
+    private Long viewCnt;
+    private Long likeCnt;
     private List<Long> categoryId;
     private String userId;
     private Long albumId;
