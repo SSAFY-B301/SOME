@@ -6,6 +6,8 @@ import lombok.*;
 
 import javax.persistence.EmbeddedId;
 import javax.persistence.Entity;
+import javax.persistence.EnumType;
+import javax.persistence.Enumerated;
 
 @Entity
 @Getter @Setter
@@ -17,5 +19,6 @@ public class AlbumPhotoSNS {
     @EmbeddedId
     private AlbumPhotoSnsId albumPhotoSnsId;
 
+    @Enumerated(EnumType.STRING)
     private AlbumPhotoSnsStatus status;
 }
