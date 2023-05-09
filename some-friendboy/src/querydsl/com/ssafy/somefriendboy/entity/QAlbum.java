@@ -7,7 +7,6 @@ import com.querydsl.core.types.dsl.*;
 import com.querydsl.core.types.PathMetadata;
 import javax.annotation.processing.Generated;
 import com.querydsl.core.types.Path;
-import com.ssafy.somefriendboy.entity.status.AlbumStatus;
 
 
 /**
@@ -28,7 +27,7 @@ public class QAlbum extends EntityPathBase<Album> {
 
     public final NumberPath<Long> recentPhoto = createNumber("recentPhoto", Long.class);
 
-    public final EnumPath<AlbumStatus> status = createEnum("status", AlbumStatus.class);
+    public final EnumPath<com.ssafy.somefriendboy.entity.status.AlbumStatus> status = createEnum("status", com.ssafy.somefriendboy.entity.status.AlbumStatus.class);
 
     public final NumberPath<Long> thumbnailPhoto = createNumber("thumbnailPhoto", Long.class);
 

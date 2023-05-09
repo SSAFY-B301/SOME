@@ -8,7 +8,6 @@ import com.querydsl.core.types.PathMetadata;
 import javax.annotation.processing.Generated;
 import com.querydsl.core.types.Path;
 import com.querydsl.core.types.dsl.PathInits;
-import com.ssafy.somefriendboy.entity.status.LikeStatus;
 
 
 /**
@@ -23,9 +22,9 @@ public class QUserPhotoLike extends EntityPathBase<UserPhotoLike> {
 
     public static final QUserPhotoLike userPhotoLike = new QUserPhotoLike("userPhotoLike");
 
-    public final QUserPhotoLikeId userPhotoLikeId;
+    public final com.ssafy.somefriendboy.entity.id.QUserPhotoLikeId userPhotoLikeId;
 
-    public final EnumPath<LikeStatus> userPhotoLikeStatus = createEnum("userPhotoLikeStatus", LikeStatus.class);
+    public final EnumPath<com.ssafy.somefriendboy.entity.status.LikeStatus> userPhotoLikeStatus = createEnum("userPhotoLikeStatus", com.ssafy.somefriendboy.entity.status.LikeStatus.class);
 
     public QUserPhotoLike(String variable) {
         this(UserPhotoLike.class, forVariable(variable), INITS);
@@ -45,7 +44,7 @@ public class QUserPhotoLike extends EntityPathBase<UserPhotoLike> {
 
     public QUserPhotoLike(Class<? extends UserPhotoLike> type, PathMetadata metadata, PathInits inits) {
         super(type, metadata, inits);
-        this.userPhotoLikeId = inits.isInitialized("userPhotoLikeId") ? new QUserPhotoLikeId(forProperty("userPhotoLikeId")) : null;
+        this.userPhotoLikeId = inits.isInitialized("userPhotoLikeId") ? new com.ssafy.somefriendboy.entity.id.QUserPhotoLikeId(forProperty("userPhotoLikeId")) : null;
     }
 
 }
