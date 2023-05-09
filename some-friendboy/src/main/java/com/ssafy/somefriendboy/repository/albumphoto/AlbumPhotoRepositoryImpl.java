@@ -41,7 +41,7 @@ public class AlbumPhotoRepositoryImpl implements AlbumPhotoRepositoryCustom {
 
     @Override
     public List<AlbumPhoto> findAllAlbumPhoto(Long albumId, Long categoryId, List<String> userId) {
-        Query query = new Query().with(Sort.by(Sort.Direction.DESC, MongoQueryUtil.parse(albumPhoto.photoId)));;
+        Query query = new Query().with(Sort.by(Sort.Direction.DESC, MongoQueryUtil.parse(albumPhoto.photoId)));
         query.addCriteria(Criteria.where(MongoQueryUtil.parse(albumPhoto.albumId)).is(albumId));
         query.addCriteria(Criteria.where(MongoQueryUtil.parse(albumPhoto.status)).is(PhotoStatus.NORMAL));
         if (categoryId != null) query.addCriteria(Criteria.where(MongoQueryUtil.parse(albumPhoto.categoryId)).in(categoryId));
