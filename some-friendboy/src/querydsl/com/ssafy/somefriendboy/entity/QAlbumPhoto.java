@@ -29,6 +29,12 @@ public class QAlbumPhoto extends EntityPathBase<AlbumPhoto> {
 
     public final NumberPath<Double> gpsLongitude = createNumber("gpsLongitude", Double.class);
 
+    public final NumberPath<Long> likeCnt = createNumber("likeCnt", Long.class);
+
+    public final NumberPath<Double> mapLatitude = createNumber("mapLatitude", Double.class);
+
+    public final NumberPath<Double> mapLongitude = createNumber("mapLongitude", Double.class);
+
     public final StringPath originUrl = createString("originUrl");
 
     public final NumberPath<Long> photoId = createNumber("photoId", Long.class);
@@ -42,6 +48,8 @@ public class QAlbumPhoto extends EntityPathBase<AlbumPhoto> {
     public final DateTimePath<java.time.LocalDateTime> uploadedDate = createDateTime("uploadedDate", java.time.LocalDateTime.class);
 
     public final StringPath userId = createString("userId");
+
+    public final NumberPath<Long> viewCnt = createNumber("viewCnt", Long.class);
 
     public QAlbumPhoto(String variable) {
         super(AlbumPhoto.class, forVariable(variable));
