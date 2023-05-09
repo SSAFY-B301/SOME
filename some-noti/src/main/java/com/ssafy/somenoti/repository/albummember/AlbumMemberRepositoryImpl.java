@@ -24,11 +24,15 @@ public class AlbumMemberRepositoryImpl implements AlbumMemberRepositoryCustom{
     }
 
     @Override
-    public List<String> findAlbumMemberIdByAlbumId(Long albumId) {
+    public List<String> findAlbumMemberIdByAlbumId(Long albumId,String sender) {
         return queryFactory
                 .select(albumMember.albumMemberId.userId)
                 .from(albumMember)
-                .where(albumMember.albumMemberId.albumId.eq(albumId).and(albumMember.albumMemberId.albumMemberStatus.eq(AlbumMemberStatus.ACCEPT)))
+                .where(
+                        albumMember.albumMemberId.albumId.eq(albumId)
+                        .and(albumMember.albumMemberId.albumMemberStatus.eq(AlbumMemberStatus.ACCEPT))
+                                .and(albumMember.albumMemberId.userId.ne(sender))
+                )
                 .fetch();
     }
 
