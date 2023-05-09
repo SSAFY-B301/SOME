@@ -1,6 +1,6 @@
 package com.ssafy.somefriendboy.repository.albummember;
 
-import com.ssafy.somefriendboy.entity.AlbumMemberStatus;
+import com.ssafy.somefriendboy.entity.status.AlbumMemberStatus;
 
 import java.util.List;
 

@@ -34,9 +34,9 @@ public class QNotification extends EntityPathBase<Notification> {
 
     public final QUser sender;
 
-    public final EnumPath<NotiStatus> status = createEnum("status", NotiStatus.class);
+    public final EnumPath<com.ssafy.somefriendboy.entity.status.NotiStatus> status = createEnum("status", com.ssafy.somefriendboy.entity.status.NotiStatus.class);
 
-    public final EnumPath<NotiType> type = createEnum("type", NotiType.class);
+    public final EnumPath<com.ssafy.somefriendboy.entity.status.NotiType> type = createEnum("type", com.ssafy.somefriendboy.entity.status.NotiType.class);
 
     public QNotification(String variable) {
         this(Notification.class, forVariable(variable), INITS);

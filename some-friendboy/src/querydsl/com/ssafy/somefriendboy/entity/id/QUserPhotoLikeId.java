@@ -1,4 +1,4 @@
-package com.ssafy.somefriendboy.entity;
+package com.ssafy.somefriendboy.entity.id;
 
 import static com.querydsl.core.types.PathMetadataFactory.*;
 
@@ -15,7 +15,7 @@ import com.querydsl.core.types.Path;
 @Generated("com.querydsl.codegen.DefaultEmbeddableSerializer")
 public class QUserPhotoLikeId extends BeanPath<UserPhotoLikeId> {
 
-    private static final long serialVersionUID = 5171465L;
+    private static final long serialVersionUID = -778881002L;
 
     public static final QUserPhotoLikeId userPhotoLikeId = new QUserPhotoLikeId("userPhotoLikeId");
 

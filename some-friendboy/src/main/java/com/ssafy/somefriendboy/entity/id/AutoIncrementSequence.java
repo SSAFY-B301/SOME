@@ -1,4 +1,4 @@
-package com.ssafy.somefriendboy.entity;
+package com.ssafy.somefriendboy.entity.id;
 
 import lombok.Getter;
 import org.springframework.data.mongodb.core.mapping.Document;

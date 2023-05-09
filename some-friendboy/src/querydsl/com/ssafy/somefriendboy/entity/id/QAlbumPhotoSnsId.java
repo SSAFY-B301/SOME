@@ -1,4 +1,4 @@
-package com.ssafy.somefriendboy.entity;
+package com.ssafy.somefriendboy.entity.id;
 
 import static com.querydsl.core.types.PathMetadataFactory.*;
 
@@ -15,7 +15,7 @@ import com.querydsl.core.types.Path;
 @Generated("com.querydsl.codegen.DefaultEmbeddableSerializer")
 public class QAlbumPhotoSnsId extends BeanPath<AlbumPhotoSnsId> {
 
-    private static final long serialVersionUID = 1047200608L;
+    private static final long serialVersionUID = 263148141L;
 
     public static final QAlbumPhotoSnsId albumPhotoSnsId = new QAlbumPhotoSnsId("albumPhotoSnsId");
 

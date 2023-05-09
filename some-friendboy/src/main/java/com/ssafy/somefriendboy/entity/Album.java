@@ -1,6 +1,6 @@
 package com.ssafy.somefriendboy.entity;
 
-import com.fasterxml.jackson.annotation.JsonProperty;
+import com.ssafy.somefriendboy.entity.status.AlbumStatus;
 import lombok.*;
 
 import javax.persistence.*;

@@ -1,5 +1,7 @@
 package com.ssafy.somefriendboy.entity;
 
+import com.ssafy.somefriendboy.entity.id.AlbumMemberId;
+import com.ssafy.somefriendboy.entity.status.LikeStatus;
 import lombok.*;
 
 import javax.persistence.*;

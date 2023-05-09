@@ -17,6 +17,11 @@ cloud:
       auto: false
 
 spring:
+  rabbitmq:
+    host: 3.35.18.146
+    port: 5672
+    username: guest
+    password: guest
   data:
     mongodb:
       host: 3.35.18.146

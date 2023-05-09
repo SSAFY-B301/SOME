@@ -1,5 +1,6 @@
 package com.ssafy.somefriendboy.entity;
 
+import com.ssafy.somefriendboy.entity.status.PhotoStatus;
 import lombok.*;
 
 import java.time.LocalDateTime;
