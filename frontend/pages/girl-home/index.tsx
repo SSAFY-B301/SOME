@@ -24,11 +24,18 @@ export default function Home() {
   const [userLocation, setUserLocation] = useState<LocationType>({lat : 33.5563, lng : 126.79581 });
   const {getUserInfo} = userQuery();
   const router = useRouter()
+
+  function locationPermissionSuccess(position : GeolocationPosition){
+    setUserLocation({lat : position.coords.latitude, lng : position.coords.longitude})
+  }
+  function locationPermissionError(){
+    alert("위치 정보 권한 설정을 확인해주세요!");
+  }
   useEffect(() => {
     //https 요청 시에만 GeoLocation 정보를 받아올 수 있다.
-    navigator.geolocation.getCurrentPosition((position) => {
-      setUserLocation({lat : position.coords.latitude, lng : position.coords.longitude});
-    });
+    if (navigator.geolocation) {
+      navigator.geolocation.getCurrentPosition(locationPermissionSuccess, locationPermissionError);
+    }
   },[])
   
   return (
