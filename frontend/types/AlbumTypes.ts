@@ -120,5 +120,5 @@ export interface PhotoPageType {
     categoryId: number[];
     userId: string;
     albumId: number;
-  };
+  }[];
 }
