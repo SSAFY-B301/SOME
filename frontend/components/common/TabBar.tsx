@@ -11,13 +11,23 @@ import MfriendIcon from "public/icons/Mfriend.svg";
 import FfriendIcon from "public/icons/Ffriend.svg";
 import MfriendSelectedIcon from "public/icons/MfriendSelected.svg";
 import FfriendSelectedIcon from "public/icons/FfriendSelected.svg";
+import { useRef } from "react";
 
 interface TabBarType {
-  plusBtnUrl: string;
+  plusBtnUrl?: string;
 }
 
 function TabBar({ plusBtnUrl }: TabBarType) {
   const router = useRouter();
+
+  const fileInput = useRef<any>(null);
+  const inputPhoto = () => {
+    fileInput.current.click();
+  };
+
+  const changeInputPhoto = (e: React.ChangeEvent<HTMLInputElement>) => {
+    e.target.files;
+  };
 
   return (
     <section
@@ -40,14 +50,33 @@ function TabBar({ plusBtnUrl }: TabBarType) {
       </div>
 
       {/* 플러스 버튼 */}
-      <Link href={plusBtnUrl}>
-        <div
-          className={`fixed z-50 left-auto right-auto flex justify-center items-center rounded-full ${styles.plus_btn}`}
-          style={{ width: "16.41vw", height: "16.41vw" }}
-        >
-          <PlusIcon />
-        </div>
-      </Link>
+      {plusBtnUrl && 
+        <Link href={plusBtnUrl}>
+          <div
+            className={`fixed z-50 left-auto right-auto flex justify-center items-center rounded-full ${styles.plus_btn}`}
+            style={{ width: "16.41vw", height: "16.41vw" }}
+          >
+            <PlusIcon />
+          </div>
+        </Link>
+      }
+      {!plusBtnUrl &&
+          <div
+            onClick={inputPhoto}
+            className={`fixed z-50 left-auto right-auto flex justify-center items-center rounded-full ${styles.plus_btn}`}
+            style={{ width: "16.41vw", height: "16.41vw" }}
+          >
+            <input 
+              type="file"
+              multiple
+              ref={fileInput}
+              onChange={changeInputPhoto}
+              accept="image/jpg,image/png,image/jpeg,image/gif"
+              style={{display:"none"}} />
+            <PlusIcon />
+          </div>
+
+      }
 
       {/* 가운데 빈 박스 */}
       <div className={`bg-white dark:bg-dark-block ${styles.mid_box}`} />
@@ -58,7 +87,7 @@ function TabBar({ plusBtnUrl }: TabBarType) {
         className={`flex flex-col justify-center items-center bg-white dark:bg-dark-block ${styles.tab_bar_block}`}
         style={{ gap: "1.026vw", borderRadius: "4.103vw 4.103vw 0px 0px" }}
       >
-        {router.pathname === "/girl-home" ? (
+        {router.pathname.includes("/girl-home") ? (
           <FfriendSelectedIcon />
         ) : (
           <FfriendIcon fill="#B1B8C0" />
