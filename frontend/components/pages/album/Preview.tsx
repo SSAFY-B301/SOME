@@ -1,5 +1,5 @@
 // 라이브러리
-import { useEffect, useMemo, useRef, useState } from "react";
+import { MutableRefObject, useEffect, useMemo, useRef, useState } from "react";
 import Slider, { Settings } from "react-slick";
 
 // CSS
@@ -16,6 +16,9 @@ interface PreviewType {
   photoLength: number;
   setIsPreview: React.Dispatch<React.SetStateAction<boolean>>;
   inputPhoto: FileList | null;
+  uploadCount: number;
+  setUploadCount: React.Dispatch<React.SetStateAction<number>>;
+  isUploading: MutableRefObject<boolean>;
 }
 interface previewPhotoType {
   id: number;
@@ -28,13 +31,20 @@ interface previewPhotoType {
  * @param inputPhoto input 파일들
  * @returns
  */
-function Preview({ photoLength, setIsPreview, inputPhoto }: PreviewType) {
+function Preview({
+  photoLength,
+  setIsPreview,
+  inputPhoto,
+  uploadCount,
+  setUploadCount,
+  isUploading,
+}: PreviewType) {
   const range = (size: number, start = 0) => {
     return Array.from({ length: size }, (_, index) => index + start);
   };
   const [previewPhotos, setPreviewPhotos] = useState<previewPhotoType[]>([]);
-  const [uploadCount, setUploadCount] = useState(0);
-  const isUploading = useRef(false);
+  // const [uploadCount, setUploadCount] = useState(0);
+  // const isUploading = useRef(false);
 
   // 사진 미리보기
   useEffect(() => {
@@ -139,7 +149,9 @@ function Preview({ photoLength, setIsPreview, inputPhoto }: PreviewType) {
     return (
       <>
         <section
-          className={`${styles.preview} bg-white text-black dark:bg-dark-bg-home dark:text-white`}
+          className={`${styles.preview} ${
+            isUploading.current && "hidden"
+          } bg-white text-black dark:bg-dark-bg-home dark:text-white`}
         >
           {/* 네브바 */}
           <nav>
@@ -180,7 +192,7 @@ function Preview({ photoLength, setIsPreview, inputPhoto }: PreviewType) {
             </Slider>
           </div>
         </section>
-        {isUploading.current && (
+        {isUploading.current && false && (
           <>
             <div
               className="absolute top-0 flex items-center justify-center bg-black bg-opacity-40 z-20 text-white text-xl"

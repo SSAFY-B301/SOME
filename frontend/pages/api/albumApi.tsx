@@ -172,7 +172,7 @@ export const useInfinitePhotos = (
       }
     );
 
-  return { data, fetchNextPage, hasNextPage, isLoading, isError };
+  return { data, fetchNextPage, hasNextPage, isLoading, isError, refetch };
 };
 
 export function Mutations() {
@@ -263,10 +263,18 @@ export function Mutations() {
       }
     );
   }
+
+  function usePutThumbnail() {
+    return useMutation((body) =>
+      customBoyAxios.put(`album/modify/thumbnail`, body)
+    );
+  }
+
   return {
     usePutFav,
     usePostPhoto,
     useDeletePhotos,
     usePutAlbumName,
+    usePutThumbnail,
   };
 }

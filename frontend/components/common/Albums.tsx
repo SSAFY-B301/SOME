@@ -67,9 +67,12 @@ function CurrentAlbum() {
         className="flex flex-col justify-around w-full h-full"
         style={{ margin: "0px 4.103vw" }}
       >
-        <h1 className="font-bold" style={{ fontSize: "5.128vw" }}>
-          최근 업로드
-        </h1>
+        <Link href={"/test"}>
+          <h1 className="font-bold" style={{ fontSize: "5.128vw" }}>
+            최근 업로드
+          </h1>
+        </Link>
+
         <div className="flex" style={{ gap: "4.103vw" }}>
           {currents}
         </div>
