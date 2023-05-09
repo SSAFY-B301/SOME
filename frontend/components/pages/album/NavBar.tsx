@@ -4,6 +4,7 @@ import LeftIcon from "public/icons/CaretLeft.svg";
 import { useGetDetail } from "@/pages/api/albumApi";
 import Link from "next/link";
 import { LoadingTitle } from "@/components/common/Loading";
+import { useTheme } from "next-themes";
 
 interface NavBarType {
   isSelect: boolean;
@@ -35,9 +36,14 @@ function NavBar({
 
   const albumId: number = Number(router.query.album_id);
   const { getDetail } = useGetDetail(albumId);
+  const { theme, setTheme } = useTheme();
   return (
     <section className={`${styles.nav_bar}`}>
-      <div className={`${styles.nav_bar_items}`}>
+      <div
+        className={`${styles.nav_bar_items} ${
+          theme === "dark" ? styles.dark : styles.light
+        }`}
+      >
         <div
           className={`absolute w-screen h-full flex justify-center items-center ${styles.title}`}
         >
@@ -56,7 +62,7 @@ function NavBar({
             </p>
           ) : (
             <Link href={"/boy-home"}>
-              <LeftIcon stroke="black" />
+              <LeftIcon stroke={theme === "dark" ? "white" : "black"} />
             </Link>
           )}
           <div onClick={clickSelect}>
