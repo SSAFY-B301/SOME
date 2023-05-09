@@ -15,6 +15,7 @@ import "slick-carousel/slick/slick.css";
 import "slick-carousel/slick/slick-theme.css";
 import { Mutations } from "@/pages/api/albumApi";
 import { thumbnailBodyType } from "@/types/AlbumTypes";
+import ThumbnailModal from "@/components/photo-detail/ThumbnailModal";
 
 const PhotoDetail = (): JSX.Element => {
   /**
@@ -23,6 +24,7 @@ const PhotoDetail = (): JSX.Element => {
   const [showDownLoadModal, setDownLoadShowModal] = useState<boolean>(false);
   const [showDeleteModal, setDeleteModal] = useState<boolean>(false);
   const [showVoteModal, setVoteModal] = useState<boolean>(false);
+  const [showThumbnailModal, setThumbnailModal] = useState<boolean>(false);
 
   /**
    * 사진 조작 state
@@ -87,11 +89,15 @@ const PhotoDetail = (): JSX.Element => {
     showVoteModal ? setVoteModal(false) : setVoteModal(true);
   };
 
-  const { mutate: mutateThumbnail } = Mutations().usePutThumbnail();
-
   /**
-   * 썸네일 수정 API
+   * 썸네일 수정 모달창 생성
    */
+  const clickThumbnail = () => {
+    console.log(showThumbnailModal);
+
+    showThumbnailModal ? setThumbnailModal(false) : setThumbnailModal(true);
+  };
+  const { mutate: mutateThumbnail } = Mutations().usePutThumbnail();
   const clickPutThumbnail = () => {
     const body: thumbnailBodyType = {
       album_id: photoDetail.albumId,
@@ -159,12 +165,18 @@ const PhotoDetail = (): JSX.Element => {
           clickDownload={clickDownload}
           clickDelete={clickDelete}
           clickVote={clickVote}
-          clickPutThumbnail={clickPutThumbnail}
+          clickThumbnail={clickThumbnail}
         />
       </div>
       {showDownLoadModal && <DownloadModal clickDownload={clickDownload} />}
       {showDeleteModal && <DeleteModal clickDelete={clickDelete} />}
       {showVoteModal && <VoteModal clickVote={clickVote} />}
+      {showThumbnailModal && (
+        <ThumbnailModal
+          clickThumbnail={clickThumbnail}
+          clickPutThumbnail={clickPutThumbnail}
+        />
+      )}
     </div>
   );
 };

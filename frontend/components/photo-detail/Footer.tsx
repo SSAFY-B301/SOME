@@ -7,7 +7,7 @@ interface Props {
   clickDownload(): void;
   clickDelete(): void;
   clickVote(): void;
-  clickPutThumbnail(): void;
+  clickThumbnail(): void;
 }
 
 /**
@@ -18,7 +18,7 @@ const Footer = ({
   clickDownload,
   clickDelete,
   clickVote,
-  clickPutThumbnail,
+  clickThumbnail,
 }: Props): JSX.Element => {
   /**
    * 공유 요청 알림 기능 추가
@@ -55,7 +55,10 @@ const Footer = ({
           />
         </svg>
       </div>
-      <div onClick={clickPutThumbnail}>
+      <div
+        className="flex flex-col items-center justify-center"
+        onClick={clickThumbnail}
+      >
         <ThumbnailIcon width={"28px"} height={"28px"} fill={"white"} />
       </div>
       <div
