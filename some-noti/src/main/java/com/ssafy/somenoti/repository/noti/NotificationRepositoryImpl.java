@@ -34,7 +34,7 @@ public class NotificationRepositoryImpl implements NotificationRepositoryCustom{
                 .from(notification)
                 .where(
                         notification.receiver.userId.eq(userId),
-                        notification.type.ne(NotiType.Upload)
+                        notification.type.ne(NotiType.UPLOAD)
                 )
                 .offset(pageable.getOffset())
                 .limit(pageable.getPageSize())
