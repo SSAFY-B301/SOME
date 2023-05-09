@@ -164,7 +164,9 @@ public class NotiService {
 
     private void sendNoti(NotiType notiType, List<String> receivers,User sender,Long id){
         for (String receiverId : receivers) {
-            User receiver = userRepository.findById(receiverId).get();
+            Optional<User> byId = userRepository.findById(receiverId);
+            if(byId.isEmpty()) continue;
+            User receiver = byId.get();
             Map<String, SseEmitter> sseEmitters = emitterRepository.findAllEmitterStartWithId(receiverId);
             Notification notification = Notification.builder()
                     .type(notiType)
