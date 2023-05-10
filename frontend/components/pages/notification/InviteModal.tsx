@@ -10,19 +10,27 @@ interface InviteNotiModalPropsType{
 }
 
 export default function InviteModal(params : InviteNotiModalPropsType) {
-    const { inviteMutation } = useMutationNoti();
+    const { statusMutation, inviteMutation } = useMutationNoti();
     const router = useRouter();
     
-    function inviteHandler(accpetStatus : string) {
+    function cancleHandler(){
         const requestData = {
-            status : accpetStatus,
+            noti_id : params.notiId,
+            noti_status : "CHECKED"
+        }
+        statusMutation(requestData)
+        params.setInviteModalOpen(!params.inviteModalOpen)    
+    }
+    function inviteHandler(acceptStatus : string) {
+        const requestData = {
+            status : acceptStatus,
             album_id : params.albumId,
             noti_id : params.notiId,
         }
         inviteMutation(requestData);
         
         //TODO : 앨범 초대에 대한 선택을 했을 때 alert말고 모달 내용을 바꾸는 식으로 컴포넌트 만들기 
-        if (accpetStatus === "ACCEPT") {
+        if (acceptStatus === "ACCEPT") {
             alert("앨범 초대를 수락하셨습니다.");
             router.push("/album/"+params.albumId);
         }
@@ -33,12 +41,12 @@ export default function InviteModal(params : InviteNotiModalPropsType) {
     }
 
     return(
-        <div onClick={() => {params.setInviteModalOpen(!params.inviteModalOpen)}} className="absolute top-0 flex items-center justify-center bg-black bg-opacity-40" style={{width: "100vw", height: "100vh"}}>
+        <div onClick={() => cancleHandler()} className="absolute top-0 flex items-center justify-center bg-black bg-opacity-40" style={{width: "100vw", height: "100vh"}}>
             <div onClick={(e) => e.stopPropagation()} className="flex flex-col items-center justify-center w-64 bg-white rounded-lg h-28 gap-y-4">
                 <p>앨범에 참여 하시겠습니까?</p>
                 <div className="flex items-center justify-center gap-x-4">
-                    <button onClick={() => inviteHandler("ACCEPT")} className="w-24 rounded-lg shadow">예</button>
-                    <button onClick={() => inviteHandler("DECLINE")} className="w-24 rounded-lg shadow">아니오</button>
+                    <button onClick={() => inviteHandler("ACCEPT")} className="w-24 rounded-lg shadow">수락</button>
+                    <button onClick={() => inviteHandler("DECLINE")} className="w-24 rounded-lg shadow">거절</button>
                 </div>
             </div>
         </div>

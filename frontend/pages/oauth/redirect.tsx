@@ -27,8 +27,6 @@ export default function AuthRedirect() {
                 });
             const responseAccessToken = userResult.data.data;
 
-            console.log(responseAccessToken);
-
             if (responseAccessToken !== null){
                 saveAccessToken(responseAccessToken);
                 router.push("/boy-home");
