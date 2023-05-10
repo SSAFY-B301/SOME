@@ -10,11 +10,11 @@ interface Props {
  */
 
 const DeleteModal = ({ clickDelete }: Props): JSX.Element => {
-  const { deleteMutation } = useMutationPhoto()
+  const { deleteMutation } = useMutationPhoto();
   /**
    * 사진 삭제 기능 추가
    */
-  function photoDelete(){
+  function photoDelete() {
     deleteMutation();
   }
 
@@ -24,11 +24,17 @@ const DeleteModal = ({ clickDelete }: Props): JSX.Element => {
       onClick={clickDelete}
     >
       <div className="flex flex-col items-center justify-end w-11/12 h-full">
-        <div onClick={(e) => e.stopPropagation()} className="flex flex-col items-center justify-center w-full bg-white h-36 rounded-xl">
+        <div
+          onClick={(e) => e.stopPropagation()}
+          className="flex flex-col items-center justify-center w-full bg-white h-36 rounded-xl"
+        >
           <div className="flex items-center justify-center w-full text-gray-400 border-b-2 h-1/2">
             사진이 앨범에서 삭제됩니다.
           </div>
-          <button onClick={photoDelete} className="flex items-center justify-center w-full text-2xl font-bold h-1/2 text-rose-500">
+          <button
+            onClick={photoDelete}
+            className="flex items-center justify-center w-full text-2xl font-bold h-1/2 text-rose-500"
+          >
             삭제
           </button>
         </div>
