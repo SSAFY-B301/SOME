@@ -1,11 +1,16 @@
 package com.ssafy.somefriendboy.service;
 
-import com.ssafy.somefriendboy.dto.NotiInviteCreateDto;
-import com.ssafy.somefriendboy.dto.NotiSnsCreateDto;
-import com.ssafy.somefriendboy.dto.NotiUploadCreateDto;
-import com.ssafy.somefriendboy.dto.ResponseDto;
+import com.ssafy.somefriendboy.dto.*;
+import com.ssafy.somefriendboy.entity.Album;
+import com.ssafy.somefriendboy.entity.AlbumPhoto;
+import com.ssafy.somefriendboy.repository.album.AlbumRepository;
+import com.ssafy.somefriendboy.repository.albumphoto.AlbumPhotoRepository;
 import com.ssafy.somefriendboy.repository.noti.EmitterRepository;
+import com.ssafy.somefriendboy.repository.noti.NotificationRepository;
+import com.ssafy.somefriendboy.repository.user.UserRepository;
+import com.ssafy.somefriendboy.util.HttpUtil;
 import lombok.RequiredArgsConstructor;
+import lombok.extern.slf4j.Slf4j;
 import org.springframework.http.HttpEntity;
 import org.springframework.http.HttpHeaders;
 import org.springframework.http.MediaType;
@@ -16,15 +21,56 @@ import org.springframework.web.client.RestTemplate;
 import org.springframework.web.servlet.mvc.method.annotation.SseEmitter;
 
 import java.io.IOException;
-import java.util.HashMap;
-import java.util.List;
-import java.util.Map;
+import java.util.*;
 
 @Service
 @RequiredArgsConstructor
+@Slf4j
 public class NotiService {
+    private final HttpUtil httpUtil;
+    private final NotificationRepository notificationRepository;
+    private final AlbumPhotoRepository albumPhotoRepository;
+    private final AlbumRepository albumRepository;
+    private final UserRepository userRepository;
+    public ResponseDto getUploadList(String accessToken) {
+        String userId = tokenCheck(accessToken);
+        if (userId == null) {
+            return setResponseDto(false, "토큰 만료", 450);
+        }
+        List<Long> photoIdNotChecked = notificationRepository.findPhotoIdNotChecked(userId);
+        log.info(photoIdNotChecked.toString());
+        List<AlbumPhoto> byPhotoId = albumPhotoRepository.findByPhotoIdIn(photoIdNotChecked);
+        log.info(byPhotoId.toString());
+        Map<Long,UncheckedPhotoDto> dto = new HashMap<>();
+        for (AlbumPhoto albumPhoto : byPhotoId) {
+            Long albumId = albumPhoto.getAlbumId();
+            if(dto.get(albumId) == null){
+                dto.put(albumId,
+                        UncheckedPhotoDto.builder()
+                            .albumId(albumId)
+                            .albumName(albumRepository.findById(albumId).get().getAlbumName())
+                            .photoList(new ArrayList<>())
+                            .build());
+            }
+            UncheckedPhotoDto uncheckedPhotoDto = dto.get(albumId);
+            if(uncheckedPhotoDto.getRecentUploadTime() == null || uncheckedPhotoDto.getRecentUploadTime().isBefore(albumPhoto.getUploadedDate())){
+                uncheckedPhotoDto.setRecentUploadTime(albumPhoto.getUploadedDate());
+                uncheckedPhotoDto.setThumbnailPhoto(albumPhoto.getResizeUrl());
+            }
+            uncheckedPhotoDto.getPhotoList().add(PhotoDto.builder()
+                            .uploadDate(albumPhoto.getUploadedDate())
+                            .userName(userRepository.findByUserId(albumPhoto.getUserId()).getUserName())
+                            .photoUrl(albumPhoto.getOriginUrl())
+                            .photoId(albumPhoto.getPhotoId())
+                            .build());
+        }
+        List<UncheckedPhotoDto> list = new ArrayList<>(dto.values());
+        Collections.sort(list);
 
-    public void inviteNoti(String sender_id,String[] receiver_ids,Long album_id){
+        return setResponseDto(list,"최근 업로드 사진 목록",200);
+    }
+
+    public void inviteNoti(String sender_id, String[] receiver_ids, Long album_id){
         String url = "http://3.35.18.146:9003/noti/noti/invite";
 
         RestTemplate restTemplate = new RestTemplate();
@@ -69,11 +115,15 @@ public class NotiService {
         HttpEntity<?> requestMessage = new HttpEntity<>(notiUploadCreateDto, httpHeaders);
         restTemplate.postForEntity(url, requestMessage, Object.class);
     }
-    private ResponseDto setResponseDto(Map<String,Object> result, String message, int statusCode){
+    private ResponseDto setResponseDto(Object result, String message, int statusCode){
         ResponseDto responseDto = new ResponseDto();
         responseDto.setData(result);
         responseDto.setMessage(message);
         responseDto.setStatusCode(statusCode);
         return responseDto;
     }
+    private String tokenCheck(String accessToken) {
+        return httpUtil.requestParingToken(accessToken);
+    }
+
 }
