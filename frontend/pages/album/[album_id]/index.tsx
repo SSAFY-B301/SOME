@@ -91,7 +91,7 @@ function AlbumDetail() {
     isLoading: getPhotosIsLoading,
   } = useInfinitePhotos(photosRequest);
 
-  const { mutate: deletePhotosMutate } = Mutations().useDeletePhotos(albumId);
+  const { mutate: deletePhotosMutate } = Mutations().useDeletePhotos();
 
   const closeAlert = (idx: number) => {
     isAlerts[idx] = false;
