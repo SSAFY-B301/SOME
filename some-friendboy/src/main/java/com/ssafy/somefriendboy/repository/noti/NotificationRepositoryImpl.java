@@ -2,6 +2,7 @@ package com.ssafy.somefriendboy.repository.noti;
 
 import com.querydsl.jpa.impl.JPAQueryFactory;
 
+import com.ssafy.somefriendboy.entity.Notification;
 import com.ssafy.somefriendboy.entity.QNotification;
 import com.ssafy.somefriendboy.entity.status.NotiStatus;
 import com.ssafy.somefriendboy.entity.status.NotiType;
@@ -17,8 +18,8 @@ public class NotificationRepositoryImpl implements NotificationRepositoryCustom{
     private final JPAQueryFactory queryFactory;
 
     @Override
-    public List<Long> findPhotoIdNotChecked(String userId) {
-        return queryFactory.select(notification.albumOrPhotoId)
+    public List<Notification> findPhotoIdNotChecked(String userId) {
+        return queryFactory.select(notification)
                 .from(notification)
                 .where(
                         notification.receiver.userId.eq(userId),
