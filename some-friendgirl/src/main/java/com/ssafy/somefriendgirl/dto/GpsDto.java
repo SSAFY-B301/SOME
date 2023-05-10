@@ -1,13 +1,15 @@
 package com.ssafy.somefriendgirl.dto;
 
-import lombok.Getter;
-import lombok.Setter;
-
-@Getter
-@Setter
 public class GpsDto {
 
-    private Double latitude;
-    private Double longitude;
+    public Integer section;
+    public Double latitude;
+    public Double longitude;
+
+    public GpsDto() {
+        this.section = 0;
+        this.longitude = 0.0;
+        this.latitude = 0.0;
+    }
 
 }
