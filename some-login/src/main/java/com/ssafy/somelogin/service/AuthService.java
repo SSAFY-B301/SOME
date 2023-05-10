@@ -118,7 +118,7 @@ public class AuthService {
 
             OpenIdResponseDto openIdResponseDto = response.getBody();
             String picture = openIdResponseDto.getPicture();
-            picture.replace("http","https");
+            picture = picture.replace("http", "https");
             User user = User.builder()
                     .userId(openIdResponseDto.getSub())
                     .userEmail(openIdResponseDto.getEmail())
