@@ -372,7 +372,7 @@ public class AlbumService {
                         albumMemberRepository.save(albumMember);
                     }
                     else{
-                        inviteFriend.remove(albumMemberId.getUserId());
+                        inviteFriend.remove(invitedFriendId);
                     }
                 }
             }
