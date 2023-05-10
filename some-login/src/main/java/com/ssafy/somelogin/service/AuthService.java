@@ -117,10 +117,12 @@ public class AuthService {
             ResponseEntity<OpenIdResponseDto> response = restTemplate.exchange(url2, HttpMethod.GET, request, OpenIdResponseDto.class);
 
             OpenIdResponseDto openIdResponseDto = response.getBody();
+            String picture = openIdResponseDto.getPicture();
+            picture.replace("http","https");
             User user = User.builder()
                     .userId(openIdResponseDto.getSub())
                     .userEmail(openIdResponseDto.getEmail())
-                    .userImg(openIdResponseDto.getPicture())
+                    .userImg(picture)
                     .userName(openIdResponseDto.getNickname())
                     .build();
             Optional<User> byId = userRepository.findById(user_id);
