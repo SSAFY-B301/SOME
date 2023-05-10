@@ -34,8 +34,8 @@ export default function Home() {
     setUserLocation({lat : position.coords.latitude, lng : position.coords.longitude})
     console.log("설정 성공")
   }
-  function locationPermissionError(){
-    alert("위치 정보 권한 설정을 확인해주세요!");
+  function locationPermissionError(err : GeolocationPositionError){
+    alert(`에러 코드(${err.code}) : ${err.message}`);
   }
   useEffect(() => {
     if('geolocation' in navigator){
