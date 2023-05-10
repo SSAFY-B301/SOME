@@ -23,21 +23,12 @@ import java.util.UUID;
 public class NotiController {
 
     private final NotiService notiService;
-    private final RabbitTemplate rabbitTemplate;
-    private static final String EXCHANGE_NAME = "some.noti";
+
     @PostMapping("/sns")
-    public ResponseEntity<ResponseDto> photoSnsAgree(@RequestBody NotiSnsCreateDto notiCreateDto) {
-        log.debug("SNS 알림 생성 요청 POST: /noti/sns, NotiCreateDto : {}", notiCreateDto);
-        MQDto mqDto = MQDto.builder()
-                .type(NotiType.SNS)
-                .data(notiCreateDto)
-                .build();
-        rabbitTemplate.convertAndSend(EXCHANGE_NAME, "some.route.#", mqDto);
-//        ResponseDto responseDto = notiService.snsNoti(notiCreateDto);
-        ResponseDto responseDto = new ResponseDto<>();
-        responseDto.setMessage("SNS동의 요청 완료");
-        responseDto.setData(null);
-        responseDto.setStatusCode(200);
+    public ResponseEntity<ResponseDto> photoSnsAgree(@RequestHeader HttpHeaders headers,@RequestBody SnsUploadInputDto snsUploadInputDto) {
+        log.debug("SNS 알림 생성 요청 POST: /noti/sns, SnsUploadInputDto : {}", snsUploadInputDto);
+        String access_token = headers.get("access_token").toString();
+        ResponseDto responseDto = notiService.sendSnsMQ(access_token,snsUploadInputDto);
         return new ResponseEntity<ResponseDto>(responseDto, HttpStatus.OK);
     }
     @GetMapping("/list/upload")
