@@ -32,10 +32,10 @@ export default function Home() {
     alert("위치 정보 권한 설정을 확인해주세요!");
   }
   useEffect(() => {
-    //https 요청 시에만 GeoLocation 정보를 받아올 수 있다.
-    if (navigator.geolocation) {
+    if('geolocation' in navigator){
       navigator.geolocation.getCurrentPosition(locationPermissionSuccess, locationPermissionError);
     }
+    //https 요청 시에만 GeoLocation 정보를 받아올 수 있다.
   },[])
   
   return (
