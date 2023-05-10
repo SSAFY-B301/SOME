@@ -1,2 +1,5 @@
-package com.ssafy.somefriendgirl.entity;public enum PhotoLikeStatus {
+package com.ssafy.somefriendgirl.entity;
+
+public enum PhotoLikeStatus {
+    LIKE, UNLIKE
 }
