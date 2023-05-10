@@ -109,22 +109,23 @@ export const useGetDetail = (albumId: number) => {
 /**
  * [GET] 사진 정보
  */
-export const useInfinitePhotos = (
-  Requests: requestPhotosType,
-  page: number = 0,
-  size: number = 27
-) => {
-  const queryKey = `/photo/album/list?albumId=${Requests.albumId}&userId=${
-    Requests.userId
-  }&${
-    Requests.categoryId !== 0 && `categoryId=${Requests.categoryId}`
+export const useInfinitePhotos = (page: number = 0, size: number = 27) => {
+  const albumId = useSelector((state: StateType) => state.albumStatus.albumId);
+  const categoryId = useSelector(
+    (state: StateType) => state.albumStatus.categoryId
+  );
+  const userIds = useSelector((state: StateType) => state.albumStatus.userId);
+  const userId = Array.from(userIds).toString();
+  const queryKey = `/photo/album/list?albumId=${albumId}&userId=${userId}&${
+    categoryId !== 0 && `categoryId=${categoryId}`
   }&size=${size}`;
 
   let getTotal: number | undefined;
   let getTotalId: number[] | undefined;
+
   const { data, fetchNextPage, hasNextPage, isLoading, isError, refetch } =
     useInfiniteQuery(
-      ["photos", Requests.albumId, Requests.categoryId, Requests.userId],
+      ["photos", albumId, categoryId, userId],
       ({ pageParam = page }) => {
         const temp = customBoyAxios.get(queryKey + `&page=${pageParam}`);
         return temp.then((data) => data.data.data);
