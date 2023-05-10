@@ -100,7 +100,7 @@ public class AlbumService {
                 .type(NotiType.INVITE)
                 .data(notiInviteCreateDto)
                 .build();
-        rabbitTemplate.convertAndSend(EXCHANGE_NAME, "test.route.#", mqDto);
+        rabbitTemplate.convertAndSend(EXCHANGE_NAME, "some.route.#", mqDto);
 
         return setResponseDto(result,"앨범 생성",200);
     }
@@ -376,7 +376,7 @@ public class AlbumService {
                 .type(NotiType.INVITE)
                 .data(notiInviteCreateDto)
                 .build();
-        rabbitTemplate.convertAndSend(EXCHANGE_NAME, "test.route.#", mqDto);
+        rabbitTemplate.convertAndSend(EXCHANGE_NAME, "some.route.#", mqDto);
         return setResponseDto(result,"앨범 생성 후 추가 친구 초대",200);
     }
 
