@@ -4,6 +4,7 @@ import com.ssafy.somefriendgirl.dto.AlbumPhotoDto;
 import com.ssafy.somefriendgirl.dto.PhotoLikeDto;
 import com.ssafy.somefriendgirl.dto.ResponseDto;
 import com.ssafy.somefriendgirl.entity.AlbumPhoto;
+import com.ssafy.somefriendgirl.entity.PhotoLikeStatus;
 import com.ssafy.somefriendgirl.entity.User;
 import com.ssafy.somefriendgirl.repository.photo.PhotoRepository;
 import com.ssafy.somefriendgirl.repository.user.UserRepository;
@@ -88,5 +89,93 @@ public class PhotoService {
 
         result.put("AlbumPhotoDto", albumPhotoDto);
         return responseUtil.setResponseDto(result, "사진 조회", 200);
+    }
+
+    public ResponseDto likePhoto(String accessToken, PhotoLikeDto photoLikeDto) {
+        Map<String, Object> result = new HashMap<>();
+        String userId = responseUtil.tokenCheck(accessToken);
+
+        if (userId == null) {
+            return responseUtil.setResponseDto(result, "토큰 만료", 450);
+        }
+
+        ValueOperations valueOperations = redisTemplate.opsForValue();
+        String likeCntKey = "photoLikeCnt::" + photoLikeDto.getPhotoId();
+        String likeListKey = "UserPhotoLikeList::" + userId;
+
+        // 좋아요 누르기
+        Long likeCnt = 0L;
+        User user = userRepository.findByUserId(userId);
+        if (!photoLikeDto.isLikePhotoStatus()) {
+
+            /* 캐시 :: 사용자의 좋아요 리스트에 사진ID 추가 */
+            if (valueOperations.get(likeListKey) == null) {
+                String likeList = "";
+                if (user.getUserLikePhotos() == null) {
+                    likeList = photoLikeDto.getPhotoId() + ",";
+                } else {
+                    if (user.getUserLikePhotos().contains(photoLikeDto.getPhotoId() + ",")) {
+                        return responseUtil.setResponseDto(result, "이미 좋아요 누른 사진", 400);
+                    }
+                    likeList = user.getUserLikePhotos() + photoLikeDto.getPhotoId() + ",";
+                }
+                valueOperations.set(likeListKey, likeList, 20, TimeUnit.MINUTES);
+            } else {
+                if (String.valueOf(valueOperations.get(likeListKey)).contains(photoLikeDto.getPhotoId() + ",")) {
+                    return responseUtil.setResponseDto(result, "해당 사진 좋아요 중복", 400);
+                }
+                String likeList = valueOperations.get(likeListKey) + String.valueOf(photoLikeDto.getPhotoId()) + ",";
+                valueOperations.set(likeListKey, likeList, 20, TimeUnit.MINUTES);
+            }
+
+
+            /* 캐시 :: 좋아요 수 증가시키기 */
+            AlbumPhoto albumPhoto = photoRepository.findByPhotoId(photoLikeDto.getPhotoId());
+            if (valueOperations.get(likeCntKey) == null) {
+                valueOperations.set(likeCntKey, String.valueOf(albumPhoto.getLikeCnt() + 1), 20, TimeUnit.MINUTES);
+            } else {
+                valueOperations.increment(likeCntKey);
+            }
+            likeCnt = Long.parseLong((String) valueOperations.get(likeCntKey));
+            log.info("증가시킨 좋아요 수 likeCnt = " + likeCnt);
+
+            result.put("likePhotoStatus", PhotoLikeStatus.LIKE);
+        }
+
+        // 좋아요 취소하기
+        else {
+
+            /* 캐시 :: 사용자의 좋아요 리스트에 사진ID 제거 */
+            StringBuilder sb = new StringBuilder();
+            if (valueOperations.get(likeListKey) == null) {
+                sb.append(user.getUserLikePhotos());
+            } else {
+                sb.append((String) valueOperations.get(likeListKey));
+            }
+
+            int photoIdIndex = sb.indexOf(photoLikeDto.getPhotoId() + ",");
+            log.info("삭제할 사진ID index = " + photoIdIndex);
+            sb.delete(photoIdIndex, photoIdIndex + String.valueOf(photoLikeDto.getPhotoId()).length() + 1);
+            valueOperations.set(likeListKey, sb.toString(), 20, TimeUnit.MINUTES);
+            result.put("likePhotoStatus", PhotoLikeStatus.UNLIKE);
+
+
+            /* 캐시 :: 좋아요 수 감소시키기 */
+            AlbumPhoto albumPhoto = photoRepository.findByPhotoId(photoLikeDto.getPhotoId());
+            if (valueOperations.get(likeCntKey) == null) {
+                valueOperations.set(likeCntKey, String.valueOf(albumPhoto.getLikeCnt() - 1), 20, TimeUnit.MINUTES);
+            } else {
+                valueOperations.decrement(likeCntKey);
+            }
+            likeCnt = Long.parseLong((String) valueOperations.get(likeCntKey));
+            log.info("감소시킨 좋아요 수 likeCnt = " + likeCnt);
+
+        }
+
+        result.put("photoId", photoLikeDto.getPhotoId());
+        result.put("updatedLikeCnt", likeCnt);
+        result.put("userLikeList", (String) valueOperations.get(likeListKey));
+
+        return responseUtil.setResponseDto(result, "사진 좋아요", 200);
     }
 }
