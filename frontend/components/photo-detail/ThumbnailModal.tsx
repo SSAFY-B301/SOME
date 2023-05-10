@@ -1,39 +1,38 @@
 import React from "react";
 
 interface Props {
-  clickVote(): void;
-  requestSns(): void;
+  clickThumbnail(): void;
+  putThumbnail(): void;
 }
 
 /**
- * 공유 투표 모달 창
+ * 썸네일 변경 모달 창
  */
 
-const VoteModal = ({ clickVote, requestSns }: Props): JSX.Element => {
-  /**
-   * 투표 기능 추가
-   */
-
+const ThumbnailModal = ({
+  clickThumbnail,
+  putThumbnail,
+}: Props): JSX.Element => {
   return (
     <div
       className="fixed left-0 top-0 w-screen h-screen z-20 bg-black/50 flex justify-center items-center"
-      onClick={clickVote}
+      onClick={clickThumbnail}
     >
       <div className="w-11/12 h-full flex flex-col justify-end items-center">
         <div className="w-full h-36 bg-white rounded-xl flex flex-col justify-center items-center">
           <div className="w-full h-1/2 border-b-2 flex justify-center items-center text-gray-400">
-            공유 요청 알림이 보내집니다.
+            대표 이미지가 변경됩니다.
           </div>
           <button
             className="w-full h-1/2 flex justify-center items-center text-2xl font-bold text-blue-500"
-            onClick={requestSns}
+            onClick={putThumbnail}
           >
-            알림 보내기
+            변경하기
           </button>
         </div>
         <button
           className="w-full h-16 bg-white rounded-xl flex justify-center items-center box-border mt-2 mb-8 text-2xl font-bold"
-          onClick={clickVote}
+          onClick={clickThumbnail}
         >
           취소
         </button>
@@ -42,4 +41,4 @@ const VoteModal = ({ clickVote, requestSns }: Props): JSX.Element => {
   );
 };
 
-export default VoteModal;
+export default ThumbnailModal;

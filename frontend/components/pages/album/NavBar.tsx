@@ -6,6 +6,8 @@ import Link from "next/link";
 import { LoadingTitle } from "@/components/common/Loading";
 import { useTheme } from "next-themes";
 import { MutableRefObject } from "react";
+import { useSelector } from "react-redux";
+import { StateType } from "@/types/StateType";
 
 interface NavBarType {
   isSelect: boolean;
@@ -13,8 +15,6 @@ interface NavBarType {
   isTotal: boolean;
   setIsTotal: React.Dispatch<React.SetStateAction<boolean>>;
   isAlbumLoading: () => boolean;
-  uploadCount: number;
-  isUploading: MutableRefObject<boolean>;
 }
 
 /**
@@ -31,15 +31,18 @@ function NavBar({
   isTotal,
   setIsTotal,
   isAlbumLoading,
-  uploadCount,
-  isUploading,
 }: NavBarType) {
-  const router = useRouter();
   const clickSelect = () => {
     setIsSelect(!isSelect);
   };
+  const albumId = useSelector((state: StateType) => state.albumStatus.albumId);
+  const uploadCount = useSelector(
+    (state: StateType) => state.photoUpload.uploadCount
+  );
+  const isUploading = useSelector(
+    (state: StateType) => state.photoUpload.isUploading
+  );
 
-  const albumId: number = Number(router.query.album_id);
   const { getDetail } = useGetDetail(albumId);
   const { theme, setTheme } = useTheme();
   return (
@@ -71,7 +74,7 @@ function NavBar({
             </Link>
           )}
           <div className="flex gap-2">
-            {isUploading.current && (
+            {isUploading && (
               <div className={`${styles.loading}`}>
                 <div></div>
                 <span className={`${styles.loadingText}`}>{uploadCount}</span>

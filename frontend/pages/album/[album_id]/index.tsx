@@ -14,29 +14,50 @@ import { useRouter } from "next/router";
 import axios from "axios";
 
 // API
-import {
-  Mutations,
-  useGetDetail,
-  useGetPhotos,
-  useInfinitePhotos,
-} from "pages/api/albumApi";
+import { Mutations, useGetDetail, useInfinitePhotos } from "pages/api/albumApi";
 
 // CSS
 import styles from "styles/album.module.scss";
 import Preview from "components/pages/album/Preview";
 
+// 리덕스
+import { useDispatch, useSelector } from "react-redux";
+import { StateType } from "@/types/StateType";
+import {
+  setALbumIdState,
+  setInit,
+  setUserIdState,
+} from "@/features/albumStatusSlice";
+import {
+  setPreviewLength,
+  setUploadLength,
+  startPreview,
+} from "@/features/photoUploadSlice";
+
 function AlbumDetail() {
   const router = useRouter();
-  const albumId = useMemo(
-    () => Number(router.query.album_id),
-    [router.query.album_id]
+  const albumId = useSelector((state: StateType) => state.albumStatus.albumId);
+  const categoryId = useSelector(
+    (state: StateType) => state.albumStatus.categoryId
   );
+  const userId = useSelector((state: StateType) => state.albumStatus.userId);
+
+  const isPreview = useSelector(
+    (state: StateType) => state.photoUpload.isPreview
+  );
+
+  // console.log(isPreview);
+
+  const [membersId, setMembersId] = useState<number[]>([]);
+  let dispatch = useDispatch();
+  useEffect(() => {
+    dispatch(setInit());
+    dispatch(setALbumIdState({ albumId: Number(router.query.album_id) }));
+    dispatch(setUserIdState({ userId: new Set(membersId) }));
+  }, [membersId, router.query.album_id]);
 
   const { getDetail, getDetailIsLoading } = useGetDetail(albumId);
 
-  const [membersId, setMembersId] = useState<number[]>([]);
-
-  const [selectedCategory, setSelectedCategory] = useState<number>(0);
   const [isSelect, setIsSelect] = useState<boolean>(false);
   const [selectedPhotos, setSelectedPhotos] = useState<Set<number>>(new Set());
   const [isTotal, setIsTotal] = useState<boolean>(false);
@@ -45,37 +66,30 @@ function AlbumDetail() {
     new Set(membersId)
   );
   const [inputPhoto, setInputPhoto] = useState<FileList | null>(null);
-  const [isPreview, setIsPreview] = useState<boolean>(false);
 
   const [isAlerts, setIsAlerts] = useState<boolean[]>(
     [...Array(4)].fill(false)
   );
 
-  const [uploadCount, setUploadCount] = useState(0);
-  const isUploading = useRef(false);
-
   const makeRequest = () => {
     return {
       albumId: albumId,
-      categoryId: selectedCategory,
+      categoryId: categoryId,
       userId: Array.from(selectMembers).toString(),
     };
   };
 
   const photosRequest = useMemo(
     () => makeRequest(),
-    [albumId, selectedCategory, selectMembers]
+    [albumId, categoryId, selectMembers]
   );
 
-  // TODO : 지우기
-  const { getPhotos, getTotal, getTotalId, getPhotosIsLoading, refetch } =
-    useGetPhotos(photosRequest);
-
-  const { data: getPhotosPages, isLoading } = useInfinitePhotos(photosRequest);
-
-  useEffect(() => {
-    refetch();
-  }, [photosRequest]);
+  const {
+    data: getPhotosPages,
+    getTotal,
+    getTotalId,
+    isLoading: getPhotosIsLoading,
+  } = useInfinitePhotos(photosRequest);
 
   const { mutate: deletePhotosMutate } = Mutations().useDeletePhotos(albumId);
 
@@ -164,11 +178,15 @@ function AlbumDetail() {
    * @returns
    */
 
-  useEffect(() => {
-    if (inputPhoto) {
-      setIsPreview(true);
-    }
-  }, [inputPhoto]);
+  // useEffect(() => {
+  //   if (inputPhoto) {
+  //     const inputLength = inputPhoto.length;
+  //     dispatch(setUploadLength({ uploadLength: inputLength }));
+  //     dispatch(setPreviewLength({ PreviewLength: inputLength }));
+  //     // console.log(previewLength);
+  //     dispatch(startPreview());
+  //   }
+  // }, [inputPhoto]);
 
   return (
     <section>
@@ -178,20 +196,10 @@ function AlbumDetail() {
         isTotal={isTotal}
         setIsTotal={setIsTotal}
         isAlbumLoading={isAlbumLoading}
-        uploadCount={uploadCount}
-        isUploading={isUploading}
       />
       <div className={`${styles.container}`}>
-        <Members
-          selectMembers={selectMembers}
-          setSelectMembers={setSelectMembers}
-          membersId={membersId}
-          isAlbumLoading={isAlbumLoading}
-        />
-        <Categories
-          selectedId={selectedCategory}
-          setSelectedId={setSelectedCategory}
-        />
+        <Members membersId={membersId} isAlbumLoading={isAlbumLoading} />
+        <Categories />
         <Photos
           isSelect={isSelect}
           selectedPhotos={selectedPhotos}
@@ -218,16 +226,7 @@ function AlbumDetail() {
         isAlerts={isAlerts}
         setIsAlerts={setIsAlerts}
       />
-      {isPreview && (
-        <Preview
-          photoLength={inputPhoto ? inputPhoto.length : 0}
-          setIsPreview={setIsPreview}
-          inputPhoto={inputPhoto}
-          uploadCount={uploadCount}
-          setUploadCount={setUploadCount}
-          isUploading={isUploading}
-        />
-      )}
+      {isPreview && <Preview inputPhoto={inputPhoto} />}
       {isAlerts[0] && (
         <Alert
           msg="정말 삭제 하시겠습니까?"

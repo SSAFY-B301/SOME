@@ -84,7 +84,11 @@ function Photos({
       ) : (
         <>
           {!isSelect && (
-            <NewPhoto inputPhoto={inputPhoto} setInputPhoto={setInputPhoto} />
+            <NewPhoto
+              key={0}
+              inputPhoto={inputPhoto}
+              setInputPhoto={setInputPhoto}
+            />
           )}
           {getPhotosPages ? (
             getPhotosPages.pages.map((page: PhotoPageType) =>
