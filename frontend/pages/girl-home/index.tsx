@@ -37,6 +37,9 @@ export default function Home() {
     }
     //https 요청 시에만 GeoLocation 정보를 받아올 수 있다.
   },[])
+
+  useEffect(() => {
+  },[userLocation])
   
   return (
     <div
