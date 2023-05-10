@@ -157,6 +157,12 @@ public class AuthService {
         ResponseDto responseDto = new ResponseDto<>();
 
         String userId = httpUtil.parseToken(accessToken);
+        if(userId == null){
+            responseDto.setData(null);
+            responseDto.setMessage("토큰 만료");
+            responseDto.setStatus_code(450);
+            return responseDto;
+        }
         Optional<User> byId = userRepository.findById(userId);
         User user = byId.get();
         UserInfoDto userInfoDto = UserInfoDto.builder()
