@@ -6,6 +6,10 @@ $main-color: linear-gradient(
   ),
   linear-gradient(134.36deg, #f472b6 15.23%, #9797d7 49.79%, #38bdf8 84.77%);
 
+.btn {
+  background: $main-color;
+}
+
 @keyframes transitionFrame {
   from {
     position: absolute;
