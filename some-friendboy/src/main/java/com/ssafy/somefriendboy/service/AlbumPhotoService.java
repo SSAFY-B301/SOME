@@ -10,11 +10,13 @@ import com.fasterxml.jackson.databind.ObjectMapper;
 import com.ssafy.somefriendboy.dto.*;
 import com.ssafy.somefriendboy.entity.*;
 import com.ssafy.somefriendboy.entity.id.UserPhotoLikeId;
+import com.ssafy.somefriendboy.entity.status.AlbumPhotoSnsStatus;
 import com.ssafy.somefriendboy.entity.status.LikeStatus;
 import com.ssafy.somefriendboy.entity.status.NotiType;
 import com.ssafy.somefriendboy.entity.status.PhotoStatus;
 import com.ssafy.somefriendboy.repository.albumphoto.AlbumPhotoRepository;
 import com.ssafy.somefriendboy.repository.album.AlbumRepository;
+import com.ssafy.somefriendboy.repository.albumphotosns.AlbumPhotoSNSRepository;
 import com.ssafy.somefriendboy.repository.user.UserRepository;
 import com.ssafy.somefriendboy.repository.userphotolike.UserPhotoLikeRepository;
 import com.ssafy.somefriendboy.util.HttpUtil;
@@ -47,6 +49,7 @@ public class AlbumPhotoService {
     private final HttpUtil httpUtil;
     private final NotiService notiService;
     private final RabbitTemplate rabbitTemplate;
+    private final AlbumPhotoSNSRepository albumPhotoSNSRepository;
     private static final String EXCHANGE_NAME = "some.noti";
     public ResponseDto insertPhoto(List<MultipartFile> multipartFiles, List<MetaDataDto> metaDataDtos, Long albumId, String accessToken) throws ImageProcessingException, IOException {
         Map<String, Object> result = new HashMap<>();
@@ -139,6 +142,24 @@ public class AlbumPhotoService {
         User user = userRepository.findByUserId(albumPhotoDto.getUserId());
         albumPhotoDto.setUserName(user.getUserName());
         albumPhotoDto.setUserProfileImg(user.getUserImg());
+
+        List<AlbumPhotoSNS> byPhotoId = albumPhotoSNSRepository.findByPhotoId(photoId);
+        int acceptCnt = 0;
+        int noreplyCnt = 0;
+        int declineCnt = 0;
+        for (AlbumPhotoSNS albumPhotoSNS : byPhotoId) {
+            if(albumPhotoSNS.getStatus().equals(AlbumPhotoSnsStatus.ACCEPT)){
+                acceptCnt++;
+            }
+            else if(albumPhotoSNS.getStatus().equals(AlbumPhotoSnsStatus.DECLINE)){
+                declineCnt++;
+            }
+            else if(albumPhotoSNS.getStatus().equals(AlbumPhotoSnsStatus.NOREPLY)){
+                noreplyCnt++;
+            }
+        }
+        if(acceptCnt == byPhotoId.size()) result.put("isSnsAgree",true);
+        else result.put("isSnsAgree", false);
 
         result.put("albumPhotoDetail", albumPhotoDto);
         return setResponseDto(result, "사진 상세 보기", 200);
