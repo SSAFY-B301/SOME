@@ -15,11 +15,11 @@ import org.springframework.stereotype.Component;
 @Component
 @Slf4j
 @RequiredArgsConstructor
-public class SampleListener {
+public class MessageQueueListener {
     private final NotiService notiService;
 
 
-    @RabbitListener(queues = "test.queue")
+    @RabbitListener(queues = "some.queue")
     public void receiveMessage(MQDto message) {
         log.info(message.toString());
         ObjectMapper mapper = new ObjectMapper();
