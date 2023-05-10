@@ -6,33 +6,31 @@ import { useRouter } from "next/router";
 import styles from "@/styles/home.module.scss";
 
 // 리덕스
-import { useSelector } from "react-redux";
-import { RootState } from "@/store/configureStore";
+import { userQuery } from "./api/userApi";
 
 export default function Home() {
   //로그인 상태인지 확인하고, 로그인 안 되어 있으면 로그인 페이지로 이동
   const router = useRouter();
-
+  const {getUserInfo} = userQuery();
+  
   useEffect(() => {
     let timeout;
-    
     const isLogin = window.localStorage.getItem("access_token") === null ? false : true;
     
     if (!isLogin) {
-      timeout = setTimeout(() => router.push("login"), 3000);
-      
-    } 
-    else {
-      const storageAccessToken = window.localStorage.getItem("access_token");
-      if (storageAccessToken) {
-        const parseAccessToken = JSON.parse(storageAccessToken);
-        console.log("Token : " + parseAccessToken.access_token);
-      }
-      timeout = setTimeout(() => router.push("boy-home"), 3000);
+      timeout = setTimeout(() => router.push("login"), 2000);
     }
     return () => {};
   }, []);
 
+  useEffect(() => {
+    if (getUserInfo !== undefined) {
+      setTimeout(() => router.push("/boy-home"), 2000);
+    }
+    return () => {
+    }
+  }, [getUserInfo])
+  
   return (
     <div
       className={`bg-white dark:bg-dark-bg-home flex items-center content-center touch-none ${styles.no_scroll}`}
