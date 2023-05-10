@@ -108,7 +108,7 @@ public class AlbumPhotoService {
                     .type(NotiType.UPLOAD)
                     .data(notiUploadCreateDto)
                     .build();
-            rabbitTemplate.convertAndSend(EXCHANGE_NAME, "test.route.#", mqDto);
+            rabbitTemplate.convertAndSend(EXCHANGE_NAME, "some.route.#", mqDto);
         }
         Long photoId = albumPhotos.getLast().getPhotoId();
 
