@@ -5,7 +5,7 @@ import { useRouter } from "next/router";
 import ItemBlock from "components/common/ItemBlock";
 
 // API
-import { useGetFavorite, useGetCurrent, Mutations } from "@/pages/api/albumApi";
+import { useGetFavorite, Mutations } from "@/pages/api/albumApi";
 
 // CSS
 import styles from "styles/home.module.scss";
@@ -15,68 +15,8 @@ import HeartIcon from "public/icons/Heart.svg";
 import PlusIcon from "public/icons/Plus.svg";
 
 // 타입
-import { CurrentAlbumType, FavoriteAlbumType } from "@/types/AlbumTypes";
+import { FavoriteAlbumType } from "@/types/AlbumTypes";
 import Link from "next/link";
-
-/**
- * 최근 업로드된 앨범
- */
-function CurrentAlbum() {
-  const router = useRouter();
-
-  const { getCurrent } = useGetCurrent();
-
-  const currents: React.ReactNode = getCurrent ? (
-    getCurrent.map((currentAlbum: CurrentAlbumType) => (
-      <div
-        onClick={() => router.push(`/album/${currentAlbum.id}`)}
-        key={currentAlbum.id}
-      >
-        <div
-          className="bg-center bg-cover"
-          style={{
-            width: "12.308vw",
-            height: "12.308vw",
-            backgroundImage: "url(" + currentAlbum.img + ")",
-            borderRadius: "3.077vw",
-          }}
-        >
-          <div
-            className={`rounded-full flex justify-center items-center relative ${styles.count_circle}`}
-            style={{
-              width: "5.128vw",
-              height: "5.128vw",
-              top: "-1.282vw",
-              left: "8.974vw",
-            }}
-          >
-            <span className="text-white" style={{ fontSize: "2.564vw" }}>
-              {currentAlbum.count <= 10 ? currentAlbum.count : "10+"}
-            </span>
-          </div>
-        </div>
-        <p style={{ fontSize: "3.077vw" }}>{currentAlbum.name}</p>
-      </div>
-    ))
-  ) : (
-    <p>아직 추가된 사진이 없어요</p>
-  );
-  return (
-    <ItemBlock width="92.308vw" height="28.718vw" radius="16px">
-      <div
-        className="flex flex-col justify-around w-full h-full"
-        style={{ margin: "0px 4.103vw" }}
-      >
-        <h1 className="font-bold" style={{ fontSize: "5.128vw" }}>
-          최근 업로드
-        </h1>
-        <div className="flex" style={{ gap: "4.103vw" }}>
-          {currents}
-        </div>
-      </div>
-    </ItemBlock>
-  );
-}
 
 /**
  * 즐겨찾는 앨범
@@ -114,7 +54,7 @@ function FavoriteAlbum() {
           <div key={favoriteAlbum.album_id} className={`${styles.card}`}>
             <div
               onClick={() => router.push(`/album/${favoriteAlbum.album_id}`)}
-              className="bg-center bg-cover pt-10"
+              className="pt-10 bg-center bg-cover"
               style={{
                 width: "73.846vw",
                 height: "98.462vw",
@@ -127,7 +67,7 @@ function FavoriteAlbum() {
               }}
             >
               <div
-                className="flex flex-col relative "
+                className="relative flex flex-col "
                 style={{
                   width: "38.974vw",
                   top: "6.154vw",
@@ -151,7 +91,7 @@ function FavoriteAlbum() {
               </div>
             </div>
             <div className="relative" style={{ top: "-97.436vw" }}>
-              <div className="flex justify-end relative top-4 right-4 gap-2">
+              <div className="relative flex justify-end gap-2 top-4 right-4">
                 <HeartIcon
                   onClick={() => clickedHeart(favoriteAlbum.album_id)}
                   fill={"red"}
@@ -212,4 +152,4 @@ function FavoriteAlbum() {
   );
 }
 
-export { CurrentAlbum, FavoriteAlbum };
+export { FavoriteAlbum };
