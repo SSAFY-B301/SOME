@@ -132,3 +132,13 @@ export interface PhotoPageType {
     albumId: number;
   }[];
 }
+
+export interface ThumbnailBodyType {
+  album_id: number;
+  new_album_thumbnail_id: number;
+}
+
+export interface SnsRequestType {
+  photo_id: string;
+  album_id: string;
+}

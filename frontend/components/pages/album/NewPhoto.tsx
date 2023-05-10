@@ -1,5 +1,11 @@
 import React from "react";
 import PlusIcon from "public/icons/PlusMainColor.svg";
+import { useDispatch } from "react-redux";
+import {
+  setPreviewLength,
+  setUploadLength,
+  startPreview,
+} from "@/features/photoUploadSlice";
 
 interface NewPhotoType {
   inputPhoto: FileList | null;
@@ -9,12 +15,20 @@ interface NewPhotoType {
 function NewPhoto({ setInputPhoto }: NewPhotoType) {
   // TODO : useRef 타입 any 처리하기
   const fileInput = React.useRef<any>(null);
+  let dispatch = useDispatch();
   const inputPhoto = () => {
     fileInput.current.click();
   };
+  const test = () => {
+    if (fileInput.current.files) {
+      const files = fileInput.current.files;
+      const filesLength = files.length;
 
-  const changeInputPhoto = (e: React.ChangeEvent<HTMLInputElement>) => {
-    e.target.files && setInputPhoto(e.target.files);
+      setInputPhoto(files);
+      dispatch(setUploadLength({ uploadLength: filesLength }));
+      dispatch(setPreviewLength({ previewLength: filesLength }));
+      dispatch(startPreview());
+    }
   };
 
   return (
@@ -27,9 +41,10 @@ function NewPhoto({ setInputPhoto }: NewPhotoType) {
         type="file"
         multiple
         ref={fileInput}
-        onChange={changeInputPhoto}
+        onInput={test}
         accept="image/jpg,image/png,image/jpeg,image/gif"
         style={{ display: "none" }}
+        className="upload"
       />
       <PlusIcon width={"8.205vw"} height={"8.205vw"} />
     </div>

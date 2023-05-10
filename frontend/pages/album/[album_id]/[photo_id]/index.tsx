@@ -13,6 +13,9 @@ import {
 } from "@/components/photo-detail";
 import styles from "./photo.module.scss";
 import { getPhoto } from "@/pages/api/photoDetailApi";
+import { Mutations, useDownload } from "@/pages/api/albumApi";
+import { SnsRequestType, ThumbnailBodyType } from "@/types/AlbumTypes";
+import ThumbnailModal from "@/components/photo-detail/ThumbnailModal";
 
 const PhotoDetail = (): JSX.Element => {
   /**
@@ -21,6 +24,7 @@ const PhotoDetail = (): JSX.Element => {
   const [showDownLoadModal, setDownLoadShowModal] = useState<boolean>(false);
   const [showDeleteModal, setDeleteModal] = useState<boolean>(false);
   const [showVoteModal, setVoteModal] = useState<boolean>(false);
+  const [showThumbnailModal, setThumbnailModal] = useState<boolean>(false);
 
   /**
    * 사진 조작 state
@@ -83,6 +87,50 @@ const PhotoDetail = (): JSX.Element => {
    */
   const clickVote = () => {
     showVoteModal ? setVoteModal(false) : setVoteModal(true);
+  };
+
+  /**
+   * 썸네일 수정 모달창 생성
+   */
+  const clickThumbnail = () => {
+    console.log(showThumbnailModal);
+
+    showThumbnailModal ? setThumbnailModal(false) : setThumbnailModal(true);
+  };
+
+  const { usePutThumbnail, usePostSns, useDeletePhotos } = Mutations();
+  const { mutate: mutateThumbnail } = usePutThumbnail();
+  const { mutate: mutateSns } = usePostSns();
+  const { mutate: mutateDeletePhoto } = useDeletePhotos();
+
+  /**
+   * 썸네일 수정 API
+   */
+  const putThumbnail = () => {
+    const body: ThumbnailBodyType = {
+      album_id: photoDetail.albumId,
+      new_album_thumbnail_id: photoDetail.photoId,
+    };
+    mutateThumbnail(body);
+  };
+
+  /**
+   * 다운로드 API
+   */
+  const downloadPhoto = () => {
+    const url = photoDetail.s3Url;
+    useDownload(url);
+  };
+
+  /**
+   * SNS 공유 요청 API
+   */
+  const requestSns = () => {
+    const body: SnsRequestType = {
+      album_id: photoDetail.albumId,
+      photo_id: photoDetail.photoId,
+    };
+    mutateSns(body);
   };
 
   /**
@@ -185,11 +233,25 @@ const PhotoDetail = (): JSX.Element => {
           clickDownload={clickDownload}
           clickDelete={clickDelete}
           clickVote={clickVote}
+          clickThumbnail={clickThumbnail}
         />
       </div>
-      {showDownLoadModal && <DownloadModal clickDownload={clickDownload} />}
+      {showDownLoadModal && (
+        <DownloadModal
+          clickDownload={clickDownload}
+          downloadPhoto={downloadPhoto}
+        />
+      )}
       {showDeleteModal && <DeleteModal clickDelete={clickDelete} />}
-      {showVoteModal && <VoteModal clickVote={clickVote} />}
+      {showVoteModal && (
+        <VoteModal clickVote={clickVote} requestSns={requestSns} />
+      )}
+      {showThumbnailModal && (
+        <ThumbnailModal
+          clickThumbnail={clickThumbnail}
+          putThumbnail={putThumbnail}
+        />
+      )}
     </div>
   );
 };
