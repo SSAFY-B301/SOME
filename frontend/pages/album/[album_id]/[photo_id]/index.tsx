@@ -100,11 +100,11 @@ const PhotoDetail = (): JSX.Element => {
         if (isZoom) {
           setIsZoom(false);
           setRatio(0.7);
-          console.log("줌 아웃");
+          // console.log("줌 아웃");
         } else {
           setIsZoom(true);
           setRatio(3);
-          console.log("줌 인");
+          // console.log("줌 인");
         }
       } else if (clickCount == 1) {
         clickCount = 0;
