@@ -1,5 +1,6 @@
 package com.ssafy.somefriendgirl.controller;
 
+import com.ssafy.somefriendgirl.dto.PhotoLikeDto;
 import com.ssafy.somefriendgirl.dto.ResponseDto;
 import com.ssafy.somefriendgirl.service.PhotoService;
 import lombok.RequiredArgsConstructor;
@@ -24,6 +25,16 @@ public class PhotoController {
         log.info("사진 상세 정보 GET: /photo/detail, photoId : ", photoId);
 
         ResponseDto responseDto = photoService.selectPhoto(accessToken, photoId);
+        return new ResponseEntity<ResponseDto>(responseDto, HttpStatus.OK);
+    }
+
+    // 사진 좋아요
+    @PutMapping("/like")
+    public ResponseEntity<ResponseDto> likePhoto(@RequestHeader HttpHeaders headers, @RequestBody PhotoLikeDto photoLikeDto) {
+        String accessToken = headers.get("access_token").toString();
+        log.info("사진 좋아요 PUT: /photo/like, photoLikeDto : " + photoLikeDto.toString());
+
+        ResponseDto responseDto = photoService.likePhoto(accessToken, photoLikeDto);
         return new ResponseEntity<ResponseDto>(responseDto, HttpStatus.OK);
     }
 }
