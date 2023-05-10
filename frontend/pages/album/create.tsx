@@ -25,7 +25,7 @@ const AlbumCreate = (): JSX.Element => {
 
   return (
     <div className="w-screen h-screen">
-      <div className={`relative bg-pink-400 ${styles.createPageBg}`}>
+      <div className={`relative ${styles.createPageBg}`}>
         <div
           className={`absolute left-1/2 top-1/2 -translate-x-1/2 -translate-y-1/2 flex flex-col justify-between w-9/12`}
         >

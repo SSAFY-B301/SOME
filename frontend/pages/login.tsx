@@ -115,13 +115,13 @@ export default function Login() {
     slidesToScroll: 1,
   };
   return (
-    <div className="w-screen h-screen">
+    <div className="w-screen h-screen bg-white">
       <Slider {...settings} className={`${styles.slider}`}>
         <div className="w-screen h-screen">
           <div className="w-full h-full flex justify-center items-center">
             <div className="flex flex-col justify-center items-center">
-              <p className={`text-6xl text-center ${styles.title}`}>SOME</p>
-              <p>함께 만들어가는 앨범</p>
+              <p className={`text-6xl text-cente ${styles.title}`}>SOME</p>
+              <p className="text-black">함께 만들어가는 앨범</p>
             </div>
           </div>
         </div>
@@ -131,7 +131,7 @@ export default function Login() {
               남는건 사진이야
             </p>
             <p className={`text-4xl text-end mb-4 ${styles.title}`}>친구야</p>
-            <p className="text-xl text-end">남사친, 추억을 담다</p>
+            <p className="text-xl text-end text-black">남사친, 추억을 담다</p>
           </div>
           <div
             className="absolute"
@@ -155,7 +155,7 @@ export default function Login() {
               남는건 사진이야
             </p>
             <p className={`text-4xl text-end mb-4 ${styles.title}`}>친구야</p>
-            <p className="text-xl text-end">남사친, 추억을 담다</p>
+            <p className="text-xl text-end text-black">남사친, 추억을 담다</p>
           </div>
           <div
             className="absolute flex justify-between items-center"
@@ -174,11 +174,13 @@ export default function Login() {
               className="h-2/3 flex flex-col justify-between box-border pl-2"
               style={{ width: "40vw" }}
             >
-              <span className="text-sm text-start">
+              <span className="text-sm text-start text-black">
                 최근 소식 및 업로드 확인
               </span>
-              <span className="text-sm text-start">자주찾는 앨범 설정</span>
-              <span className="text-sm text-start">
+              <span className="text-sm text-start text-black">
+                자주찾는 앨범 설정
+              </span>
+              <span className="text-sm text-start text-black">
                 + 버튼으로 빠른 앨범 생성
               </span>
             </div>
@@ -190,7 +192,7 @@ export default function Login() {
               여기서 사진찍자
             </p>
             <p className={`text-4xl text-end mb-4 ${styles.title}`}>친구야</p>
-            <p className="text-xl text-end">여사친, 추억을 새기다</p>
+            <p className="text-xl text-end text-black">여사친, 추억을 새기다</p>
           </div>
           <div
             className="absolute"
@@ -214,7 +216,7 @@ export default function Login() {
               여기서 사진찍자
             </p>
             <p className={`text-4xl text-end mb-4 ${styles.title}`}>친구야</p>
-            <p className="text-xl text-end">여사친, 추억을 새기다</p>
+            <p className="text-xl text-end text-black">여사친, 추억을 새기다</p>
           </div>
           <div
             className="absolute flex justify-between items-center"
@@ -233,13 +235,13 @@ export default function Login() {
               className="h-2/3 flex flex-col justify-between box-border pl-2"
               style={{ width: "40vw" }}
             >
-              <span className="text-sm text-start">
+              <span className="text-sm text-start text-black">
                 근처에서 찍은 사진들을 자동으로 탐색
               </span>
-              <span className="text-sm text-start">
+              <span className="text-sm text-start text-black">
                 지도에 표시된 앨범 속에서 포토존 찾기
               </span>
-              <span className="text-sm text-start">
+              <span className="text-sm text-start text-black">
                 + 버튼으로 내가 찍은 사진 남기기
               </span>
             </div>
