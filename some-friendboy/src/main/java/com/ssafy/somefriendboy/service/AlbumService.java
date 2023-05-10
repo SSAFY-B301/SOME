@@ -352,9 +352,10 @@ public class AlbumService {
         if(userId == null){
             return setResponseDto(result,"토큰 만료",450);
         }
-
+        
         if (additionalFriendsInviteDto != null) {
             List<String> inviteFriend = List.of(additionalFriendsInviteDto.getInviteFriend());
+            log.info(inviteFriend.toString());
             for (String invitedFriendId : additionalFriendsInviteDto.getInviteFriend()) {
                 AlbumMemberId albumMemberId = AlbumMemberId.builder()
                         .albumId(additionalFriendsInviteDto.getAlbumId())
@@ -372,7 +373,7 @@ public class AlbumService {
                         albumMemberRepository.save(albumMember);
                     }
                     else{
-                        inviteFriend.remove(invitedFriendId);
+                        inviteFriend.remove(String.valueOf(invitedFriendId));
                     }
                 }
             }
