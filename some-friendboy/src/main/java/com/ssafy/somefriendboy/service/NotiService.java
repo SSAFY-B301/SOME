@@ -3,6 +3,7 @@ package com.ssafy.somefriendboy.service;
 import com.ssafy.somefriendboy.dto.*;
 import com.ssafy.somefriendboy.entity.Album;
 import com.ssafy.somefriendboy.entity.AlbumPhoto;
+import com.ssafy.somefriendboy.entity.Notification;
 import com.ssafy.somefriendboy.repository.album.AlbumRepository;
 import com.ssafy.somefriendboy.repository.albumphoto.AlbumPhotoRepository;
 import com.ssafy.somefriendboy.repository.noti.EmitterRepository;
@@ -37,11 +38,16 @@ public class NotiService {
         if (userId == null) {
             return setResponseDto(false, "토큰 만료", 450);
         }
-        List<Long> photoIdNotChecked = notificationRepository.findPhotoIdNotChecked(userId);
-        log.info(photoIdNotChecked.toString());
-        List<AlbumPhoto> byPhotoId = albumPhotoRepository.findByPhotoIdIn(photoIdNotChecked);
-        log.info(byPhotoId.toString());
+        List<Notification> photoIdNotChecked = notificationRepository.findPhotoIdNotChecked(userId);
+        List<Long> listNotiId = new ArrayList<>();
+        List<Long> listPhotoId = new ArrayList<>();
+        for (Notification notification : photoIdNotChecked) {
+                listPhotoId.add(notification.getAlbumOrPhotoId());
+                listNotiId.add(notification.getId());
+        }
+        List<AlbumPhoto> byPhotoId = albumPhotoRepository.findByPhotoIdIn(listPhotoId);
         Map<Long,UncheckedPhotoDto> dto = new HashMap<>();
+        int i=0;
         for (AlbumPhoto albumPhoto : byPhotoId) {
             Long albumId = albumPhoto.getAlbumId();
             if(dto.get(albumId) == null){
@@ -62,6 +68,7 @@ public class NotiService {
                             .userName(userRepository.findByUserId(albumPhoto.getUserId()).getUserName())
                             .photoUrl(albumPhoto.getOriginUrl())
                             .photoId(albumPhoto.getPhotoId())
+                            .notiId(listNotiId.get(i++))
                             .build());
         }
         List<UncheckedPhotoDto> list = new ArrayList<>(dto.values());

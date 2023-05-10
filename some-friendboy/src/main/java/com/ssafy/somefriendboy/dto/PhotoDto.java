@@ -9,6 +9,10 @@ import java.time.LocalDateTime;
 @Data
 @Builder
 public class PhotoDto {
+
+    @JsonProperty("noti_id")
+    private Long notiId;
+
     @JsonProperty("photo_id")
     private Long photoId;
 
