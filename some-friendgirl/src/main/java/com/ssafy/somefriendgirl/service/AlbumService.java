@@ -29,8 +29,8 @@ public class AlbumService {
 
     private final AlbumRepository albumRepository;
     private final ResponseUtil responseUtil;
-    private final Double MAP_LAT_SIZE = 0.005;
-    private final Double MAP_LON_SIZE = 0.00035;
+    private final Double MAP_LAT_SIZE = 0.001;
+    private final Double MAP_LON_SIZE = 0.0007;
 
     public ResponseDto insertPhoto(List<MultipartFile> multipartFiles, List<MetaDataDto> metaDataDtos, GpsRequestDto gpsRequestDto, String accessToken) throws ImageProcessingException, IOException {
         Map<String, Object> result = new HashMap<>();
@@ -92,7 +92,8 @@ public class AlbumService {
         //전체 지도 위경도 범위
         GpsRangeDto gpsRangeDto = GpsRangeDto.builder().startLat(gpsRequestDto.getLatitude() - MAP_LAT_SIZE / 2).startLon(gpsRequestDto.getLongitude() - MAP_LON_SIZE / 2)
                 .endLat(gpsRequestDto.getLatitude() + MAP_LAT_SIZE / 2).endLon(gpsRequestDto.getLongitude() + MAP_LON_SIZE / 2).build();
-        log.info("4분할 4사진 목록 GET: /album/upload, gpsRangeDto : {}", gpsRangeDto);
+        log.info("4분할 4사진 목록 GET: /album/list, gpsRangeDto : {}", gpsRangeDto);
+
         List<AlbumPhoto> albumPhotos = albumRepository.findAllAlbumPhoto(gpsRangeDto);
 
         //현재 위치와 4분할 위경도 평균값 계산
