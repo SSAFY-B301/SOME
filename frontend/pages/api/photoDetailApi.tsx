@@ -11,8 +11,7 @@ function getPhoto() {
 
   const { data: queryData, isLoading } = useQuery(["photo"], () =>
     customBoyAxios.get(
-      process.env.NEXT_PUBLIC_FRIEND_BOY_URL +
-        "/photo/detail?photoId=" +
+      "/photo/detail?photoId=" +
         photoId
     )
   );
@@ -26,7 +25,7 @@ function getSnsPhoto(photoId: number | undefined) {
   let snsResultData: PhotoType;
   const { data: snsPhotoData } = useQuery(["sns"], () =>
     customBoyAxios.get(
-      process.env.NEXT_PUBLIC_FRIEND_BOY_URL + "/photo/detail?photoId=5"
+      "/photo/detail?photoId="+photoId
     )
   );
 
