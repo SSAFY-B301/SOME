@@ -23,7 +23,10 @@ const ThumbnailModal = ({
           <div className="w-full h-1/2 border-b-2 flex justify-center items-center text-gray-400">
             대표 이미지가 변경됩니다.
           </div>
-          <button className="w-full h-1/2 flex justify-center items-center text-2xl font-bold text-blue-500">
+          <button
+            className="w-full h-1/2 flex justify-center items-center text-2xl font-bold text-blue-500"
+            onClick={clickPutThumbnail}
+          >
             변경하기
           </button>
         </div>

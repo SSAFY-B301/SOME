@@ -97,6 +97,7 @@ const PhotoDetail = (): JSX.Element => {
 
     showThumbnailModal ? setThumbnailModal(false) : setThumbnailModal(true);
   };
+
   const { mutate: mutateThumbnail } = Mutations().usePutThumbnail();
   const clickPutThumbnail = () => {
     const body: thumbnailBodyType = {
