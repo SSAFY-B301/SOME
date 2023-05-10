@@ -2,7 +2,7 @@ import React from "react";
 
 interface Props {
   clickThumbnail(): void;
-  clickPutThumbnail(): void;
+  putThumbnail(): void;
 }
 
 /**
@@ -11,7 +11,7 @@ interface Props {
 
 const ThumbnailModal = ({
   clickThumbnail,
-  clickPutThumbnail,
+  putThumbnail,
 }: Props): JSX.Element => {
   return (
     <div
@@ -25,7 +25,7 @@ const ThumbnailModal = ({
           </div>
           <button
             className="w-full h-1/2 flex justify-center items-center text-2xl font-bold text-blue-500"
-            onClick={clickPutThumbnail}
+            onClick={putThumbnail}
           >
             변경하기
           </button>

@@ -2,13 +2,17 @@ import React from "react";
 
 interface Props {
   clickDownload(): void;
+  downloadPhoto(): void;
 }
 
 /**
  * 사진 다운로드 모달 창
  */
 
-const DownloadModal = ({ clickDownload }: Props): JSX.Element => {
+const DownloadModal = ({
+  clickDownload,
+  downloadPhoto,
+}: Props): JSX.Element => {
   /**
    * 사진 다운로드 기능 추가
    */
@@ -23,7 +27,10 @@ const DownloadModal = ({ clickDownload }: Props): JSX.Element => {
           <div className="w-full h-1/2 border-b-2 flex justify-center items-center text-gray-400">
             사진을 다운로드 합니다.
           </div>
-          <button className="w-full h-1/2 flex justify-center items-center text-2xl font-bold text-blue-500">
+          <button
+            className="w-full h-1/2 flex justify-center items-center text-2xl font-bold text-blue-500"
+            onClick={downloadPhoto}
+          >
             확인
           </button>
         </div>

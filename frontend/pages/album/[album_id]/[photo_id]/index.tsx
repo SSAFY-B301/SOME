@@ -13,7 +13,7 @@ import { getPhoto } from "@/pages/api/photoDetailApi";
 import Slider from "react-slick";
 import "slick-carousel/slick/slick.css";
 import "slick-carousel/slick/slick-theme.css";
-import { Mutations } from "@/pages/api/albumApi";
+import { Mutations, useDownload } from "@/pages/api/albumApi";
 import { thumbnailBodyType } from "@/types/AlbumTypes";
 import ThumbnailModal from "@/components/photo-detail/ThumbnailModal";
 
@@ -98,14 +98,23 @@ const PhotoDetail = (): JSX.Element => {
     showThumbnailModal ? setThumbnailModal(false) : setThumbnailModal(true);
   };
 
+  //
   const { mutate: mutateThumbnail } = Mutations().usePutThumbnail();
-  const clickPutThumbnail = () => {
+  const putThumbnail = () => {
     const body: thumbnailBodyType = {
       album_id: photoDetail.albumId,
       new_album_thumbnail_id: photoDetail.photoId,
     };
     mutateThumbnail(body);
   };
+
+  const downloadPhoto = () => {
+    // TODO : 다운로드
+    const url = photoDetail.s3Url;
+    useDownload(url);
+  };
+
+  //
 
   /**
    * 클릭 이벤트 분기 로직
@@ -169,13 +178,18 @@ const PhotoDetail = (): JSX.Element => {
           clickThumbnail={clickThumbnail}
         />
       </div>
-      {showDownLoadModal && <DownloadModal clickDownload={clickDownload} />}
+      {showDownLoadModal && (
+        <DownloadModal
+          clickDownload={clickDownload}
+          downloadPhoto={downloadPhoto}
+        />
+      )}
       {showDeleteModal && <DeleteModal clickDelete={clickDelete} />}
       {showVoteModal && <VoteModal clickVote={clickVote} />}
       {showThumbnailModal && (
         <ThumbnailModal
           clickThumbnail={clickThumbnail}
-          clickPutThumbnail={clickPutThumbnail}
+          putThumbnail={putThumbnail}
         />
       )}
     </div>
