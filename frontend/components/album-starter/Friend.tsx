@@ -70,7 +70,7 @@ const Friend = ({
           fill="none"
           viewBox="0 0 24 24"
           strokeWidth="5"
-          stroke="white"
+          stroke={isActive ? "white" : "none"}
           className="w-3 h-3"
         >
           <path

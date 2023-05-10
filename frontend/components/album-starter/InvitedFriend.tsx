@@ -62,7 +62,7 @@ const InvitedFriend = ({ friend, topRemoveFriends }: Props): JSX.Element => {
             src={thumbnailImg}
             alt="img"
             onError={onErrorImg}
-            className="absolute left-1/2 top-1/2 -translate-x-1/2 -translate-y-1/2 w-12 h-12 border-2 rounded-full"
+            className="absolute left-1/2 top-1/2 -translate-x-1/2 -translate-y-1/2 w-12 h-12 border-2 dark:border-0 rounded-full"
           />
         </div>
         <span className="w-14 text-xs truncate flex justify-center">
