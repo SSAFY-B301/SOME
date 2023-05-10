@@ -19,7 +19,7 @@ function NewPhoto({ setInputPhoto }: NewPhotoType) {
   const inputPhoto = () => {
     fileInput.current.click();
   };
-  const test = () => {
+  const onInput = () => {
     if (fileInput.current.files) {
       const files = fileInput.current.files;
       const filesLength = files.length;
@@ -41,7 +41,7 @@ function NewPhoto({ setInputPhoto }: NewPhotoType) {
         type="file"
         multiple
         ref={fileInput}
-        onInput={test}
+        onInput={onInput}
         accept="image/jpg,image/png,image/jpeg,image/gif"
         style={{ display: "none" }}
         className="upload"

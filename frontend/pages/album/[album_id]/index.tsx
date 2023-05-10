@@ -9,7 +9,7 @@ import EditAlbumName from "components/pages/album/EditAlbumName";
 import { LoadingCount } from "components/common/Loading";
 
 // 라이브러리
-import { useEffect, useMemo, useRef, useState } from "react";
+import { useEffect, useMemo, useState } from "react";
 import { useRouter } from "next/router";
 import axios from "axios";
 
@@ -28,11 +28,6 @@ import {
   setInit,
   setUserIdState,
 } from "@/features/albumStatusSlice";
-import {
-  setPreviewLength,
-  setUploadLength,
-  startPreview,
-} from "@/features/photoUploadSlice";
 
 function AlbumDetail() {
   const router = useRouter();
