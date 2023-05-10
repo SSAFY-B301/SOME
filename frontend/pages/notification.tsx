@@ -11,8 +11,7 @@ import InviteModal from "@/components/pages/notification/InviteModal";
 import AlarmTime from "@/components/pages/notification/AlarmTime";
 
 interface SnsHandlerParamType{
-    photoId : number,
-    notiId : number,
+    notiInfo: NotiType
 }
 interface InviteHandlerParamType{
     albumId : number,
@@ -24,12 +23,11 @@ export default function Notification() {
     const [inviteModalOpen, setInviteModalOpen ] = useState<boolean>(false);
     const [snsModalOpen, setSnsModalOpen ] = useState<boolean>(false);
     const [albumId, setAlbumId] = useState<number>();
-    const [photoId, setPhotoId] = useState<number>();
+    const [notiInfo, setNotiInfo] = useState<NotiType>();
     const [notiId, setNotiId] = useState<number>();
 
     const snsAlarmHandler = (params :SnsHandlerParamType) => {
-        setPhotoId(params.photoId);
-        setNotiId(params.notiId);
+        setNotiInfo(params.notiInfo);
         setSnsModalOpen(!snsModalOpen);
     }
     function inviteModalHandler (params : InviteHandlerParamType) {
@@ -53,7 +51,7 @@ export default function Notification() {
                         return(
                             <div 
                                 key={noti.noti_id} 
-                                onClick={noti.type === "SNS" ? () => snsAlarmHandler({photoId : noti.photo_or_album_id, notiId :  noti.noti_id}) 
+                                onClick={noti.type === "SNS" ? () => snsAlarmHandler({notiInfo : noti}) 
                                                              : () => inviteModalHandler({albumId : noti.photo_or_album_id, notiId : noti.noti_id})} className={noti.status === "UNCHECKED" ? `py-4 px-6 ${styles.on_read}` : `py-4 px-6 shadow-sm`}>
                                 <div className="flex justify-between">
                                     <div className="flex">
@@ -78,7 +76,7 @@ export default function Notification() {
                 <InviteModal notiId={notiId} albumId={albumId} inviteModalOpen={inviteModalOpen} setInviteModalOpen={setInviteModalOpen}></InviteModal>
             )}
             {snsModalOpen && (
-                <SnsNotiModal notiId={notiId} photoId={photoId} snsModalOpen={snsModalOpen} setSnsModalOpen={setSnsModalOpen}></SnsNotiModal>
+                <SnsNotiModal notiInfo={notiInfo} snsModalOpen={snsModalOpen} setSnsModalOpen={setSnsModalOpen}></SnsNotiModal>
             )}
         </div>
     )
