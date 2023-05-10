@@ -21,11 +21,11 @@ import {
   thumbnailBodyType,
 } from "@/types/AlbumTypes";
 import useCustomAxios from "@/features/customAxios";
-import { PhotoListType } from "@/types/StateType";
 
 // 리덕스
-import { useSelector } from "react-redux";
+import { useDispatch, useSelector } from "react-redux";
 import { StateType } from "@/types/StateType";
+import { countUpload } from "@/features/photoUploadSlice";
 
 const { customBoyAxios } = useCustomAxios();
 
@@ -108,43 +108,7 @@ export const useGetDetail = (albumId: number) => {
 
 /**
  * [GET] 사진 정보
- * @returns
  */
-export const useGetPhotos = (
-  Requests: requestPhotosType,
-  page?: number,
-  size?: number
-) => {
-  const queryKey = `/photo/album/list?albumId=${Requests.albumId}&userId=${
-    Requests.userId
-  }&${Requests.categoryId !== 0 && `categoryId=${Requests.categoryId}`}`;
-
-  const {
-    data,
-    isLoading: getPhotosIsLoading,
-    refetch,
-  } = useQuery(
-    ["photos", Requests.albumId],
-    () => customBoyAxios.get(queryKey),
-    {
-      cacheTime: 5000,
-      refetchInterval: 5000,
-      onSuccess: (data) => {},
-    }
-  );
-
-  let getPhotos: PhotoType[] | undefined;
-  let getTotal: number | undefined;
-  let getTotalId: number[] | undefined;
-  if (data) {
-    getPhotos = data.data.data.albumPhotoList.content;
-    getTotal = data.data.data.totalPhotoCnt;
-    getTotalId = data.data.data.totalPhotoId;
-  }
-
-  return { getPhotos, getTotal, getTotalId, getPhotosIsLoading, refetch };
-};
-
 export const useInfinitePhotos = (
   Requests: requestPhotosType,
   page: number = 0,
@@ -156,6 +120,8 @@ export const useInfinitePhotos = (
     Requests.categoryId !== 0 && `categoryId=${Requests.categoryId}`
   }&size=${size}`;
 
+  let getTotal: number | undefined;
+  let getTotalId: number[] | undefined;
   const { data, fetchNextPage, hasNextPage, isLoading, isError, refetch } =
     useInfiniteQuery(
       ["photos", Requests.albumId, Requests.categoryId, Requests.userId],
@@ -166,7 +132,10 @@ export const useInfinitePhotos = (
       {
         // cacheTime: 5000,
         // refetchInterval: 5000,
-        onSuccess: (data) => {},
+        onSuccess: (data) => {
+          getTotal = data.pages[0].totalPhotoCnt;
+          getTotalId = data.pages[0].totalPhotoId;
+        },
         getNextPageParam: (
           lastPage: PhotoPageType,
           allPosts: PhotoPageType[]
@@ -178,7 +147,16 @@ export const useInfinitePhotos = (
       }
     );
 
-  return { data, fetchNextPage, hasNextPage, isLoading, isError, refetch };
+  return {
+    data,
+    getTotal,
+    getTotalId,
+    fetchNextPage,
+    hasNextPage,
+    isLoading,
+    isError,
+    refetch,
+  };
 };
 
 export function Mutations() {
@@ -210,7 +188,11 @@ export function Mutations() {
       }
     );
   }
-
+  /**
+   * [DELETE] 사진 삭제
+   * @param albumId
+   * @returns
+   */
   function useDeletePhotos(
     albumId: number
   ): UseMutationResult<boolean, AxiosError, number[]> {
@@ -227,6 +209,11 @@ export function Mutations() {
     );
   }
 
+  /**
+   * [PUT] 앨범 이름 변경
+   * @param albumId
+   * @returns
+   */
   function usePutAlbumName(
     albumId: number
   ): UseMutationResult<boolean, AxiosError, usePutAlbumNameType> {
@@ -243,13 +230,21 @@ export function Mutations() {
     );
   }
 
-  function usePostPhoto(
-    setUploadCount: React.Dispatch<React.SetStateAction<number>>
-  ): UseMutationResult<boolean, AxiosError, requestPartType> {
+  /**
+   * [POST] 사진 업로드
+   * @param setUploadCount
+   * @returns
+   */
+  function usePostPhoto(): UseMutationResult<
+    boolean,
+    AxiosError,
+    requestPartType
+  > {
     const headers = {
       "Content-Type": "multipart/form-data",
     };
-    const getPhotosKey = useSelector((state: StateType) => state.photoList);
+    let dispatch = useDispatch();
+    const getPhotosKey = useSelector((state: StateType) => state.albumStatus);
     return useMutation(
       (requestData) =>
         customBoyAxios.post(
@@ -258,8 +253,8 @@ export function Mutations() {
           { headers }
         ),
       {
-        onSuccess: (data) => {
-          setUploadCount((prev) => prev + 1);
+        onSuccess: () => {
+          dispatch(countUpload());
           queryClient.invalidateQueries([
             "photos",
             getPhotosKey.albumId,

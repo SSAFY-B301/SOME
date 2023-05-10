@@ -1,11 +1,13 @@
 import { combineReducers } from "redux";
 import { HYDRATE } from "next-redux-wrapper";
 import authSlice from "../features/authSlice";
-import photoListSlice from "@/features/photoListSlice";
+import albumStatusSlice from "@/features/albumStatusSlice";
+import photoUploadSlice from "@/features/photoUploadSlice";
 
 const combinedReducer = combineReducers({
   auth: authSlice,
-  photoList: photoListSlice,
+  albumStatus: albumStatusSlice,
+  photoUpload: photoUploadSlice,
 });
 
 const rootReducer: typeof combinedReducer = (state, action) => {

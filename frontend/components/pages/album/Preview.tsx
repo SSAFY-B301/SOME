@@ -11,14 +11,21 @@ import { Mutations } from "@/pages/api/albumApi";
 import { useRouter } from "next/router";
 import { requestPartType } from "@/types/AlbumTypes";
 
+// 리덕스
+import { useDispatch, useSelector } from "react-redux";
+import { RootState } from "@/store/configureStore";
+import { StateType } from "@/types/StateType";
+
+import {
+  endPreview,
+  endUpload,
+  setUploadLength,
+  startUpload,
+} from "@/features/photoUploadSlice";
+
 // 인터페이스
 interface PreviewType {
-  photoLength: number;
-  setIsPreview: React.Dispatch<React.SetStateAction<boolean>>;
   inputPhoto: FileList | null;
-  uploadCount: number;
-  setUploadCount: React.Dispatch<React.SetStateAction<number>>;
-  isUploading: MutableRefObject<boolean>;
 }
 interface previewPhotoType {
   id: number;
@@ -26,26 +33,30 @@ interface previewPhotoType {
 }
 /**
  * 업로드 사진 미리보기
- * @param photoLength 미리보기 사진 총 개수
- * @param setIsPreview 미리보기 여부
  * @param inputPhoto input 파일들
  * @returns
  */
-function Preview({
-  photoLength,
-  setIsPreview,
-  inputPhoto,
-  uploadCount,
-  setUploadCount,
-  isUploading,
-}: PreviewType) {
+function Preview({ inputPhoto }: PreviewType) {
   const range = (size: number, start = 0) => {
     return Array.from({ length: size }, (_, index) => index + start);
   };
   const [previewPhotos, setPreviewPhotos] = useState<previewPhotoType[]>([]);
-  // const [uploadCount, setUploadCount] = useState(0);
-  // const isUploading = useRef(false);
 
+  let dispatch = useDispatch();
+  const uploadLength = useSelector(
+    (state: StateType) => state.photoUpload.uploadLength
+  );
+  const previewLength = useSelector(
+    (state: StateType) => state.photoUpload.previewLength
+  );
+
+  const isUploading = useSelector(
+    (state: StateType) => state.photoUpload.isUploading
+  );
+  const uploadCount = useSelector(
+    (state: StateType) => state.photoUpload.uploadCount
+  );
+  const albumId = useSelector((state: StateType) => state.albumStatus.albumId);
   // 사진 미리보기
   useEffect(() => {
     if (previewPhotos.length === 0 && inputPhoto) {
@@ -65,26 +76,21 @@ function Preview({
 
     // 업로드 유무
     const [isChecks, setIsChecks] = useState<boolean[]>(
-      [...Array(photoLength)].fill(true)
+      [...Array(previewLength)].fill(true)
     );
 
     const countCheck = (isChecks: boolean[]) => {
       return isChecks.filter((isCheck) => isCheck).length;
     };
 
-    const uploadLength = useMemo(() => countCheck(isChecks), [isChecks]);
+    // const uploadLength = useMemo(() => countCheck(isChecks), [isChecks]);
 
-    const router = useRouter();
-    const albumId: number = Number(router.query.album_id);
+    useEffect(() => {
+      const uploadLength = isChecks.filter((isCheck) => isCheck).length;
+      dispatch(setUploadLength({ uploadLength: uploadLength }));
+    }, [isChecks]);
 
-    const { mutate } = Mutations().usePostPhoto(albumId, setUploadCount);
-
-    /**
-     * 미리보기 닫기
-     */
-    const closePreview = () => {
-      setIsPreview(false);
-    };
+    const { mutate } = Mutations().usePostPhoto();
 
     /**
      * 사진 업로드 유무 변경
@@ -95,9 +101,12 @@ function Preview({
       setIsChecks([...isChecks]);
     };
 
+    /**
+     * * 사진 업로드
+     */
     const uploadPhotos = () => {
-      isUploading.current = true;
-      // TODO : 사진 업로드 api
+      dispatch(startUpload());
+
       Array.from(inputPhoto).forEach((file, index) => {
         if (isChecks[index]) {
           let formData = new FormData();
@@ -113,9 +122,8 @@ function Preview({
 
     useEffect(() => {
       if (uploadCount === uploadLength) {
-        setUploadCount(0);
-        isUploading.current = false;
-        closePreview();
+        dispatch(endUpload());
+        dispatch(endPreview());
       }
     }, [uploadCount]);
 
@@ -150,13 +158,13 @@ function Preview({
       <>
         <section
           className={`${styles.preview} ${
-            isUploading.current && "hidden"
+            isUploading && "hidden"
           } bg-white text-black dark:bg-dark-bg-home dark:text-white`}
         >
           {/* 네브바 */}
           <nav>
-            <p onClick={closePreview}>취소</p>
-            <p>{`${viewId + 1}/${photoLength}`}</p>
+            <p onClick={() => dispatch(endPreview())}>취소</p>
+            <p>{`${viewId + 1}/${previewLength}`}</p>
             <p onClick={uploadPhotos}>확인</p>
           </nav>
 
@@ -192,7 +200,7 @@ function Preview({
             </Slider>
           </div>
         </section>
-        {isUploading.current && false && (
+        {isUploading && false && (
           <>
             <div
               className="absolute top-0 flex items-center justify-center bg-black bg-opacity-40 z-20 text-white text-xl"

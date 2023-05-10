@@ -1,14 +1,14 @@
 import { createSlice } from "@reduxjs/toolkit";
-import { PhotoListType } from "@/types/StateType";
+import { AlbumStatusType } from "@/types/StateType";
 
-const initialState: PhotoListType = {
+const initialState: AlbumStatusType = {
   albumId: 0,
   categoryId: 0,
   userId: new Set(),
 };
 
-export const photoListSlice = createSlice({
-  name: "photoList",
+export const albumStatusSlice = createSlice({
+  name: "albumStatus",
   initialState,
   reducers: {
     setInit(state) {
@@ -30,5 +30,5 @@ export const photoListSlice = createSlice({
 });
 
 export const { setALbumIdState, setCategoryState, setUserIdState, setInit } =
-  photoListSlice.actions;
-export default photoListSlice.reducer;
+  albumStatusSlice.actions;
+export default albumStatusSlice.reducer;

@@ -8,13 +8,12 @@ import styles from "styles/album.module.scss";
 // 아이콘
 import PlusIcon from "public/icons/PlusMainColor.svg";
 import { useGetDetail } from "@/pages/api/albumApi";
-import { useRouter } from "next/router";
 import { LoadingProfile } from "@/components/common/Loading";
 
 // 리덕스
 import { useDispatch, useSelector } from "react-redux";
 import { StateType } from "@/types/StateType";
-import { setUserIdState } from "@/features/photoListSlice";
+import { setUserIdState } from "@/features/albumStatusSlice";
 
 // 인터페이스
 interface MembersType {
@@ -30,11 +29,10 @@ interface MembersType {
  * @returns
  */
 function Members({ membersId, isAlbumLoading }: MembersType) {
-  const router = useRouter();
   let dispatch = useDispatch();
-  const albumId = useSelector((state: StateType) => state.photoList.albumId);
+  const albumId = useSelector((state: StateType) => state.albumStatus.albumId);
 
-  const userId = useSelector((state: StateType) => state.photoList.userId);
+  const userId = useSelector((state: StateType) => state.albumStatus.userId);
   const { getDetail } = useGetDetail(albumId);
   const [membersSize, setMembersSize] = useState<number>(membersId.length);
 

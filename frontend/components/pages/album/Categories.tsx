@@ -4,7 +4,7 @@ import styles from "styles/album.module.scss";
 // 리덕스
 import { useDispatch, useSelector } from "react-redux";
 import { StateType } from "@/types/StateType";
-import { setCategoryState } from "@/features/photoListSlice";
+import { setCategoryState } from "@/features/albumStatusSlice";
 
 interface categoriesTable {
   [index: number]: string;
@@ -25,7 +25,7 @@ const categories: number[] = [1, 2, 3, 4, 5, 6, 7];
 function Categories() {
   let dispatch = useDispatch();
   const categoryId = useSelector(
-    (state: StateType) => state.photoList.categoryId
+    (state: StateType) => state.albumStatus.categoryId
   );
 
   /**
