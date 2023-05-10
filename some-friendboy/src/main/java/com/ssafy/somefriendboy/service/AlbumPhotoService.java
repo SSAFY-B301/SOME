@@ -144,22 +144,45 @@ public class AlbumPhotoService {
         albumPhotoDto.setUserProfileImg(user.getUserImg());
 
         List<AlbumPhotoSNS> byPhotoId = albumPhotoSNSRepository.findByPhotoId(photoId);
-        int acceptCnt = 0;
-        int noreplyCnt = 0;
-        int declineCnt = 0;
-        for (AlbumPhotoSNS albumPhotoSNS : byPhotoId) {
-            if(albumPhotoSNS.getStatus().equals(AlbumPhotoSnsStatus.ACCEPT)){
-                acceptCnt++;
+        if(byPhotoId.size() == 0){
+            result.put("isSnsAgree", false);
+            result.put("isSnsRequest",false);
+        }
+        else{
+            result.put("isSnsRequest",true);
+            List<MemberDto> acceptList = new ArrayList<>();
+            List<MemberDto> noreplyList = new ArrayList<>();
+            List<MemberDto> declineList = new ArrayList<>();
+            for (AlbumPhotoSNS albumPhotoSNS : byPhotoId) {
+                User user1 = userRepository.findById(albumPhotoSNS.getAlbumPhotoSnsId().getUserId()).get();
+                MemberDto memberInfo = MemberDto.builder()
+                        .userImage(user1.getUserImg())
+                        .userName(user1.getUserName())
+                        .build();
+                if(albumPhotoSNS.getStatus().equals(AlbumPhotoSnsStatus.ACCEPT)){
+                    acceptList.add(memberInfo);
+                }
+                else if(albumPhotoSNS.getStatus().equals(AlbumPhotoSnsStatus.DECLINE)){
+                    declineList.add(memberInfo);
+                }
+                else if(albumPhotoSNS.getStatus().equals(AlbumPhotoSnsStatus.NOREPLY)){
+                    noreplyList.add(memberInfo);
+                }
             }
-            else if(albumPhotoSNS.getStatus().equals(AlbumPhotoSnsStatus.DECLINE)){
-                declineCnt++;
+            if(acceptList.size() == byPhotoId.size()) {
+                result.put("isSnsAgree",true);
+                result.put("acceptList",null);
+                result.put("noreplyList",null);
+                result.put("declineList",null);
+
             }
-            else if(albumPhotoSNS.getStatus().equals(AlbumPhotoSnsStatus.NOREPLY)){
-                noreplyCnt++;
+            else {
+                result.put("isSnsAgree", false);
+                result.put("acceptList",acceptList);
+                result.put("noreplyList",noreplyList);
+                result.put("declineList",declineList);
             }
         }
-        if(acceptCnt == byPhotoId.size()) result.put("isSnsAgree",true);
-        else result.put("isSnsAgree", false);
 
         result.put("albumPhotoDetail", albumPhotoDto);
         return setResponseDto(result, "사진 상세 보기", 200);
