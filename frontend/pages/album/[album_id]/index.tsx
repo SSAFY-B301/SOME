@@ -74,17 +74,12 @@ function AlbumDetail() {
     };
   };
 
-  const photosRequest = useMemo(
-    () => makeRequest(),
-    [albumId, categoryId, selectMembers]
-  );
-
   const {
     data: getPhotosPages,
     getTotal,
     getTotalId,
     isLoading: getPhotosIsLoading,
-  } = useInfinitePhotos(photosRequest);
+  } = useInfinitePhotos();
 
   const { mutate: deletePhotosMutate } = Mutations().useDeletePhotos();
 
@@ -201,7 +196,6 @@ function AlbumDetail() {
           setSelectedPhotos={setSelectedPhotos}
           inputPhoto={inputPhoto}
           setInputPhoto={setInputPhoto}
-          photosRequest={photosRequest}
           isAlbumLoading={isAlbumLoading}
         />
         <div className={`${styles.total_count}`}>
@@ -220,6 +214,7 @@ function AlbumDetail() {
         isSelect={isSelect}
         isAlerts={isAlerts}
         setIsAlerts={setIsAlerts}
+        selectedPhotos={selectedPhotos}
       />
       {isPreview && <Preview inputPhoto={inputPhoto} />}
       {isAlerts[0] && (

@@ -13,7 +13,12 @@ import { LoadingProfile } from "@/components/common/Loading";
 // 리덕스
 import { useDispatch, useSelector } from "react-redux";
 import { StateType } from "@/types/StateType";
-import { setUserIdState } from "@/features/albumStatusSlice";
+import {
+  addUserIdState,
+  clearUserIdState,
+  deleteUserIdState,
+  setUserIdState,
+} from "@/features/albumStatusSlice";
 
 // 인터페이스
 interface MembersType {
@@ -29,10 +34,15 @@ interface MembersType {
  * @returns
  */
 function Members({ membersId, isAlbumLoading }: MembersType) {
-  let dispatch = useDispatch();
+  const dispatch = useDispatch();
   const albumId = useSelector((state: StateType) => state.albumStatus.albumId);
 
   const userId = useSelector((state: StateType) => state.albumStatus.userId);
+
+  useEffect(() => {
+    console.log("USER", userId);
+  }, [userId]);
+
   const { getDetail } = useGetDetail(albumId);
   const [membersSize, setMembersSize] = useState<number>(membersId.length);
 
@@ -45,11 +55,14 @@ function Members({ membersId, isAlbumLoading }: MembersType) {
    * @param id 멤버 id
    */
   const changeSelect = (id: number) => {
-    userId.size === membersSize && userId.clear();
-    userId.has(id) ? userId.delete(id) : userId.add(id);
-    userId.size === 0
-      ? dispatch(setUserIdState({ userId: new Set(membersId) }))
-      : dispatch(setUserIdState({ userId: new Set(userId) }));
+    userId.size === membersSize &&
+      dispatch(clearUserIdState({ userId: new Set() }));
+    // userId.has(id)
+    //   ? dispatch(deleteUserIdState(id))
+    //   : dispatch(addUserIdState(id));
+    // userId.size === 0
+    //   ? dispatch(setUserIdState({ userId: new Set(membersId) }))
+    //   : dispatch(setUserIdState({ userId: userId }));
   };
 
   /**
