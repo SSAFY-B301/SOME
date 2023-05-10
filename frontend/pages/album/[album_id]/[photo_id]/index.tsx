@@ -148,11 +148,11 @@ const PhotoDetail = (): JSX.Element => {
         if (isZoom) {
           setIsZoom(false);
           setRatio(0.7);
-          console.log("줌 아웃");
+          // console.log("줌 아웃");
         } else {
           setIsZoom(true);
           setRatio(3);
-          console.log("줌 인");
+          // console.log("줌 인");
         }
       } else if (clickCount == 1) {
         clickCount = 0;
@@ -210,7 +210,7 @@ const PhotoDetail = (): JSX.Element => {
             // onTouchStart={onTouchStart}
           />
         </div>
-        <div className="w-screen h-screen">
+        {/* <div className="w-screen h-screen">
           <div
             className="absolute w-full h-20 z-20 flex items-center justify-center bg-white"
             style={{ top: "15.385vw" }}
@@ -226,7 +226,7 @@ const PhotoDetail = (): JSX.Element => {
             // onTouchEnd={onTouchEnd}
             // onTouchStart={onTouchStart}
           />
-        </div>
+        </div> */}
       </Slider>
       <div className={`z-20 ${styles.footer}`}>
         <Footer
