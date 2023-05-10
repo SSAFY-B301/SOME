@@ -32,7 +32,7 @@ public class NotiController {
                 .type(NotiType.SNS)
                 .data(notiCreateDto)
                 .build();
-        rabbitTemplate.convertAndSend(EXCHANGE_NAME, "test.route.#", mqDto);
+        rabbitTemplate.convertAndSend(EXCHANGE_NAME, "some.route.#", mqDto);
 //        ResponseDto responseDto = notiService.snsNoti(notiCreateDto);
         ResponseDto responseDto = new ResponseDto<>();
         responseDto.setMessage("SNS동의 요청 완료");
