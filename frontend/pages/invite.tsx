@@ -6,6 +6,7 @@ import Albums from "@/components/album-starter/Albums";
 import Friends from "@/components/album-starter/Friends";
 import InvitedGroup from "@/components/album-starter/InvitedGroup";
 import { useGetFriends, albumMutation } from "./api/inviteApi";
+import { useTheme } from "next-themes";
 
 interface FriendType {
   id: number;
@@ -42,6 +43,7 @@ const InviteFriends = (): JSX.Element => {
   const [invitedFriends, setInvitedFriends] = useState<FriendType[]>([]); // 상단에 표시할 친구 목록
   const [inputText, setInputText] = useState<string>(""); // 검색 하고 있는 텍스트
   const [slideAnimation, setSlideAnimation] = useState<string>(""); // 친구 및 앨범 리스트 상하단 슬라이드 셋팅 값
+  const { theme, setTheme } = useTheme();
 
   /**
    * 전체 친구, 앨범 목록
@@ -160,7 +162,7 @@ const InviteFriends = (): JSX.Element => {
 
   return (
     <div
-      className="flex flex-col items-center bg-white overflow-hidden"
+      className="flex flex-col items-center bg-white dark:bg-black overflow-hidden"
       style={{ width: "100vw", height: "100vh" }}
     >
       <div
@@ -168,14 +170,20 @@ const InviteFriends = (): JSX.Element => {
       >
         <div className="relative w-full h-full flex justify-between items-center">
           <div onClick={() => router.back()}>
-            <BackButtonIcon className="text-lg text-black" stroke={`black`} />
+            <BackButtonIcon
+              className="text-lg text-black"
+              stroke={theme == "light" ? `black` : `white`}
+            />
           </div>
-          <span className="text-black" style={{ fontSize: "5.128vw" }}>
+          <span
+            className="text-black dark:text-white"
+            style={{ fontSize: "5.128vw" }}
+          >
             공유 상대 초대
           </span>
           <button
             onClick={createAlbumClick}
-            className="text-black"
+            className="text-black dark:text-white"
             style={{ fontSize: "4.103vw" }}
           >
             확인
@@ -199,7 +207,7 @@ const InviteFriends = (): JSX.Element => {
         )}
         <div className={`w-full flex flex-col ${slideAnimation}`}>
           <input
-            className="box-border w-full h-12 pl-3 mt-4 mb-2 bg-gray-100 rounded-lg"
+            className="box-border w-full h-12 pl-3 mt-4 mb-2 bg-gray-100 dark:bg-dark-block rounded-lg"
             placeholder="친구, 앨범 검색"
             value={inputText}
             onChange={onChange}
