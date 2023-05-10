@@ -229,7 +229,7 @@ export function Mutations() {
     return useMutation(
       (body) => customBoyAxios.put(`/album/modify/name`, body),
       {
-        onSuccess: (data) => {
+        onSuccess: () => {
           queryClient.invalidateQueries(["detail", albumId]);
         },
         onError: (error) => {
