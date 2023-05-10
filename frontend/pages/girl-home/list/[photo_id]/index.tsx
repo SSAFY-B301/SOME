@@ -3,10 +3,12 @@ import { useState } from "react";
 import FillHeart from "@/public/icons/FillHeart.svg"
 import OutLineHeart from "@/public/icons/OutLineHeart.svg"
 import TabBar from "@/components/common/TabBar";
+import { getGrilPhotoDetail } from "@/pages/api/girlApi";
 
 
 export default function GirlDetail() {
     const [isLike, SetIsLike] = useState<boolean>(false);
+    const {resultData} = getGrilPhotoDetail();
     return (
         <div className="flex flex-col items-center gap-y-4">
             <InfoBar title={"대전시 유성구"}></InfoBar>
