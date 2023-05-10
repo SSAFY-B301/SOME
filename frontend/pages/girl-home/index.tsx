@@ -36,7 +36,7 @@ export default function Home() {
     if (navigator.geolocation) {
       navigator.geolocation.getCurrentPosition(locationPermissionSuccess, locationPermissionError);
     }
-  },[])
+  },[navigator.geolocation])
   
   return (
     <div

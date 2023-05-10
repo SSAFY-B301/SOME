@@ -1,67 +1,44 @@
 import useCustomAxios from "@/features/customAxios";
-import { PhotoType } from "@/types/AlbumTypes";
 import { useRouter } from "next/router";
 import { useMutation, useQuery, useQueryClient } from "react-query";
 
-const { customBoyAxios } = useCustomAxios();
+const { customGirlAxios } = useCustomAxios();
 
-function getPhoto() {
+function getGrilPhotoDetail() {
   const router = useRouter();
   const photoId = router.query.photo_id;
 
   const { data: queryData, isLoading } = useQuery(["photo"], () =>
-    customBoyAxios.get(
-      process.env.NEXT_PUBLIC_FRIEND_BOY_URL +
-        "/photo/detail?photoId=" +
-        photoId
-    )
+    customGirlAxios.get("/photo/detail/" + photoId)
   );
 
-  const resultData = queryData?.data.data.albumPhotoDetail;
-  // console.log(resultData);
+  const resultData = queryData?.data;
+  console.log(resultData);
   return { resultData, isLoading };
 }
 
-function getSnsPhoto(photoId: number | undefined) {
-  let snsResultData: PhotoType;
-  const { data: snsPhotoData } = useQuery(["sns"], () =>
-    customBoyAxios.get(
-      process.env.NEXT_PUBLIC_FRIEND_BOY_URL + "/photo/detail?photoId=5"
-    )
-  );
-
-  snsResultData = snsPhotoData?.data.data.albumPhotoDetail;
-  return { snsResultData };
-}
-
-function useMutationPhoto() {
+interface LocationType {
+  lat : number,
+  lng : number
+} 
+function useMutationGirl(){
   const queryClient = useQueryClient();
-  const router = useRouter();
-  const photoId = router.query.photo_id;
-  const { mutate: likeMutation } = useMutation(
-    () => customBoyAxios.put("/photo/like?photoId=" + photoId),
+  const headers = {
+    "Content-Type" : "multipart/form-data",
+  }
+
+  const { mutate: girlUploadMutation } = useMutation(
+    (location : LocationType) => customGirlAxios.post("/album/upload?latitude=" + location.lat +"&longitude="+ location.lng, 
+    {
+      
+    }, {headers}),
     {
       onSuccess: () => {
         queryClient.invalidateQueries("photo"); // queryKey 유효성 제거
       },
     }
   );
-
-  const { mutate: deleteMutation } = useMutation(
-    () =>
-      customBoyAxios.put("/photo/delete", {
-        photoId: [photoId],
-      }),
-    {
-      onSuccess: () => {
-        alert("사진 삭제 성공");
-
-        router.back();
-      },
-    }
-  );
-
-  return { likeMutation, deleteMutation };
+  return { girlUploadMutation }
 }
 
-export { getPhoto, getSnsPhoto, useMutationPhoto };
+export { getGrilPhotoDetail, useMutationGirl };
