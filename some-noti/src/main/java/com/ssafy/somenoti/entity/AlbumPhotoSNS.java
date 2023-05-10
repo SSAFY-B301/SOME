@@ -14,5 +14,6 @@ public class AlbumPhotoSNS {
     @EmbeddedId
     private AlbumPhotoSnsId albumPhotoSnsId;
 
+    @Enumerated(EnumType.STRING)
     private AlbumPhotoSnsStatus status;
 }
