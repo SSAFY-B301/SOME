@@ -24,10 +24,10 @@ public class NotiController {
 
     private final NotiService notiService;
     private final RabbitTemplate rabbitTemplate;
-    private static final String EXCHANGE_NAME = "test.exchange";
+    private static final String EXCHANGE_NAME = "some.noti";
     @PostMapping("/sns")
-    public ResponseEntity<ResponseDto> albumWholeList(@RequestBody NotiSnsCreateDto notiCreateDto) {
-        log.debug("SNS 알림 생성 요청 POST: /noti, NotiCreateDto : {}", notiCreateDto);
+    public ResponseEntity<ResponseDto> photoSnsAgree(@RequestBody NotiSnsCreateDto notiCreateDto) {
+        log.debug("SNS 알림 생성 요청 POST: /noti/sns, NotiCreateDto : {}", notiCreateDto);
         MQDto mqDto = MQDto.builder()
                 .type(NotiType.SNS)
                 .data(notiCreateDto)
@@ -35,6 +35,17 @@ public class NotiController {
         rabbitTemplate.convertAndSend(EXCHANGE_NAME, "test.route.#", mqDto);
 //        ResponseDto responseDto = notiService.snsNoti(notiCreateDto);
         ResponseDto responseDto = new ResponseDto<>();
+        responseDto.setMessage("SNS동의 요청 완료");
+        responseDto.setData(null);
+        responseDto.setStatusCode(200);
+        return new ResponseEntity<ResponseDto>(responseDto, HttpStatus.OK);
+    }
+    @GetMapping("/list/upload")
+    public ResponseEntity<ResponseDto> photoUploadList(@RequestHeader HttpHeaders headers) {
+        String access_token = headers.get("access_token").toString();
+        log.debug("사진 업로드 목록 요청 GET: /noti/list/upload, access_token : {}",access_token);
+
+        ResponseDto responseDto = notiService.getUploadList(access_token);
         return new ResponseEntity<ResponseDto>(responseDto, HttpStatus.OK);
     }
 }
