@@ -25,15 +25,21 @@ export default function Home() {
   const {getUserInfo} = userQuery();
   const router = useRouter()
 
+  function locationSetting(){
+    if('geolocation' in navigator){
+      navigator.geolocation.getCurrentPosition(locationPermissionSuccess, locationPermissionError);
+    }
+  }
   function locationPermissionSuccess(position : GeolocationPosition){
     setUserLocation({lat : position.coords.latitude, lng : position.coords.longitude})
+    console.log("설정 성공")
   }
   function locationPermissionError(){
     alert("위치 정보 권한 설정을 확인해주세요!");
   }
   useEffect(() => {
     if('geolocation' in navigator){
-      navigator.geolocation.getCurrentPosition(locationPermissionSuccess, locationPermissionError);
+      navigator.geolocation.getCurrentPosition(locationPermissionSuccess);
     }
     //https 요청 시에만 GeoLocation 정보를 받아올 수 있다.
   },[])
@@ -47,6 +53,9 @@ export default function Home() {
       style={{ width: "100vw", height: "100vh" }}
     >
       <NavBar />
+      <div className="absolute z-10 w-20 h-20" onClick={locationSetting}>
+        <p className="mt-5 ml-5">내 위치</p>
+      </div>
       <Map
         className="z-0"
         center={{lat : userLocation.lat, lng:userLocation.lng}}
