@@ -8,7 +8,7 @@ function getAlarms() {
 
   const { data: queryData, isLoading } = useQuery(["alarm"], () =>
     customNotiAxios.get(
-      process.env.NEXT_PUBLIC_FRIEND_NOTI_URL + "/noti/list?page=0&size=10"
+      "/noti/list?page=0&size=10"
     )
   );
 
@@ -21,7 +21,7 @@ function useMutationNoti() {
   
   const { mutate: inviteMutation, isSuccess : inviteSuccess } = useMutation(
     (requestData : AlbumInviteRequestType) => customNotiAxios.put(
-      process.env.NEXT_PUBLIC_FRIEND_NOTI_URL + "/noti/invite", requestData),
+      "/noti/invite", requestData),
     {
       onSuccess : () => {
         queryClient.invalidateQueries("alarm"); // queryKey 유효성 제거
@@ -32,7 +32,7 @@ function useMutationNoti() {
   /** SNS 공유 요청 수락/ 거절 API */
   const { mutate: snsMutation, isSuccess : snsSuccess } = useMutation(
     (requestData : SnsRequestType) => customNotiAxios.put(
-      process.env.NEXT_PUBLIC_FRIEND_NOTI_URL + "/noti/sns", requestData),
+      "/noti/sns", requestData),
     {
       onSuccess : () => {
         console.log("SNS 공유 요청 응답 성공");
@@ -44,7 +44,7 @@ function useMutationNoti() {
   /** status 변경 api */
   const { mutate: statusMutation } = useMutation(
     (requestData : statusChangeRequestType) => customNotiAxios.put(
-      process.env.NEXT_PUBLIC_FRIEND_NOTI_URL + "/noti/status", requestData),
+      "/noti/status", requestData),
     {
       onSuccess: () => {
         queryClient.invalidateQueries("alarm"); // queryKey 유효성 제거
