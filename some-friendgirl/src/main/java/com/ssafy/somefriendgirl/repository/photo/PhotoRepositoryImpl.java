@@ -18,4 +18,11 @@ public class PhotoRepositoryImpl implements PhotoRepositoryCustom {
         Update update = Update.update("viewCnt", newViewCnt);
         mongoTemplate.updateFirst(query, update, AlbumPhoto.class);
     }
+
+    @Override
+    public void modifyPhotoLikeCnt(Long photoId, Long newLikeCnt) {
+        Query query = new Query(Criteria.where("photoId").is(photoId));
+        Update update = Update.update("likeCnt", newLikeCnt);
+        mongoTemplate.updateFirst(query, update, AlbumPhoto.class);
+    }
 }
