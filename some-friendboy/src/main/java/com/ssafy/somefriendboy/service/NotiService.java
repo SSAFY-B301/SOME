@@ -4,6 +4,7 @@ import com.ssafy.somefriendboy.dto.*;
 import com.ssafy.somefriendboy.entity.Album;
 import com.ssafy.somefriendboy.entity.AlbumPhoto;
 import com.ssafy.somefriendboy.entity.Notification;
+import com.ssafy.somefriendboy.entity.status.NotiType;
 import com.ssafy.somefriendboy.repository.album.AlbumRepository;
 import com.ssafy.somefriendboy.repository.albumphoto.AlbumPhotoRepository;
 import com.ssafy.somefriendboy.repository.noti.EmitterRepository;
@@ -12,6 +13,7 @@ import com.ssafy.somefriendboy.repository.user.UserRepository;
 import com.ssafy.somefriendboy.util.HttpUtil;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
+import org.springframework.amqp.rabbit.core.RabbitTemplate;
 import org.springframework.http.HttpEntity;
 import org.springframework.http.HttpHeaders;
 import org.springframework.http.MediaType;
@@ -33,6 +35,8 @@ public class NotiService {
     private final AlbumPhotoRepository albumPhotoRepository;
     private final AlbumRepository albumRepository;
     private final UserRepository userRepository;
+    private final RabbitTemplate rabbitTemplate;
+    private static final String EXCHANGE_NAME = "some.noti";
     public ResponseDto getUploadList(String accessToken) {
         String userId = tokenCheck(accessToken);
         if (userId == null) {
@@ -77,6 +81,23 @@ public class NotiService {
         return setResponseDto(list,"최근 업로드 사진 목록",200);
     }
 
+    public ResponseDto sendSnsMQ(String accessToken, SnsUploadInputDto snsUploadInputDto) {
+        String userId = tokenCheck(accessToken);
+        if(userId == null){
+            return setResponseDto(null,"토큰 만료",450);
+        }
+
+        MQDto mqDto = MQDto.builder()
+                .type(NotiType.SNS)
+                .data(NotiSnsCreateDto.builder()
+                        .senderId(userId)
+                        .photoId(snsUploadInputDto.getPhotoId())
+                        .albumId(snsUploadInputDto.getAlbumId())
+                        .build())
+                .build();
+        rabbitTemplate.convertAndSend(EXCHANGE_NAME, "some.route.#", mqDto);
+        return setResponseDto(true, "SNS 동의 요청 알림",200);
+    }
     public void inviteNoti(String sender_id, String[] receiver_ids, Long album_id){
         String url = "http://3.35.18.146:9003/noti/noti/invite";
 
@@ -129,8 +150,8 @@ public class NotiService {
         responseDto.setStatusCode(statusCode);
         return responseDto;
     }
+
     private String tokenCheck(String accessToken) {
         return httpUtil.requestParingToken(accessToken);
     }
-
 }
