@@ -15,8 +15,6 @@ export const useGetCurrent = () => {
     );
     
     const getCurrent = data?.data.data;        
-    console.log(data);
-    console.log(getCurrent);
 
     return { getCurrent, getCurrentIsLoading };
   };
