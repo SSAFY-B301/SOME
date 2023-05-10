@@ -48,7 +48,7 @@ public class AlbumService {
     private final HttpUtil httpUtil;
     private final NotiService notiService;
     private final RabbitTemplate rabbitTemplate;
-    private static final String EXCHANGE_NAME = "test.exchange";
+    private static final String EXCHANGE_NAME = "some.noti";
     public ResponseDto createAlbum(String access_token, AlbumCreateDto albumCreateDto) {
         Map<String,Object> result = new HashMap<>();
         String userId = tokenCheck(access_token);

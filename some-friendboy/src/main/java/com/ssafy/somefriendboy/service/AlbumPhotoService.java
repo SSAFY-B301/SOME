@@ -47,7 +47,7 @@ public class AlbumPhotoService {
     private final HttpUtil httpUtil;
     private final NotiService notiService;
     private final RabbitTemplate rabbitTemplate;
-    private static final String EXCHANGE_NAME = "test.exchange";
+    private static final String EXCHANGE_NAME = "some.noti";
     public ResponseDto insertPhoto(List<MultipartFile> multipartFiles, List<MetaDataDto> metaDataDtos, Long albumId, String accessToken) throws ImageProcessingException, IOException {
         Map<String, Object> result = new HashMap<>();
         String userId = tokenCheck(accessToken);
