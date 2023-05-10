@@ -354,6 +354,7 @@ public class AlbumService {
         }
 
         if (additionalFriendsInviteDto != null) {
+            List<String> inviteFriend = List.of(additionalFriendsInviteDto.getInviteFriend());
             for (String invitedFriendId : additionalFriendsInviteDto.getInviteFriend()) {
                 AlbumMemberId albumMemberId = AlbumMemberId.builder()
                         .albumId(additionalFriendsInviteDto.getAlbumId())
@@ -363,21 +364,33 @@ public class AlbumService {
                         .albumMemberId(albumMemberId)
                         .albumMemberStatus(AlbumMemberStatus.NOREPLY)
                         .build();
-                albumMemberRepository.save(albumMember);
+                Optional<AlbumMember> byId = albumMemberRepository.findById(albumMemberId);
+                if(byId.isEmpty()) albumMemberRepository.save(albumMember);
+                else{
+                    AlbumMember albumMember1 = byId.get();
+                    if(albumMember1.getAlbumMemberStatus().equals(AlbumMemberStatus.DECLINE)){
+                        albumMemberRepository.save(albumMember);
+                    }
+                    else{
+                        inviteFriend.remove(albumMemberId.getUserId());
+                    }
+                }
             }
+            NotiInviteCreateDto notiInviteCreateDto = NotiInviteCreateDto.builder()
+                    .senderId(userId)
+                    .receivers(inviteFriend)
+                    .albumId(additionalFriendsInviteDto.getAlbumId())
+                    .build();
+            MQDto mqDto = MQDto.builder()
+                    .type(NotiType.INVITE)
+                    .data(notiInviteCreateDto)
+                    .build();
+            rabbitTemplate.convertAndSend(EXCHANGE_NAME, "some.route.#", mqDto);
+            return setResponseDto(result,"앨범 생성 후 추가 친구 초대",200);
         }
-        //notiService.inviteNoti(userId,additionalFriendsInviteDto.getInviteFriend(),additionalFriendsInviteDto.getAlbumId());
-        NotiInviteCreateDto notiInviteCreateDto = NotiInviteCreateDto.builder()
-                .senderId(userId)
-                .receivers(List.of(additionalFriendsInviteDto.getInviteFriend()))
-                .albumId(additionalFriendsInviteDto.getAlbumId())
-                .build();
-        MQDto mqDto = MQDto.builder()
-                .type(NotiType.INVITE)
-                .data(notiInviteCreateDto)
-                .build();
-        rabbitTemplate.convertAndSend(EXCHANGE_NAME, "some.route.#", mqDto);
-        return setResponseDto(result,"앨범 생성 후 추가 친구 초대",200);
+        else{
+            return setResponseDto(result,"초대할 멤버가 없어요",400);
+        }
     }
 
     public ResponseDto getInvitedAlbumList(String access_token) {
