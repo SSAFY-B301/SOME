@@ -13,12 +13,12 @@ import {
   FavoriteAlbumType,
   TotalAlbumType,
   AlbumInfoType,
-  PhotoType,
   requestPhotosType,
   requestPartType,
   usePutAlbumNameType,
   PhotoPageType,
-  thumbnailBodyType,
+  ThumbnailBodyType,
+  SnsRequestType,
 } from "@/types/AlbumTypes";
 import useCustomAxios from "@/features/customAxios";
 
@@ -190,17 +190,26 @@ export function Mutations() {
   }
   /**
    * [DELETE] 사진 삭제
-   * @param albumId
    * @returns
    */
-  function useDeletePhotos(
-    albumId: number
-  ): UseMutationResult<boolean, AxiosError, number[]> {
+  function useDeletePhotos(): UseMutationResult<boolean, AxiosError, number[]> {
+    const albumId = useSelector(
+      (state: StateType) => state.albumStatus.albumId
+    );
+    const categoryId = useSelector(
+      (state: StateType) => state.albumStatus.categoryId
+    );
+    const userId = useSelector((state: StateType) => state.albumStatus.userId);
     return useMutation(
       (photos) => customBoyAxios.put(`/photo/delete`, { photoId: photos }),
       {
-        onSuccess: (data) => {
-          queryClient.invalidateQueries(["photos", albumId]);
+        onSuccess: () => {
+          queryClient.invalidateQueries([
+            "photos",
+            albumId,
+            categoryId,
+            Array.from(userId).toString(),
+          ]);
         },
         onError: (error) => {
           console.error(error);
@@ -272,11 +281,19 @@ export function Mutations() {
   function usePutThumbnail(): UseMutationResult<
     boolean,
     AxiosError,
-    thumbnailBodyType
+    ThumbnailBodyType
   > {
     return useMutation((body) =>
       customBoyAxios.put(`album/modify/thumbnail`, body)
     );
+  }
+
+  function usePostSns(): UseMutationResult<
+    boolean,
+    AxiosError,
+    SnsRequestType
+  > {
+    return useMutation((body) => customBoyAxios.post(`noti/sns`, body));
   }
 
   return {
@@ -285,6 +302,7 @@ export function Mutations() {
     useDeletePhotos,
     usePutAlbumName,
     usePutThumbnail,
+    usePostSns,
   };
 }
 

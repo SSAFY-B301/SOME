@@ -2,13 +2,14 @@ import React from "react";
 
 interface Props {
   clickVote(): void;
+  requestSns(): void;
 }
 
 /**
  * 공유 투표 모달 창
  */
 
-const VoteModal = ({ clickVote }: Props): JSX.Element => {
+const VoteModal = ({ clickVote, requestSns }: Props): JSX.Element => {
   /**
    * 투표 기능 추가
    */
@@ -23,7 +24,10 @@ const VoteModal = ({ clickVote }: Props): JSX.Element => {
           <div className="w-full h-1/2 border-b-2 flex justify-center items-center text-gray-400">
             공유 요청 알림이 보내집니다.
           </div>
-          <button className="w-full h-1/2 flex justify-center items-center text-2xl font-bold text-blue-500">
+          <button
+            className="w-full h-1/2 flex justify-center items-center text-2xl font-bold text-blue-500"
+            onClick={requestSns}
+          >
             알림 보내기
           </button>
         </div>

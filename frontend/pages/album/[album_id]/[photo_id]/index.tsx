@@ -14,7 +14,7 @@ import Slider from "react-slick";
 import "slick-carousel/slick/slick.css";
 import "slick-carousel/slick/slick-theme.css";
 import { Mutations, useDownload } from "@/pages/api/albumApi";
-import { thumbnailBodyType } from "@/types/AlbumTypes";
+import { SnsRequestType, ThumbnailBodyType } from "@/types/AlbumTypes";
 import ThumbnailModal from "@/components/photo-detail/ThumbnailModal";
 
 const PhotoDetail = (): JSX.Element => {
@@ -98,23 +98,40 @@ const PhotoDetail = (): JSX.Element => {
     showThumbnailModal ? setThumbnailModal(false) : setThumbnailModal(true);
   };
 
-  //
-  const { mutate: mutateThumbnail } = Mutations().usePutThumbnail();
+  const { usePutThumbnail, usePostSns, useDeletePhotos } = Mutations();
+  const { mutate: mutateThumbnail } = usePutThumbnail();
+  const { mutate: mutateSns } = usePostSns();
+  const { mutate: mutateDeletePhoto } = useDeletePhotos();
+
+  /**
+   * 썸네일 수정 API
+   */
   const putThumbnail = () => {
-    const body: thumbnailBodyType = {
+    const body: ThumbnailBodyType = {
       album_id: photoDetail.albumId,
       new_album_thumbnail_id: photoDetail.photoId,
     };
     mutateThumbnail(body);
   };
 
+  /**
+   * 다운로드 API
+   */
   const downloadPhoto = () => {
-    // TODO : 다운로드
     const url = photoDetail.s3Url;
     useDownload(url);
   };
 
-  //
+  /**
+   * SNS 공유 요청 API
+   */
+  const requestSns = () => {
+    const body: SnsRequestType = {
+      album_id: photoDetail.albumId,
+      photo_id: photoDetail.photoId,
+    };
+    mutateSns(body);
+  };
 
   /**
    * 클릭 이벤트 분기 로직
@@ -185,7 +202,9 @@ const PhotoDetail = (): JSX.Element => {
         />
       )}
       {showDeleteModal && <DeleteModal clickDelete={clickDelete} />}
-      {showVoteModal && <VoteModal clickVote={clickVote} />}
+      {showVoteModal && (
+        <VoteModal clickVote={clickVote} requestSns={requestSns} />
+      )}
       {showThumbnailModal && (
         <ThumbnailModal
           clickThumbnail={clickThumbnail}
