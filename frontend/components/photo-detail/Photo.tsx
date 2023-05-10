@@ -36,7 +36,8 @@ Props): JSX.Element => {
           initialScale={1}
           minScale={1}
           maxScale={5}
-          panning={isZoom ? { disabled: false } : { disabled: true }}
+          disablePadding={true}
+          // panning={isZoom ? { disabled: false } : { disabled: true }}
           doubleClick={isZoom ? { mode: "zoomOut" } : { mode: "zoomIn" }}
         >
           <TransformComponent>
