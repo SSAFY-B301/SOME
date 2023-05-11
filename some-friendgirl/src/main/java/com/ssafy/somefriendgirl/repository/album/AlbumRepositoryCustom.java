@@ -9,7 +9,7 @@ import java.util.List;
 
 public interface AlbumRepositoryCustom {
     List<AlbumPhoto> findAllAlbumPhoto(GpsRangeDto gpsRangeDto);
-    List<AlbumPhoto> findTop4AlbumPhotoLikeCnt(GpsRangeDto gpsRangeDto);
-    Page<AlbumPhoto> findAlbumPhotoLikeCnt(GpsRangeDto gpsRangeDto, Pageable pageable);
-    Page<AlbumPhoto> findAlbumPhotoPhotoId(GpsRangeDto gpsRangeDto, Pageable pageable);
+    List<String> findUserIdAlbumPhoto(GpsRangeDto gpsRangeDto);
+    List<AlbumPhoto> findAllAlbumPhotoLikeCnt(GpsRangeDto gpsRangeDto);
+    Page<AlbumPhoto> findAlbumPhotoList(GpsRangeDto gpsRangeDto, String sort, Pageable pageable);
 }
