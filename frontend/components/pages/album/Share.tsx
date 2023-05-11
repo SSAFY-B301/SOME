@@ -1,12 +1,14 @@
-interface propsType {
-  files: FileList;
-}
+import axios from "axios";
+
 interface dataType {
   files: File[];
 }
-
-export const share = async (props: propsType) => {
-  const files: File[] = Array.from(props.files);
+/**
+ * 공유 기능
+ * @param urls
+ */
+export const share = async (urls: string[]) => {
+  const files = await Promise.all(urls.map((url) => urlToFile(url)));
   const shareData: dataType = {
     files: files,
   };
@@ -17,15 +19,23 @@ export const share = async (props: propsType) => {
   }
 };
 
-interface urlPropsType {
-  url: string;
-}
+/**
+ * 사진 URL을 File 객체로 반환
+ * @param url
+ * @returns
+ */
+export const urlToFile = async (url: string) => {
+  console.log(url);
+  const response = await axios({
+    url: url,
+    method: "GET",
+    responseType: "blob",
+  });
 
-export const urlToFile = async (props: urlPropsType) => {
-  const response = await fetch(props.url);
-  const data = await response.blob();
-  const ext = props.url.split(".").pop(); // url 구조에 맞게 수정할 것
-  const filename = props.url.split("/").pop(); // url 구조에 맞게 수정할 것
+  const data = response.data;
+  const ext = url.split(".").pop();
+  const filename = url.split("/").pop();
   const metadata = { type: `image/${ext}` };
-  return new File([data], filename!, metadata);
+  const file = new File([data], filename!, metadata);
+  return file;
 };

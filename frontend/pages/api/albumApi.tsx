@@ -116,7 +116,7 @@ export const useInfinitePhotos = (page: number = 0, size: number = 27) => {
   );
   const userIds = useSelector((state: StateType) => state.albumStatus.userId);
 
-  const userId = Array.from(userIds).toString();
+  const userId = userIds.toString();
   const queryKey = `/photo/album/list?albumId=${albumId}&userId=${userId}&${
     categoryId !== 0 && `categoryId=${categoryId}`
   }&size=${size}`;
