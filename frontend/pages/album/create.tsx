@@ -36,6 +36,7 @@ const AlbumCreate = (): JSX.Element => {
           </span>
           <input
             className={`text-2xl text-white bg-inherit border-b-2 h-1/2 placeholder:italic placeholder:text-white placeholder:opacity-60 box-border mb-2 ${styles.createPageInput}`}
+            style={{ outline: "none" }}
             placeholder={defaultName.current}
             value={albumName}
             onChange={onChange}

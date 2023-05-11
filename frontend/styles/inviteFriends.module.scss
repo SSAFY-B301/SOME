@@ -15,20 +15,19 @@ $main-color: linear-gradient(
     position: absolute;
     bottom: 22px;
     left: 50%;
-    transform: translateX(-50%);
+    -webkit-transform: translateX(-50%);
     width: 64.06px;
     height: 64.06px;
     border-radius: 50%;
-    transform-origin: center center;
   }
   to {
     position: absolute;
     bottom: 0px;
     left: 50%;
-    transform: translateX(-50%);
+    -webkit-transform: translateX(-50%);
     width: 100vw;
     height: 100vh;
-    transform-origin: center center;
+    border-radius: 0%;
   }
 }
 

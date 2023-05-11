@@ -7,6 +7,7 @@ import Friends from "@/components/album-starter/Friends";
 import InvitedGroup from "@/components/album-starter/InvitedGroup";
 import { useGetFriends, albumMutation } from "./api/inviteApi";
 import { useTheme } from "next-themes";
+import AlertModal from "@/components/album-starter/AlertModal";
 
 interface FriendType {
   id: number;
@@ -43,7 +44,8 @@ const InviteFriends = (): JSX.Element => {
   const [invitedFriends, setInvitedFriends] = useState<FriendType[]>([]); // 상단에 표시할 친구 목록
   const [inputText, setInputText] = useState<string>(""); // 검색 하고 있는 텍스트
   const [slideAnimation, setSlideAnimation] = useState<string>(""); // 친구 및 앨범 리스트 상하단 슬라이드 셋팅 값
-  const { theme, setTheme } = useTheme();
+  const [alert, setAlert] = useState<boolean>(false); // 확인 버튼 중복 클릭 방지 모달 여부
+  const { theme, setTheme } = useTheme(); // 다크 모드 판별 값
 
   /**
    * 전체 친구, 앨범 목록
@@ -143,8 +145,9 @@ const InviteFriends = (): JSX.Element => {
    * 앨범 생성 확인 or 추가 친구 초대 확인
    */
   const { createAlbum, additionalInviteFriends } = albumMutation();
-
   const createAlbumClick = async () => {
+    setAlert(true);
+
     if (isNewAlbum == "") {
       const params = {
         album_name: router.query.albumName,
@@ -207,14 +210,14 @@ const InviteFriends = (): JSX.Element => {
         )}
         <div className={`w-full flex flex-col ${slideAnimation}`}>
           <input
-            className="box-border w-full h-12 pl-3 mt-4 mb-2 bg-gray-100 dark:bg-dark-block rounded-lg"
+            className="box-border w-full h-12 pl-3 mt-4 mb-2 bg-gray-100 dark:bg-dark-block dark:placeholder:text-white rounded-lg"
             placeholder="친구, 앨범 검색"
             value={inputText}
             onChange={onChange}
           ></input>
           <div className="w-full overflow-y-scroll" style={{ height: 700 }}>
             <div className="box-border flex flex-col w-full mt-4 border-b-2">
-              <span className="box-border mb-4 text-base">앨범으로 초대</span>
+              <span className="box-border mb-2 text-base">앨범으로 초대</span>
               <div className="w-full">
                 {albums && inputText.length > 0 ? (
                   <Albums
@@ -254,6 +257,7 @@ const InviteFriends = (): JSX.Element => {
           </div>
         </div>
       </div>
+      {alert && <AlertModal />}
     </div>
   );
 };
