@@ -87,7 +87,7 @@ public class PhotoService {
             albumPhotoDto.setUserLikeStatus(userPhotoLikeList.contains(photoId + ","));
         }
 
-        result.put("albumPhotoDto", albumPhotoDto);
+        result.put("albumPhotoDetail", albumPhotoDto);
         return responseUtil.setResponseDto(result, "사진 조회", 200);
     }
 
