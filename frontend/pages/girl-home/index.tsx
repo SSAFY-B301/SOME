@@ -51,7 +51,7 @@ export default function Home() {
     dispatch(changeLocation({lat: position.coords.latitude, lng : position.coords.longitude}));
   }
   function locationPermissionError(err : GeolocationPositionError){
-    alert(`에러 코드(${err.code}) : ${err.message}`);
+    //에러 처리 부분
   }
   useEffect(() => {
     if('geolocation' in navigator){
