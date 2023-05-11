@@ -66,7 +66,7 @@ public class PhotoService {
             likeCnt = albumPhoto.getLikeCnt();
             log.info("DB에서 가져온 좋아요 수 likeCnt = " + likeCnt);
         } else {
-            likeCnt = (Long) valueOperations.get(likeKey);
+            likeCnt = Long.parseLong((String) valueOperations.get(likeKey));
             log.info("캐시서버에서 가져온 좋아요 수 likeCnt = " + likeCnt);
         }
         albumPhotoDto.setLikeCnt(likeCnt);
@@ -87,7 +87,7 @@ public class PhotoService {
             albumPhotoDto.setUserLikeStatus(userPhotoLikeList.contains(photoId + ","));
         }
 
-        result.put("AlbumPhotoDto", albumPhotoDto);
+        result.put("albumPhotoDto", albumPhotoDto);
         return responseUtil.setResponseDto(result, "사진 조회", 200);
     }
 
