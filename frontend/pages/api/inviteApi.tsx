@@ -19,7 +19,7 @@ export const useGetFriends = () => {
     () => customBoyAxios.get("/album/list/friend"),
     {
       onSuccess: (data) => {
-        console.log(data);
+        // console.log(data);
       },
       refetchOnWindowFocus: false,
     }
