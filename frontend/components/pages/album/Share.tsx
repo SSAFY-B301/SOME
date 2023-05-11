@@ -20,6 +20,22 @@ export const share = async (urls: string[]) => {
 };
 
 /**
+ * 링크 공유
+ */
+export const shareUrl = async () => {
+  const shareData = {
+    title: "SOME",
+    text: "SOME 초대",
+    url: "https://k8b301.p.ssafy.io/",
+  };
+  try {
+    await navigator.share(shareData);
+  } catch (err) {
+    console.log(err);
+  }
+};
+
+/**
  * 사진 URL을 File 객체로 반환
  * @param url
  * @returns
