@@ -3,14 +3,14 @@ export interface CurrentAlbumType {
   thumbnail_photo: string;
   album_name: string;
   recent_upload_time: string;
-  photo_list : CurrentAlbumPhotoType[];
+  photo_list: CurrentAlbumPhotoType[];
 }
 
-export interface CurrentAlbumPhotoType{
-  photo_id : number,
-  photo_url : string,
-  upload_date : string,
-  user_name : string,
+export interface CurrentAlbumPhotoType {
+  photo_id: number;
+  photo_url: string;
+  upload_date: string;
+  user_name: string;
 }
 
 export interface FavoriteAlbumType {
@@ -29,7 +29,7 @@ export interface TotalAlbumType {
 }
 
 interface MemberType {
-  id: number;
+  id: string;
   profile_img_url: string;
 }
 

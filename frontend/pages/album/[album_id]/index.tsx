@@ -9,7 +9,7 @@ import EditAlbumName from "components/pages/album/EditAlbumName";
 import { LoadingCount } from "components/common/Loading";
 
 // 라이브러리
-import { useEffect, useMemo, useRef, useState } from "react";
+import { useEffect, useState } from "react";
 import { useRouter } from "next/router";
 import axios from "axios";
 
@@ -24,15 +24,10 @@ import Preview from "components/pages/album/Preview";
 import { useDispatch, useSelector } from "react-redux";
 import { StateType } from "@/types/StateType";
 import {
+  addUserIdState,
   setALbumIdState,
   setInit,
-  setUserIdState,
 } from "@/features/albumStatusSlice";
-import {
-  setPreviewLength,
-  setUploadLength,
-  startPreview,
-} from "@/features/photoUploadSlice";
 
 function AlbumDetail() {
   const router = useRouter();
@@ -46,15 +41,12 @@ function AlbumDetail() {
     (state: StateType) => state.photoUpload.isPreview
   );
 
-  // console.log(isPreview);
-
-  const [membersId, setMembersId] = useState<number[]>([]);
+  const [membersId, setMembersId] = useState<string[]>([]);
   let dispatch = useDispatch();
   useEffect(() => {
     dispatch(setInit());
     dispatch(setALbumIdState({ albumId: Number(router.query.album_id) }));
-    dispatch(setUserIdState({ userId: new Set(membersId) }));
-  }, [membersId, router.query.album_id]);
+  }, [router.query.album_id]);
 
   const { getDetail, getDetailIsLoading } = useGetDetail(albumId);
 
@@ -62,26 +54,10 @@ function AlbumDetail() {
   const [selectedPhotos, setSelectedPhotos] = useState<Set<number>>(new Set());
   const [isTotal, setIsTotal] = useState<boolean>(false);
 
-  const [selectMembers, setSelectMembers] = useState<Set<number>>(
-    new Set(membersId)
-  );
   const [inputPhoto, setInputPhoto] = useState<FileList | null>(null);
 
   const [isAlerts, setIsAlerts] = useState<boolean[]>(
     [...Array(4)].fill(false)
-  );
-
-  const makeRequest = () => {
-    return {
-      albumId: albumId,
-      categoryId: categoryId,
-      userId: Array.from(selectMembers).toString(),
-    };
-  };
-
-  const photosRequest = useMemo(
-    () => makeRequest(),
-    [albumId, categoryId, selectMembers]
   );
 
   const {
@@ -89,7 +65,7 @@ function AlbumDetail() {
     getTotal,
     getTotalId,
     isLoading: getPhotosIsLoading,
-  } = useInfinitePhotos(photosRequest);
+  } = useInfinitePhotos();
 
   const { mutate: deletePhotosMutate } = Mutations().useDeletePhotos();
 
@@ -147,14 +123,14 @@ function AlbumDetail() {
   // 로딩이 완료되면 user id 배열 수정
   useEffect(() => {
     if (getDetail) {
-      setMembersId([...getDetail.members.map((member) => member.id)]);
+      setMembersId([
+        ...getDetail.members.map((member) => {
+          dispatch(addUserIdState(member.id));
+          return member.id;
+        }),
+      ]);
     }
   }, [getDetailIsLoading]);
-
-  // user id 배열을 선택 set에 저장
-  useEffect(() => {
-    setSelectMembers(new Set(membersId));
-  }, [membersId]);
 
   // 전체 선택 누르면 전부 선택 / 해제 누르면 전부 해제
   useEffect(() => {
@@ -169,24 +145,6 @@ function AlbumDetail() {
   useEffect(() => {
     selectedPhotos.size === getTotal && setIsTotal(true);
   }, [selectedPhotos]);
-  // useMemo(() => selectedPhotos.size === getTotal && true, [selectedPhotos])
-
-  /**
-   * size 길이의 배열 반환
-   * @param size
-   * @param start
-   * @returns
-   */
-
-  // useEffect(() => {
-  //   if (inputPhoto) {
-  //     const inputLength = inputPhoto.length;
-  //     dispatch(setUploadLength({ uploadLength: inputLength }));
-  //     dispatch(setPreviewLength({ PreviewLength: inputLength }));
-  //     // console.log(previewLength);
-  //     dispatch(startPreview());
-  //   }
-  // }, [inputPhoto]);
 
   return (
     <section>
@@ -206,7 +164,6 @@ function AlbumDetail() {
           setSelectedPhotos={setSelectedPhotos}
           inputPhoto={inputPhoto}
           setInputPhoto={setInputPhoto}
-          photosRequest={photosRequest}
           isAlbumLoading={isAlbumLoading}
         />
         <div className={`${styles.total_count}`}>
@@ -225,6 +182,7 @@ function AlbumDetail() {
         isSelect={isSelect}
         isAlerts={isAlerts}
         setIsAlerts={setIsAlerts}
+        selectedPhotos={selectedPhotos}
       />
       {isPreview && <Preview inputPhoto={inputPhoto} />}
       {isAlerts[0] && (

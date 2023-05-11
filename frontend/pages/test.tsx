@@ -1,5 +1,3 @@
-import aaa from "./photo1.jpg";
-
 function Test() {
   return (
     <>
