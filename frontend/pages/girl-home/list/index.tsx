@@ -2,54 +2,56 @@ import { InfoBar } from "@/components/common/Nav";
 import GirlListUser from "@/public/icons/GirlListUsers.svg"
 import GirlListImage from "@/public/icons/GirlListImage.svg"
 
-import { Map } from "react-kakao-maps-sdk";
+import { CustomOverlayMap, Map } from "react-kakao-maps-sdk";
 import { useRouter } from "next/router";
 import TabBar from "@/components/common/TabBar";
-
-const Dummy = {
-    imgList : ["https://plus.unsplash.com/premium_photo-1668799886418-2335be7716e9?ixlib=rb-4.0.3&ixid=MnwxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8&auto=format&fit=crop&w=1158&q=80",
-                "https://plus.unsplash.com/premium_photo-1668799886418-2335be7716e9?ixlib=rb-4.0.3&ixid=MnwxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8&auto=format&fit=crop&w=1158&q=80",
-                "https://plus.unsplash.com/premium_photo-1668799886418-2335be7716e9?ixlib=rb-4.0.3&ixid=MnwxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8&auto=format&fit=crop&w=1158&q=80",
-                "https://plus.unsplash.com/premium_photo-1668799886418-2335be7716e9?ixlib=rb-4.0.3&ixid=MnwxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8&auto=format&fit=crop&w=1158&q=80",
-                "https://plus.unsplash.com/premium_photo-1668799886418-2335be7716e9?ixlib=rb-4.0.3&ixid=MnwxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8&auto=format&fit=crop&w=1158&q=80",
-                "https://plus.unsplash.com/premium_photo-1668799886418-2335be7716e9?ixlib=rb-4.0.3&ixid=MnwxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8&auto=format&fit=crop&w=1158&q=80",
-                "https://plus.unsplash.com/premium_photo-1668799886418-2335be7716e9?ixlib=rb-4.0.3&ixid=MnwxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8&auto=format&fit=crop&w=1158&q=80",
-                "https://plus.unsplash.com/premium_photo-1668799886418-2335be7716e9?ixlib=rb-4.0.3&ixid=MnwxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8&auto=format&fit=crop&w=1158&q=80",
-                "https://plus.unsplash.com/premium_photo-1668799886418-2335be7716e9?ixlib=rb-4.0.3&ixid=MnwxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8&auto=format&fit=crop&w=1158&q=80",
-                "https://plus.unsplash.com/premium_photo-1668799886418-2335be7716e9?ixlib=rb-4.0.3&ixid=MnwxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8&auto=format&fit=crop&w=1158&q=80",
-                "https://plus.unsplash.com/premium_photo-1668799886418-2335be7716e9?ixlib=rb-4.0.3&ixid=MnwxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8&auto=format&fit=crop&w=1158&q=80",
-                "https://plus.unsplash.com/premium_photo-1668799886418-2335be7716e9?ixlib=rb-4.0.3&ixid=MnwxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8&auto=format&fit=crop&w=1158&q=80",]
-}
+import { getGirlListDetail } from "@/pages/api/girlApi";
+import { useSelector } from "react-redux";
+import { RootState } from "@/store/configureStore";
 
 interface GirlListParamType{
     lat : number,
     lng : number,
 }
-export default function List(params : GirlListParamType) {
+export default function List() {
+    const girlDetailList = useSelector((state : RootState) => state.girlListDetailState);
+    const {resultData} = getGirlListDetail();
     const router = useRouter();
     return(
         <div className="flex flex-col items-center gap-y-4">
             <InfoBar title={"대전시 유성구"}></InfoBar>
             <div className="relative flex items-center justify-center h-12 gap-x-2">
                 <GirlListUser></GirlListUser>
-                <p>31</p>
+                <p>{resultData?.totalUserCnt}</p>
                 <GirlListImage></GirlListImage>
-                <p>100+</p>
+                <p>{resultData?.totalPhotoCnt}</p>
                 {/* TODO : 정렬 기준 들어가야됨 */}
             </div>
             <Map
-                center={{lat : 33.5563, lng: 126.79581}}
+                center={{lat : girlDetailList.latitude, lng: girlDetailList.longitude}}
                 style={{width : "100vw", height:"40vh"}}
                 level={1}>
+                {resultData !== undefined && <>
+                    {resultData.photoList.map((photo) => {
+                        return(
+                            <CustomOverlayMap key={photo.photoId} position={{lat : photo.mapLatitude, lng: photo.mapLongitude}}>
+                                <div onClick={() => router.push(`/girl-home/list/${photo.photoId}`)} className="w-4 h-4 rounded-full" style={{background: "linear-gradient(238.55deg, rgba(244, 114, 182, 0.75) 15.98%, rgba(145, 153, 217, 0.75) 55.85%, rgba(56, 189, 248, 0.75) 84.59%), linear-gradient(134.36deg, #F472B6 15.23%, #9797D7 49.79%, #38BDF8 84.77%)"}}>
+                                </div>
+                            </CustomOverlayMap>
+                        )
+                    })}
+                </>}
             </Map>
             <div className="grid w-full grid-cols-4 gap-1 px-2">
-                {Dummy.imgList.map((img, index) => {
-                    return(
-                        <div key={index} className="flex items-center justify-center w-full h-full">
-                            <div onClick={() => router.push("/girl-home/list/1")} className="col-span-1 bg-cover" style={{width : "80px", height: "80px", backgroundImage : `url(${img})`}}></div>
-                        </div>
-                    )
-                })}
+                {resultData !== undefined && <>
+                    {resultData.photoList.map((photo) => {
+                        return(
+                            <div key={photo.photoId} className="flex items-center justify-center w-full h-full">
+                                <div onClick={() => router.push(`/girl-home/list/${photo.photoId}`)} className="col-span-1 bg-cover" style={{width : "80px", height: "80px", backgroundImage : `url(${photo.s3Url})`}}></div>
+                            </div>
+                        )
+                    })}
+                </>}
             </div>
             <TabBar></TabBar>
         </div>
