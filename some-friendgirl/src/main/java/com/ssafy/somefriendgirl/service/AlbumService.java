@@ -146,11 +146,17 @@ public class AlbumService {
 
         for (int i = 1; i <= 4; i++) {
             markGps[i].section = i;
-            markGps[i].latitude = gpsSum[i].latitude / size[i];
-            markGps[i].longitude = gpsSum[i].longitude / size[i];
+
+            if (size[i] != 0) {
+                markGps[i].latitude = gpsSum[i].latitude / size[i];
+                markGps[i].longitude = gpsSum[i].longitude / size[i];
+            } else {
+                markGps[i].latitude = null;
+                markGps[i].longitude = null;
+            }
         }
 
-        //좋아요순 4분할 사진 리스트 반환
+        //좋아요순 사분면 사진 리스트 반환
         GpsRangeDto gpsRangeDto1 = GpsRangeDto.builder().startLat(gpsRequestDto.getLatitude()).startLon(gpsRequestDto.getLongitude())
                 .endLat(gpsRangeDto.getEndLat()).endLon(gpsRangeDto.getEndLon()).build();
         GpsRangeDto gpsRangeDto2 = GpsRangeDto.builder().startLat(gpsRequestDto.getLatitude()).startLon(gpsRangeDto.getStartLon())
@@ -160,47 +166,49 @@ public class AlbumService {
         GpsRangeDto gpsRangeDto4 = GpsRangeDto.builder().startLat(gpsRangeDto.getStartLat()).startLon(gpsRequestDto.getLongitude())
                 .endLat(gpsRequestDto.getLatitude()).endLon(gpsRangeDto.getEndLon()).build();
 
+        List<Map<String, Object>> resultList = new ArrayList<>();
+
         //1사분면
-        List<AlbumPhoto> albumPhotos1 = albumRepository.findTop4AlbumPhotoLikeCnt(gpsRangeDto1);
-        List<PhotoListDto> photoListDtos1 = albumPhotos1.stream().map(PhotoListDto::new).collect(Collectors.toList());
+        List<AlbumPhoto> albumPhotos1 = albumRepository.findAllAlbumPhotoLikeCnt(gpsRangeDto1);
+        List<PhotoListDto> photoListDtos1 = checkTop4(albumPhotos1).stream().map(PhotoListDto::new).collect(Collectors.toList());
 
         HashMap<String, Object> photoList1 = new HashMap<>();
-        photoList1.put("PhotoList", photoListDtos1);
-        photoList1.put("MarkGps", markGps[1]);
+        photoList1.put("photoList", photoListDtos1);
+        photoList1.put("markGps", markGps[1]);
+        resultList.add(photoList1);
 
         //2사분면
-        List<AlbumPhoto> albumPhotos2 = albumRepository.findTop4AlbumPhotoLikeCnt(gpsRangeDto2);
-        List<PhotoListDto> photoListDtos2 = albumPhotos2.stream().map(PhotoListDto::new).collect(Collectors.toList());
+        List<AlbumPhoto> albumPhotos2 = albumRepository.findAllAlbumPhotoLikeCnt(gpsRangeDto2);
+        List<PhotoListDto> photoListDtos2 = checkTop4(albumPhotos2).stream().map(PhotoListDto::new).collect(Collectors.toList());
 
         HashMap<String, Object> photoList2 = new HashMap<>();
-        photoList2.put("PhotoList", photoListDtos2);
-        photoList2.put("MarkGps", markGps[2]);
+        photoList2.put("photoList", photoListDtos2);
+        photoList2.put("markGps", markGps[2]);
+        resultList.add(photoList2);
 
         //3사분면
-        List<AlbumPhoto> albumPhotos3 = albumRepository.findTop4AlbumPhotoLikeCnt(gpsRangeDto3);
-        List<PhotoListDto> photoListDtos3 = albumPhotos3.stream().map(PhotoListDto::new).collect(Collectors.toList());
+        List<AlbumPhoto> albumPhotos3 = albumRepository.findAllAlbumPhotoLikeCnt(gpsRangeDto3);
+        List<PhotoListDto> photoListDtos3 = checkTop4(albumPhotos3).stream().map(PhotoListDto::new).collect(Collectors.toList());
 
         HashMap<String, Object> photoList3 = new HashMap<>();
-        photoList3.put("PhotoList", photoListDtos3);
-        photoList3.put("MarkGps", markGps[3]);
+        photoList3.put("photoList", photoListDtos3);
+        photoList3.put("markGps", markGps[3]);
+        resultList.add(photoList3);
 
         //4사분면
-        List<AlbumPhoto> albumPhotos4 = albumRepository.findTop4AlbumPhotoLikeCnt(gpsRangeDto4);
-        List<PhotoListDto> photoListDtos4 = albumPhotos4.stream().map(PhotoListDto::new).collect(Collectors.toList());
+        List<AlbumPhoto> albumPhotos4 = albumRepository.findAllAlbumPhotoLikeCnt(gpsRangeDto4);
+        List<PhotoListDto> photoListDtos4 = checkTop4(albumPhotos4).stream().map(PhotoListDto::new).collect(Collectors.toList());
 
         HashMap<String, Object> photoList4 = new HashMap<>();
-        photoList4.put("PhotoList", photoListDtos4);
-        photoList4.put("MarkGps", markGps[4]);
+        photoList4.put("photoList", photoListDtos4);
+        photoList4.put("markGps", markGps[4]);
+        resultList.add(photoList4);
 
-        result.put("PhotoList1", photoList1);
-        result.put("PhotoList2", photoList2);
-        result.put("PhotoList3", photoList3);
-        result.put("PhotoList4", photoList4);
-
+        result.put("resultList", resultList);
         return responseUtil.setResponseDto(result, "여사친 썸네일 사진 목록", 200);
     }
 
-    public ResponseDto selectLikeCntPhoto(GpsRequestDto gpsRequestDto, Pageable pageable, String accessToken) {
+    public ResponseDto selectPhotoList(GpsRequestDto gpsRequestDto, String sort, Pageable pageable, String accessToken) {
         Map<String, Object> result = new HashMap<>();
         String userId = responseUtil.tokenCheck(accessToken);
 
@@ -211,37 +219,23 @@ public class AlbumService {
         //해당 사분면 지도 위경도 범위
         GpsRangeDto gpsRangeDto = calcGpsRange(gpsRequestDto);
 
-        Page<AlbumPhoto> albumPhotos = albumRepository.findAlbumPhotoLikeCnt(gpsRangeDto, pageable);
+        if (sort.equals("like")) sort = "likeCnt";
+        else if (sort.equals("date")) sort = "photoId";
+
+        Page<AlbumPhoto> albumPhotos = albumRepository.findAlbumPhotoList(gpsRangeDto, sort, pageable);
         List<PhotoListDto> photoListDtos = albumPhotos.getContent().stream().map(PhotoListDto::new).collect(Collectors.toList());
         PageDto pageDto = PageDto.builder().is_first(albumPhotos.isFirst()).is_last(albumPhotos.isLast())
                 .total_page(albumPhotos.getTotalPages()).now_page(albumPhotos.getPageable().getPageNumber()).build();
 
-        result.put("PhotoList", photoListDtos);
-        result.put("Page", pageDto);
-
-        return responseUtil.setResponseDto(result, "여사친 좋아요순 사진 목록", 200);
-    }
-
-    public ResponseDto selectPhotoIdPhoto(GpsRequestDto gpsRequestDto, Pageable pageable, String accessToken) {
-        Map<String, Object> result = new HashMap<>();
-        String userId = responseUtil.tokenCheck(accessToken);
-
-        if (userId == null) {
-            return responseUtil.setResponseDto(result, "토큰 만료", 450);
-        }
-
-        //해당 사분면 지도 위경도 범위
-        GpsRangeDto gpsRangeDto = calcGpsRange(gpsRequestDto);
-
-        Page<AlbumPhoto> albumPhotos = albumRepository.findAlbumPhotoPhotoId(gpsRangeDto, pageable);
-        List<PhotoListDto> photoListDtos = albumPhotos.getContent().stream().map(PhotoListDto::new).collect(Collectors.toList());
-        PageDto pageDto = PageDto.builder().is_first(albumPhotos.isFirst()).is_last(albumPhotos.isLast())
-                .total_page(albumPhotos.getTotalPages()).now_page(albumPhotos.getPageable().getPageNumber()).build();
+        List<String> photoUserList = albumRepository.findUserIdAlbumPhoto(gpsRangeDto);
+        int totalPhotoCnt = (albumPhotos.getTotalPages() > 1) ? (albumPhotos.getTotalPages() - 1) * pageable.getPageSize() : photoListDtos.size();
 
         result.put("PhotoList", photoListDtos);
+        result.put("totalUserCnt", photoUserList.size());
+        result.put("totalPhotoCnt", totalPhotoCnt);
         result.put("Page", pageDto);
 
-        return responseUtil.setResponseDto(result, "여사친 최신순 사진 목록", 200);
+        return responseUtil.setResponseDto(result, "여사친 구역 사진 목록", 200);
     }
 
     private GpsRangeDto calcGpsRange(GpsRequestDto gpsRequestDto) {
@@ -267,6 +261,14 @@ public class AlbumService {
         }
 
         return gpsRangeDto;
+    }
+
+    private List<AlbumPhoto> checkTop4(List<AlbumPhoto> albumPhotos) {
+        if (albumPhotos != null && albumPhotos.size() > 4) {
+            return new ArrayList<>(albumPhotos.subList(0, 4));
+        }
+
+        return albumPhotos;
     }
 
 }

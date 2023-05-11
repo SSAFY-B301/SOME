@@ -30,27 +30,24 @@ public class AlbumRepositoryImpl implements AlbumRepositoryCustom {
     }
 
     @Override
-    public List<AlbumPhoto> findTop4AlbumPhotoLikeCnt(GpsRangeDto gpsRangeDto) {
-        Query query = new Query().with(Sort.by(Sort.Direction.DESC, MongoQueryUtil.parse(albumPhoto.likeCnt))).limit(4);
+    public List<String> findUserIdAlbumPhoto(GpsRangeDto gpsRangeDto) {
+        Query query = new Query();
+        query.addCriteria(Criteria.where(MongoQueryUtil.parse(albumPhoto.mapLatitude)).gte(gpsRangeDto.getStartLat()).lt(gpsRangeDto.getEndLat()));
+        query.addCriteria(Criteria.where(MongoQueryUtil.parse(albumPhoto.mapLongitude)).gte(gpsRangeDto.getStartLon()).lt(gpsRangeDto.getEndLon()));
+        return mongoTemplate.findDistinct(query, MongoQueryUtil.parse(albumPhoto.userId), AlbumPhoto.class, String.class);
+    }
+
+    @Override
+    public List<AlbumPhoto> findAllAlbumPhotoLikeCnt(GpsRangeDto gpsRangeDto) {
+        Query query = new Query().with(Sort.by(Sort.Direction.DESC, MongoQueryUtil.parse(albumPhoto.likeCnt)));
         query.addCriteria(Criteria.where(MongoQueryUtil.parse(albumPhoto.mapLatitude)).gte(gpsRangeDto.getStartLat()).lt(gpsRangeDto.getEndLat()));
         query.addCriteria(Criteria.where(MongoQueryUtil.parse(albumPhoto.mapLongitude)).gte(gpsRangeDto.getStartLon()).lt(gpsRangeDto.getEndLon()));
         return mongoTemplate.find(query, AlbumPhoto.class);
     }
 
     @Override
-    public Page<AlbumPhoto> findAlbumPhotoLikeCnt(GpsRangeDto gpsRangeDto, Pageable pageable) {
-        Query query = new Query().with(pageable).with(Sort.by(Sort.Direction.DESC, MongoQueryUtil.parse(albumPhoto.likeCnt)));
-        query.addCriteria(Criteria.where(MongoQueryUtil.parse(albumPhoto.mapLatitude)).gte(gpsRangeDto.getStartLat()).lt(gpsRangeDto.getEndLat()));
-        query.addCriteria(Criteria.where(MongoQueryUtil.parse(albumPhoto.mapLongitude)).gte(gpsRangeDto.getStartLon()).lt(gpsRangeDto.getEndLon()));
-        List<AlbumPhoto> albumPhotos = mongoTemplate.find(query, AlbumPhoto.class);
-
-        return PageableExecutionUtils.getPage(albumPhotos, pageable,
-                () -> mongoTemplate.count(Query.of(query).limit(-1).skip(-1), AlbumPhoto.class));
-    }
-
-    @Override
-    public Page<AlbumPhoto> findAlbumPhotoPhotoId(GpsRangeDto gpsRangeDto, Pageable pageable) {
-        Query query = new Query().with(pageable).with(Sort.by(Sort.Direction.DESC, MongoQueryUtil.parse(albumPhoto.photoId)));
+    public Page<AlbumPhoto> findAlbumPhotoList(GpsRangeDto gpsRangeDto, String sort, Pageable pageable) {
+        Query query = new Query().with(pageable).with(Sort.by(Sort.Direction.DESC, sort));
         query.addCriteria(Criteria.where(MongoQueryUtil.parse(albumPhoto.mapLatitude)).gte(gpsRangeDto.getStartLat()).lt(gpsRangeDto.getEndLat()));
         query.addCriteria(Criteria.where(MongoQueryUtil.parse(albumPhoto.mapLongitude)).gte(gpsRangeDto.getStartLon()).lt(gpsRangeDto.getEndLon()));
         List<AlbumPhoto> albumPhotos = mongoTemplate.find(query, AlbumPhoto.class);
