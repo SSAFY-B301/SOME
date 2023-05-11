@@ -82,18 +82,22 @@ $main-color: linear-gradient(
 @keyframes slider {
   from {
     transform: translateY(0px);
+    height: 100%;
   }
   to {
     transform: translateY(80px);
+    height: calc(100% - 80px);
   }
 }
 
 @keyframes reverseSlider {
   from {
     transform: translateY(80px);
+    height: calc(100% - 80px);
   }
   to {
     transform: translateY(0px);
+    height: 100%;
   }
 }
 
