@@ -14,6 +14,8 @@ import styles from "styles/home.module.scss";
 import LightModeIcon from "public/icons/Sun.svg";
 import DarkModeIcon from "public/icons/Moon.svg";
 import AlarmIcon from "public/icons/Bell.svg";
+import FeedBackIcon from "./feedBack";
+import { useState } from "react";
 
 interface InfoType {
   title: string;
@@ -21,13 +23,13 @@ interface InfoType {
 
 function NavBar() {
   const { theme, setTheme } = useTheme();
-
-
+  const [isFeed, setIsFeed] = useState<boolean>(false);
   return (
     <nav
       className={`flex flex-row justify-between items-center h-14 mx-6 ${styles.nav_bar}`}
     >
       <Logo />
+      <FeedBackIcon setIsFeed={setIsFeed} isFeed={isFeed} />
       {/* 다크모드 <-> 라이트모드 전환 버튼 */}
       <div className="flex gap-2">
         <button
@@ -49,7 +51,7 @@ function NavBar() {
           )}
         </button>
         <Link href={"/profile"}>
-          <Profile/>
+          <Profile />
         </Link>
         <Link href={"/notification"}>
           <AlarmIcon fill="grey" stroke="grey" />
@@ -60,7 +62,7 @@ function NavBar() {
 }
 
 export function InfoBar(props: InfoType) {
-  const router = useRouter()
+  const router = useRouter();
   return (
     <div
       className={
@@ -75,10 +77,24 @@ export function InfoBar(props: InfoType) {
       >
         <div className="absolute top-0 left-0">
           <button onClick={() => router.back()}>
-            <svg width="6.154vw" height="6.154vw" viewBox="0 0 24 24" fill="none" stroke="transparent" xmlns="http://www.w3.org/2000/svg">
-              <path className="stroke-black dark:stroke-white" d="M15 19.5L7.5 12L15 4.5" stroke="transparent" strokeWidth="3" strokeLinecap="round" strokeLinejoin="round"/>
+            <svg
+              width="6.154vw"
+              height="6.154vw"
+              viewBox="0 0 24 24"
+              fill="none"
+              stroke="transparent"
+              xmlns="http://www.w3.org/2000/svg"
+            >
+              <path
+                className="stroke-black dark:stroke-white"
+                d="M15 19.5L7.5 12L15 4.5"
+                stroke="transparent"
+                strokeWidth="3"
+                strokeLinecap="round"
+                strokeLinejoin="round"
+              />
             </svg>
-          </button>  
+          </button>
         </div>
         <p className="text-xl text-center">{props.title}</p>
       </div>
