@@ -3,7 +3,11 @@ import React, { useRef } from "react";
 import { useRouter } from "next/router";
 
 // API
-import { Mutations, useGetDetail } from "@/pages/api/albumApi";
+import {
+  Mutations,
+  useGetDetail,
+  useInfinitePhotos,
+} from "@/pages/api/albumApi";
 
 //CSS
 import styles from "styles/album.module.scss";
@@ -14,6 +18,7 @@ import DotsIcon from "public/icons/DotsThreeOutline.svg";
 import DownloadIcon from "public/icons/DownloadSimple.svg";
 import TrashIcon from "public/icons/Trash.svg";
 import UploadIcon from "public/icons/UploadSimple.svg";
+import { share } from "./Share";
 
 // 인터페이스
 interface TabBarType {
@@ -50,13 +55,34 @@ function TabBar(props: TabBarType) {
     props.setIsAlerts([...props.isAlerts]);
   };
 
-  const share = (selectedPhotos: Set<number>) => {};
+  const {
+    data: getPhotosPages,
+    getTotal,
+    getTotalId,
+    isLoading: getPhotosIsLoading,
+  } = useInfinitePhotos();
+
+  const idToUrl = (selectedPhotos: Set<number>) => {
+    const urls: string[] = [];
+    if (getPhotosPages) {
+      getPhotosPages.pages.forEach((page) =>
+        page.albumPhotoList.forEach(
+          (photo) =>
+            selectedPhotos.has(photo.photoId) && urls.push(photo.originUrl)
+        )
+      );
+    }
+    return urls;
+  };
 
   return (
     <section className={`${styles.tab_bar} bg-white dark:bg-dark-block`}>
       {props.isSelect ? (
         <>
-          <UploadIcon onClick={() => share()} stroke={"black"} />
+          <UploadIcon
+            onClick={() => share(idToUrl(props.selectedPhotos))}
+            stroke={"black"}
+          />
           <DownloadIcon onClick={() => openAlert(1)} stroke={"black"} />
           <TrashIcon onClick={() => openAlert(0)} stroke={"black"} />
         </>
