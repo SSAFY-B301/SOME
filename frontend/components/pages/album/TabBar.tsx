@@ -14,7 +14,7 @@ import styles from "styles/album.module.scss";
 
 // 아이콘
 import HeartIcon from "public/icons/Heart.svg";
-import DotsIcon from "public/icons/DotsThreeOutline.svg";
+import SettingIcon from "public/icons/Gear.svg";
 import DownloadIcon from "public/icons/DownloadSimple.svg";
 import TrashIcon from "public/icons/Trash.svg";
 import UploadIcon from "public/icons/UploadSimple.svg";
@@ -38,7 +38,7 @@ interface TabBarType {
 function TabBar(props: TabBarType) {
   const router = useRouter();
   const albumId: number = Number(router.query.album_id);
-  const { getDetail } = useGetDetail(albumId);
+  const { getDetail } = useGetDetail();
 
   /**
    * 앨범 좋아요 수정
@@ -101,7 +101,7 @@ function TabBar(props: TabBarType) {
             }
             fill={getDetail ? (getDetail.isAlbumFav ? "red" : "none") : "none"}
           />
-          <DotsIcon
+          <SettingIcon
             onClick={() => openAlert(3)}
             width={"8.205vw"}
             height={"8.205vw"}
