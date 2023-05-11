@@ -11,7 +11,7 @@ import MfriendIcon from "public/icons/Mfriend.svg";
 import FfriendIcon from "public/icons/Ffriend.svg";
 import MfriendSelectedIcon from "public/icons/MfriendSelected.svg";
 import FfriendSelectedIcon from "public/icons/FfriendSelected.svg";
-import { useRef } from "react";
+import GirlPhotoInput from "./GirlPhotoInput";
 
 interface TabBarType {
   plusBtnUrl?: string;
@@ -20,14 +20,7 @@ interface TabBarType {
 function TabBar({ plusBtnUrl }: TabBarType) {
   const router = useRouter();
 
-  const fileInput = useRef<any>(null);
-  const inputPhoto = () => {
-    fileInput.current.click();
-  };
-
-  const changeInputPhoto = (e: React.ChangeEvent<HTMLInputElement>) => {
-    e.target.files;
-  };
+  
 
   return (
     <section
@@ -61,21 +54,7 @@ function TabBar({ plusBtnUrl }: TabBarType) {
         </Link>
       }
       {!plusBtnUrl &&
-          <div
-            onClick={inputPhoto}
-            className={`fixed z-50 left-auto right-auto flex justify-center items-center rounded-full ${styles.plus_btn}`}
-            style={{ width: "16.41vw", height: "16.41vw" }}
-          >
-            <input 
-              type="file"
-              multiple
-              ref={fileInput}
-              onChange={changeInputPhoto}
-              accept="image/jpg,image/png,image/jpeg,image/gif"
-              style={{display:"none"}} />
-            <PlusIcon />
-          </div>
-
+          <GirlPhotoInput/>
       }
 
       {/* 가운데 빈 박스 */}
