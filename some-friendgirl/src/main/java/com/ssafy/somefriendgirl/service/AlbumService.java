@@ -230,10 +230,10 @@ public class AlbumService {
         List<String> photoUserList = albumRepository.findUserIdAlbumPhoto(gpsRangeDto);
         int totalPhotoCnt = (albumPhotos.getTotalPages() > 1) ? (albumPhotos.getTotalPages() - 1) * pageable.getPageSize() : photoListDtos.size();
 
-        result.put("PhotoList", photoListDtos);
+        result.put("photoList", photoListDtos);
         result.put("totalUserCnt", photoUserList.size());
         result.put("totalPhotoCnt", totalPhotoCnt);
-        result.put("Page", pageDto);
+        result.put("page", pageDto);
 
         return responseUtil.setResponseDto(result, "여사친 구역 사진 목록", 200);
     }
