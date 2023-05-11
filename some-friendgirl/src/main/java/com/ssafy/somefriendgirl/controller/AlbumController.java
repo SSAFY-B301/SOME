@@ -51,21 +51,12 @@ public class AlbumController {
         return new ResponseEntity<ResponseDto>(responseDto, HttpStatus.OK);
     }
 
-    @GetMapping("/list/like")
-    public ResponseEntity<ResponseDto> getPhotoLikeList(@RequestHeader HttpHeaders headers, GpsRequestDto gpsRequestDto, Pageable pageable) {
+    @GetMapping("/list/detail")
+    public ResponseEntity<ResponseDto> getPhotoLikeList(@RequestHeader HttpHeaders headers, GpsRequestDto gpsRequestDto, String sort, Pageable pageable) {
         String accessToken = headers.get("access_token").toString();
         log.info("좋아요순 사진 목록 GET: /album/list/like, gpsRequestDto : {}", gpsRequestDto);
 
-        ResponseDto responseDto = albumService.selectLikeCntPhoto(gpsRequestDto, pageable, accessToken);
-        return new ResponseEntity<ResponseDto>(responseDto, HttpStatus.OK);
-    }
-
-    @GetMapping("/list/recent")
-    public ResponseEntity<ResponseDto> getPhotoRecentList(@RequestHeader HttpHeaders headers, GpsRequestDto gpsRequestDto, Pageable pageable) {
-        String accessToken = headers.get("access_token").toString();
-        log.info("최신순 사진 목록 GET: /album/list/recent, gpsRequestDto : {}", gpsRequestDto);
-
-        ResponseDto responseDto = albumService.selectPhotoIdPhoto(gpsRequestDto, pageable, accessToken);
+        ResponseDto responseDto = albumService.selectPhotoList(gpsRequestDto, sort, pageable, accessToken);
         return new ResponseEntity<ResponseDto>(responseDto, HttpStatus.OK);
     }
 
