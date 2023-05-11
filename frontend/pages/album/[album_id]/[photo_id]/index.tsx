@@ -10,12 +10,13 @@ import {
   DeleteModal,
   VoteModal,
   Nav,
+  VoteCurrentModal,
+  ThumbnailModal,
 } from "@/components/photo-detail";
 import styles from "./photo.module.scss";
 import { getPhoto } from "@/pages/api/photoDetailApi";
 import { Mutations, useDownload } from "@/pages/api/albumApi";
 import { SnsRequestType, ThumbnailBodyType } from "@/types/AlbumTypes";
-import ThumbnailModal from "@/components/photo-detail/ThumbnailModal";
 import { useTheme } from "next-themes";
 
 const PhotoDetail = (): JSX.Element => {
@@ -26,6 +27,8 @@ const PhotoDetail = (): JSX.Element => {
   const [showDeleteModal, setDeleteModal] = useState<boolean>(false);
   const [showVoteModal, setVoteModal] = useState<boolean>(false);
   const [showThumbnailModal, setThumbnailModal] = useState<boolean>(false);
+  const [showVoteCurrentModal, setshowVoteCurrentModal] =
+    useState<boolean>(false);
   const { theme, setTheme } = useTheme();
 
   /**
@@ -37,17 +40,21 @@ const PhotoDetail = (): JSX.Element => {
   const [isZoom, setIsZoom] = useState<boolean>(false); // 줌 상태 판별
 
   /**
-   * 드래그 모션 state
-   */
-  const [touchedX, setTouchedX] = useState(0);
-  const [touchedY, setTouchedY] = useState(0);
-
-  /**
    * 사진 상세 정보 접근
    * useQuery
    *  queryKey : photo
+   * photoDetail: 사진 상세 정보
+   * noReplyFriends: 공유 투표 미응답자
+   * declineFriends: 공유 투표 거절자
+   * acceptFriends: 공유 투표 수락자
+   * isSnsAgree: 투표 결과 여부
+   * isSnsRequest: 투표 진행 중 여부
    */
-  const { resultData: photoDetail } = getPhoto();
+  const {
+    photoDetail: photoDetail,
+    isSnsAgree: isSnsAgree,
+    isSnsRequest: isSnsRequest,
+  } = getPhoto();
 
   /**
    * 페이지 이동 슬라이더 구현
@@ -88,7 +95,13 @@ const PhotoDetail = (): JSX.Element => {
    * 공유 요청 모달창 생성
    */
   const clickVote = () => {
-    showVoteModal ? setVoteModal(false) : setVoteModal(true);
+    if (isSnsRequest) {
+      showVoteCurrentModal
+        ? setshowVoteCurrentModal(false)
+        : setshowVoteCurrentModal(true);
+    } else {
+      showVoteModal ? setVoteModal(false) : setVoteModal(true);
+    }
   };
 
   /**
@@ -243,6 +256,7 @@ const PhotoDetail = (): JSX.Element => {
           clickVote={clickVote}
           clickThumbnail={clickThumbnail}
           theme={theme}
+          isSnsAgree={isSnsAgree}
         />
       </div>
       {showDownLoadModal && (
@@ -260,6 +274,9 @@ const PhotoDetail = (): JSX.Element => {
           clickThumbnail={clickThumbnail}
           putThumbnail={putThumbnail}
         />
+      )}
+      {showVoteCurrentModal && (
+        <VoteCurrentModal clickVote={clickVote} requestSns={requestSns} />
       )}
     </div>
   );

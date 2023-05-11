@@ -28,7 +28,6 @@ interface AlbumType {
 /**
  * 친구 초대 페이지
  * 이슈
- * 1. 앨범 선택 시 추가할 ID에 본인 아이디가 계속 유지되서 친구를 전부 제거해도 슬라이드 창이 안올라감
  */
 const InviteFriends = (): JSX.Element => {
   /**
