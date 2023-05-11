@@ -26,9 +26,9 @@ const DeleteModal = ({ clickDelete }: Props): JSX.Element => {
       <div className="flex flex-col items-center justify-end w-11/12 h-full">
         <div
           onClick={(e) => e.stopPropagation()}
-          className="flex flex-col items-center justify-center w-full bg-white h-36 rounded-xl"
+          className="flex flex-col items-center justify-center w-full bg-white dark:bg-dark-block h-36 rounded-xl"
         >
-          <div className="flex items-center justify-center w-full text-gray-400 border-b-2 h-1/2">
+          <div className="flex items-center justify-center w-full text-gray-400 dark:text-white border-b-2 h-1/2">
             사진이 앨범에서 삭제됩니다.
           </div>
           <button
@@ -39,7 +39,7 @@ const DeleteModal = ({ clickDelete }: Props): JSX.Element => {
           </button>
         </div>
         <button
-          className="box-border flex items-center justify-center w-full h-16 mt-2 mb-8 text-2xl font-bold bg-white rounded-xl"
+          className="box-border flex items-center justify-center w-full h-16 mt-2 mb-8 text-2xl font-bold bg-white dark:bg-dark-block rounded-xl"
           onClick={clickDelete}
         >
           취소

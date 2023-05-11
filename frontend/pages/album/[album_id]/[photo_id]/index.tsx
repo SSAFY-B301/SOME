@@ -16,6 +16,7 @@ import { getPhoto } from "@/pages/api/photoDetailApi";
 import { Mutations, useDownload } from "@/pages/api/albumApi";
 import { SnsRequestType, ThumbnailBodyType } from "@/types/AlbumTypes";
 import ThumbnailModal from "@/components/photo-detail/ThumbnailModal";
+import { useTheme } from "next-themes";
 
 const PhotoDetail = (): JSX.Element => {
   /**
@@ -25,6 +26,7 @@ const PhotoDetail = (): JSX.Element => {
   const [showDeleteModal, setDeleteModal] = useState<boolean>(false);
   const [showVoteModal, setVoteModal] = useState<boolean>(false);
   const [showThumbnailModal, setThumbnailModal] = useState<boolean>(false);
+  const { theme, setTheme } = useTheme();
 
   /**
    * 사진 조작 state
@@ -179,9 +181,9 @@ const PhotoDetail = (): JSX.Element => {
    */
 
   return (
-    <div className="w-screen h-screen bg-white overflow-hidden">
+    <div className="w-screen h-screen bg-white dark:bg-dark-bg-home overflow-hidden">
       <div
-        className={`z-20 fixed flex items-center justify-center border-b-2 box-border p-4 bg-white ${styles.info_bar}`}
+        className={`z-20 fixed flex items-center justify-center border-b-2 box-border p-4 bg-white dark:bg-dark-block ${styles.info_bar}`}
       >
         <Nav title="앨범" />
       </div>
@@ -189,13 +191,13 @@ const PhotoDetail = (): JSX.Element => {
         className={
           showConcentrationMode
             ? "w-screen h-screen z-30 bg-black"
-            : "w-screen h-screen"
+            : "w-screen h-screen dark:bg-dark-bg-home"
         }
         {...sliderSet}
       >
         <div className="w-screen h-screen">
           <div
-            className="absolute w-full h-20 z-20 flex items-center justify-center bg-white"
+            className="absolute w-full h-20 z-20 flex items-center justify-center bg-white dark:bg-dark-block"
             style={{ top: "15.385vw" }}
           >
             <PhotoFeatures />
@@ -228,12 +230,19 @@ const PhotoDetail = (): JSX.Element => {
           />
         </div> */}
       </Slider>
-      <div className={`z-20 ${styles.footer}`}>
+      <div
+        className={
+          theme == "light"
+            ? `z-20 ${styles.footer}`
+            : `z-20 ${styles.footer_dark}`
+        }
+      >
         <Footer
           clickDownload={clickDownload}
           clickDelete={clickDelete}
           clickVote={clickVote}
           clickThumbnail={clickThumbnail}
+          theme={theme}
         />
       </div>
       {showDownLoadModal && (
