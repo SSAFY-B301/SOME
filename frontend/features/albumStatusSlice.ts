@@ -30,18 +30,6 @@ export const albumStatusSlice = createSlice({
 
       state.userId = action.payload;
     },
-    // clearUserIdState(state, action) {
-    //   state.userId = action.payload;
-    //   console.log(state.userId);
-    // },
-    // deleteUserIdState(state, action) {
-    //   console.log("DELETE");
-
-    //   state.userId.delete(action.payload);
-    //   console.log(state.userId);
-
-    //   state.userId = state.userId;
-    // },
     addUserIdState(state, action) {
       console.log("ADD");
       state.userId.push(action.payload);

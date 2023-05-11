@@ -9,7 +9,7 @@ import EditAlbumName from "components/pages/album/EditAlbumName";
 import { LoadingCount } from "components/common/Loading";
 
 // 라이브러리
-import { useEffect, useMemo, useState } from "react";
+import { useEffect, useState } from "react";
 import { useRouter } from "next/router";
 import axios from "axios";
 
@@ -27,7 +27,6 @@ import {
   addUserIdState,
   setALbumIdState,
   setInit,
-  setUserIdState,
 } from "@/features/albumStatusSlice";
 
 function AlbumDetail() {
@@ -42,8 +41,6 @@ function AlbumDetail() {
     (state: StateType) => state.photoUpload.isPreview
   );
 
-  // console.log(isPreview);
-
   const [membersId, setMembersId] = useState<string[]>([]);
   let dispatch = useDispatch();
   useEffect(() => {
@@ -57,22 +54,11 @@ function AlbumDetail() {
   const [selectedPhotos, setSelectedPhotos] = useState<Set<number>>(new Set());
   const [isTotal, setIsTotal] = useState<boolean>(false);
 
-  // const [selectMembers, setSelectMembers] = useState<Set<string>>(
-  //   new Set(membersId)
-  // );
   const [inputPhoto, setInputPhoto] = useState<FileList | null>(null);
 
   const [isAlerts, setIsAlerts] = useState<boolean[]>(
     [...Array(4)].fill(false)
   );
-
-  const makeRequest = () => {
-    return {
-      albumId: albumId,
-      categoryId: categoryId,
-      userId: userId.toString(),
-    };
-  };
 
   const {
     data: getPhotosPages,
@@ -146,11 +132,6 @@ function AlbumDetail() {
     }
   }, [getDetailIsLoading]);
 
-  // user id 배열을 선택 set에 저장
-  // useEffect(() => {
-  //   setSelectMembers(new Set(membersId));
-  // }, [membersId]);
-
   // 전체 선택 누르면 전부 선택 / 해제 누르면 전부 해제
   useEffect(() => {
     isTotal
@@ -164,24 +145,6 @@ function AlbumDetail() {
   useEffect(() => {
     selectedPhotos.size === getTotal && setIsTotal(true);
   }, [selectedPhotos]);
-  // useMemo(() => selectedPhotos.size === getTotal && true, [selectedPhotos])
-
-  /**
-   * size 길이의 배열 반환
-   * @param size
-   * @param start
-   * @returns
-   */
-
-  // useEffect(() => {
-  //   if (inputPhoto) {
-  //     const inputLength = inputPhoto.length;
-  //     dispatch(setUploadLength({ uploadLength: inputLength }));
-  //     dispatch(setPreviewLength({ PreviewLength: inputLength }));
-  //     // console.log(previewLength);
-  //     dispatch(startPreview());
-  //   }
-  // }, [inputPhoto]);
 
   return (
     <section>
