@@ -59,7 +59,6 @@ export default function Home() {
     }
     //https 요청 시에만 GeoLocation 정보를 받아올 수 있다.
   },[])
-  console.log(girlListDetailState);
   return (
     <div
       className={`bg-bg-home dark:bg-dark-bg-home relative touch-none ${homeStyles.no_scroll}`}
