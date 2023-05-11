@@ -4,7 +4,7 @@ import { AlbumStatusType } from "@/types/StateType";
 const initialState: AlbumStatusType = {
   albumId: 0,
   categoryId: 0,
-  userId: new Set(),
+  userId: [],
 };
 
 export const albumStatusSlice = createSlice({
@@ -13,10 +13,9 @@ export const albumStatusSlice = createSlice({
   reducers: {
     setInit(state) {
       console.log("INIT");
-
       state.albumId = 0;
       state.categoryId = 0;
-      state.userId = new Set<number>();
+      state.userId = [];
     },
     setALbumIdState(state, action) {
       state.albumId = action.payload.albumId;
@@ -25,38 +24,46 @@ export const albumStatusSlice = createSlice({
       state.categoryId = action.payload.categoryId;
     },
     setUserIdState(state, action) {
-      state.userId = action.payload.userId;
-    },
-    clearUserIdState(state, action) {
-      state.userId.clear();
-      state.userId = state.userId;
-    },
-    deleteUserIdState(state, action) {
-      console.log("DELETE");
+      console.log("SET");
+
       console.log(action.payload);
 
-      state.userId.delete(action.payload);
-      console.log(state.userId);
-
-      state.userId = state.userId;
+      state.userId = action.payload;
     },
+    // clearUserIdState(state, action) {
+    //   state.userId = action.payload;
+    //   console.log(state.userId);
+    // },
+    // deleteUserIdState(state, action) {
+    //   console.log("DELETE");
+
+    //   state.userId.delete(action.payload);
+    //   console.log(state.userId);
+
+    //   state.userId = state.userId;
+    // },
     addUserIdState(state, action) {
       console.log("ADD");
+      state.userId.push(action.payload);
+    },
+    setToArrayUserId(state, action) {
+      console.log("TO ARRAY");
+
       console.log(action.payload);
-      state.userId.add(action.payload);
-      state.userId = state.userId;
+
+      state.userId = Array.from(action.payload);
+      console.log(state.userId);
     },
   },
   extraReducers: (builder) => {},
 });
 
 export const {
+  setInit,
   setALbumIdState,
   setCategoryState,
   setUserIdState,
-  setInit,
-  clearUserIdState,
-  deleteUserIdState,
   addUserIdState,
+  setToArrayUserId,
 } = albumStatusSlice.actions;
 export default albumStatusSlice.reducer;

@@ -24,6 +24,7 @@ import Preview from "components/pages/album/Preview";
 import { useDispatch, useSelector } from "react-redux";
 import { StateType } from "@/types/StateType";
 import {
+  addUserIdState,
   setALbumIdState,
   setInit,
   setUserIdState,
@@ -43,13 +44,12 @@ function AlbumDetail() {
 
   // console.log(isPreview);
 
-  const [membersId, setMembersId] = useState<number[]>([]);
+  const [membersId, setMembersId] = useState<string[]>([]);
   let dispatch = useDispatch();
   useEffect(() => {
     dispatch(setInit());
     dispatch(setALbumIdState({ albumId: Number(router.query.album_id) }));
-    dispatch(setUserIdState({ userId: new Set(membersId) }));
-  }, [membersId, router.query.album_id]);
+  }, [router.query.album_id]);
 
   const { getDetail, getDetailIsLoading } = useGetDetail(albumId);
 
@@ -57,9 +57,9 @@ function AlbumDetail() {
   const [selectedPhotos, setSelectedPhotos] = useState<Set<number>>(new Set());
   const [isTotal, setIsTotal] = useState<boolean>(false);
 
-  const [selectMembers, setSelectMembers] = useState<Set<number>>(
-    new Set(membersId)
-  );
+  // const [selectMembers, setSelectMembers] = useState<Set<string>>(
+  //   new Set(membersId)
+  // );
   const [inputPhoto, setInputPhoto] = useState<FileList | null>(null);
 
   const [isAlerts, setIsAlerts] = useState<boolean[]>(
@@ -70,7 +70,7 @@ function AlbumDetail() {
     return {
       albumId: albumId,
       categoryId: categoryId,
-      userId: Array.from(selectMembers).toString(),
+      userId: userId.toString(),
     };
   };
 
@@ -137,14 +137,19 @@ function AlbumDetail() {
   // 로딩이 완료되면 user id 배열 수정
   useEffect(() => {
     if (getDetail) {
-      setMembersId([...getDetail.members.map((member) => member.id)]);
+      setMembersId([
+        ...getDetail.members.map((member) => {
+          dispatch(addUserIdState(member.id));
+          return member.id;
+        }),
+      ]);
     }
   }, [getDetailIsLoading]);
 
   // user id 배열을 선택 set에 저장
-  useEffect(() => {
-    setSelectMembers(new Set(membersId));
-  }, [membersId]);
+  // useEffect(() => {
+  //   setSelectMembers(new Set(membersId));
+  // }, [membersId]);
 
   // 전체 선택 누르면 전부 선택 / 해제 누르면 전부 해제
   useEffect(() => {

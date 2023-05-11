@@ -13,16 +13,11 @@ import { LoadingProfile } from "@/components/common/Loading";
 // 리덕스
 import { useDispatch, useSelector } from "react-redux";
 import { StateType } from "@/types/StateType";
-import {
-  addUserIdState,
-  clearUserIdState,
-  deleteUserIdState,
-  setUserIdState,
-} from "@/features/albumStatusSlice";
+import { setToArrayUserId, setUserIdState } from "@/features/albumStatusSlice";
 
 // 인터페이스
 interface MembersType {
-  membersId: number[];
+  membersId: string[];
   isAlbumLoading: () => boolean;
 }
 
@@ -30,7 +25,6 @@ interface MembersType {
  * 앨범의 멤버들 컴포넌트
  * @param members 멤버 리스트
  * @param membersSize 멤버 수
- * @param membersId 멤버들의 id
  * @returns
  */
 function Members({ membersId, isAlbumLoading }: MembersType) {
@@ -39,8 +33,12 @@ function Members({ membersId, isAlbumLoading }: MembersType) {
 
   const userId = useSelector((state: StateType) => state.albumStatus.userId);
 
+  const [selectMembers, setSelectMembers] = useState<Set<string>>(
+    new Set(userId)
+  );
   useEffect(() => {
-    console.log("USER", userId);
+    setSelectMembers(new Set(userId));
+    console.log("userId", userId);
   }, [userId]);
 
   const { getDetail } = useGetDetail(albumId);
@@ -54,15 +52,16 @@ function Members({ membersId, isAlbumLoading }: MembersType) {
    * 멤버 선택값 변경
    * @param id 멤버 id
    */
-  const changeSelect = (id: number) => {
-    userId.size === membersSize &&
-      dispatch(clearUserIdState({ userId: new Set() }));
-    // userId.has(id)
-    //   ? dispatch(deleteUserIdState(id))
-    //   : dispatch(addUserIdState(id));
-    // userId.size === 0
-    //   ? dispatch(setUserIdState({ userId: new Set(membersId) }))
-    //   : dispatch(setUserIdState({ userId: userId }));
+  const changeSelect = (id: string) => {
+    console.log("A", selectMembers);
+    selectMembers.size === membersSize && selectMembers.clear();
+
+    selectMembers.has(id) ? selectMembers.delete(id) : selectMembers.add(id);
+    selectMembers.size === 0
+      ? setSelectMembers(new Set(userId))
+      : setSelectMembers(new Set(selectMembers));
+    dispatch(setUserIdState(Array.from(selectMembers)));
+    console.log("B", selectMembers);
   };
 
   /**
@@ -84,7 +83,9 @@ function Members({ membersId, isAlbumLoading }: MembersType) {
           changeSelect(member.id);
         }}
         className={`${styles.member} ${
-          userId.has(member.id) ? styles.select_member : styles.no_select_member
+          selectMembers.has(member.id)
+            ? styles.select_member
+            : styles.no_select_member
         }`}
         style={{
           backgroundImage: `url(${member.profile_img_url})`,
@@ -100,7 +101,7 @@ function Members({ membersId, isAlbumLoading }: MembersType) {
       <Link
         href={{
           pathname: "/invite",
-          query: { albumId: albumId, members: membersId },
+          query: { albumId: albumId, members: userId },
         }}
         as="친구초대"
       >
