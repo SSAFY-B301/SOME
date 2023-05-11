@@ -32,7 +32,6 @@ const AlbumCreate = (): JSX.Element => {
   };
 
   const resultName = albumName ? albumName : defaultName.current;
-  console.log(device);
   return (
     <div className="w-screen h-screen">
       <div
