@@ -10,7 +10,7 @@ $main-color: linear-gradient(
   background: $main-color;
 }
 
-@keyframes transitionFrame {
+@keyframes and_transitionFrame {
   from {
     position: absolute;
     bottom: 22px;
@@ -25,6 +25,27 @@ $main-color: linear-gradient(
     bottom: 0px;
     left: 50%;
     -webkit-transform: translateX(-50%);
+    width: 100vw;
+    height: 100vh;
+    border-radius: 0%;
+  }
+}
+
+@keyframes ios_transitionFrame {
+  from {
+    position: absolute;
+    bottom: 22px;
+    left: 50%;
+    -webkit-transform: translateX(-50%);
+    width: 64.06px;
+    height: 64.06px;
+    border-radius: 50%;
+  }
+  to {
+    position: absolute;
+    bottom: 0px;
+    left: 0%;
+    -webkit-transform: translateX(0%);
     width: 100vw;
     height: 100vh;
     border-radius: 0%;
@@ -113,9 +134,14 @@ $main-color: linear-gradient(
 // animation-timing-function : 중간 상태들의 전환을 어떤 시간간격으로 진행할지 지정
 // animation-fill-mode : 애니메이션이 재생 전 후의 상태 지정
 
-.createPageBg {
+.andCreatePageBg {
   background: $main-color;
-  animation: transitionFrame 0.7s ease-in-out 0s 1 normal forwards;
+  animation: and_transitionFrame 0.7s ease-in-out 0s 1 normal forwards;
+}
+
+.iosCreatePageBg {
+  background: $main-color;
+  animation: ios_transitionFrame 0.7s ease-in-out 0s 1 normal forwards;
 }
 
 .createPageTitle {
