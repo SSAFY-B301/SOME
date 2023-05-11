@@ -40,7 +40,7 @@ function Members({ membersId, isAlbumLoading }: MembersType) {
     setSelectMembers(new Set(userId));
   }, [userId]);
 
-  const { getDetail } = useGetDetail();
+  const { getDetail, getDetailIsLoading } = useGetDetail();
   const [membersSize, setMembersSize] = useState<number>(membersId.length);
 
   useEffect(() => {
@@ -63,7 +63,7 @@ function Members({ membersId, isAlbumLoading }: MembersType) {
   /**
    * 멤버 리스트 랜더
    */
-  const membersSection: React.ReactNode = isAlbumLoading() ? (
+  const membersSection: React.ReactNode = getDetailIsLoading ? (
     // TODO : 로딩
     <>
       {[...Array(3)].map((_, i) => (
