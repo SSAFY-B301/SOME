@@ -20,7 +20,6 @@ interface PhotosType {
   setSelectedPhotos: React.Dispatch<React.SetStateAction<Set<number>>>;
   inputPhoto: FileList | null;
   setInputPhoto: React.Dispatch<React.SetStateAction<FileList | null>>;
-  photosRequest: requestPhotosType;
   isAlbumLoading: () => boolean;
 }
 
@@ -38,7 +37,6 @@ function Photos({
   setSelectedPhotos,
   inputPhoto,
   setInputPhoto,
-  photosRequest,
   isAlbumLoading,
 }: PhotosType) {
   const router = useRouter();
@@ -50,7 +48,7 @@ function Photos({
     hasNextPage,
     isLoading,
     isError,
-  } = useInfinitePhotos(photosRequest);
+  } = useInfinitePhotos();
 
   /**
    * 사진 선택 상태 바꾸기

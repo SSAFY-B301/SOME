@@ -14,7 +14,7 @@ export interface LoginStateType {
 export interface AlbumStatusType {
   albumId: number;
   categoryId: number;
-  userId: Set<number>;
+  userId: string[];
 }
 
 export interface photoUploadType {

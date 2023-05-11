@@ -17,7 +17,7 @@ import { setUserIdState } from "@/features/albumStatusSlice";
 
 // 인터페이스
 interface MembersType {
-  membersId: number[];
+  membersId: string[];
   isAlbumLoading: () => boolean;
 }
 
@@ -25,14 +25,22 @@ interface MembersType {
  * 앨범의 멤버들 컴포넌트
  * @param members 멤버 리스트
  * @param membersSize 멤버 수
- * @param membersId 멤버들의 id
  * @returns
  */
 function Members({ membersId, isAlbumLoading }: MembersType) {
-  let dispatch = useDispatch();
+  const dispatch = useDispatch();
   const albumId = useSelector((state: StateType) => state.albumStatus.albumId);
 
   const userId = useSelector((state: StateType) => state.albumStatus.userId);
+
+  const [selectMembers, setSelectMembers] = useState<Set<string>>(
+    new Set(userId)
+  );
+  useEffect(() => {
+    setSelectMembers(new Set(userId));
+    console.log("userId", userId);
+  }, [userId]);
+
   const { getDetail } = useGetDetail(albumId);
   const [membersSize, setMembersSize] = useState<number>(membersId.length);
 
@@ -44,12 +52,16 @@ function Members({ membersId, isAlbumLoading }: MembersType) {
    * 멤버 선택값 변경
    * @param id 멤버 id
    */
-  const changeSelect = (id: number) => {
-    userId.size === membersSize && userId.clear();
-    userId.has(id) ? userId.delete(id) : userId.add(id);
-    userId.size === 0
-      ? dispatch(setUserIdState({ userId: new Set(membersId) }))
-      : dispatch(setUserIdState({ userId: new Set(userId) }));
+  const changeSelect = (id: string) => {
+    console.log("A", selectMembers);
+    selectMembers.size === membersSize && selectMembers.clear();
+
+    selectMembers.has(id) ? selectMembers.delete(id) : selectMembers.add(id);
+    selectMembers.size === 0
+      ? setSelectMembers(new Set(userId))
+      : setSelectMembers(new Set(selectMembers));
+    dispatch(setUserIdState(Array.from(selectMembers)));
+    console.log("B", selectMembers);
   };
 
   /**
@@ -71,7 +83,9 @@ function Members({ membersId, isAlbumLoading }: MembersType) {
           changeSelect(member.id);
         }}
         className={`${styles.member} ${
-          userId.has(member.id) ? styles.select_member : styles.no_select_member
+          selectMembers.has(member.id)
+            ? styles.select_member
+            : styles.no_select_member
         }`}
         style={{
           backgroundImage: `url(${member.profile_img_url})`,
@@ -87,7 +101,7 @@ function Members({ membersId, isAlbumLoading }: MembersType) {
       <Link
         href={{
           pathname: "/invite",
-          query: { albumId: albumId, members: membersId },
+          query: { albumId: albumId, members: userId },
         }}
         as="친구초대"
       >

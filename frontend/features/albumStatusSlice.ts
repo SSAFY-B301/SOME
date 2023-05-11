@@ -4,7 +4,7 @@ import { AlbumStatusType } from "@/types/StateType";
 const initialState: AlbumStatusType = {
   albumId: 0,
   categoryId: 0,
-  userId: new Set(),
+  userId: [],
 };
 
 export const albumStatusSlice = createSlice({
@@ -12,9 +12,10 @@ export const albumStatusSlice = createSlice({
   initialState,
   reducers: {
     setInit(state) {
+      console.log("INIT");
       state.albumId = 0;
       state.categoryId = 0;
-      state.userId = new Set();
+      state.userId = [];
     },
     setALbumIdState(state, action) {
       state.albumId = action.payload.albumId;
@@ -23,12 +24,34 @@ export const albumStatusSlice = createSlice({
       state.categoryId = action.payload.categoryId;
     },
     setUserIdState(state, action) {
-      state.userId = action.payload.userId;
+      console.log("SET");
+
+      console.log(action.payload);
+
+      state.userId = action.payload;
+    },
+    addUserIdState(state, action) {
+      console.log("ADD");
+      state.userId.push(action.payload);
+    },
+    setToArrayUserId(state, action) {
+      console.log("TO ARRAY");
+
+      console.log(action.payload);
+
+      state.userId = Array.from(action.payload);
+      console.log(state.userId);
     },
   },
   extraReducers: (builder) => {},
 });
 
-export const { setALbumIdState, setCategoryState, setUserIdState, setInit } =
-  albumStatusSlice.actions;
+export const {
+  setInit,
+  setALbumIdState,
+  setCategoryState,
+  setUserIdState,
+  addUserIdState,
+  setToArrayUserId,
+} = albumStatusSlice.actions;
 export default albumStatusSlice.reducer;

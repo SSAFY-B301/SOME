@@ -3,7 +3,11 @@ import React, { useRef } from "react";
 import { useRouter } from "next/router";
 
 // API
-import { Mutations, useGetDetail } from "@/pages/api/albumApi";
+import {
+  Mutations,
+  useGetDetail,
+  useInfinitePhotos,
+} from "@/pages/api/albumApi";
 
 //CSS
 import styles from "styles/album.module.scss";
@@ -14,12 +18,14 @@ import DotsIcon from "public/icons/DotsThreeOutline.svg";
 import DownloadIcon from "public/icons/DownloadSimple.svg";
 import TrashIcon from "public/icons/Trash.svg";
 import UploadIcon from "public/icons/UploadSimple.svg";
+import { share } from "./Share";
 
 // 인터페이스
 interface TabBarType {
   isSelect: boolean;
   isAlerts: boolean[];
   setIsAlerts: React.Dispatch<React.SetStateAction<boolean[]>>;
+  selectedPhotos: Set<number>;
 }
 
 /**
@@ -29,7 +35,7 @@ interface TabBarType {
  * @param setIsAlerts
  * @returns
  */
-function TabBar({ isSelect, isAlerts, setIsAlerts }: TabBarType) {
+function TabBar(props: TabBarType) {
   const router = useRouter();
   const albumId: number = Number(router.query.album_id);
   const { getDetail } = useGetDetail(albumId);
@@ -45,15 +51,38 @@ function TabBar({ isSelect, isAlerts, setIsAlerts }: TabBarType) {
   };
 
   const openAlert = (idx: number) => {
-    isAlerts[idx] = true;
-    setIsAlerts([...isAlerts]);
+    props.isAlerts[idx] = true;
+    props.setIsAlerts([...props.isAlerts]);
+  };
+
+  const {
+    data: getPhotosPages,
+    getTotal,
+    getTotalId,
+    isLoading: getPhotosIsLoading,
+  } = useInfinitePhotos();
+
+  const idToUrl = (selectedPhotos: Set<number>) => {
+    const urls: string[] = [];
+    if (getPhotosPages) {
+      getPhotosPages.pages.forEach((page) =>
+        page.albumPhotoList.forEach(
+          (photo) =>
+            selectedPhotos.has(photo.photoId) && urls.push(photo.originUrl)
+        )
+      );
+    }
+    return urls;
   };
 
   return (
     <section className={`${styles.tab_bar} bg-white dark:bg-dark-block`}>
-      {isSelect ? (
+      {props.isSelect ? (
         <>
-          <UploadIcon onClick={() => openAlert(0)} stroke={"black"} />
+          <UploadIcon
+            onClick={() => share(idToUrl(props.selectedPhotos))}
+            stroke={"black"}
+          />
           <DownloadIcon onClick={() => openAlert(1)} stroke={"black"} />
           <TrashIcon onClick={() => openAlert(0)} stroke={"black"} />
         </>

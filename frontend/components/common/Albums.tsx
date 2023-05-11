@@ -107,7 +107,7 @@ function FavoriteAlbum() {
           <Link href={"/album/create"} key={i}>
             <div
               className={`w-72 h-96 rounded-xl grow flex-shrink-0 flex flex-col justify-center items-center gap-4 text-xl ${styles.card}`}
-              style={{ backgroundColor: "#94a3b8" }}
+              style={{ backgroundColor: "#B1B8C0" }}
             >
               <div
                 className={`flex justify-center items-center rounded-full border-4 border-white`}
