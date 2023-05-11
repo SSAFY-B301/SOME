@@ -61,7 +61,12 @@ const Footer = ({
         className="flex flex-col items-center justify-center"
         onClick={clickThumbnail}
       >
-        <ThumbnailIcon width={"28px"} height={"28px"} fill={"white"} />
+        <ThumbnailIcon
+          width={"28px"}
+          height={"28px"}
+          fill={"white"}
+          stroke={"black"}
+        />
       </div>
       <div
         className="flex flex-col items-center justify-center"

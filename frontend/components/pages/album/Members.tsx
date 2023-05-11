@@ -38,10 +38,9 @@ function Members({ membersId, isAlbumLoading }: MembersType) {
   );
   useEffect(() => {
     setSelectMembers(new Set(userId));
-    console.log("userId", userId);
   }, [userId]);
 
-  const { getDetail } = useGetDetail(albumId);
+  const { getDetail } = useGetDetail();
   const [membersSize, setMembersSize] = useState<number>(membersId.length);
 
   useEffect(() => {
@@ -53,15 +52,12 @@ function Members({ membersId, isAlbumLoading }: MembersType) {
    * @param id 멤버 id
    */
   const changeSelect = (id: string) => {
-    console.log("A", selectMembers);
     selectMembers.size === membersSize && selectMembers.clear();
-
     selectMembers.has(id) ? selectMembers.delete(id) : selectMembers.add(id);
     selectMembers.size === 0
       ? setSelectMembers(new Set(userId))
       : setSelectMembers(new Set(selectMembers));
     dispatch(setUserIdState(Array.from(selectMembers)));
-    console.log("B", selectMembers);
   };
 
   /**

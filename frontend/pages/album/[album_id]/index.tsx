@@ -48,7 +48,7 @@ function AlbumDetail() {
     dispatch(setALbumIdState({ albumId: Number(router.query.album_id) }));
   }, [router.query.album_id]);
 
-  const { getDetail, getDetailIsLoading } = useGetDetail(albumId);
+  const { getDetail, getDetailIsLoading } = useGetDetail();
 
   const [isSelect, setIsSelect] = useState<boolean>(false);
   const [selectedPhotos, setSelectedPhotos] = useState<Set<number>>(new Set());
@@ -68,7 +68,6 @@ function AlbumDetail() {
   } = useInfinitePhotos();
 
   const { mutate: deletePhotosMutate } = Mutations().useDeletePhotos();
-
   const closeAlert = (idx: number) => {
     isAlerts[idx] = false;
     setIsAlerts([...isAlerts]);
@@ -153,7 +152,6 @@ function AlbumDetail() {
         setIsSelect={setIsSelect}
         isTotal={isTotal}
         setIsTotal={setIsTotal}
-        isAlbumLoading={isAlbumLoading}
       />
       <div className={`${styles.container}`}>
         <Members membersId={membersId} isAlbumLoading={isAlbumLoading} />
