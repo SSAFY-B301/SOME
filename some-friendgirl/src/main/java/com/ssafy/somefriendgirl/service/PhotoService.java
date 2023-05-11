@@ -40,7 +40,7 @@ public class PhotoService {
         AlbumPhoto albumPhoto = photoRepository.findByPhotoId(photoId);
         AlbumPhotoDto albumPhotoDto = new AlbumPhotoDto(albumPhoto);
 
-        User user = userRepository.findByUserId(userId);
+        User user = userRepository.findByUserId(albumPhoto.getUserId());
         albumPhotoDto.setUserId(user.getUserId());
         albumPhotoDto.setUserName(user.getUserName());
         albumPhotoDto.setUserProfileImg(user.getUserImg());
