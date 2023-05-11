@@ -20,7 +20,7 @@ export default function List() {
     return(
         <div className="flex flex-col items-center gap-y-4">
             <InfoBar title={"대전시 유성구"}></InfoBar>
-            <div className="relative flex items-center justify-center h-12 gap-x-2">
+            <div className="relative flex items-center justify-center h-4 gap-x-2">
                 <GirlListUser></GirlListUser>
                 <p>{resultData?.totalUserCnt}</p>
                 <GirlListImage></GirlListImage>
@@ -42,8 +42,8 @@ export default function List() {
                     })}
                 </>}
             </Map>
-            <div className="grid w-full grid-cols-4 gap-1 px-2">
-                {resultData !== undefined && <>
+            <div >
+                {resultData !== undefined && <div className="grid grid-cols-4 gap-4 px-2">
                     {resultData.photoList.map((photo) => {
                         return(
                             <div key={photo.photoId} className="flex items-center justify-center w-full h-full">
@@ -51,7 +51,7 @@ export default function List() {
                             </div>
                         )
                     })}
-                </>}
+                </div>}
             </div>
             <TabBar></TabBar>
         </div>
