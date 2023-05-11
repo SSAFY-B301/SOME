@@ -3,10 +3,12 @@ package com.ssafy.somefriendboy.service;
 import com.ssafy.somefriendboy.dto.*;
 import com.ssafy.somefriendboy.entity.Album;
 import com.ssafy.somefriendboy.entity.AlbumPhoto;
+import com.ssafy.somefriendboy.entity.FeedBack;
 import com.ssafy.somefriendboy.entity.Notification;
 import com.ssafy.somefriendboy.entity.status.NotiType;
 import com.ssafy.somefriendboy.repository.album.AlbumRepository;
 import com.ssafy.somefriendboy.repository.albumphoto.AlbumPhotoRepository;
+import com.ssafy.somefriendboy.repository.feedback.FeedBackRepository;
 import com.ssafy.somefriendboy.repository.noti.EmitterRepository;
 import com.ssafy.somefriendboy.repository.noti.NotificationRepository;
 import com.ssafy.somefriendboy.repository.user.UserRepository;
@@ -30,6 +32,7 @@ import java.util.*;
 @RequiredArgsConstructor
 @Slf4j
 public class NotiService {
+    private final FeedBackRepository feedBackRepository;
     private final HttpUtil httpUtil;
     private final NotificationRepository notificationRepository;
     private final AlbumPhotoRepository albumPhotoRepository;
@@ -98,6 +101,18 @@ public class NotiService {
         rabbitTemplate.convertAndSend(EXCHANGE_NAME, "some.route.#", mqDto);
         return setResponseDto(true, "SNS 동의 요청 알림",200);
     }
+    public ResponseDto writeFeedBack(String accessToken, String content) {
+        String userId = tokenCheck(accessToken);
+        if(userId == null){
+            return setResponseDto(null,"토큰 만료",450);
+        }
+        FeedBack feedBack = FeedBack.builder()
+                .content(content)
+                .writer(userRepository.findByUserId(userId).getUserName())
+                .build();
+        feedBackRepository.save(feedBack);
+        return setResponseDto(true,"피드백",200);
+    }
     public void inviteNoti(String sender_id, String[] receiver_ids, Long album_id){
         String url = "http://3.35.18.146:9003/noti/noti/invite";
 
@@ -143,6 +158,7 @@ public class NotiService {
         HttpEntity<?> requestMessage = new HttpEntity<>(notiUploadCreateDto, httpHeaders);
         restTemplate.postForEntity(url, requestMessage, Object.class);
     }
+
     private ResponseDto setResponseDto(Object result, String message, int statusCode){
         ResponseDto responseDto = new ResponseDto();
         responseDto.setData(result);
