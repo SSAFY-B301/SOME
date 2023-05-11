@@ -175,6 +175,7 @@ public class AlbumService {
         HashMap<String, Object> photoList1 = new HashMap<>();
         photoList1.put("photoList", photoListDtos1);
         photoList1.put("markGps", markGps[1]);
+        photoList1.put("totalPhotoCnt", albumPhotos1.size());
         resultList.add(photoList1);
 
         //2사분면
@@ -184,6 +185,7 @@ public class AlbumService {
         HashMap<String, Object> photoList2 = new HashMap<>();
         photoList2.put("photoList", photoListDtos2);
         photoList2.put("markGps", markGps[2]);
+        photoList2.put("totalPhotoCnt", albumPhotos2.size());
         resultList.add(photoList2);
 
         //3사분면
@@ -193,6 +195,7 @@ public class AlbumService {
         HashMap<String, Object> photoList3 = new HashMap<>();
         photoList3.put("photoList", photoListDtos3);
         photoList3.put("markGps", markGps[3]);
+        photoList3.put("totalPhotoCnt", albumPhotos3.size());
         resultList.add(photoList3);
 
         //4사분면
@@ -202,6 +205,7 @@ public class AlbumService {
         HashMap<String, Object> photoList4 = new HashMap<>();
         photoList4.put("photoList", photoListDtos4);
         photoList4.put("markGps", markGps[4]);
+        photoList4.put("totalPhotoCnt", albumPhotos4.size());
         resultList.add(photoList4);
 
         result.put("resultList", resultList);
