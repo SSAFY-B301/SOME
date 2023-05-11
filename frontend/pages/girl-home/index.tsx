@@ -37,7 +37,6 @@ export default function Home() {
   const queryClient = useQueryClient();
   
   function openDetailList(result : GirlListMarkGpsType){
-    console.log(result);
     dispatch(setGirlListDetailState({
       section : result.section,
       latitude : result.latitude,

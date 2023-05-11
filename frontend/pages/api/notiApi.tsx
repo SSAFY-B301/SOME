@@ -35,7 +35,6 @@ function useMutationNoti() {
       "/noti/sns", requestData),
     {
       onSuccess : () => {
-        console.log("SNS 공유 요청 응답 성공");
         queryClient.invalidateQueries("alarm"); // queryKey 유효성 제거
       }
     }

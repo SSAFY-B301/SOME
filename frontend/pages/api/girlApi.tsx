@@ -35,15 +35,12 @@ function getGirlPhotoDetail() {
   const { data: queryData, isLoading } = useQuery(["girlDetail", photoId], () =>
     customGirlAxios.get("/photo/detail/" + photoId)
   );
-  console.log(queryData);
   const resultData : PhotoDetailType = queryData?.data.data.albumPhotoDetail;
-  console.log(resultData);
   return { resultData, isLoading };
 }
 
 function useMutationGirl(){
   const location = useSelector((state : RootState) => state.location)
-  console.log(location);
   const queryClient = useQueryClient();
   
   const headers = {
@@ -57,7 +54,6 @@ function useMutationGirl(){
     {
       onSuccess: (data) => {
         alert("사진이 등록되었습니다!");
-        console.log(data);
         queryClient.invalidateQueries("photo"); // queryKey 유효성 제거
       },
     }
