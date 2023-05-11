@@ -39,4 +39,13 @@ public class NotiController {
         ResponseDto responseDto = notiService.getUploadList(access_token);
         return new ResponseEntity<ResponseDto>(responseDto, HttpStatus.OK);
     }
+
+    @PostMapping("/feedback")
+    public ResponseEntity<ResponseDto> feedBack(@RequestHeader HttpHeaders headers, @RequestBody String content) {
+        String access_token = headers.get("access_token").toString();
+        log.debug("피드백 작성 POST: /noti/feedback, access_token : {}",access_token);
+
+        ResponseDto responseDto = notiService.writeFeedBack(access_token,content);
+        return new ResponseEntity<ResponseDto>(responseDto, HttpStatus.OK);
+    }
 }
