@@ -17,9 +17,21 @@ function getPhoto() {
     )
   );
 
-  const resultData = queryData?.data.data.albumPhotoDetail;
-  // console.log(resultData);
-  return { resultData, isLoading };
+  const photoDetail = queryData?.data.data.albumPhotoDetail;
+  const noReplyFriends = queryData?.data.data.noreplyList;
+  const declineFriends = queryData?.data.data.declineList;
+  const acceptFriends = queryData?.data.data.acceptList;
+  const isSnsAgree = queryData?.data.data.isSnsAgree;
+  const isSnsRequest = queryData?.data.data.isSnsRequest;
+  return {
+    photoDetail,
+    noReplyFriends,
+    declineFriends,
+    acceptFriends,
+    isSnsAgree,
+    isSnsRequest,
+    isLoading,
+  };
 }
 
 function getSnsPhoto(photoId: number | undefined) {

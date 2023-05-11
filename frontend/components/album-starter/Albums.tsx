@@ -1,7 +1,7 @@
 import React from "react";
 import Album from "./Album";
-import ItemBlock from "@/components/common/ItemBlock";
 import styles from "@/styles/home.module.scss";
+import { LoadingInviteAlbum } from "../common/Loading";
 
 interface AlbumType {
   album_id: number;
@@ -22,24 +22,35 @@ const Albums = ({
   selectAlbums,
   isActiveFriends,
 }: Props): JSX.Element => {
-  return albums && albums.length > 0 ? (
+  return albums ? (
+    albums.length > 0 ? (
+      <div className="w-full h-32 box-border p-2 mb-2 flex flex-col justify-center">
+        <div
+          className={`flex justify-start gap-4 overflow-x-scroll overflow-y-hidden ${styles.cards}`}
+        >
+          {albums.map((album) => (
+            <Album
+              key={album.album_id}
+              album={album}
+              isActiveFriends={isActiveFriends}
+              selectAlbum={selectAlbums}
+            />
+          ))}
+        </div>
+      </div>
+    ) : (
+      <div className="w-full flex justify-center items-center box-border mb-4">
+        친구랑 공유 중인 앨범이 없어요...
+      </div>
+    )
+  ) : (
     <div className="w-full h-32 box-border p-2 mb-2 flex flex-col justify-center">
       <div
         className={`flex justify-start gap-4 overflow-x-scroll overflow-y-hidden ${styles.cards}`}
       >
-        {albums.map((album) => (
-          <Album
-            key={album.album_id}
-            album={album}
-            isActiveFriends={isActiveFriends}
-            selectAlbum={selectAlbums}
-          />
-        ))}
+        <LoadingInviteAlbum />
+        <LoadingInviteAlbum />
       </div>
-    </div>
-  ) : (
-    <div className="w-full flex justify-center items-center box-border mb-4">
-      친구랑 공유 중인 앨범이 없어요...
     </div>
   );
 };
