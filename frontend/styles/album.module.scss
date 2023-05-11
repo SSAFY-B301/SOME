@@ -115,8 +115,9 @@ $main-color: linear-gradient(
 
 .total_count {
   font-size: 3.59vw;
-  position: relative;
-  margin-top: 16px;
+  position: absolute;
+  top: auto;
+  bottom: 100px;
 }
 
 .select_check {
@@ -148,6 +149,7 @@ $main-color: linear-gradient(
     justify-content: space-between;
     align-items: center;
     padding: 0px 4.103vw;
+    box-shadow: 0px 0.5px 4px rgba(0, 0, 0, 0.25);
     p {
       &:nth-child(2) {
         font-size: 20px;
@@ -183,12 +185,21 @@ $main-color: linear-gradient(
     display: flex !important;
     gap: 1.026vw;
     position: relative;
+    padding: 16px 0;
+    box-shadow: 0px -4px 4px -4px rgba(0, 0, 0, 0.25);
     li {
-      width: 104px;
-      height: 104px;
-      background-color: currentcolor;
+      width: 88px;
+      height: 88px;
+      a div {
+        width: 88px;
+        height: 88px;
+        background-size: cover;
+        background-position: center;
+      }
+
       .no_active {
-        filter: grayscale(75%);
+        filter: grayscale(100%);
+        opacity: 0.75;
       }
     }
   }
@@ -206,24 +217,58 @@ $main-color: linear-gradient(
   display: flex;
   justify-content: center;
   align-items: center;
-  div {
-    position: absolute;
+
+  .circle {
+    position: relative;
+    overflow: hidden;
     width: 28px;
     height: 28px;
     border-radius: 999px;
-    // border: solid black 1px;
-    // background: $main-color;
-    // background-blend-mode: lighten, normal;
-    background-color: #ffffff00;
+    z-index: 12;
+    // background-color: #ffffff00;
 
     border: 3px solid #909090;
-    border-bottom-color: #ff3d00;
-    display: inline-block;
-    box-sizing: border-box;
-    animation: rotation 1s linear infinite;
+    // border-bottom-color: #ff3d00;
+    // display: inline-block;
+    // box-sizing: border-box;
+    background: $main-color;
+    border: solid 3px $main-color;
+    -webkit-background-clip: text;
+    -webkit-text-fill-color: transparent;
+    background-origin: border-box;
+    background-clip: text;
+    background-blend-mode: lighten, normal;
+    // animation: rotation 1s linear infinite;
+    // &::before {
+    //   content: "";
+    //   position: relative;
+    //   left: -3px;
+    //   top: -3px;
+    //   display: block;
+    //   width: 14px;
+    //   height: 14px;
+    //   border-radius: 999px;
+    //   border: solid 3px #ff3d00;
+    //   animation: prixClipFix 2s linear infinite;
+    // }
+
+    .wave {
+      position: absolute;
+      z-index: 11;
+      left: -4px;
+
+      width: 32px;
+      height: 32px;
+      background: $main-color;
+      background-blend-mode: lighten, normal;
+      border-radius: 45%;
+      animation: move 3s infinite linear;
+    }
   }
+
   span {
     position: absolute;
+    z-index: 13;
   }
 }
 .loadingText {
@@ -234,6 +279,27 @@ $main-color: linear-gradient(
   0% {
     transform: rotate(0deg);
   }
+  100% {
+    transform: rotate(360deg);
+  }
+}
+
+// @keyframes prixClipFix {
+//   0% {
+//     clip-path: polygon(50% 50%, 0 0, 0 0, 0 0, 0 0, 0 0);
+//   }
+//   50% {
+//     clip-path: polygon(50% 50%, 0 0, 100% 0, 100% 0, 100% 0, 100% 0);
+//   }
+//   75% {
+//     clip-path: polygon(50% 50%, 0 0, 100% 0, 100% 100%, 100% 100%, 100% 100%);
+//   }
+//   100% {
+//     clip-path: polygon(0% 100%, 0 0, 100% 0, 100% 100%, 100% 100%, 100% 100%);
+//   }
+// }
+
+@keyframes move {
   100% {
     transform: rotate(360deg);
   }

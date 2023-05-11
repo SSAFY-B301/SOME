@@ -9,7 +9,7 @@ function getPhoto() {
   const router = useRouter();
   const photoId = router.query.photo_id;
 
-  const { data: queryData, isLoading } = useQuery(["photo"], () =>
+  const { data: queryData, isLoading } = useQuery(["photo", photoId], () =>
     customBoyAxios.get(
       "/photo/detail?photoId=" +
         photoId

@@ -12,7 +12,6 @@ export const albumStatusSlice = createSlice({
   initialState,
   reducers: {
     setInit(state) {
-      console.log("INIT");
       state.albumId = 0;
       state.categoryId = 0;
       state.userId = [];
@@ -24,23 +23,13 @@ export const albumStatusSlice = createSlice({
       state.categoryId = action.payload.categoryId;
     },
     setUserIdState(state, action) {
-      console.log("SET");
-
-      console.log(action.payload);
-
       state.userId = action.payload;
     },
     addUserIdState(state, action) {
-      console.log("ADD");
       state.userId.push(action.payload);
     },
     setToArrayUserId(state, action) {
-      console.log("TO ARRAY");
-
-      console.log(action.payload);
-
       state.userId = Array.from(action.payload);
-      console.log(state.userId);
     },
   },
   extraReducers: (builder) => {},
