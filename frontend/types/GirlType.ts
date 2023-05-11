@@ -54,7 +54,7 @@ export interface PageType{
     total_page : number
 }
 
-export interface a {
+export interface PhotoDetailType {
         photoId : number
         uploadedDate : string,
         s3Url : string,
