@@ -8,6 +8,7 @@ interface Props {
   clickDelete(): void;
   clickVote(): void;
   clickThumbnail(): void;
+  theme: string | undefined;
 }
 
 /**
@@ -19,6 +20,7 @@ const Footer = ({
   clickDelete,
   clickVote,
   clickThumbnail,
+  theme,
 }: Props): JSX.Element => {
   /**
    * 공유 요청 알림 기능 추가
@@ -34,7 +36,7 @@ const Footer = ({
         className="flex flex-col items-center justify-center"
         onClick={clickDownload}
       >
-        <DownloadIcon stroke={"black"} />
+        <DownloadIcon stroke={theme == "light" ? "black" : "white"} />
       </div>
       <div
         className="flex flex-col items-center justify-center"
@@ -65,7 +67,7 @@ const Footer = ({
         className="flex flex-col items-center justify-center"
         onClick={clickDelete}
       >
-        <TrashIcon stroke={"black"} />
+        <TrashIcon stroke={theme == "light" ? "black" : "white"} />
       </div>
     </div>
   );

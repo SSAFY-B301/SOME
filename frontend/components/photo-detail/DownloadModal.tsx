@@ -23,8 +23,8 @@ const DownloadModal = ({
       onClick={clickDownload}
     >
       <div className="w-11/12 h-full flex flex-col justify-end items-center">
-        <div className="w-full h-36 bg-white rounded-xl flex flex-col justify-center items-center">
-          <div className="w-full h-1/2 border-b-2 flex justify-center items-center text-gray-400">
+        <div className="w-full h-36 bg-white dark:bg-dark-block rounded-xl flex flex-col justify-center items-center">
+          <div className="w-full h-1/2 border-b-2 flex justify-center items-center text-gray-400 dark:text-white">
             사진을 다운로드 합니다.
           </div>
           <button
@@ -35,7 +35,7 @@ const DownloadModal = ({
           </button>
         </div>
         <button
-          className="w-full h-16 bg-white rounded-xl flex justify-center items-center box-border mt-2 mb-8 text-2xl font-bold"
+          className="w-full h-16 bg-white dark:bg-dark-block rounded-xl flex justify-center items-center box-border mt-2 mb-8 text-2xl font-bold"
           onClick={clickDownload}
         >
           취소
