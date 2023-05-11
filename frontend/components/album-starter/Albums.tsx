@@ -22,29 +22,25 @@ const Albums = ({
   selectAlbums,
   isActiveFriends,
 }: Props): JSX.Element => {
-  return (
-    <ItemBlock width="100%" height="" radius="20px">
-      {albums && albums.length > 0 ? (
-        <div className="flex flex-col w-full h-32 box-border px-2">
-          <div
-            className={`flex justify-start gap-4 overflow-x-scroll overflow-y-hidden ${styles.cards}`}
-          >
-            {albums.map((album) => (
-              <Album
-                key={album.album_id}
-                album={album}
-                isActiveFriends={isActiveFriends}
-                selectAlbum={selectAlbums}
-              />
-            ))}
-          </div>
-        </div>
-      ) : (
-        <div className="w-full flex justify-center items-center box-border mb-4">
-          친구랑 공유 중인 앨범이 없어요...
-        </div>
-      )}
-    </ItemBlock>
+  return albums && albums.length > 0 ? (
+    <div className="w-full h-32 box-border p-2 mb-2 flex flex-col justify-center">
+      <div
+        className={`flex justify-start gap-4 overflow-x-scroll overflow-y-hidden ${styles.cards}`}
+      >
+        {albums.map((album) => (
+          <Album
+            key={album.album_id}
+            album={album}
+            isActiveFriends={isActiveFriends}
+            selectAlbum={selectAlbums}
+          />
+        ))}
+      </div>
+    </div>
+  ) : (
+    <div className="w-full flex justify-center items-center box-border mb-4">
+      친구랑 공유 중인 앨범이 없어요...
+    </div>
   );
 };
 
