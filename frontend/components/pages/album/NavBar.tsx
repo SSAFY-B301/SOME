@@ -1,11 +1,9 @@
-import { useRouter } from "next/router";
 import styles from "styles/album.module.scss";
 import LeftIcon from "public/icons/CaretLeft.svg";
 import { useGetDetail } from "@/pages/api/albumApi";
 import Link from "next/link";
 import { LoadingTitle } from "@/components/common/Loading";
 import { useTheme } from "next-themes";
-import { MutableRefObject } from "react";
 import { useSelector } from "react-redux";
 import { StateType } from "@/types/StateType";
 
@@ -14,7 +12,6 @@ interface NavBarType {
   setIsSelect: React.Dispatch<React.SetStateAction<boolean>>;
   isTotal: boolean;
   setIsTotal: React.Dispatch<React.SetStateAction<boolean>>;
-  isAlbumLoading: () => boolean;
 }
 
 /**
@@ -25,17 +22,10 @@ interface NavBarType {
  * @param setIsTotal 전체 선택 여부 Setter 함수
  * @returns
  */
-function NavBar({
-  isSelect,
-  setIsSelect,
-  isTotal,
-  setIsTotal,
-  isAlbumLoading,
-}: NavBarType) {
+function NavBar({ isSelect, setIsSelect, isTotal, setIsTotal }: NavBarType) {
   const clickSelect = () => {
     setIsSelect(!isSelect);
   };
-  const albumId = useSelector((state: StateType) => state.albumStatus.albumId);
   const uploadCount = useSelector(
     (state: StateType) => state.photoUpload.uploadCount
   );
@@ -43,8 +33,8 @@ function NavBar({
     (state: StateType) => state.photoUpload.isUploading
   );
 
-  const { getDetail } = useGetDetail(albumId);
-  const { theme, setTheme } = useTheme();
+  const { getDetail, getDetailIsLoading } = useGetDetail();
+  const { theme } = useTheme();
   return (
     <section className={`${styles.nav_bar}`}>
       <div
@@ -55,7 +45,7 @@ function NavBar({
         <div
           className={`absolute w-screen h-full flex justify-center items-center ${styles.title}`}
         >
-          {isAlbumLoading() ? (
+          {getDetailIsLoading ? (
             <LoadingTitle />
           ) : getDetail ? (
             <span>{getDetail.album_name}</span>
@@ -76,7 +66,13 @@ function NavBar({
           <div className="flex gap-2">
             {isUploading && (
               <div className={`${styles.loading}`}>
-                <div></div>
+                <div className={`${styles.circle}`}>
+                  <div
+                    className={`${styles.wave}`}
+                    style={{ top: "10px" }}
+                  ></div>
+                </div>
+
                 <span className={`${styles.loadingText}`}>{uploadCount}</span>
               </div>
             )}

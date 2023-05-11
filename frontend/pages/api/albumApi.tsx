@@ -90,7 +90,8 @@ export const useGetTotal = () => {
  * [GET] 앨범 상세 정보
  * @returns
  */
-export const useGetDetail = (albumId: number) => {
+export const useGetDetail = () => {
+  const albumId = useSelector((state: StateType) => state.albumStatus.albumId);
   const queryKey = `album/detail/${albumId}`;
 
   const { data, isLoading: getDetailIsLoading } = useQuery(
@@ -128,16 +129,13 @@ export const useInfinitePhotos = (page: number = 0, size: number = 27) => {
     useInfiniteQuery(
       ["photos", albumId, categoryId, userId],
       ({ pageParam = page }) => {
-        const temp = customBoyAxios.get(queryKey + `&page=${pageParam}`);
-        return temp.then((data) => data.data.data);
+        const response = customBoyAxios.get(queryKey + `&page=${pageParam}`);
+        return response.then((data) => data.data.data);
       },
       {
         // cacheTime: 5000,
         // refetchInterval: 5000,
-        onSuccess: (data) => {
-          getTotal = data.pages[0].totalPhotoCnt;
-          getTotalId = data.pages[0].totalPhotoId;
-        },
+        onSuccess: (data) => {},
         getNextPageParam: (
           lastPage: PhotoPageType,
           allPosts: PhotoPageType[]
@@ -148,6 +146,10 @@ export const useInfinitePhotos = (page: number = 0, size: number = 27) => {
         },
       }
     );
+  if (data) {
+    getTotal = data.pages[0].totalPhotoCnt;
+    getTotalId = data.pages[0].totalPhotoId;
+  }
 
   return {
     data,
