@@ -13,7 +13,7 @@ import { LoadingProfile } from "@/components/common/Loading";
 // 리덕스
 import { useDispatch, useSelector } from "react-redux";
 import { StateType } from "@/types/StateType";
-import { setToArrayUserId, setUserIdState } from "@/features/albumStatusSlice";
+import { setUserIdState } from "@/features/albumStatusSlice";
 
 // 인터페이스
 interface MembersType {
