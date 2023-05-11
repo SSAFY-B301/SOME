@@ -3,9 +3,13 @@ import { HYDRATE } from "next-redux-wrapper";
 import authSlice from "../features/authSlice";
 import albumStatusSlice from "@/features/albumStatusSlice";
 import photoUploadSlice from "@/features/photoUploadSlice";
+import locationSlice from "@/features/locationSlice";
+import girlListDetailStateSlice from "@/features/girlListDetailSlice";
 
 const combinedReducer = combineReducers({
   auth: authSlice,
+  location : locationSlice,
+  girlListDetailState : girlListDetailStateSlice,
   albumStatus: albumStatusSlice,
   photoUpload: photoUploadSlice,
 });

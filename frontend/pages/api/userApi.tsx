@@ -15,6 +15,7 @@ export const userQuery = () => {
         {
             onSuccess: (data) => {
                 if (data.data.status_code === 450) {
+                    window.localStorage.removeItem('access_token');
                     router.push("/login")
                 }
             }

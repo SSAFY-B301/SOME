@@ -2,23 +2,32 @@ import { getSnsPhoto } from "@/pages/api/photoDetailApi";
 import { Dispatch, SetStateAction } from "react";
 import { PhotoType } from "@/types/AlbumTypes";
 import { useMutationNoti } from "@/pages/api/notiApi";
+import { NotiType } from "@/types/NotiType";
 
 interface SnsNotiModalParamsType{
-    photoId : number | undefined,
-    notiId : number | undefined,
+    notiInfo : NotiType | undefined
     setSnsModalOpen : Dispatch<SetStateAction<boolean>>,
     snsModalOpen : boolean,
 }
 
 export default function SnsNotiModal(params : SnsNotiModalParamsType) {
-    const {snsResultData} = getSnsPhoto(params.photoId);
-    const {snsMutation} = useMutationNoti();
+    const {snsResultData} = getSnsPhoto(params.notiInfo?.photo_or_album_id);
+    const {statusMutation, snsMutation} = useMutationNoti();
+
+    function exitHandler() {
+        const requestData = {
+            noti_id : params.notiInfo?.noti_id,
+            noti_status : "CHECKED"
+        }
+        statusMutation(requestData)
+        params.setSnsModalOpen(!params.snsModalOpen)
+    }
 
     function snsAcceptHandler(accpetStatus : string) {
         const requestData = {
             status : accpetStatus,
-            photo_id : params.photoId,
-            noti_id : params.notiId,
+            photo_id : params.notiInfo?.photo_or_album_id,
+            noti_id : params.notiInfo?.noti_id,
         }
         snsMutation(requestData);
         
@@ -34,7 +43,7 @@ export default function SnsNotiModal(params : SnsNotiModalParamsType) {
     }
 
     return(
-        <div onClick={() => params.setSnsModalOpen(!params.snsModalOpen)} className="absolute top-0 flex items-center justify-center bg-black bg-opacity-40" style={{width: "100vw", height: "100vh"}}>
+        <div onClick={() => exitHandler()} className="absolute top-0 flex items-center justify-center bg-black bg-opacity-40" style={{width: "100vw", height: "100vh"}}>
             <div onClick={(e) => e.stopPropagation()} className="flex flex-col items-center justify-center py-4 bg-white rounded-lg gap-y-2">
                 <div className="flex w-full px-4 gap-x-2">
                     {snsResultData === undefined ? 
