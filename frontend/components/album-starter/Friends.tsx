@@ -1,5 +1,9 @@
 import React from "react";
 import Friend from "./Friend";
+import {
+  LoadingInviteFriendThumbnail,
+  LoadingInviteFriendBtn,
+} from "../common/Loading";
 
 interface FriendType {
   id: number;
@@ -25,19 +29,54 @@ const Friends = ({
   return (
     <div>
       {friends ? (
-        <ul>
-          {friends.map((friend) => (
-            <Friend
-              key={friend.id}
-              friend={friend}
-              isActiveFriends={isActiveFriends}
-              selectFriends={selectFriends}
-              removeFriends={removeFriends}
-            />
-          ))}
-        </ul>
+        friends.length > 0 ? (
+          <ul>
+            {friends.map((friend) => (
+              <Friend
+                key={friend.id}
+                friend={friend}
+                isActiveFriends={isActiveFriends}
+                selectFriends={selectFriends}
+                removeFriends={removeFriends}
+              />
+            ))}
+          </ul>
+        ) : (
+          <div>친구가 없다</div>
+        )
       ) : (
-        <div>친구가 없어요...</div>
+        <div>
+          <div className="h-16 flex justify-between items-center">
+            <div className="w-2/3 flex justify-start items-center">
+              <LoadingInviteFriendThumbnail />
+            </div>
+            <LoadingInviteFriendBtn />
+          </div>
+          <div className="h-16 flex justify-between items-center">
+            <div className="w-2/3 flex justify-start items-center">
+              <LoadingInviteFriendThumbnail />
+            </div>
+            <LoadingInviteFriendBtn />
+          </div>
+          <div className="h-16 flex justify-between items-center">
+            <div className="w-2/3 flex justify-start items-center">
+              <LoadingInviteFriendThumbnail />
+            </div>
+            <LoadingInviteFriendBtn />
+          </div>
+          <div className="h-16 flex justify-between items-center">
+            <div className="w-2/3 flex justify-start items-center">
+              <LoadingInviteFriendThumbnail />
+            </div>
+            <LoadingInviteFriendBtn />
+          </div>
+          <div className="h-16 flex justify-between items-center">
+            <div className="w-2/3 flex justify-start items-center">
+              <LoadingInviteFriendThumbnail />
+            </div>
+            <LoadingInviteFriendBtn />
+          </div>
+        </div>
       )}
     </div>
   );
