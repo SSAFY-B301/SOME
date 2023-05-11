@@ -19,3 +19,21 @@ export const LoadingCount = () => {
 export const LoadingTotal = () => {
   return <div className={`${styles.total} ${styles.loading}`}></div>;
 };
+
+export const LoadingInviteAlbum = () => {
+  return <div className={`${styles.invite_album} ${styles.loading}`}></div>;
+};
+
+export const LoadingInviteFriendThumbnail = () => {
+  return (
+    <div
+      className={`${styles.invite_friend_thumbnail} ${styles.loading}`}
+    ></div>
+  );
+};
+
+export const LoadingInviteFriendBtn = () => {
+  return (
+    <div className={`${styles.invite_friend_btn} ${styles.loading}`}></div>
+  );
+};
