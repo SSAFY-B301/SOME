@@ -49,78 +49,82 @@ function FavoriteAlbum() {
    */
   const favorites: React.ReactNode =
     // TODO : 빈 배열인 경우 개선
-    getFavorite && getFavorite.length > 0
-      ? getFavorite.map((favoriteAlbum: FavoriteAlbumType) => (
-          <div key={favoriteAlbum.album_id} className={`${styles.card}`}>
+    getFavoriteIsLoading ? (
+      <></>
+    ) : getFavorite && getFavorite.length > 0 ? (
+      getFavorite.map((favoriteAlbum: FavoriteAlbumType) => (
+        <div key={favoriteAlbum.album_id} className={`${styles.card}`}>
+          <div
+            onClick={() => router.push(`/album/${favoriteAlbum.album_id}`)}
+            className="pt-10 bg-center bg-cover"
+            style={{
+              width: "73.846vw",
+              height: "98.462vw",
+              borderRadius: "3.077vw",
+              backgroundImage: `url(${
+                favoriteAlbum.thumbnail_photo_url
+                  ? favoriteAlbum.thumbnail_photo_url
+                  : default_profile[favoriteAlbum.album_id % 4]
+              })`,
+            }}
+          >
             <div
-              onClick={() => router.push(`/album/${favoriteAlbum.album_id}`)}
-              className="pt-10 bg-center bg-cover"
+              className="relative flex flex-col "
               style={{
-                width: "73.846vw",
-                height: "98.462vw",
-                borderRadius: "3.077vw",
-                backgroundImage: `url(${
-                  favoriteAlbum.thumbnail_photo_url
-                    ? favoriteAlbum.thumbnail_photo_url
-                    : default_profile[favoriteAlbum.album_id % 4]
-                })`,
+                width: "38.974vw",
+                top: "6.154vw",
+                left: "4.103vw",
               }}
             >
-              <div
-                className="relative flex flex-col "
-                style={{
-                  width: "38.974vw",
-                  top: "6.154vw",
-                  left: "4.103vw",
-                }}
+              <span
+                className="text-white text-end"
+                style={{ fontSize: "7.692vw" }}
               >
-                <span
-                  className="text-white text-end"
-                  style={{ fontSize: "7.692vw" }}
-                >
-                  {favoriteAlbum.album_name}
-                </span>
-                <span
-                  className="text-white text-end"
-                  style={{ fontSize: "2.051vw" }}
-                >
-                  {favoriteAlbum.album_created_date
-                    .slice(0, 10)
-                    .replaceAll("-", ".")}
-                </span>
-              </div>
-            </div>
-            <div className="relative" style={{ top: "-97.436vw" }}>
-              <div className="relative flex justify-end gap-2 top-4 right-4">
-                <HeartIcon
-                  onClick={() => clickedHeart(favoriteAlbum.album_id)}
-                  fill={"red"}
-                  stroke={"red"}
-                  width="6.154vw"
-                  height="6.154vw"
-                />
-              </div>
+                {favoriteAlbum.album_name}
+              </span>
+              <span
+                className="text-white text-end"
+                style={{ fontSize: "2.051vw" }}
+              >
+                {favoriteAlbum.album_created_date
+                  .slice(0, 10)
+                  .replaceAll("-", ".")}
+              </span>
             </div>
           </div>
-        ))
-      : [...Array(1)].map((_, i) => (
-          <Link href={"/album/create"} key={i}>
-            <div
-              className={`w-72 h-96 rounded-xl grow flex-shrink-0 flex flex-col justify-center items-center gap-4 text-xl ${styles.card}`}
-              style={{ backgroundColor: "#B1B8C0" }}
-            >
-              <div
-                className={`flex justify-center items-center rounded-full border-4 border-white`}
-                style={{ width: "16.41vw", height: "16.41vw" }}
-              >
-                <PlusIcon />
-              </div>
-              <div>
-                <span className={`text-white`}>앨범 생성하러 가기</span>
-              </div>
+          <div className="relative" style={{ top: "-97.436vw" }}>
+            <div className="relative flex justify-end gap-2 top-4 right-4">
+              <HeartIcon
+                onClick={() => clickedHeart(favoriteAlbum.album_id)}
+                fill={"red"}
+                stroke={"red"}
+                width="6.154vw"
+                height="6.154vw"
+              />
             </div>
-          </Link>
-        ));
+          </div>
+        </div>
+      ))
+    ) : (
+      [...Array(1)].map((_, i) => (
+        <Link href={"/album/create"} key={i}>
+          <div
+            className={`w-72 h-96 rounded-xl grow flex-shrink-0 flex flex-col justify-center items-center gap-4 text-xl ${styles.card}`}
+            style={{ backgroundColor: "#B1B8C0" }}
+          >
+            <div
+              className={`flex justify-center items-center rounded-full border-4 border-white`}
+              style={{ width: "16.41vw", height: "16.41vw" }}
+            >
+              <PlusIcon />
+            </div>
+            <div>
+              <span className={`text-white`}>앨범 생성하러 가기</span>
+            </div>
+          </div>
+        </Link>
+      ))
+    );
   return (
     <ItemBlock width="92.308vw" height="" radius="5.128vw">
       <div

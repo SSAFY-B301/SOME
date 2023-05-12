@@ -212,8 +212,8 @@ $main-color: linear-gradient(
 
 .loading {
   position: relative;
-  width: 32px;
-  height: 32px;
+  width: 36px;
+  height: 36px;
   display: flex;
   justify-content: center;
   align-items: center;
@@ -221,16 +221,13 @@ $main-color: linear-gradient(
   .circle {
     position: relative;
     overflow: hidden;
-    width: 28px;
-    height: 28px;
+    width: 36px;
+    height: 36px;
     border-radius: 999px;
     z-index: 12;
-    // background-color: #ffffff00;
 
-    border: 3px solid #909090;
-    // border-bottom-color: #ff3d00;
-    // display: inline-block;
-    // box-sizing: border-box;
+    border: 1px solid #f7cea3;
+
     background: $main-color;
     border: solid 3px $main-color;
     -webkit-background-clip: text;
@@ -238,27 +235,22 @@ $main-color: linear-gradient(
     background-origin: border-box;
     background-clip: text;
     background-blend-mode: lighten, normal;
-    // animation: rotation 1s linear infinite;
-    // &::before {
-    //   content: "";
-    //   position: relative;
-    //   left: -3px;
-    //   top: -3px;
-    //   display: block;
-    //   width: 14px;
-    //   height: 14px;
-    //   border-radius: 999px;
-    //   border: solid 3px #ff3d00;
-    //   animation: prixClipFix 2s linear infinite;
-    // }
-
+    &:before {
+      position: absolute;
+      content: "";
+      width: 40%;
+      height: 25%;
+      top: 20px;
+      left: 10px;
+      background: rgba(255, 255, 255, 0.1);
+      border-radius: 50%;
+      transform: rotate(-45deg);
+    }
     .wave {
       position: absolute;
       z-index: 11;
-      left: -4px;
-
-      width: 32px;
-      height: 32px;
+      width: 36px;
+      height: 36px;
       background: $main-color;
       background-blend-mode: lighten, normal;
       border-radius: 45%;
@@ -273,6 +265,7 @@ $main-color: linear-gradient(
 }
 .loadingText {
   color: black;
+  font-size: 12px;
 }
 
 @keyframes rotation {
