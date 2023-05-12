@@ -1,8 +1,10 @@
 import React from "react";
+import PhotoFeatures from "./PhotoFeatures";
 import { TransformWrapper, TransformComponent } from "react-zoom-pan-pinch";
 
 interface Props {
   imgSrc: string;
+  photoId: number;
   clickImg(): void;
   showConcentrationMode: boolean;
   isZoom: boolean;
@@ -13,6 +15,7 @@ interface Props {
 
 const Photo = ({
   imgSrc,
+  photoId,
   clickImg,
   showConcentrationMode,
   isZoom,

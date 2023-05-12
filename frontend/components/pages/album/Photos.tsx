@@ -63,8 +63,9 @@ function Photos({
    * 사진 보기 페이지로 이동
    * @param id 사진 id
    */
-  const goPhoto = (id: number, index: number, pageIndex: number) => {
-    router.push(`${router.asPath}/${id}/${pageIndex}/${index}`);
+
+  const goPhoto = (id: number, index: number, page_idx: number) => {
+    router.push(`${router.asPath}/${id}/${page_idx}/${index}`);
   };
 
   return (
