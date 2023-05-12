@@ -110,12 +110,13 @@ export default function Login() {
   const settings = {
     dots: true,
     infinite: true,
-    speed: 500,
+    fade: false,
+    speed: 300,
     slidesToShow: 1,
     slidesToScroll: 1,
   };
   return (
-    <div className="w-screen h-screen bg-white">
+    <div className="w-screen h-screen bg-white overflow-hidden">
       <Slider {...settings} className={`${styles.slider}`}>
         <div className="w-screen h-screen">
           <div className="w-full h-full flex justify-center items-center">
@@ -187,12 +188,14 @@ export default function Login() {
           </div>
         </div>
         <div className="relative w-screen h-screen">
-          <div className="absolute" style={{ right: "5vw", top: "10vh" }}>
-            <p className={`text-4xl text-end ${styles.title}`}>
-              여기서 사진찍자
+          <div className="absolute" style={{ left: "5vw", top: "10vh" }}>
+            <p className={`text-4xl text-start ${styles.title}`}>
+              여기에 사진남겼어
             </p>
-            <p className={`text-4xl text-end mb-4 ${styles.title}`}>친구야</p>
-            <p className="text-xl text-end text-black">여사친, 추억을 새기다</p>
+            <p className={`text-4xl text-start mb-4 ${styles.title}`}>친구야</p>
+            <p className="text-xl text-start text-black">
+              여사친, 추억을 새기다
+            </p>
           </div>
           <div
             className="absolute"
@@ -211,12 +214,14 @@ export default function Login() {
           </div>
         </div>
         <div className="relative w-screen h-screen">
-          <div className="absolute" style={{ right: "5vw", top: "10vh" }}>
-            <p className={`text-4xl text-end ${styles.title}`}>
-              여기서 사진찍자
+          <div className="absolute" style={{ left: "5vw", top: "10vh" }}>
+            <p className={`text-4xl text-start ${styles.title}`}>
+              여기에 사진남겼어
             </p>
-            <p className={`text-4xl text-end mb-4 ${styles.title}`}>친구야</p>
-            <p className="text-xl text-end text-black">여사친, 추억을 새기다</p>
+            <p className={`text-4xl text-start mb-4 ${styles.title}`}>친구야</p>
+            <p className="text-xl text-start text-black">
+              여사친, 추억을 새기다
+            </p>
           </div>
           <div
             className="absolute flex justify-between items-center"
@@ -228,9 +233,6 @@ export default function Login() {
               transform: "translate(-50%)",
             }}
           >
-            <div style={{ width: "190px" }}>
-              <img src="/images/onboarding2.PNG" alt="" />
-            </div>
             <div
               className="h-2/3 flex flex-col justify-between box-border pl-2"
               style={{ width: "40vw" }}
@@ -244,6 +246,9 @@ export default function Login() {
               <span className="text-sm text-start text-black">
                 + 버튼으로 내가 찍은 사진 남기기
               </span>
+            </div>
+            <div style={{ width: "190px" }}>
+              <img src="/images/onboarding2.PNG" alt="" />
             </div>
           </div>
         </div>
