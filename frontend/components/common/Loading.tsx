@@ -37,3 +37,7 @@ export const LoadingInviteFriendBtn = () => {
     <div className={`${styles.invite_friend_btn} ${styles.loading}`}></div>
   );
 };
+
+export const LoadingFav = () => {
+  return <div className={`${styles.fav} ${styles.loading}`}></div>;
+};

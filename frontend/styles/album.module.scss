@@ -221,8 +221,8 @@ $main-color: linear-gradient(
   .circle {
     position: relative;
     overflow: hidden;
-    width: 28px;
-    height: 28px;
+    width: 32px;
+    height: 32px;
     border-radius: 999px;
     z-index: 12;
     // background-color: #ffffff00;
@@ -273,6 +273,7 @@ $main-color: linear-gradient(
 }
 .loadingText {
   color: black;
+  font-size: 12px;
 }
 
 @keyframes rotation {

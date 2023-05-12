@@ -6,6 +6,7 @@ import { LoadingTitle } from "@/components/common/Loading";
 import { useTheme } from "next-themes";
 import { useSelector } from "react-redux";
 import { StateType } from "@/types/StateType";
+import { useMemo } from "react";
 
 interface NavBarType {
   isSelect: boolean;
@@ -31,6 +32,14 @@ function NavBar({ isSelect, setIsSelect, isTotal, setIsTotal }: NavBarType) {
   );
   const isUploading = useSelector(
     (state: StateType) => state.photoUpload.isUploading
+  );
+  const uploadLength = useSelector(
+    (state: StateType) => state.photoUpload.uploadLength
+  );
+
+  const uploadPer = useMemo(
+    () => Math.round((uploadCount / uploadLength) * 100),
+    [uploadCount, uploadLength]
   );
 
   const { getDetail, getDetailIsLoading } = useGetDetail();
@@ -69,11 +78,16 @@ function NavBar({ isSelect, setIsSelect, isTotal, setIsTotal }: NavBarType) {
                 <div className={`${styles.circle}`}>
                   <div
                     className={`${styles.wave}`}
-                    style={{ top: "10px" }}
+                    style={{
+                      top: `${24 - (24 / 100) * uploadPer}px`,
+                      transition: "top 1s",
+                    }}
                   ></div>
                 </div>
 
-                <span className={`${styles.loadingText}`}>{uploadCount}</span>
+                <span className={`${styles.loadingText}`}>
+                  {`${uploadPer}%`}
+                </span>
               </div>
             )}
             <div
