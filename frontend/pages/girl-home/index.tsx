@@ -70,6 +70,8 @@ export default function Home() {
         center={{lat : location.lat, lng:location.lng}}
         style={{width : "100vw", height:"90vh"}}
         level={1}
+        zoomable={false}
+        draggable={false}
       >
         <CustomOverlayMap key={5} position={{lat : location.lat, lng:location.lng}}>
           <div className="relative w-52 h-52">
