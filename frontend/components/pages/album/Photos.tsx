@@ -63,17 +63,19 @@ function Photos({
    * 사진 보기 페이지로 이동
    * @param id 사진 id
    */
-  const goPhoto = (id: number) => {
-    router.push(`${router.asPath}/${id}`);
+  const goPhoto = (id: number, index: number, pageIndex: number) => {
+    console.log(index, pageIndex);
+
+    router.push(`${router.asPath}/${id}/${pageIndex}/${index}`);
   };
 
   return (
     <InfiniteScroll
       className={`${styles.photos} grid grid-cols-4`}
       hasMore={hasNextPage}
-      loadMore={() => fetchNextPage()}
+      loadMore={() => !getPhotosPages?.pages[0].is_last && fetchNextPage()}
       // isReverse={true}
-      loader={<LoadingPhotos />}
+      loader={getPhotosPages?.pages[0].is_last ? <></> : <LoadingPhotos />}
       // threshold={100}
     >
       {isAlbumLoading() ? (
@@ -89,15 +91,15 @@ function Photos({
             />
           )}
           {getPhotosPages ? (
-            getPhotosPages.pages.map((page: PhotoPageType) =>
-              page.albumPhotoList.map((photo) => (
+            getPhotosPages.pages.map((page: PhotoPageType, pageIndex) =>
+              page.albumPhotoList.map((photo, index) => (
                 <div
                   key={photo.photoId}
                   onTouchMove={(e) => isSelect && console.log(e.currentTarget)}
                   onClick={() =>
                     isSelect
                       ? changeSelect(photo.photoId)
-                      : goPhoto(photo.photoId)
+                      : goPhoto(photo.photoId, index, pageIndex)
                   }
                 >
                   <Photo
