@@ -64,8 +64,6 @@ function Photos({
    * @param id 사진 id
    */
   const goPhoto = (id: number, index: number, pageIndex: number) => {
-    console.log(index, pageIndex);
-
     router.push(`${router.asPath}/${id}/${pageIndex}/${index}`);
   };
 
