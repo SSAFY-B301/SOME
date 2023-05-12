@@ -64,8 +64,6 @@ function Photos({
    * @param id 사진 id
    */
   const goPhoto = (id: number, index: number, pageIndex: number) => {
-    console.log(index, pageIndex);
-
     router.push(`${router.asPath}/${id}/${pageIndex}/${index}`);
   };
 
@@ -85,7 +83,7 @@ function Photos({
         <>
           {!isSelect && (
             <NewPhoto
-              key={0}
+              key={-1}
               inputPhoto={inputPhoto}
               setInputPhoto={setInputPhoto}
             />

@@ -10,8 +10,10 @@ import TotalAlbum from "@/components/common/TotalAlbum";
 
 // CSS
 import styles from "@/styles/home.module.scss";
+import { CheckDevice } from "@/components/common/CheckDevice";
 
 export default function Home() {
+  CheckDevice();
   return (
     <div
       className={`bg-bg-home dark:bg-dark-bg-home relative touch-none ${styles.no_scroll}`}
