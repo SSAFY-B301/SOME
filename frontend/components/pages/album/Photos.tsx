@@ -83,7 +83,7 @@ function Photos({
         <>
           {!isSelect && (
             <NewPhoto
-              key={0}
+              key={-1}
               inputPhoto={inputPhoto}
               setInputPhoto={setInputPhoto}
             />

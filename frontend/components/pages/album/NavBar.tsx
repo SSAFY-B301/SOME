@@ -79,7 +79,7 @@ function NavBar({ isSelect, setIsSelect, isTotal, setIsTotal }: NavBarType) {
                   <div
                     className={`${styles.wave}`}
                     style={{
-                      top: `${24 - (24 / 100) * uploadPer}px`,
+                      top: `${32 - (32 / 100) * uploadPer}px`,
                       transition: "top 1s",
                     }}
                   ></div>
