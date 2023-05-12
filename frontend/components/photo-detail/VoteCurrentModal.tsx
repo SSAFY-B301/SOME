@@ -4,14 +4,19 @@ import { getPhoto } from "@/pages/api/photoDetailApi";
 interface Props {
   clickVote(): void;
   requestSns(): void;
+  photoId: number;
 }
 
-const VoteCurrentModal = ({ clickVote, requestSns }: Props): JSX.Element => {
+const VoteCurrentModal = ({
+  clickVote,
+  requestSns,
+  photoId,
+}: Props): JSX.Element => {
   const {
     noReplyFriends: noReplyFriends,
     declineFriends: declineFriends,
     acceptFriends: acceptFriends,
-  } = getPhoto();
+  } = getPhoto(photoId);
 
   return (
     <div

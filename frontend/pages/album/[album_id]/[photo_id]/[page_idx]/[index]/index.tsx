@@ -279,7 +279,11 @@ const PhotoDetail = (): JSX.Element => {
         />
       )}
       {showVoteCurrentModal && (
-        <VoteCurrentModal clickVote={clickVote} requestSns={requestSns} />
+        <VoteCurrentModal
+          clickVote={clickVote}
+          requestSns={requestSns}
+          photoId={photo_id}
+        />
       )}
     </div>
   );
