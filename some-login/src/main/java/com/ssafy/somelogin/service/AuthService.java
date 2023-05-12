@@ -127,8 +127,17 @@ public class AuthService {
                     .build();
             Optional<User> byId = userRepository.findById(user_id);
             if(byId.isEmpty()){
-                userRepository.save(user);
+                user.setNotiSns(true);
+                user.setNotiInvite(true);
+                user.setNotiUpload(true);
             }
+            else{
+                User user1 = byId.get();
+                user.setNotiInvite(user1.getNotiInvite());
+                user.setNotiSns(user1.getNotiSns());
+                user.setNotiUpload(user1.getNotiUpload());
+            }
+            userRepository.save(user);
         }
         responseDto.setData(access_Token);
         responseDto.setMessage("로그인 성공, 토큰 리턴");
