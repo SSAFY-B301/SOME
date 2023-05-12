@@ -1,15 +1,17 @@
 import { InfoBar } from "@/components/common/Nav";
-import { useState } from "react";
 import FillHeart from "@/public/icons/FillHeart.svg"
 import OutLineHeart from "@/public/icons/OutLineHeart.svg"
 import TabBar from "@/components/common/TabBar";
-import { getGirlPhotoDetail } from "@/pages/api/girlApi";
+import { getGirlPhotoDetail, useMutationGirl } from "@/pages/api/girlApi";
 import { PhotoTime } from "@/components/pages/notification/AlarmTime";
 
 
 export default function GirlDetail() {
-    const {resultData} = getGirlPhotoDetail();
-    const [isLike, SetIsLike] = useState<boolean>(resultData?.userLikeStatus);
+    const { resultData, girlDetailStatus } = getGirlPhotoDetail();
+    const { girlLikeMutation } = useMutationGirl();
+    function likeHandler(nowPhotoId : number, likeStatus : boolean) {
+        girlLikeMutation({ photo_id : nowPhotoId, like_photo_status : likeStatus})
+    }
     return (
         <div className="flex flex-col items-center gap-y-4">
             <InfoBar title={"대전시 유성구"}></InfoBar>
@@ -22,10 +24,11 @@ export default function GirlDetail() {
                     </div>
                 </div>
                 <div>
-                    <div onClick={() => SetIsLike(!isLike)}>
-                        {isLike && <FillHeart></FillHeart>}
-                        {!isLike && <OutLineHeart></OutLineHeart>}
-                    </div>
+                    {girlDetailStatus ==="success" && 
+                        <div onClick={() => likeHandler(resultData.photoId, resultData.userLikeStatus)}>
+                            {resultData.userLikeStatus ? <FillHeart></FillHeart> : <OutLineHeart></OutLineHeart>}
+                        </div>
+                    }
                     <p className="text-center text-gray-700">{resultData ? resultData.likeCnt : 0}</p>
                 </div>
             </div>

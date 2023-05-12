@@ -37,6 +37,10 @@ export interface OrderType{
     order : string,
 }
 
+export interface GirlLikeRequestType{
+    photo_id : number,
+    like_photo_status : boolean
+}
 export interface GirlRequestPartType {
     formData: FormData;
   }
