@@ -122,8 +122,11 @@ function Preview({ inputPhoto }: PreviewType) {
 
     useEffect(() => {
       if (uploadCount === uploadLength) {
-        dispatch(endUpload());
-        dispatch(endPreview());
+        // TODO : 3초 대기
+        setTimeout(() => {
+          dispatch(endUpload());
+          dispatch(endPreview());
+        }, 3000);
       }
     }, [uploadCount]);
 

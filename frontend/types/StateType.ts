@@ -1,15 +1,15 @@
 import type { UserInfoType } from "@/types/UserType";
 
 export interface StateType {
-  auth: LoginStateType,
-  location: locationStateType,
-  albumStatus: AlbumStatusType,
+  auth: LoginStateType;
+  location: locationStateType;
+  albumStatus: AlbumStatusType;
   photoUpload: photoUploadType;
 }
 
-export interface locationStateType{
-  lat : number,
-  lng : number,
+export interface locationStateType {
+  lat: number;
+  lng: number;
 }
 
 export interface LoginStateType {
@@ -32,10 +32,10 @@ export interface photoUploadType {
 }
 
 export interface GirlListDetailStateType {
-  section : number,
-  latitude : number,
-  longitude : number,
-  page : number,
-  size : number,
-  order : string
+  section: number;
+  latitude: number;
+  longitude: number;
+  page: number;
+  size: number;
+  order: string;
 }

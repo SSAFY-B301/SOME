@@ -37,7 +37,7 @@ function TotalAlbum() {
         isTotal={isTotal}
         setMoveEnd={setMoveEnd}
       />
-      <TotalAlbumItems isTotal={isTotal} moveEnd={moveEnd} />
+      <TotalAlbumItems isTotal={isTotal} moveEnd={moveEnd} isMove={isMove} />
     </section>
   );
 }
@@ -45,6 +45,7 @@ function TotalAlbum() {
 interface TotalAlbumItemsType {
   isTotal: boolean;
   moveEnd: boolean;
+  isMove: boolean;
 }
 
 /**
@@ -65,7 +66,7 @@ function TotalAlbumItems(props: TotalAlbumItemsType) {
   ];
 
   const totalAlbums: React.ReactNode =
-    getTotalIsLoading || !props.isTotal || !props.moveEnd ? (
+    props.isMove && (getTotalIsLoading || !props.isTotal || !props.moveEnd) ? (
       <>
         {[...Array(5)].map((_, i) => (
           <LoadingTotal key={i} />
@@ -110,7 +111,13 @@ function TotalAlbumItems(props: TotalAlbumItemsType) {
 
   return (
     <section className=" overflow-scroll">
-      <div className="grid grid-cols-2" style={{ gap: "6.154vw" }}>
+      <div
+        className="grid grid-cols-2"
+        style={{
+          gap: "6.154vw",
+          marginBottom: "41.026vw",
+        }}
+      >
         {totalAlbums}
       </div>
     </section>
@@ -173,16 +180,16 @@ function Header({
         } ${styles.search_box}`}
         style={{ fontSize: "5.128vw" }}
       >
-        <div>{isSearch && <input type="text" />}</div>
+        {/* <div>{isSearch && <input type="text" />}</div> */}
         <span>전체 앨범</span>
       </div>
-      <SearchIcon
+      {/* <SearchIcon
         onClick={() => {
           isTotal && setFlag(true);
           setIsSearch(!isSearch);
         }}
         className="stroke-black dark:stroke-white"
-      />
+      /> */}
     </div>
   );
 }
