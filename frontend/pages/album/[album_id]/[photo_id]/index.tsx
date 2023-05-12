@@ -15,7 +15,11 @@ import {
 } from "@/components/photo-detail";
 import styles from "./photo.module.scss";
 import { getPhoto } from "@/pages/api/photoDetailApi";
-import { Mutations, useDownload } from "@/pages/api/albumApi";
+import {
+  Mutations,
+  useDownload,
+  useInfinitePhotos,
+} from "@/pages/api/albumApi";
 import { SnsRequestType, ThumbnailBodyType } from "@/types/AlbumTypes";
 import { useTheme } from "next-themes";
 
@@ -55,6 +59,9 @@ const PhotoDetail = (): JSX.Element => {
     isSnsAgree: isSnsAgree,
     isSnsRequest: isSnsRequest,
   } = getPhoto();
+
+  const { data: albumData } = useInfinitePhotos();
+  console.log(albumData?.pages[0].albumPhotoList);
 
   /**
    * 페이지 이동 슬라이더 구현
