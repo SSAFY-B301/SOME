@@ -165,11 +165,8 @@ public class NotiService {
     }
 
     private void sendNoti(NotiType notiType, List<String> receivers,User sender,Long id){
-        for (String receiverId : receivers) {
-            Optional<User> byId = userRepository.findById(receiverId);
-            if(byId.isEmpty()) continue;
-            User receiver = byId.get();
-            Map<String, SseEmitter> sseEmitters = emitterRepository.findAllEmitterStartWithId(receiverId);
+        List<User> byUserIdIn = userRepository.findByUserIdIn(receivers);
+        for (User receiver : byUserIdIn) {
             Notification notification = Notification.builder()
                     .type(notiType)
                     .status(NotiStatus.UNCHECKED)
@@ -180,16 +177,23 @@ public class NotiService {
                     .build();
             if(notiType.equals(NotiType.SNS)){
                 notification.setMessage(sender.getUserName()+"님이 SNS 포스팅 동의 요청을 보냈습니다.");
+                notificationRepository.save(notification);
+                if(receiver.getNotiSns().equals(false)) continue;
             }
             else if(notiType.equals(NotiType.INVITE)){
                 String albumNameById = albumRepository.findAlbumNameByAlbumId(id);
                 notification.setMessage(sender.getUserName()+"님이 "+albumNameById+" 앨범에 초대했습니다.");
+                notificationRepository.save(notification);
+                if(receiver.getNotiInvite().equals(false)) continue;
             }
             else if(notiType.equals(NotiType.UPLOAD)){
                 notification.setMessage(sender.getUserName()+"님이 공유앨범에 사진을 업로드 했습니다.");
+                notificationRepository.save(notification);
+                if(receiver.getNotiUpload().equals(false)) continue;
             }
-            notificationRepository.save(notification);
 
+
+            Map<String, SseEmitter> sseEmitters = emitterRepository.findAllEmitterStartWithId(receiver.getUserId());
 
             sseEmitters.forEach(
                     (key, emitter) -> {
