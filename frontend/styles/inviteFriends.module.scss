@@ -195,3 +195,11 @@ $main-color: linear-gradient(
 .disappearIcon {
   animation: smoothDisappear 0.3s ease-in-out 0s 1 normal forwards;
 }
+
+.share {
+  background: $main-color;
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
+  background-clip: text;
+  background-blend-mode: lighten, normal;
+}

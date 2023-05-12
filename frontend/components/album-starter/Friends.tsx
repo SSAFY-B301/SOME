@@ -4,6 +4,9 @@ import {
   LoadingInviteFriendThumbnail,
   LoadingInviteFriendBtn,
 } from "../common/Loading";
+import styles from "styles/inviteFriends.module.scss";
+import ShareIcon from "public/icons/KakaoTalk.svg";
+import { shareUrl } from "../pages/album/Share";
 
 interface FriendType {
   id: number;
@@ -31,6 +34,26 @@ const Friends = ({
       {friends ? (
         friends.length > 0 ? (
           <ul>
+            <li
+              className="h-16 flex justify-between items-center"
+              onClick={shareUrl}
+            >
+              <div className="w-2/3 flex justify-start items-center">
+                <div className="w-12 h-12 rounded-full box-border mr-3">
+                  <ShareIcon className="w-12 h-12 rounded-full box-border mr-3" />
+                </div>
+                {/* <img
+                  src="/class3.jpg"
+                  alt=""
+                  className="w-12 h-12 rounded-full box-border mr-3"
+                /> */}
+                <div className="text-base truncate">
+                  <span className={`font-bold ${styles.share}`}>
+                    친구에게 SOME 초대하기
+                  </span>
+                </div>
+              </div>
+            </li>
             {friends.map((friend) => (
               <Friend
                 key={friend.id}
