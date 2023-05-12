@@ -21,7 +21,7 @@ function TotalAlbum() {
   const [isMove, setIsMove] = useState<boolean>(false);
   const [touchPosition, setTouchPosition] = useState<number>(0);
   const [moveEnd, setMoveEnd] = useState(true);
-
+  const { getTotal, getTotalIsLoading } = useGetTotal();
   return (
     <section
       onTransitionEnd={() => setMoveEnd(true)}
@@ -37,7 +37,25 @@ function TotalAlbum() {
         isTotal={isTotal}
         setMoveEnd={setMoveEnd}
       />
+      {/* // TODO : 트랜지션 end 잡아서 내려갈때 로딩 X, 데이터 없을 때 표시 */}
+      {/* {isMove && (getTotalIsLoading || !isTotal || !moveEnd) ? (
+        <>
+          <div className={styles.loading_box}>
+            <div className={styles.lds_roller}>
+              <div></div>
+              <div></div>
+              <div></div>
+              <div></div>
+              <div></div>
+              <div></div>
+              <div></div>
+              <div></div>
+            </div>
+          </div>
+        </>
+      ) : ( */}
       <TotalAlbumItems isTotal={isTotal} moveEnd={moveEnd} isMove={isMove} />
+      {/* )} */}
     </section>
   );
 }
@@ -65,49 +83,47 @@ function TotalAlbumItems(props: TotalAlbumItemsType) {
     "https://images.unsplash.com/photo-1661956602926-db6b25f75947?ixlib=rb-4.0.3&ixid=MnwxMjA3fDF8MHxlZGl0b3JpYWwtZmVlZHwyMXx8fGVufDB8fHx8&auto=format&fit=crop&w=500&q=60",
   ];
 
-  const totalAlbums: React.ReactNode =
-    props.isMove && (getTotalIsLoading || !props.isTotal || !props.moveEnd) ? (
-      <>
-        {[...Array(5)].map((_, i) => (
-          <LoadingTotal key={i} />
-        ))}
-      </>
-    ) : getTotal ? (
-      getTotal.map((album: TotalAlbumType) => (
-        <div key={album.album_id} className="relative">
-          <div
-            onClick={() => router.push(`/album/${album.album_id}`)}
-            className={`flex flex-col items-end justify-end bg-center bg-cover relative ${styles.total_item}`}
-            style={{
-              backgroundImage: `url(${
-                album.thumbnail_photo_url
-                  ? album.thumbnail_photo_url
-                  : default_profile[album.album_id % 4]
-              })`,
-              padding: "2.051vw",
-              borderRadius: "3.077vw",
-            }}
-          >
-            <div className="flex flex-col items-end text-white text-left">
-              <span>{album.album_name}</span>
-              <span>
-                {album.album_created_date.slice(0, 10).replaceAll("-", ".")}
-              </span>
-            </div>
+  const totalAlbums: React.ReactNode = getTotal ? (
+    getTotal.map((album: TotalAlbumType) => (
+      <div key={album.album_id} className="relative">
+        <div
+          onClick={() => router.push(`/album/${album.album_id}`)}
+          className={`flex flex-col items-end justify-end bg-center bg-cover relative ${styles.total_item}`}
+          style={{
+            backgroundImage: `url(${
+              album.thumbnail_photo_url
+                ? album.thumbnail_photo_url
+                : default_profile[album.album_id % 4]
+            })`,
+            padding: "2.051vw",
+            borderRadius: "3.077vw",
+          }}
+        >
+          <div className="flex flex-col items-end text-white text-left">
+            <span>{album.album_name}</span>
+            <span>
+              {album.album_created_date.slice(0, 10).replaceAll("-", ".")}
+            </span>
           </div>
-          <HeartIcon
-            onClick={() => mutate(album.album_id)}
-            fill={album.isAlbumFav ? "red" : "none"}
-            stroke={album.isAlbumFav ? "red" : "white"}
-            style={{ position: "absolute", top: "16px", left: "122px" }}
-            width="6.154vw"
-            height="6.154vw"
-          />
         </div>
-      ))
-    ) : (
-      <span>없음</span>
-    );
+        <HeartIcon
+          onClick={() => mutate(album.album_id)}
+          fill={album.isAlbumFav ? "red" : "none"}
+          stroke={album.isAlbumFav ? "red" : "white"}
+          style={{
+            position: "absolute",
+            top: "16px",
+            left: "122px",
+            margin: "8px",
+          }}
+          width="6.154vw"
+          height="6.154vw"
+        />
+      </div>
+    ))
+  ) : (
+    <span>없음</span>
+  );
 
   return (
     <section className=" overflow-scroll">
