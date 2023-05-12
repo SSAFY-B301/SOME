@@ -1,6 +1,7 @@
 package com.ssafy.somefriendboy.controller;
 
 import com.ssafy.somefriendboy.dto.AlbumCreateDto;
+import com.ssafy.somefriendboy.dto.NotiOptionDto;
 import com.ssafy.somefriendboy.dto.ResponseDto;
 import com.ssafy.somefriendboy.service.UserService;
 import lombok.RequiredArgsConstructor;
@@ -23,6 +24,15 @@ public class UserController {
         String accessToken = headers.get("access_token").toString();
 
         ResponseDto responseDto = userService.getMypage(accessToken);
+        return new ResponseEntity<ResponseDto>(responseDto, HttpStatus.OK);
+    }
+
+    @PutMapping("/noti/option")
+    public ResponseEntity<ResponseDto> notiOptionChange(@RequestHeader HttpHeaders headers, @RequestBody NotiOptionDto notiOptionDto) {
+        log.info("알 GET: /user/mypage");
+        String accessToken = headers.get("access_token").toString();
+
+        ResponseDto responseDto = userService.changeNotiOption(accessToken,notiOptionDto);
         return new ResponseEntity<ResponseDto>(responseDto, HttpStatus.OK);
     }
 }
