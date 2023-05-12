@@ -115,6 +115,7 @@ export default function Login() {
     slidesToShow: 1,
     slidesToScroll: 1,
   };
+
   return (
     <div className="w-screen h-screen bg-white overflow-hidden">
       <Slider {...settings} className={`${styles.slider}`}>

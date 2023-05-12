@@ -5,6 +5,8 @@ export interface StateType {
   location: locationStateType;
   albumStatus: AlbumStatusType;
   photoUpload: photoUploadType;
+  userAgent: UserAgentType;
+  home: HomeType;
 }
 
 export interface locationStateType {
@@ -38,4 +40,13 @@ export interface GirlListDetailStateType {
   page: number;
   size: number;
   order: string;
+}
+
+export interface UserAgentType {
+  userAgent: string;
+}
+
+export interface HomeType {
+  isCurrentStory: boolean;
+  CurrentAlbumId: number;
 }
