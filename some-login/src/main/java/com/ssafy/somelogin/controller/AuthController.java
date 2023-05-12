@@ -31,7 +31,7 @@ public class AuthController {
         String redirect_base = headers.get("redirect_base").toString();
         redirect_base = redirect_base.replace("[","");
         redirect_base = redirect_base.replace("]","");
-        log.info("인가코드로 토큰 요청 POST: /member/kakao, code : {}, redirect : {}",authorization_code,redirect_base);
+        log.info("인가코드로 토큰 요청 POST: /user/kakao, code : {}, redirect : {}",authorization_code,redirect_base);
         ResponseDto responseDto = authService.getTokenAnduserInfo(authorization_code,redirect_base);
         return new ResponseEntity<ResponseDto>(responseDto, HttpStatus.OK);
     }
