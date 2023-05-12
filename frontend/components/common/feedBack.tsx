@@ -38,10 +38,10 @@ export const FeedBack = (props: propsType) => {
     customBoyAxios.post(`/noti/feedback`, { content: content });
     setContent("");
     setIsSend(true);
-    // setTimeout(function () {
-    //   setIsSend(false);
-    // }, 2.0 * 1000);
-    props.setIsFeed(false);
+    setTimeout(function () {
+      setIsSend(false);
+      props.setIsFeed(false);
+    }, 2.0 * 1000);
   };
 
   const endAni = () => {
@@ -67,9 +67,20 @@ export const FeedBack = (props: propsType) => {
           <span>감사합니다.</span>
         </section>
       )} */}
+          {isSend && <Complete />}
         </>
       )}
     </section>
+  );
+};
+
+const Complete = () => {
+  return (
+    <div className={styles.complete}>
+      <div>
+        <span>소중한 의견 감사합니다.</span>
+      </div>
+    </div>
   );
 };
 
