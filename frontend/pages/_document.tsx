@@ -4,8 +4,16 @@ export default function Document() {
   return (
     <Html>
       <Head>
-        <meta name="theme-color" media="(prefers-color-scheme: light)" content="#ffffff" />
-        <meta name="theme-color" media="(prefers-color-scheme: dark)" content="#000000" />
+        <meta
+          name="theme-color"
+          media="(prefers-color-scheme: light)"
+          content="#ffffff"
+        />
+        <meta
+          name="theme-color"
+          media="(prefers-color-scheme: dark)"
+          content="#000000"
+        />
         <link rel="manifest" href="/manifest.json" />
         <link
           href="/favicons/favicon-16x16.png"
@@ -108,7 +116,10 @@ export default function Document() {
           media="screen and (device-width: 744px) and (device-height: 1133px) and (-webkit-device-pixel-ratio: 2) and (orientation: portrait)"
           href="/splash_screens/8.3__iPad_Mini_portrait.png"
         />
-        <script type="text/javascript" src={`//dapi.kakao.com/v2/maps/sdk.js?appkey=${process.env.NEXT_PUBLIC_KAKAO_JAVASCRIPT_KEY}`}></script>
+        <script
+          type="text/javascript"
+          src={`//dapi.kakao.com/v2/maps/sdk.js?appkey=${process.env.NEXT_PUBLIC_KAKAO_JAVASCRIPT_KEY}`}
+        ></script>
       </Head>
 
       <body className="text-black bg-white dark:bg-neutral-800 dark:text-white">
