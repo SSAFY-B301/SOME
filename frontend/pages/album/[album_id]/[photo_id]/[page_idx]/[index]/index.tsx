@@ -204,6 +204,7 @@ const PhotoDetail = (): JSX.Element => {
     speed: 500,
     slidesToShow: 1,
     slidesToScroll: 1,
+    initialSlide: page_idx,
   };
 
   return (
@@ -221,7 +222,7 @@ const PhotoDetail = (): JSX.Element => {
         }
         {...sliderSet}
       >
-        {albumData ? (
+        {albumData &&
           albumData.pages[page_num].albumPhotoList.map(
             (photo): JSX.Element => (
               <div className="relative w-screen h-screen">
@@ -243,10 +244,7 @@ const PhotoDetail = (): JSX.Element => {
                 />
               </div>
             )
-          )
-        ) : (
-          <div>...</div>
-        )}
+          )}
       </Slider>
       <div
         className={

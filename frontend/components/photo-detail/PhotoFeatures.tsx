@@ -19,8 +19,6 @@ const PhotoFeatures = ({ photoId }: Props): JSX.Element => {
   const { photoDetail: photoDetail, isSnsAgree: isSnsAgree } =
     getPhoto(photoId);
 
-  console.log(photoDetail);
-
   /**
    * 사진 좋아요 기능
    * useMutation
