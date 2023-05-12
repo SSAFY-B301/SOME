@@ -93,7 +93,7 @@ $main-color: linear-gradient(
   background-color: white;
   z-index: 9999;
   opacity: 0;
-  animation: openStory 1s forwards;
+  animation: openStory 0.5s forwards;
 }
 
 @keyframes openStory {
