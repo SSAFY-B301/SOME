@@ -37,17 +37,12 @@ Props): JSX.Element => {
           minScale={1}
           maxScale={5}
           disablePadding={true}
-          centerZoomedOut={true}
           centerOnInit={true}
           // panning={isZoom ? { disabled: false } : { disabled: true }}
-          doubleClick={isZoom ? { mode: "zoomOut" } : { mode: "zoomIn" }}
+          doubleClick={{ disabled: true }}
         >
           <TransformComponent>
-            <div className="w-screen h-screen flex justify-center items-center bg-contain">
-              <div>
-                <img src={`${imgSrc}`} />
-              </div>
-            </div>
+            <img src={`${imgSrc}`} />
           </TransformComponent>
         </TransformWrapper>
       </div>
