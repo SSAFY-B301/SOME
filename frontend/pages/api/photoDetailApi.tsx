@@ -35,7 +35,7 @@ function getPhoto() {
 
 function getSnsPhoto(photoId: number | undefined) {
   let snsResultData: PhotoType;
-  const { data: snsPhotoData } = useQuery(["sns"], () =>
+  const { data: snsPhotoData } = useQuery(["sns", photoId], () =>
     customBoyAxios.get(
       "/photo/detail?photoId="+photoId
     )

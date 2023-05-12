@@ -1,19 +1,27 @@
 import useCustomAxios from "@/features/customAxios";
 import { AlbumInviteRequestType, NotiType, SnsRequestType, statusChangeRequestType } from "@/types/NotiType";
-import { useMutation, useQuery, useQueryClient } from "react-query";
+import { useInfiniteQuery, useMutation, useQuery, useQueryClient } from "react-query";
 
 const { customNotiAxios } = useCustomAxios();
 
-function getAlarms() {
+function getAlarms(page : number = 0, size: number = 10) {
 
-  const { data: queryData, isLoading } = useQuery(["alarm"], () =>
-    customNotiAxios.get(
-      "/noti/list?page=0&size=10"
-    )
+  const { data: queryData, status, fetchNextPage, hasNextPage } = useInfiniteQuery(
+    ["alarm"], 
+    ({pageParam = {page,size}}) => {
+      const res = customNotiAxios.get(`/noti/list?page=${pageParam.page}&size=${pageParam.size}`)
+      return(res.then((data) => data.data.data))
+    },
+    {
+      getNextPageParam: (lastPage) => {
+        return (
+          !lastPage.is_last ? lastPage.page + 1 : undefined)
+        // return(lastPage.data.data.now_page)
+      }
+    }
   );
-
-  const resultData : NotiType[] = queryData?.data.data.notiList;
-  return { resultData, isLoading };
+  // return { resultData, isLoading };
+  return {status, queryData, fetchNextPage, hasNextPage};
 }
 
 function useMutationNoti() {
