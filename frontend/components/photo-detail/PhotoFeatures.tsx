@@ -5,14 +5,21 @@ import React, { useEffect, useState } from "react";
  * 사진 상세보기 특징 컴포넌트
  */
 
-const PhotoFeatures = (): JSX.Element => {
+interface Props {
+  photoId: number;
+}
+
+const PhotoFeatures = ({ photoId }: Props): JSX.Element => {
   const [isActive, setIsActive] = useState<boolean>(false);
   /**
    * 사진 상세 정보 접근
    * useQuery
    *  queryKey : photo
    */
-  const { photoDetail: photoDetail, isSnsAgree: isSnsAgree } = getPhoto();
+  const { photoDetail: photoDetail, isSnsAgree: isSnsAgree } =
+    getPhoto(photoId);
+
+  console.log(photoDetail);
 
   /**
    * 사진 좋아요 기능
@@ -32,10 +39,6 @@ const PhotoFeatures = (): JSX.Element => {
       setIsActive(false);
     }
   };
-
-  /**
-   * 투표 완료 기능 추후 추가
-   */
 
   return (
     <div className="flex justify-between w-11/12 h-full">
