@@ -1,6 +1,6 @@
 import useCustomAxios from "@/features/customAxios";
 import { RootState } from "@/store/configureStore";
-import { GirlResultType, GirlRequestPartType, GirlListDetailResultType, PhotoDetailType } from "@/types/GirlType";
+import { GirlResultType, GirlRequestPartType, GirlListDetailResultType, PhotoDetailType, GirlLikeRequestType } from "@/types/GirlType";
 import { useRouter } from "next/router";
 import { useMutation, useQuery, useQueryClient } from "react-query";
 import { useSelector } from "react-redux";
@@ -32,11 +32,11 @@ function getGirlPhotoDetail() {
   const router = useRouter();
   const photoId = router.query.photo_id;
 
-  const { data: queryData, isLoading } = useQuery(["girlDetail", photoId], () =>
+  const { data: queryData, isLoading, status : girlDetailStatus } = useQuery(["girlDetail", photoId], () =>
     customGirlAxios.get("/photo/detail/" + photoId)
   );
   const resultData : PhotoDetailType = queryData?.data.data.albumPhotoDetail;
-  return { resultData, isLoading };
+  return { resultData, isLoading, girlDetailStatus };
 }
 
 function useMutationGirl(){
@@ -54,11 +54,25 @@ function useMutationGirl(){
     {
       onSuccess: (data) => {
         alert("사진이 등록되었습니다!");
-        queryClient.invalidateQueries("photo"); // queryKey 유효성 제거
+        queryClient.invalidateQueries("girlList"); // queryKey 유효성 제거
+        queryClient.invalidateQueries("girlListDetail"); // queryKey 유효성 제거
+        queryClient.invalidateQueries("girlDetail"); // queryKey 유효성 제거
       },
     }
   );
-  return { girlUploadMutation }
+
+  const { mutate : girlLikeMutation } = useMutation(
+    (requestData : GirlLikeRequestType) => customGirlAxios.put("/photo/like", requestData),
+    {
+      onSuccess : () => {
+        queryClient.invalidateQueries("girlList"); // queryKey 유효성 제거
+        queryClient.invalidateQueries("girlListDetail"); // queryKey 유효성 제거
+        queryClient.invalidateQueries("girlDetail"); // queryKey 유효성 제거
+      }
+    } 
+  )
+
+  return { girlUploadMutation, girlLikeMutation }
 }
 
 export { getGirlList, getGirlListDetail, getGirlPhotoDetail, useMutationGirl };
