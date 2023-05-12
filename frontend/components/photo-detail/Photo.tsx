@@ -23,8 +23,6 @@ const Photo = ({
 }: // onTouchEnd,
 // onTouchStart,
 Props): JSX.Element => {
-  console.log(photoId);
-
   return (
     <div
       className={
