@@ -21,6 +21,7 @@ import java.io.*;
 import java.net.HttpURLConnection;
 import java.net.MalformedURLException;
 import java.net.URL;
+import java.time.LocalDateTime;
 import java.util.HashMap;
 import java.util.Optional;
 
@@ -123,6 +124,7 @@ public class AuthService {
                     .userId(openIdResponseDto.getSub())
                     .userEmail(openIdResponseDto.getEmail())
                     .userImg(picture)
+                    .createdDate(LocalDateTime.now())
                     .userName(openIdResponseDto.getNickname())
                     .build();
             Optional<User> byId = userRepository.findById(user_id);
