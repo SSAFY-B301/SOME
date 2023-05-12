@@ -42,11 +42,6 @@ const Friends = ({
                 <div className="w-12 h-12 rounded-full box-border mr-3">
                   <ShareIcon className="w-12 h-12 rounded-full box-border mr-3" />
                 </div>
-                {/* <img
-                  src="/class3.jpg"
-                  alt=""
-                  className="w-12 h-12 rounded-full box-border mr-3"
-                /> */}
                 <div className="text-base truncate">
                   <span className={`font-bold ${styles.share}`}>
                     친구에게 SOME 초대하기
