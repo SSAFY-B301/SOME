@@ -72,11 +72,19 @@ $main-color: linear-gradient(
 
 .nav_bar {
   width: 100vw;
-  height: 15.385vw;
+  height: 60.6px;
+}
+
+.main_container {
+  height: calc(100% - 60.6px);
 }
 
 .albumText {
   text-shadow: 0px 0px 10px black;
+}
+
+.slide_container {
+  height: 100%;
 }
 
 @keyframes slider {
