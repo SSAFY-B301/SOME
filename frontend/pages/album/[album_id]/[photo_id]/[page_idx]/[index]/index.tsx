@@ -1,4 +1,5 @@
 import React, { ReactEventHandler, useEffect, useMemo, useState } from "react";
+import { useRouter } from "next/router";
 import Slider from "react-slick";
 import "slick-carousel/slick/slick.css";
 import "slick-carousel/slick/slick-theme.css";
@@ -24,6 +25,15 @@ import { SnsRequestType, ThumbnailBodyType } from "@/types/AlbumTypes";
 import { useTheme } from "next-themes";
 
 const PhotoDetail = (): JSX.Element => {
+  /**
+   * 쿼리의 album_id, photo_id, page_num, page_idx 사용하기 위해 router 사용
+   */
+  const router = useRouter();
+  const album_id: number = Number(router.query.album_id);
+  const photo_id: number = Number(router.query.photo_id);
+  const page_num: number = Number(router.query.page_idx);
+  const page_idx: number = Number(router.query.index);
+
   /**
    * 상호작용 모달 state
    */
@@ -58,7 +68,7 @@ const PhotoDetail = (): JSX.Element => {
     photoDetail: photoDetail,
     isSnsAgree: isSnsAgree,
     isSnsRequest: isSnsRequest,
-  } = getPhoto();
+  } = getPhoto(photo_id);
 
   const { data: albumData } = useInfinitePhotos();
   console.log(albumData?.pages[0].albumPhotoList);
@@ -194,11 +204,8 @@ const PhotoDetail = (): JSX.Element => {
     speed: 500,
     slidesToShow: 1,
     slidesToScroll: 1,
+    initialSlide: page_idx,
   };
-
-  /**
-   * 공유 요청 알림을 통해서 들어왔을 때 승인 모달 생성 필요
-   */
 
   return (
     <div className="w-screen h-screen bg-white dark:bg-dark-bg-home overflow-hidden">
@@ -215,40 +222,29 @@ const PhotoDetail = (): JSX.Element => {
         }
         {...sliderSet}
       >
-        <div className="w-screen h-screen">
-          <div
-            className="absolute w-full h-20 z-20 flex items-center justify-center bg-white dark:bg-dark-block"
-            style={{ top: "15.385vw" }}
-          >
-            <PhotoFeatures />
-          </div>
-          <Photo
-            imgSrc={photoDetail?.s3Url}
-            clickImg={clickImg}
-            showConcentrationMode={showConcentrationMode}
-            isZoom={isZoom}
-            ratio={ratio}
-            // onTouchEnd={onTouchEnd}
-            // onTouchStart={onTouchStart}
-          />
-        </div>
-        {/* <div className="w-screen h-screen">
-          <div
-            className="absolute w-full h-20 z-20 flex items-center justify-center bg-white"
-            style={{ top: "15.385vw" }}
-          >
-            <PhotoFeatures />
-          </div>
-          <Photo
-            imgSrc={photoDetail?.s3Url}
-            clickImg={clickImg}
-            showConcentrationMode={showConcentrationMode}
-            isZoom={isZoom}
-            ratio={ratio}
-            // onTouchEnd={onTouchEnd}
-            // onTouchStart={onTouchStart}
-          />
-        </div> */}
+        {albumData &&
+          albumData.pages[page_num].albumPhotoList.map(
+            (photo): JSX.Element => (
+              <div className="relative w-screen h-screen">
+                <div
+                  className="absolute w-full h-20 z-20 flex items-center justify-center bg-white dark:bg-dark-block"
+                  style={{ top: "15.385vw" }}
+                >
+                  <PhotoFeatures photoId={photo.photoId} />
+                </div>
+                <Photo
+                  imgSrc={photo.originUrl}
+                  photoId={photo.photoId}
+                  clickImg={clickImg}
+                  showConcentrationMode={showConcentrationMode}
+                  isZoom={isZoom}
+                  ratio={ratio}
+                  // onTouchEnd={onTouchEnd}
+                  // onTouchStart={onTouchStart}
+                />
+              </div>
+            )
+          )}
       </Slider>
       <div
         className={

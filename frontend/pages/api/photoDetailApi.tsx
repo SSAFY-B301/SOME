@@ -5,15 +5,12 @@ import { useMutation, useQuery, useQueryClient } from "react-query";
 
 const { customBoyAxios } = useCustomAxios();
 
-function getPhoto() {
+function getPhoto(photoId: number) {
   const router = useRouter();
-  const photoId = router.query.photo_id;
+  const photo_id = String(photoId);
 
-  const { data: queryData, isLoading } = useQuery(["photo", photoId], () =>
-    customBoyAxios.get(
-      "/photo/detail?photoId=" +
-        photoId
-    )
+  const { data: queryData, isLoading } = useQuery(["photo", photo_id], () =>
+    customBoyAxios.get("/photo/detail?photoId=" + photo_id)
   );
 
   const photoDetail = queryData?.data.data.albumPhotoDetail;
@@ -35,10 +32,9 @@ function getPhoto() {
 
 function getSnsPhoto(photoId: number | undefined) {
   let snsResultData: PhotoType;
+
   const { data: snsPhotoData } = useQuery(["sns", photoId], () =>
-    customBoyAxios.get(
-      "/photo/detail?photoId="+photoId
-    )
+    customBoyAxios.get("/photo/detail?photoId=" + photoId)
   );
 
   snsResultData = snsPhotoData?.data.data.albumPhotoDetail;
