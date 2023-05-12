@@ -13,6 +13,8 @@ import java.time.LocalDateTime;
 @Setter
 @NoArgsConstructor(access = AccessLevel.PROTECTED)
 @Entity
+@Builder
+@AllArgsConstructor
 @Table(name = "user")
 public class User {
 
@@ -42,17 +44,7 @@ public class User {
     @NotNull
     private LocalDateTime createdDate;
 
-    @Builder
-    public User(
-            String userId,
-            String userName,
-            String userEmail,
-            String userImg
-    ) {
-        this.userId = userId;
-        this.userName = userName;
-        this.userEmail = userEmail;
-        this.userImg = userImg;
-        this.createdDate = LocalDateTime.now();
-    }
+    private Boolean notiSns;
+    private Boolean notiInvite;
+    private Boolean notiUpload;
 }
