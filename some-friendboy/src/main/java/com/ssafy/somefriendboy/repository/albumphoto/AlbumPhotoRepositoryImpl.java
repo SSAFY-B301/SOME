@@ -62,6 +62,16 @@ public class AlbumPhotoRepositoryImpl implements AlbumPhotoRepositoryCustom {
         mongoTemplate.updateMulti(query, update, AlbumPhoto.class);
     }
 
+    @Override
+    public Long countFriendGirlPhotos(String userId) {
+        Query query = new Query().with(Sort.by(Sort.Direction.DESC, MongoQueryUtil.parse(albumPhoto.photoId)));
+        query.addCriteria(Criteria.where(MongoQueryUtil.parse(albumPhoto.albumId)).is(null));
+        query.addCriteria(Criteria.where(MongoQueryUtil.parse(albumPhoto.userId)).is(userId));
+        long count = mongoTemplate.count(query, AlbumPhoto.class);
+        return count;
+    }
+
+
     private BooleanExpression categoryIdEq(Long categoryId) {
         return categoryId == null ? null : albumPhoto.categoryId.contains(categoryId);
     }
