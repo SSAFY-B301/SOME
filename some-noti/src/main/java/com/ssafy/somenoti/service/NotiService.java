@@ -10,6 +10,7 @@ import com.ssafy.somenoti.repository.noti.NotificationRepository;
 import com.ssafy.somenoti.repository.user.UserRepository;
 import com.ssafy.somenoti.util.HttpUtil;
 import lombok.RequiredArgsConstructor;
+import lombok.extern.slf4j.Slf4j;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.http.MediaType;
@@ -27,6 +28,7 @@ import java.util.Optional;
 @Service
 @RequiredArgsConstructor
 @Transactional
+@Slf4j
 public class NotiService {
     private static final Long DEFAULT_TIMEOUT = 60L * 1000 * 60;
     private final EmitterRepository emitterRepository;
@@ -37,13 +39,18 @@ public class NotiService {
     private final AlbumRepository albumRepository;
     private final HttpUtil httpUtil;
 
-    public SseEmitter subscribe(String userId, String lastEventId) {
+    public SseEmitter subscribe(String accessToken, String lastEventId) {
+        String userId = tokenCheck(accessToken);
+        log.info("userId : "+ userId);
         String id = userId + "_" + System.currentTimeMillis();
 
         SseEmitter emitter = emitterRepository.save(id, new SseEmitter(DEFAULT_TIMEOUT));
 
         emitter.onCompletion(() -> emitterRepository.deleteById(id));
-        emitter.onTimeout(() -> emitterRepository.deleteById(id));
+        emitter.onTimeout(() -> {
+            emitterRepository.deleteById(id);
+            emitter.complete();
+        });
         // 503 에러를 방지하기 위한 더미 이벤트 전송
         sendToClient(emitter, id, "EventStream Created. [userId=" + userId + "]");
         // 클라이언트가 미수신한 Event 목록이 존재할 경우 전송하여 Event 유실을 예방
