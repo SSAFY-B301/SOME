@@ -29,7 +29,7 @@ public class UserController {
 
     @PutMapping("/noti/option")
     public ResponseEntity<ResponseDto> notiOptionChange(@RequestHeader HttpHeaders headers, @RequestBody NotiOptionDto notiOptionDto) {
-        log.info("알 GET: /user/mypage");
+        log.info("알림 옵션 설정 PUT: /user/noti/option");
         String accessToken = headers.get("access_token").toString();
 
         ResponseDto responseDto = userService.changeNotiOption(accessToken,notiOptionDto);
