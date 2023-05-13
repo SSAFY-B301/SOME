@@ -165,6 +165,7 @@ public class NotiService {
         try {
             emitter.send(SseEmitter.event()
                     .id(emitterId)
+                    .name("some")
                     .data(data,MediaType.APPLICATION_JSON)
                     .reconnectTime(500));
         } catch (IOException exception) {
