@@ -45,7 +45,7 @@ public class AlbumController {
     @GetMapping("/list")
     public ResponseEntity<ResponseDto> getThumbPhotoList(@RequestHeader HttpHeaders headers, GpsRequestDto gpsRequestDto) {
         String accessToken = headers.get("access_token").toString();
-        log.info("4분할 4사진 목록 GET: /album/list, gpsRequestDto : {}", gpsRequestDto);
+        log.info("전체 사분면 썸네일 4사진 목록 GET: /album/list, gpsRequestDto : {}", gpsRequestDto);
 
         ResponseDto responseDto = albumService.selectThumbPhoto(gpsRequestDto, accessToken);
         return new ResponseEntity<ResponseDto>(responseDto, HttpStatus.OK);
@@ -54,7 +54,7 @@ public class AlbumController {
     @GetMapping("/list/detail")
     public ResponseEntity<ResponseDto> getPhotoLikeList(@RequestHeader HttpHeaders headers, GpsRequestDto gpsRequestDto, String sort, Pageable pageable) {
         String accessToken = headers.get("access_token").toString();
-        log.info("좋아요순 사진 목록 GET: /album/list/like, gpsRequestDto : {}", gpsRequestDto);
+        log.info("선택 사분면 좋아요순 사진 목록 GET: /album/list/detail, gpsRequestDto : {}", gpsRequestDto);
 
         ResponseDto responseDto = albumService.selectPhotoList(gpsRequestDto, sort, pageable, accessToken);
         return new ResponseEntity<ResponseDto>(responseDto, HttpStatus.OK);

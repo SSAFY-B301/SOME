@@ -209,7 +209,7 @@ public class AlbumService {
         resultList.add(photoList4);
 
         result.put("resultList", resultList);
-        return responseUtil.setResponseDto(result, "여사친 썸네일 사진 목록", 200);
+        return responseUtil.setResponseDto(result, "전체 구역 썸네일 사진 목록", 200);
     }
 
     public ResponseDto selectPhotoList(GpsRequestDto gpsRequestDto, String sort, Pageable pageable, String accessToken) {
@@ -239,7 +239,7 @@ public class AlbumService {
         result.put("totalPhotoCnt", totalPhotoCnt);
         result.put("page", pageDto);
 
-        return responseUtil.setResponseDto(result, "여사친 구역 사진 목록", 200);
+        return responseUtil.setResponseDto(result, "선택 구역 사진 목록", 200);
     }
 
     private GpsRangeDto calcGpsRange(GpsRequestDto gpsRequestDto) {
