@@ -1,10 +1,7 @@
 package com.ssafy.somefriendboy.service;
 
 import com.ssafy.somefriendboy.dto.*;
-import com.ssafy.somefriendboy.entity.Album;
-import com.ssafy.somefriendboy.entity.AlbumPhoto;
-import com.ssafy.somefriendboy.entity.FeedBack;
-import com.ssafy.somefriendboy.entity.Notification;
+import com.ssafy.somefriendboy.entity.*;
 import com.ssafy.somefriendboy.entity.status.NotiType;
 import com.ssafy.somefriendboy.repository.album.AlbumRepository;
 import com.ssafy.somefriendboy.repository.albumphoto.AlbumPhotoRepository;
@@ -72,9 +69,11 @@ public class NotiService {
                 uncheckedPhotoDto.setRecentUploadTime(albumPhoto.getUploadedDate());
                 uncheckedPhotoDto.setThumbnailPhoto(albumPhoto.getResizeUrl());
             }
+            User byUserId = userRepository.findByUserId(albumPhoto.getUserId());
             uncheckedPhotoDto.getPhotoList().add(PhotoDto.builder()
                             .uploadDate(albumPhoto.getUploadedDate())
-                            .userName(userRepository.findByUserId(albumPhoto.getUserId()).getUserName())
+                            .userName(byUserId.getUserName())
+                            .userImage(byUserId.getUserImg())
                             .photoUrl(albumPhoto.getOriginUrl())
                             .photoId(albumPhoto.getPhotoId())
                             .notiId(listNotiId.get(i++))
