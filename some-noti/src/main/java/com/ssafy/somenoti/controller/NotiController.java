@@ -76,4 +76,12 @@ public class NotiController {
         ResponseDto responseDto = notiService.changeNotiStatus(access_token,notiStatusDto);
         return new ResponseEntity<ResponseDto>(responseDto, HttpStatus.OK);
     }
+
+    @PutMapping("/status/upload")
+    public ResponseEntity<ResponseDto> uploadNotiStatusChange(@RequestHeader HttpHeaders headers, @RequestBody NotiUploadStatusDto notiUploadStatusDto) {
+        log.info("PUT: /noti/status/upload, notiIds : {}",notiUploadStatusDto.getNotiIds());
+        String access_token = headers.get("access_token").toString();
+        ResponseDto responseDto = notiService.changeUploadNotiStatus(access_token,notiUploadStatusDto);
+        return new ResponseEntity<ResponseDto>(responseDto, HttpStatus.OK);
+    }
 }
