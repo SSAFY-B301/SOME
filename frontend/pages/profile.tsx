@@ -59,7 +59,7 @@ export default function MyPage() {
 
           <div className="flex items-center gap-x-10">
             {getUserInfo === undefined && 
-              <div className="w-24 h-24 rounded-full bg-gray-300"> </div>
+              <div className="w-24 h-24 bg-gray-300 rounded-full"> </div>
             }
             {getUserInfo && 
               <img
