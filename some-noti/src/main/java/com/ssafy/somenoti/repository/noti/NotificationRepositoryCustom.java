@@ -9,5 +9,5 @@ import java.util.List;
 public interface NotificationRepositoryCustom {
     Page<NotiDto> findNotiList(String userId, Pageable pageable);
 
-
+    void updateUploadNotiStatus(List<Long> notiIds);
 }
