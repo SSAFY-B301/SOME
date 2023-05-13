@@ -47,4 +47,14 @@ public class NotificationRepositoryImpl implements NotificationRepositoryCustom{
         long total = results.getTotal();
         return new PageImpl<>(content,pageable,total);
     }
+
+    @Override
+    public void updateUploadNotiStatus(List<Long> notiIds) {
+        queryFactory.update(notification)
+                .set(notification.status,NotiStatus.DONE)
+                .where(
+                        notification.id.in(notiIds)
+                )
+                .execute();
+    }
 }

@@ -128,6 +128,15 @@ public class NotiService {
         return setResponseDto(true,"알림 상태 변경",200);
     }
 
+    public ResponseDto changeUploadNotiStatus(String accessToken, NotiUploadStatusDto notiUploadStatusDto) {
+        String userId = tokenCheck(accessToken);
+        if(userId == null){
+            return setResponseDto(false,"토큰 만료",450);
+        }
+        notificationRepository.updateUploadNotiStatus(notiUploadStatusDto.getNotiIds());
+
+        return setResponseDto(true,"업로드 확인 상태 변경",200);
+    }
     public ResponseDto replyInviteNoti(String accessToken, InviteResponseDto inviteResponseDto) {
         String userId = tokenCheck(accessToken);
         if(userId == null){
@@ -144,6 +153,7 @@ public class NotiService {
 
         return setResponseDto(true,"앨범 초대 응답 완료",200);
     }
+
     public ResponseDto replySnsNoti(String accessToken, SnsResponseDto snsResponseDto) {
         String userId = tokenCheck(accessToken);
         if(userId == null){
