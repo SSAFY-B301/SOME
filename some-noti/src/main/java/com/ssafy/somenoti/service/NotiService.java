@@ -53,6 +53,7 @@ public class NotiService {
         });
         // 503 에러를 방지하기 위한 더미 이벤트 전송
         sendToClient(emitter, id, "EventStream Created. [userId=" + userId + "]");
+
         // 클라이언트가 미수신한 Event 목록이 존재할 경우 전송하여 Event 유실을 예방
         if (!lastEventId.isEmpty()) {
             Map<String, Object> events = emitterRepository.findAllEventCacheStartWithId(String.valueOf(userId));
@@ -165,6 +166,7 @@ public class NotiService {
             emitter.send(SseEmitter.event()
                     .id(emitterId)
                     .data(data, MediaType.APPLICATION_JSON)
+                    .name("message")
                     .reconnectTime(500));
         } catch (IOException exception) {
             emitterRepository.deleteById(emitterId);
@@ -217,6 +219,7 @@ public class NotiService {
         HashMap<String,Object> result = new HashMap<>();
         result.put("content",notification.getMessage());
         result.put("id",notification.getAlbumOrPhotoId());
+        result.put("type",notification.getType());
         return result;
     }
 
