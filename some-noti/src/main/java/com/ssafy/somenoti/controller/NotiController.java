@@ -20,7 +20,7 @@ public class NotiController {
 
     private final NotiService notiService;
     /* SSE 구독 */
-    @GetMapping(value = "/subscribe/{userId}", produces = MediaType.TEXT_EVENT_STREAM_VALUE)
+    @GetMapping(value = "/subscribe", produces = MediaType.TEXT_EVENT_STREAM_VALUE)
     public SseEmitter subscribe(@RequestHeader HttpHeaders headers, @RequestHeader(value = "Last-Event-ID", required = false, defaultValue = "") String lastEventId){
         log.info("알림 구독 요청 GET: /noti/subscribe/userId");
         String access_token = headers.get("access_token").toString();
