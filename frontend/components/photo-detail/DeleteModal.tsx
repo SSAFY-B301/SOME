@@ -3,19 +3,20 @@ import React from "react";
 
 interface Props {
   clickDelete(): void;
+  photoId: number;
 }
 
 /**
  * 사진 삭제 모달 창
  */
 
-const DeleteModal = ({ clickDelete }: Props): JSX.Element => {
+const DeleteModal = ({ clickDelete, photoId }: Props): JSX.Element => {
   const { deleteMutation } = useMutationPhoto();
   /**
    * 사진 삭제 기능 추가
    */
   function photoDelete() {
-    deleteMutation();
+    deleteMutation(photoId);
   }
 
   return (
@@ -32,7 +33,7 @@ const DeleteModal = ({ clickDelete }: Props): JSX.Element => {
             사진이 앨범에서 삭제됩니다.
           </div>
           <button
-            // onClick={photoDelete}
+            onClick={() => photoDelete()}
             className="flex items-center justify-center w-full text-2xl font-bold h-1/2 text-rose-500"
           >
             삭제

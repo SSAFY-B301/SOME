@@ -79,15 +79,12 @@ const PhotoDetail = (): JSX.Element => {
    * isSnsAgree: 투표 결과 여부
    * isSnsRequest: 투표 진행 중 여부
    */
-  const {
-    photoDetail: photoDetail,
-    isSnsAgree: isSnsAgree,
-    isSnsRequest: isSnsRequest,
-    noReplyFriends: noReplyFriends,
-    declineFriends: declineFriends,
-    acceptFriends: acceptFriends,
-  } = getPhoto(photo_id);
+  const { photoDetail: photoDetail, isSnsRequest: isSnsRequest } =
+    getPhoto(photo_id);
 
+  /**
+   * 캐러셀 구성할 사진 리스트
+   */
   const { data: albumData } = useInfinitePhotos();
   console.log(albumData?.pages[page_num].albumPhotoList);
 
@@ -104,6 +101,9 @@ const PhotoDetail = (): JSX.Element => {
    * 삭제 모달창 생성
    */
   const clickDelete = () => {
+    if (albumData) {
+      setPhotoId(albumData.pages[page_num].albumPhotoList[carouselIdx].photoId);
+    }
     showDeleteModal ? setDeleteModal(false) : setDeleteModal(true);
   };
 
@@ -180,13 +180,7 @@ const PhotoDetail = (): JSX.Element => {
       if (clickCount == 2) {
         clickCount = 0;
         if (isZoom) {
-          setIsZoom(false);
-          setRatio(0.7);
-          // console.log("줌 아웃");
-        } else {
-          setIsZoom(true);
-          setRatio(3);
-          // console.log("줌 인");
+          // console.log("doubleclick")
         }
       } else if (clickCount == 1) {
         clickCount = 0;
@@ -244,13 +238,8 @@ const PhotoDetail = (): JSX.Element => {
                 </div>
                 <Photo
                   imgSrc={photo.originUrl}
-                  photoId={photo.photoId}
                   clickImg={clickImg}
                   showConcentrationMode={showConcentrationMode}
-                  isZoom={isZoom}
-                  ratio={ratio}
-                  // onTouchEnd={onTouchEnd}
-                  // onTouchStart={onTouchStart}
                 />
               </div>
             )
@@ -268,7 +257,6 @@ const PhotoDetail = (): JSX.Element => {
           clickDelete={clickDelete}
           clickThumbnail={clickThumbnail}
           theme={theme}
-          isSnsAgree={isSnsAgree}
         />
       </div>
       {showDownLoadModal && (
@@ -277,7 +265,9 @@ const PhotoDetail = (): JSX.Element => {
           downloadPhoto={downloadPhoto}
         />
       )}
-      {showDeleteModal && <DeleteModal clickDelete={clickDelete} />}
+      {showDeleteModal && (
+        <DeleteModal clickDelete={clickDelete} photoId={currentPhotoId} />
+      )}
       {showVoteModal && (
         <VoteModal
           clickVote={clickVote}
