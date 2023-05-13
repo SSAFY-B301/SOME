@@ -46,6 +46,11 @@ const PhotoDetail = (): JSX.Element => {
   const [carouselIdx, setCarouselIdx] = useState<number>(page_idx);
 
   /**
+   * 현재 사진 Id state
+   */
+  const [currentPhotoId, setPhotoId] = useState<number>(photo_id);
+
+  /**
    * 상호작용 모달 state
    */
   const [showDownLoadModal, setDownLoadShowModal] = useState<boolean>(false);
@@ -79,29 +84,13 @@ const PhotoDetail = (): JSX.Element => {
     photoDetail: photoDetail,
     isSnsAgree: isSnsAgree,
     isSnsRequest: isSnsRequest,
+    noReplyFriends: noReplyFriends,
+    declineFriends: declineFriends,
+    acceptFriends: acceptFriends,
   } = getPhoto(photo_id);
 
   const { data: albumData } = useInfinitePhotos();
-  console.log(albumData?.pages[0].albumPhotoList);
-
-  /**
-   * 페이지 이동 슬라이더 구현
-   */
-  // const onTouchStart = (e: React.TouchEvent) => {
-  //   setTouchedX(e.changedTouches[0].pageX);
-  //   setTouchedY(e.changedTouches[0].pageY);
-  // };
-
-  // const onTouchEnd = (e: React.TouchEvent) => {
-  //   const distanceX = touchedX - e.changedTouches[0].pageX;
-  //   const distanceY = touchedY - e.changedTouches[0].pageY;
-
-  //   if (distanceX > 30 && isZoom == false) {
-  //     console.log("다음 사진!");
-  //   } else if (distanceX < -30 && isZoom == false) {
-  //     console.log("이전 사진!");
-  //   }
-  // };
+  console.log(albumData?.pages[page_num].albumPhotoList);
 
   /**
    * 다운로드 모달창 생성
@@ -122,14 +111,11 @@ const PhotoDetail = (): JSX.Element => {
   /**
    * 공유 요청 모달창 생성
    */
-  const clickVote = () => {
-    if (isSnsRequest) {
-      showVoteCurrentModal
-        ? setshowVoteCurrentModal(false)
-        : setshowVoteCurrentModal(true);
-    } else {
-      showVoteModal ? setVoteModal(false) : setVoteModal(true);
+  const clickVote = (photoId: number | undefined) => {
+    if (photoId) {
+      setPhotoId(photoId);
     }
+    showVoteModal ? setVoteModal(false) : setVoteModal(true);
   };
 
   /**
@@ -150,19 +136,25 @@ const PhotoDetail = (): JSX.Element => {
    * 썸네일 수정 API
    */
   const putThumbnail = () => {
-    const body: ThumbnailBodyType = {
-      album_id: photoDetail.albumId,
-      new_album_thumbnail_id: photoDetail.photoId,
-    };
-    mutateThumbnail(body);
+    if (albumData) {
+      const body: ThumbnailBodyType = {
+        album_id: album_id,
+        new_album_thumbnail_id:
+          albumData.pages[page_num].albumPhotoList[carouselIdx].photoId,
+      };
+      mutateThumbnail(body);
+    }
   };
 
   /**
    * 다운로드 API
    */
   const downloadPhoto = () => {
-    const url = photoDetail.s3Url;
-    useDownload(url);
+    if (albumData) {
+      const url =
+        albumData.pages[page_num].albumPhotoList[carouselIdx].originUrl;
+      useDownload(url);
+    }
   };
 
   /**
@@ -245,7 +237,11 @@ const PhotoDetail = (): JSX.Element => {
                   className="absolute w-full h-20 z-20 flex items-center justify-center bg-white dark:bg-dark-block"
                   style={{ top: "15.385vw" }}
                 >
-                  <PhotoFeatures photoId={photo.photoId} />
+                  <PhotoFeatures
+                    photoId={photo.photoId}
+                    clickVote={clickVote}
+                    isSnsRequest={isSnsRequest}
+                  />
                 </div>
                 <Photo
                   imgSrc={photo.originUrl}
@@ -271,7 +267,6 @@ const PhotoDetail = (): JSX.Element => {
         <Footer
           clickDownload={clickDownload}
           clickDelete={clickDelete}
-          clickVote={clickVote}
           clickThumbnail={clickThumbnail}
           theme={theme}
           isSnsAgree={isSnsAgree}
@@ -285,19 +280,16 @@ const PhotoDetail = (): JSX.Element => {
       )}
       {showDeleteModal && <DeleteModal clickDelete={clickDelete} />}
       {showVoteModal && (
-        <VoteModal clickVote={clickVote} requestSns={requestSns} />
+        <VoteModal
+          clickVote={clickVote}
+          requestSns={requestSns}
+          photoId={currentPhotoId}
+        />
       )}
       {showThumbnailModal && (
         <ThumbnailModal
           clickThumbnail={clickThumbnail}
           putThumbnail={putThumbnail}
-        />
-      )}
-      {showVoteCurrentModal && (
-        <VoteCurrentModal
-          clickVote={clickVote}
-          requestSns={requestSns}
-          photoId={photo_id}
         />
       )}
     </div>
