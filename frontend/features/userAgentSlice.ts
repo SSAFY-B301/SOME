@@ -13,8 +13,6 @@ export const userAgentSlice = createSlice({
       state.userAgent = "";
     },
     setUserAgent(state, action) {
-      console.log(action.payload);
-
       state.userAgent = action.payload;
     },
   },
