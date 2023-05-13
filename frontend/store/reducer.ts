@@ -7,6 +7,7 @@ import locationSlice from "@/features/locationSlice";
 import girlListDetailStateSlice from "@/features/girlListDetailSlice";
 import userAgentSlice from "@/features/userAgentSlice";
 import homeSlice from "@/features/homeSlice";
+import totalSlice from "@/features/totalSlice";
 
 const combinedReducer = combineReducers({
   auth: authSlice,
@@ -16,6 +17,7 @@ const combinedReducer = combineReducers({
   photoUpload: photoUploadSlice,
   userAgent: userAgentSlice,
   home: homeSlice,
+  total: totalSlice,
 });
 
 const rootReducer: typeof combinedReducer = (state, action) => {

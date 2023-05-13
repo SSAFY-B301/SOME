@@ -7,6 +7,7 @@ export interface StateType {
   photoUpload: photoUploadType;
   userAgent: UserAgentType;
   home: HomeType;
+  total: TotalStateType;
 }
 
 export interface locationStateType {
@@ -49,4 +50,10 @@ export interface UserAgentType {
 export interface HomeType {
   isCurrentStory: boolean;
   CurrentAlbumId: number;
+}
+
+export interface TotalStateType {
+  isTotal: boolean;
+  isMove: boolean;
+  moveEnd: boolean;
 }
