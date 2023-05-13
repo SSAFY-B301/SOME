@@ -165,10 +165,11 @@ public class NotiService {
         try {
             emitter.send(SseEmitter.event()
                     .id(emitterId)
-                    .data(data)
+                    .data(data,MediaType.APPLICATION_JSON)
                     .reconnectTime(500));
         } catch (IOException exception) {
             emitterRepository.deleteById(emitterId);
+            throw new RuntimeException("연결 오류");
         }
     }
 
@@ -199,7 +200,6 @@ public class NotiService {
                 notificationRepository.save(notification);
                 if(receiver.getNotiUpload().equals(false)) continue;
             }
-
 
             Map<String, SseEmitter> sseEmitters = emitterRepository.findAllEmitterStartWithId(receiver.getUserId());
 
