@@ -71,10 +71,12 @@ export default function SnsNotiModal(params : SnsNotiModalParamsType) {
         )        
     }
     else{
-        <div onClick={() => exitHandler()} className="absolute top-0 flex items-center justify-center bg-black bg-opacity-40" style={{width: "100vw", height: "100vh"}}>
-            <div onClick={(e) => e.stopPropagation()} className="flex flex-col items-center justify-center py-4 bg-white rounded-lg gap-y-2">
-                <p>SNS 공유 요청 사진 로딩중입니다..</p>
+        return(
+            <div onClick={() => exitHandler()} className="absolute top-0 flex items-center justify-center bg-black bg-opacity-40" style={{width: "100vw", height: "100vh"}}>
+                <div onClick={(e) => e.stopPropagation()} className="flex flex-col items-center justify-center py-4 bg-white rounded-lg gap-y-2">
+                    <p>SNS 공유 요청 사진 로딩중입니다..</p>
+                </div>
             </div>
-        </div>
+        )
     }
 }
