@@ -5,5 +5,4 @@ export { default as DeleteModal } from "./DeleteModal";
 export { default as DownloadModal } from "./DownloadModal";
 export { default as VoteModal } from "./VoteModal";
 export { default as Nav } from "./Nav";
-export { default as VoteCurrentModal } from "./VoteCurrentModal";
 export { default as ThumbnailModal } from "./ThumbnailModal";
