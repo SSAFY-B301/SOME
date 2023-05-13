@@ -55,9 +55,9 @@ function useMutationPhoto() {
   );
 
   const { mutate: deleteMutation } = useMutation(
-    () =>
+    (photo_id: number) =>
       customBoyAxios.put("/photo/delete", {
-        photoId: [photoId],
+        photoId: [photo_id],
       }),
     {
       onSuccess: () => {
