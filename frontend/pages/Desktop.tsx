@@ -7,24 +7,30 @@ function Desktop() {
   return (
     <>
       <section
-        className="bg-white flex flex-col justify-center items-center gap-4"
+        className="bg-white dark:bg-black flex flex-col justify-center items-center gap-4"
         style={{ width: "100vw", height: "100vh" }}
       >
         <img
-          src="images/SOME.png"
+          src="images/SOME_QR.png"
           alt=""
           style={{ width: "30vw", height: "30vw" }}
         />
         <div className="flex flex-col justify-center items-center gap-1">
-          <span className="text-xl font-bold">QR로 들어와주세요.</span>
+          <span className="text-xl font-bold text-black dark:text-white">
+            QR로 들어와주세요.
+          </span>
           <div className="flex  justify-center items-center gap-2">
             <AndroidIcon />
-            <span className="text-xl font-bold">{android}</span>
+            <span className="text-xl font-bold text-black dark:text-white">
+              {android}
+            </span>
           </div>
 
           <div className="flex justify-center items-center gap-2">
             <IosIcon />
-            <span className="text-xl font-bold">{ios}</span>
+            <span className="text-xl font-bold text-black dark:text-white">
+              {ios}
+            </span>
           </div>
         </div>
       </section>

@@ -25,7 +25,10 @@ export default function Home() {
       window.localStorage.getItem("access_token") === null ? false : true;
 
     if (!isLogin) {
-      timeout = setTimeout(() => router.push("login"), 2000);
+      timeout = setTimeout(
+        () => userAgent !== "Desktop" && router.push("login"),
+        2000
+      );
     }
     return () => {};
   }, []);
