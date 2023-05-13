@@ -166,7 +166,6 @@ public class NotiService {
             emitter.send(SseEmitter.event()
                     .id(emitterId)
                     .data(data, MediaType.APPLICATION_JSON)
-                    .name("message")
                     .reconnectTime(500));
         } catch (IOException exception) {
             emitterRepository.deleteById(emitterId);
