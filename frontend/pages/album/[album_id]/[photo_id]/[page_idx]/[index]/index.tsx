@@ -1,4 +1,10 @@
-import React, { ReactEventHandler, useEffect, useMemo, useState } from "react";
+import React, {
+  ReactEventHandler,
+  useEffect,
+  useMemo,
+  useState,
+  useRef,
+} from "react";
 import { useRouter } from "next/router";
 import Slider from "react-slick";
 import "slick-carousel/slick/slick.css";
@@ -33,6 +39,11 @@ const PhotoDetail = (): JSX.Element => {
   const photo_id: number = Number(router.query.photo_id);
   const page_num: number = Number(router.query.page_idx);
   const page_idx: number = Number(router.query.index);
+
+  /**
+   * 캐러셀 인덱스 state
+   */
+  const [carouselIdx, setCarouselIdx] = useState<number>(page_idx);
 
   /**
    * 상호작용 모달 state
@@ -205,6 +216,7 @@ const PhotoDetail = (): JSX.Element => {
     slidesToShow: 1,
     slidesToScroll: 1,
     initialSlide: page_idx,
+    beforeChange: (current: number, next: number) => setCarouselIdx(next),
   };
 
   return (
@@ -215,6 +227,9 @@ const PhotoDetail = (): JSX.Element => {
         <Nav title="앨범" />
       </div>
       <Slider
+        ref={(slider) => {
+          slider && slider.slickGoTo(carouselIdx);
+        }}
         className={
           showConcentrationMode
             ? "w-screen h-screen z-30 bg-black"
