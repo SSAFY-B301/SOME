@@ -161,8 +161,8 @@ const PhotoDetail = (): JSX.Element => {
    */
   const requestSns = () => {
     const body: SnsRequestType = {
-      album_id: photoDetail.albumId,
-      photo_id: photoDetail.photoId,
+      album_id: String(album_id),
+      photo_id: String(currentPhotoId),
     };
     mutateSns(body);
   };
