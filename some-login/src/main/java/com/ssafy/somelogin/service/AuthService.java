@@ -10,6 +10,7 @@ import com.ssafy.somelogin.repository.UserRepository;
 import com.ssafy.somelogin.util.HttpUtil;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.http.*;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
@@ -30,8 +31,9 @@ import java.util.Optional;
 @Slf4j
 public class AuthService {
     private String get_token_url = "https://kauth.kakao.com/oauth/token";
-    private String client_id = "ed5919bad756edb432bdb8d297df428a";
-    //private String redirect_uri = "http://localhost:3000/oauth/redirect";
+
+    @Value("${some.kakao-client-id}")
+    private String client_id;
 
     private final HttpUtil httpUtil;
     private final UserRepository userRepository;
