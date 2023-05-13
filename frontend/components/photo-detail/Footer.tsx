@@ -6,7 +6,6 @@ import ThumbnailIcon from "public/icons/Image.svg";
 interface Props {
   clickDownload(): void;
   clickDelete(): void;
-  clickVote(): void;
   clickThumbnail(): void;
   theme: string | undefined;
   isSnsAgree: boolean;
@@ -19,7 +18,6 @@ interface Props {
 const Footer = ({
   clickDownload,
   clickDelete,
-  clickVote,
   clickThumbnail,
   theme,
   isSnsAgree,
@@ -40,7 +38,7 @@ const Footer = ({
       >
         <DownloadIcon stroke={theme == "light" ? "black" : "white"} />
       </div>
-      {!isSnsAgree && (
+      {/* {!isSnsAgree && (
         <div
           className="flex flex-col items-center justify-center"
           onClick={clickVote}
@@ -60,7 +58,7 @@ const Footer = ({
             />
           </svg>
         </div>
-      )}
+      )} */}
       <div
         className="flex flex-col items-center justify-center"
         onClick={clickThumbnail}

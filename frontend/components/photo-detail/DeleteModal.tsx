@@ -32,7 +32,7 @@ const DeleteModal = ({ clickDelete }: Props): JSX.Element => {
             사진이 앨범에서 삭제됩니다.
           </div>
           <button
-            onClick={photoDelete}
+            // onClick={photoDelete}
             className="flex items-center justify-center w-full text-2xl font-bold h-1/2 text-rose-500"
           >
             삭제
