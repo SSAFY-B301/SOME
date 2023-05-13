@@ -50,9 +50,7 @@ function NavBar() {
             />
           )}
         </button>
-        <Link href={"/profile"}>
-          <Profile />
-        </Link>
+        <Profile />
         <Link href={"/notification"}>
           <AlarmIcon fill="grey" stroke="grey" />
         </Link>

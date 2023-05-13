@@ -15,8 +15,8 @@ export default function AuthRedirect() {
         const accessTokenObj = { access_token : _access_token};
         window.localStorage.setItem("access_token", JSON.stringify(accessTokenObj));
     }
-    // 인가 코드로 서버에서 사용자 데이터 받아오기
-    async function getUserInfo(paramAuthCode : string | null){
+    // 인가 코드로 서버에서 사용자 토큰 받아오기
+    async function getUserToken(paramAuthCode : string | null){
         if (paramAuthCode !== null){
             const userResult = await axios.post(`${process.env.NEXT_PUBLIC_SOME_AUTH_URL}/user/kakao`,{},
                 {
@@ -41,7 +41,7 @@ export default function AuthRedirect() {
       const paramsAuthCode = params.get("code");
       
       // 인가 코드로 유저 데이터 받아오기
-      getUserInfo(paramsAuthCode);
+      getUserToken(paramsAuthCode);
       return () => {}
     }, [])
 
