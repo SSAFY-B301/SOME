@@ -1,10 +1,11 @@
 import { useQuery } from "react-query";
 import axios from "axios";
 import { useMutation } from "react-query";
-import { useSelector } from "react-redux";
+import { useDispatch, useSelector } from "react-redux";
 import { RootState } from "@/store/configureStore";
 import useCustomAxios from "@/features/customAxios";
 import { useRouter } from "next/router";
+import { setALbumIdState } from "@/features/albumStatusSlice";
 
 // 남사친 페이지
 /**
@@ -41,7 +42,7 @@ interface InviteFriendType {
 export const albumMutation = () => {
   const { customBoyAxios } = useCustomAxios();
   const router = useRouter();
-
+  const dispatch = useDispatch();
   // [POST] 앨범 생성
   const { mutate: createAlbum } = useMutation(
     (newAlbum: AlbumCreateType) => {
@@ -56,6 +57,7 @@ export const albumMutation = () => {
       },
       onSuccess: (data, variables, context) => {
         console.log("success", data, variables, context);
+        dispatch(setALbumIdState(data.data.data.album_id));
         router.push(`/album/${data.data.data.album_id}`);
       },
       onSettled: () => {
