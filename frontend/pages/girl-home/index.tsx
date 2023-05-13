@@ -32,7 +32,7 @@ export default function Home() {
   const dispatch = useDispatch();
   
   //react-query
-  const {getUserInfo} = userQuery();
+  const {getUserInfo, userStatus} = userQuery();
   const {resultData} = getGirlList();
   const queryClient = useQueryClient();
   
@@ -76,7 +76,12 @@ export default function Home() {
         <CustomOverlayMap key={5} position={{lat : location.lat, lng:location.lng}}>
           <div className="relative w-52 h-52">
             <div className={`absolute w-52 h-52 rounded-full ${girlStyles.loader_back} ${girlStyles.loader_animation} ${girlStyles.loader}`}></div>
-            <div className={`top-20 left-20 z-10 absolute w-12 h-12 bg-center bg-cover rounded-full ${girlStyles.inner}`} style={{backgroundImage : `url(${getUserInfo ? getUserInfo.user_img : ""})`}}></div>
+            {userStatus === "success" &&
+              <div className={`top-20 left-20 z-10 absolute w-12 h-12 bg-center bg-cover rounded-full ${girlStyles.inner}`} style={{backgroundImage : `url(${getUserInfo.user_img})`}}></div>
+            }
+            {userStatus !== "success" && 
+              <div  className={`top-20 left-20 z-10 absolute w-12 h-12 bg-gray-400 rounded-full`}></div>
+            }
           </div>
         </CustomOverlayMap>
         {resultData !== undefined && <>

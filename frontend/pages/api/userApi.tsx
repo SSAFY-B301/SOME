@@ -10,7 +10,7 @@ export const userQuery = () => {
     const router = useRouter();
     const queryKey = "/user/info";
     
-    const { data : queryData } = useQuery(["userInfo"], () =>
+    const { data : queryData, status : userStatus } = useQuery(["userInfo"], () =>
         customAuthAxios.get(queryKey),
         {
             onSuccess: (data) => {
@@ -21,9 +21,6 @@ export const userQuery = () => {
             }
         }
     );
-    let getUserInfo: UserInfoType | undefined;
-    if (queryData?.data.status_code) {
-        getUserInfo = queryData.data.data;
-    }
-    return { getUserInfo };
+    let getUserInfo =  queryData?.data.data;
+    return { getUserInfo, userStatus };
   };
