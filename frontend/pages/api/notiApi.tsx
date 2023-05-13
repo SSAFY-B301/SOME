@@ -1,6 +1,6 @@
 import useCustomAxios from "@/features/customAxios";
-import { AlbumInviteRequestType, NotiType, SnsRequestType, statusChangeRequestType } from "@/types/NotiType";
-import { useInfiniteQuery, useMutation, useQuery, useQueryClient } from "react-query";
+import { AlbumInviteRequestType, SnsRequestType, statusChangeRequestType } from "@/types/NotiType";
+import { useInfiniteQuery, useMutation, useQueryClient } from "react-query";
 
 const { customNotiAxios } = useCustomAxios();
 
