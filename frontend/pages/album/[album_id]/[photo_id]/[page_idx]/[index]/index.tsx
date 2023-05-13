@@ -17,7 +17,6 @@ import {
   DeleteModal,
   VoteModal,
   Nav,
-  VoteCurrentModal,
   ThumbnailModal,
 } from "@/components/photo-detail";
 import styles from "./photo.module.scss";
