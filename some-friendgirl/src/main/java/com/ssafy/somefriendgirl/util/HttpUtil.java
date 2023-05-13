@@ -3,6 +3,7 @@ package com.ssafy.somefriendgirl.util;
 import com.google.gson.JsonElement;
 import com.google.gson.JsonObject;
 import lombok.extern.slf4j.Slf4j;
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Component;
 
 import java.net.HttpURLConnection;
@@ -12,12 +13,12 @@ import java.net.URL;
 @Component
 public class HttpUtil {
 
-    private static String requestUrl = "http://3.35.18.146:9000/auth/user/userid";
-
-    public static String requestParingToken(String token){
+    @Value("${some-url.auth}")
+    private String auth_url;
+    public String requestParingToken(String token){
         try{
-            log.info("url : {}", requestUrl);
-            URL url = new URL(requestUrl);  // URL 객체
+            log.info("url : {}", auth_url + "/user/userid");
+            URL url = new URL(auth_url + "/user/userid");  // URL 객체
 
             // 우리 auth 서버에 HTTP 요청
             HttpURLConnection conn = (HttpURLConnection) url.openConnection();
