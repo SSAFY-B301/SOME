@@ -30,3 +30,5 @@ spring:
 logging.level:
   org.hibernate.SQL: debug
 #  org.hibernate.type: trace
+some-url:
+  auth: http://3.35.18.146:9000/auth
