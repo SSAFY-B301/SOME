@@ -13,12 +13,13 @@ import java.net.URL;
 @Component
 public class HttpUtil {
 
-    private static String requestUrl = "http://3.35.18.146:9000/auth/user/userid";
+    @Value("${some-url.auth}")
+    private String auth_url;
 
-    public static String requestParingToken(String token){
+    public String requestParingToken(String token){
         try{
-            log.info("url : {}", requestUrl);
-            URL url = new URL(requestUrl);  // URL 객체
+            log.info("url : {}", auth_url + "/user/userid");
+            URL url = new URL(auth_url + "/user/userid");  // URL 객체
 
             // 우리 auth 서버에 HTTP 요청
             HttpURLConnection conn = (HttpURLConnection) url.openConnection();
