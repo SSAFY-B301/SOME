@@ -22,6 +22,7 @@ import com.ssafy.somefriendboy.repository.userphotolike.UserPhotoLikeRepository;
 import com.ssafy.somefriendboy.util.HttpUtil;
 import lombok.RequiredArgsConstructor;
 import org.springframework.amqp.rabbit.core.RabbitTemplate;
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.core.io.ByteArrayResource;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
@@ -51,6 +52,9 @@ public class AlbumPhotoService {
     private final RabbitTemplate rabbitTemplate;
     private final AlbumPhotoSNSRepository albumPhotoSNSRepository;
     private static final String EXCHANGE_NAME = "some.noti";
+
+    @Value("${some-url.fast-api}")
+    private String ai_url;
     public ResponseDto insertPhoto(List<MultipartFile> multipartFiles, List<MetaDataDto> metaDataDtos, Long albumId, String accessToken) throws ImageProcessingException, IOException {
         Map<String, Object> result = new HashMap<>();
         String userId = tokenCheck(accessToken);
@@ -265,7 +269,6 @@ public class AlbumPhotoService {
     }
 
     private List<List<Long>> requestToFAST(List<MultipartFile> multipartFiles) throws IOException {
-        String url = "http://3.35.18.146:8000/yolo/file";
 
         RestTemplate restTemplate = new RestTemplate();
 
@@ -290,7 +293,7 @@ public class AlbumPhotoService {
 
         // Request
         ResponseEntity<String> responseEntity = restTemplate.exchange(
-                url,
+                ai_url,
                 HttpMethod.POST,
                 requestMessage,
                 String.class
