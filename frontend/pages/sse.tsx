@@ -8,42 +8,35 @@ function Sse() {
     const [message, setMessage] = useState();   
     function notiPermission() {
         Notification.requestPermission().then((result) => {
-            alert(result)
             if (result === "granted") {
                 alert("노티 설정 완료"+result);
             }
           });
-        alert(Notification.permission)
     }       
     function connectHandler() {
         const parseToken = JSON.parse(window.localStorage.getItem("access_token") || '{}').access_token;
-        
-
-        
-        const sse = new EventSourcePolyfill(`http://3.35.18.146:9003/noti/noti/subscribe`, {
-            headers: {
-                "access_token": parseToken,
-            }
-        });
-        sse.onopen = function () {
-            console.log("SSE 연결!!");
-          };
-        sse.onerror = function (error) {
-            console.log("SSE 에러", error, sse);
-            sse.close();
-        };
-        sse.onmessage = (event) => {
-            const parseMsg = JSON.parse(event.data);
-            sendNoti();
-            console.log(typeof event.data)
-            console.log(event.data);
-            console.log(event.type);
-            console.log(event.target);
-            console.log(event.lastEventId);
-        }
-        console.log(sse);
-    }
-    async function sendNoti() {
+        sendNoti("hi");
+        // const sse = new EventSourcePolyfill(`${process.env.NEXT_PUBLIC_SOME_NOTI_URL}/noti/subscribe`, {
+        // // const sse = new EventSourcePolyfill(`http://3.35.18.146:9003/noti/noti/subscribe`, {
+        //     headers: {
+        //         "access_token": parseToken,
+        //     }
+        // });
+        // sse.onopen = function () {
+        //     console.log("SSE 연결!!");
+        //   };
+        // sse.onerror = function (error) {
+        //     console.log("SSE 에러", error, sse);
+        //     sse.close();
+        // };
+        // sse.onmessage = (event) => {
+        //     const parseMsg = JSON.parse(event.data);
+        //     console.log(parseMsg.type)
+        //     console.log(parseMsg.content)
+        // }
+        // console.log(sse);
+    };
+    async function sendNoti(msg : any) {
         const registration = await navigator.serviceWorker.getRegistration();
         const showNotification = (body : any) => {
             const title = 'What PWA Can Do Today';
