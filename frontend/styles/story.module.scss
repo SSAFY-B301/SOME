@@ -8,23 +8,42 @@ $main-color: linear-gradient(
 
 .story {
   position: fixed;
-  width: 100vw;
-  height: 100vh;
+  width: 0vw;
+  height: 0vh;
+  // width: 100vw;
+  // height: 100vh;
+  // border-radius: 8px;
   color: white;
-  background-color: black;
+  // background-color: #2f2f30;
+  background: linear-gradient(to Bottom, #2f2f30, #373738);
   z-index: 9999;
   opacity: 0;
-  animation: openStory 0.5s forwards;
+  animation: openStory 0.7s forwards;
+}
+
+.prev::after {
+  content: "";
+  background: linear-gradient(to Right, #2f2f309e, #2f2f3000);
+  position: absolute;
+  opacity: 1;
+  left: 0;
+  top: 0;
+  width: 20%;
+  height: 100%;
 }
 
 @keyframes openStory {
   0% {
     opacity: 0;
+    width: 0vw;
+    height: 0vh;
   }
   100% {
     opacity: 1;
     top: 0px;
     left: 0px;
+    width: 100vw;
+    height: 100vh;
   }
 }
 
@@ -34,9 +53,28 @@ $main-color: linear-gradient(
   background-size: contain;
   background-repeat: no-repeat;
   background-position: center;
+  opacity: 0;
+  animation: img 0.25s forwards;
+}
+
+@keyframes img {
+  0% {
+    opacity: 0;
+  }
+
+  100% {
+    opacity: 1;
+  }
 }
 
 .info_container {
+  position: fixed;
+  z-index: 9999;
+  width: 100vw;
+  top: 0px;
+  left: 0px;
+  color: white;
+
   nav {
     padding: 8px 6px;
     display: flex;
@@ -67,7 +105,7 @@ $main-color: linear-gradient(
         top: 0;
         width: 0%;
         height: 100%;
-        animation: now_read 4s forwards;
+        animation: now_read 10s cubic-bezier(0.36, 0.34, 0.6, 0.6) infinite;
       }
     }
     .info {

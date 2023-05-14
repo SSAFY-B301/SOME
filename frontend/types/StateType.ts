@@ -52,6 +52,7 @@ export interface StoryType {
   currentAlbumId: number;
   albumIndex: number;
   notiIds: number[];
+  position: number[];
 }
 
 export interface TotalStateType {
