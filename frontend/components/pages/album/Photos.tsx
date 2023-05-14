@@ -78,7 +78,11 @@ function Photos({
     >
       {isAlbumLoading() ? (
         // TODO : 로딩중
-        <LoadingPhotos />
+        <div key={-2}>
+          {[...Array(10)].map((_, i) => (
+            <LoadingPhoto key={i} />
+          ))}
+        </div>
       ) : (
         <>
           {!isSelect && (

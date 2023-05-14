@@ -6,7 +6,7 @@ export interface StateType {
   albumStatus: AlbumStatusType;
   photoUpload: photoUploadType;
   userAgent: UserAgentType;
-  home: HomeType;
+  story: StoryType;
   total: TotalStateType;
 }
 
@@ -47,9 +47,11 @@ export interface UserAgentType {
   userAgent: string;
 }
 
-export interface HomeType {
+export interface StoryType {
   isCurrentStory: boolean;
-  CurrentAlbumId: number;
+  currentAlbumId: number;
+  albumIndex: number;
+  notiIds: number[];
 }
 
 export interface TotalStateType {

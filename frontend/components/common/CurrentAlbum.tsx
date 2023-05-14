@@ -9,9 +9,11 @@ import { useDispatch, useSelector } from "react-redux";
 import {
   endCurrentStory,
   setCurrentAlbumId,
+  setAlbumIndex,
   startCurrentStory,
-} from "@/features/homeSlice";
+} from "@/features/storySlice";
 import { StateType } from "@/types/StateType";
+import Story from "./Story";
 
 export default function CurrentAlbum() {
   const router = useRouter();
@@ -21,19 +23,18 @@ export default function CurrentAlbum() {
   const dispatch = useDispatch();
 
   const isCurrentStory = useSelector(
-    (state: StateType) => state.home.isCurrentStory
+    (state: StateType) => state.story.isCurrentStory
   );
-  const CurrentAlbumId = useSelector(
-    (state: StateType) => state.home.CurrentAlbumId
+  const currentAlbumId = useSelector(
+    (state: StateType) => state.story.currentAlbumId
   );
 
   const currentClick = (albumId: number) => {
     dispatch(setCurrentAlbumId(albumId));
     dispatch(startCurrentStory());
-  };
+    const index = getCurrent.findIndex((album) => album.album_id === albumId);
 
-  const endCurrent = () => {
-    dispatch(endCurrentStory());
+    dispatch(setAlbumIndex(index));
   };
 
   const currents: React.ReactNode =
@@ -73,8 +74,8 @@ export default function CurrentAlbum() {
               {currentAlbum.album_name}
             </p>
           </div>
-          {isCurrentStory && CurrentAlbumId === currentAlbum.album_id && (
-            <section className={styles.story} onClick={endCurrent}></section>
+          {isCurrentStory && currentAlbumId === currentAlbum.album_id && (
+            <Story />
           )}
         </div>
       ))

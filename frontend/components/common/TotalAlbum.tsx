@@ -76,65 +76,64 @@ function TotalAlbumItems() {
     "https://images.unsplash.com/photo-1661956602926-db6b25f75947?ixlib=rb-4.0.3&ixid=MnwxMjA3fDF8MHxlZGl0b3JpYWwtZmVlZHwyMXx8fGVufDB8fHx8&auto=format&fit=crop&w=500&q=60",
   ];
 
-  const totalAlbums: React.ReactNode =
-    getTotal && false ? (
-      getTotal.map((album: TotalAlbumType) => (
-        <div key={album.album_id} className="relative">
-          <div
-            onClick={() => router.push(`/album/${album.album_id}`)}
-            className={`flex flex-col items-end justify-end bg-center bg-cover relative ${styles.total_item}`}
-            style={{
-              backgroundImage: `url(${
-                album.thumbnail_photo_url
-                  ? album.thumbnail_photo_url
-                  : default_profile[album.album_id % 4]
-              })`,
-              padding: "2.051vw",
-              borderRadius: "3.077vw",
-            }}
-          >
-            <div className="flex flex-col items-end text-white text-left">
-              <span>{album.album_name}</span>
-              <span>
-                {album.album_created_date.slice(0, 10).replaceAll("-", ".")}
-              </span>
-            </div>
+  const totalAlbums: React.ReactNode = getTotal ? (
+    getTotal.map((album: TotalAlbumType) => (
+      <div key={album.album_id} className="relative">
+        <div
+          onClick={() => router.push(`/album/${album.album_id}`)}
+          className={`flex flex-col items-end justify-end bg-center bg-cover relative ${styles.total_item}`}
+          style={{
+            backgroundImage: `url(${
+              album.thumbnail_photo_url
+                ? album.thumbnail_photo_url
+                : default_profile[album.album_id % 4]
+            })`,
+            padding: "2.051vw",
+            borderRadius: "3.077vw",
+          }}
+        >
+          <div className="flex flex-col items-end text-white text-left">
+            <span>{album.album_name}</span>
+            <span>
+              {album.album_created_date.slice(0, 10).replaceAll("-", ".")}
+            </span>
           </div>
-          <HeartIcon
-            onClick={() => mutate(album.album_id)}
-            fill={album.isAlbumFav ? "red" : "none"}
-            stroke={album.isAlbumFav ? "red" : "white"}
-            style={{
-              position: "absolute",
-              top: "16px",
-              left: "122px",
-              margin: "8px",
-            }}
-            width="6.154vw"
-            height="6.154vw"
-          />
         </div>
-      ))
-    ) : (
-      <div
-        className="flex flex-col justify-center items-center gap-4"
-        style={{ width: "91.794vw", height: "153.846vw" }}
-      >
-        <div
-          className="flex flex-col justify-end items-center"
-          style={{ height: "76.923vw" }}
-        >
-          <span>아직 앨범이 없습니다</span>
-          <span>새로운 앨범을 생성하세요!</span>
-        </div>
-        <div
-          className="flex items-end"
-          style={{ height: "76.923vw", paddingBottom: "2.051vw" }}
-        >
-          <span className={styles.down}></span>
-        </div>
+        <HeartIcon
+          onClick={() => mutate(album.album_id)}
+          fill={album.isAlbumFav ? "red" : "none"}
+          stroke={album.isAlbumFav ? "red" : "white"}
+          style={{
+            position: "absolute",
+            top: "16px",
+            left: "122px",
+            margin: "8px",
+          }}
+          width="6.154vw"
+          height="6.154vw"
+        />
       </div>
-    );
+    ))
+  ) : (
+    <div
+      className="flex flex-col justify-center items-center gap-4"
+      style={{ width: "91.794vw", height: "153.846vw" }}
+    >
+      <div
+        className="flex flex-col justify-end items-center"
+        style={{ height: "76.923vw" }}
+      >
+        <span>아직 앨범이 없습니다</span>
+        <span>새로운 앨범을 생성하세요!</span>
+      </div>
+      <div
+        className="flex items-end"
+        style={{ height: "76.923vw", paddingBottom: "2.051vw" }}
+      >
+        <span className={styles.down}></span>
+      </div>
+    </div>
+  );
 
   return (
     <section className=" overflow-scroll">
