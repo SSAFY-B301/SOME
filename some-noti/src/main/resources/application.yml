@@ -9,6 +9,14 @@ spring:
     port: 5672
     username: guest
     password: guest
+  data:
+    mongodb:
+      host: 3.35.18.146
+      port: 27017
+      authentication-database: admin
+      database: some
+      username: some
+      password: '!23Qwe'
   mvc:
     pathmatch:
       matching-strategy: ant_path_matcher
