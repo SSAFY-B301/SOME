@@ -14,12 +14,21 @@ import { StateType } from "@/types/StateType";
 export default function Home() {
   //로그인 상태인지 확인하고, 로그인 안 되어 있으면 로그인 페이지로 이동
   const router = useRouter();
+  
   const { getUserInfo } = userQuery();
+  
   const userAgent = useSelector(
     (state: StateType) => state.userAgent.userAgent
   );
   CheckDevice();
+
+  async function NotificationPermission() {
+    const permission = await window.Notification.requestPermission();
+    console.log(permission);
+  }
   useEffect(() => {
+    NotificationPermission();
+
     let timeout;
     const isLogin =
       window.localStorage.getItem("access_token") === null ? false : true;
