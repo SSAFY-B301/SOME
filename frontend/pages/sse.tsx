@@ -16,7 +16,7 @@ function Sse() {
     function connectHandler() {
         const parseToken = JSON.parse(window.localStorage.getItem("access_token") || '{}').access_token;
         sendNoti("새로운 사진 등록", "정상민 님이 새로운 사진을 등록하셨습니다.");
-        const sse = new EventSourcePolyfill(`http://3.35.18.146:9003/noti/noti/subscribe`, {
+        const sse = new EventSourcePolyfill(`http://localhost:9003/noti/noti/subscribe`, {
             headers: {
                 "access_token" : parseToken,
             }
