@@ -21,6 +21,7 @@ public class MessageQueueListener {
 
     @RabbitListener(queues = "some.queue")
     public void receiveMessage(MQDto message) throws IOException {
+        log.info("MQ인식, type : {}",message.getType().toString());
         ObjectMapper mapper = new ObjectMapper();
         if(message.getType().equals(NotiType.INVITE)){
             NotiInviteCreateDto notiInviteCreateDto = mapper.convertValue(message.getData(),NotiInviteCreateDto.class);
