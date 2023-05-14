@@ -11,9 +11,11 @@ import {
   setCurrentAlbumId,
   setAlbumIndex,
   startCurrentStory,
+  setPosition,
 } from "@/features/storySlice";
 import { StateType } from "@/types/StateType";
 import Story from "./Story";
+import { MouseEvent } from "react";
 
 export default function CurrentAlbum() {
   const router = useRouter();
@@ -29,11 +31,14 @@ export default function CurrentAlbum() {
     (state: StateType) => state.story.currentAlbumId
   );
 
-  const currentClick = (albumId: number) => {
+  const currentClick = (
+    albumId: number,
+    e: MouseEvent<HTMLDivElement, globalThis.MouseEvent>
+  ) => {
     dispatch(setCurrentAlbumId(albumId));
     dispatch(startCurrentStory());
     const index = getCurrent.findIndex((album) => album.album_id === albumId);
-
+    dispatch(setPosition([e.clientY, e.clientX]));
     dispatch(setAlbumIndex(index));
   };
 
@@ -41,7 +46,7 @@ export default function CurrentAlbum() {
     getCurrent && getCurrent.length !== 0 ? (
       getCurrent.map((currentAlbum: CurrentAlbumType) => (
         <div key={currentAlbum.album_id}>
-          <div onClick={() => currentClick(currentAlbum.album_id)}>
+          <div onClick={(e) => currentClick(currentAlbum.album_id, e)}>
             <div
               className="bg-center bg-cover"
               style={{
