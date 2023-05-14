@@ -63,7 +63,7 @@ public class AlbumPhotoService {
             return setResponseDto(result, "토큰 만료", 450);
         }
 
-        List<List<Long>> categories = requestToFAST(multipartFiles);
+//        List<List<Long>> categories = requestToFAST(multipartFiles);
         LinkedList<AlbumPhoto> albumPhotos = new LinkedList<>();
 
         for (int i = 0; i < metaDataDtos.size(); i++) {
@@ -77,7 +77,6 @@ public class AlbumPhotoService {
                     .originUrl(metaDataDtos.get(i).getOriginUrl())
                     .resizeUrl(metaDataDtos.get(i).getResizeUrl())
                     .status(PhotoStatus.NORMAL)
-                    .categoryId(categories.get(i))
                     .albumId(albumId)
                     .userId(userId)
                     .build();
@@ -118,7 +117,11 @@ public class AlbumPhotoService {
             rabbitTemplate.convertAndSend(EXCHANGE_NAME, "some.route.#", mqDto);
         }
         Long photoId = albumPhotos.getLast().getPhotoId();
-
+        MQDto mq = MQDto.builder()
+                .type(NotiType.AI)
+                .data(AiCategoryCreateDto.builder().multipartFiles(multipartFiles).photoIds(photoIds).build())
+                .build();
+        rabbitTemplate.convertAndSend(EXCHANGE_NAME, "some.route.#", mq);
         //앨범에 최신 업로드 사진 아이디 갱신하기
         if (photoId != null) {
             albumRepository.modifyAlbumRecentPhoto(albumId, photoId);
