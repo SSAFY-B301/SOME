@@ -10,6 +10,7 @@ import { useRouter } from "next/router";
 import axios from "axios";
 import { userQuery } from "./api/userApi";
 import { ProfileActivity, ProfileAlarm } from "@/components/pages/profile/ProfileData";
+import Link from "next/link";
 
 export default function MyPage() {
   const router = useRouter();
@@ -54,7 +55,9 @@ export default function MyPage() {
           style={{ width: "89.744vw" }}
         >
           <div className="flex justify-between">
-            <p className="text-xl font-bold">기본정보</p>
+            <Link href="/sse">
+              <p className="text-xl font-bold">기본정보</p>
+            </Link>
           </div>
 
           <div className="flex items-center gap-x-10">
