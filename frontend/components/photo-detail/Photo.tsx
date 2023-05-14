@@ -1,28 +1,27 @@
-import React from "react";
-import PhotoFeatures from "./PhotoFeatures";
+import React, { useState } from "react";
 import { TransformWrapper, TransformComponent } from "react-zoom-pan-pinch";
 
 interface Props {
   imgSrc: string;
-  photoId: number;
   clickImg(): void;
   showConcentrationMode: boolean;
-  isZoom: boolean;
-  ratio: number;
   // onTouchEnd(e: React.TouchEvent): void;
   // onTouchStart(e: React.TouchEvent): void;
 }
 
 const Photo = ({
   imgSrc,
-  photoId,
   clickImg,
   showConcentrationMode,
-  isZoom,
-  ratio,
 }: // onTouchEnd,
 // onTouchStart,
 Props): JSX.Element => {
+  const [scale, setScale] = useState<number>(1);
+
+  const onZoomHandler = (state: any) => {
+    setScale(state.state.scale);
+  };
+
   return (
     <div
       className={
@@ -36,13 +35,13 @@ Props): JSX.Element => {
     >
       <div className="w-screen h-screen flex justify-center items-center overflow-hidden">
         <TransformWrapper
-          initialScale={1}
+          initialScale={scale}
           minScale={1}
           maxScale={5}
           disablePadding={true}
-          centerOnInit={true}
-          // panning={isZoom ? { disabled: false } : { disabled: true }}
+          panning={scale == 1 ? { disabled: true } : { disabled: false }}
           doubleClick={{ disabled: true }}
+          onZoomStop={(state) => onZoomHandler(state)}
         >
           <TransformComponent>
             <img src={`${imgSrc}`} />
