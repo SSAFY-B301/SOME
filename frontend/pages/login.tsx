@@ -2,6 +2,7 @@ import Link from "next/link";
 import Slider from "react-slick";
 import styles from "@/styles/login.module.scss";
 import { transform } from "typescript";
+import { CheckDevice } from "@/components/common/CheckDevice";
 
 export default function Login() {
   const kakaoAuthURL = process.env.NEXT_PUBLIC_KAKAO_AUTH_URL;
@@ -115,6 +116,7 @@ export default function Login() {
     slidesToShow: 1,
     slidesToScroll: 1,
   };
+  CheckDevice();
 
   return (
     <div className="w-screen h-screen bg-white overflow-hidden">
