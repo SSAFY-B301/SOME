@@ -29,6 +29,7 @@ function Sse() {
             sse.close();
         };
         sse.onmessage = (event) => {
+            console.log(event.lastEventId);
             const parseMsg = JSON.parse(event.data);
             console.log(parseMsg.type)
             console.log(parseMsg.content)
