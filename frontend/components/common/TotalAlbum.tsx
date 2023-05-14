@@ -9,36 +9,35 @@ import { Mutations, useGetTotal } from "@/pages/api/albumApi";
 import styles from "styles/total.module.scss";
 
 // 아이콘
-import SearchIcon from "public/icons/MagnifyingGlass.svg";
 import HeartIcon from "public/icons/Heart.svg";
 
 // 타입
 import { TotalAlbumType } from "types/AlbumTypes";
-import { LoadingTotal } from "./Loading";
+import { useDispatch, useSelector } from "react-redux";
+import { StateType } from "@/types/StateType";
+import { setIsMove, setIsTotal, setMoveEnd } from "@/features/totalSlice";
 
 function TotalAlbum() {
-  const [isTotal, setIsTotal] = useState<boolean>(false);
-  const [isMove, setIsMove] = useState<boolean>(false);
   const [touchPosition, setTouchPosition] = useState<number>(0);
-  const [moveEnd, setMoveEnd] = useState(true);
   const { getTotal, getTotalIsLoading } = useGetTotal();
+
+  const dispatch = useDispatch();
+
+  const isMove = useSelector((state: StateType) => state.total.isMove);
+  const isTotal = useSelector((state: StateType) => state.total.isTotal);
+  const moveEnd = useSelector((state: StateType) => state.total.moveEnd);
+
   return (
     <section
-      onTransitionEnd={() => setMoveEnd(true)}
+      onTransitionEnd={() => dispatch(setMoveEnd(true))}
       style={{ top: `${touchPosition}` + "px" }}
       className={`${styles.total_album} ${
         !isMove && (isTotal ? styles.click_total_album : styles.no_click)
       } bg-white dark:bg-dark-block`}
     >
-      <Header
-        setIsTotal={setIsTotal}
-        setIsMove={setIsMove}
-        setTouchPosition={setTouchPosition}
-        isTotal={isTotal}
-        setMoveEnd={setMoveEnd}
-      />
+      <Header setTouchPosition={setTouchPosition} />
       {/* // TODO : 트랜지션 end 잡아서 내려갈때 로딩 X, 데이터 없을 때 표시 */}
-      {/* {isMove && (getTotalIsLoading || !isTotal || !moveEnd) ? (
+      {isMove || getTotalIsLoading || !isTotal || !moveEnd ? (
         <>
           <div className={styles.loading_box}>
             <div className={styles.lds_roller}>
@@ -53,24 +52,18 @@ function TotalAlbum() {
             </div>
           </div>
         </>
-      ) : ( */}
-      <TotalAlbumItems isTotal={isTotal} moveEnd={moveEnd} isMove={isMove} />
-      {/* )} */}
+      ) : (
+        <TotalAlbumItems />
+      )}
     </section>
   );
-}
-
-interface TotalAlbumItemsType {
-  isTotal: boolean;
-  moveEnd: boolean;
-  isMove: boolean;
 }
 
 /**
  * 전체 앨범 리스트
  * @returns
  */
-function TotalAlbumItems(props: TotalAlbumItemsType) {
+function TotalAlbumItems() {
   const router = useRouter();
   const { getTotal, getTotalIsLoading } = useGetTotal();
 
@@ -122,7 +115,24 @@ function TotalAlbumItems(props: TotalAlbumItemsType) {
       </div>
     ))
   ) : (
-    <span>없음</span>
+    <div
+      className="flex flex-col justify-center items-center gap-4"
+      style={{ width: "91.794vw", height: "153.846vw" }}
+    >
+      <div
+        className="flex flex-col justify-end items-center"
+        style={{ height: "76.923vw" }}
+      >
+        <span>아직 앨범이 없습니다</span>
+        <span>새로운 앨범을 생성하세요!</span>
+      </div>
+      <div
+        className="flex items-end"
+        style={{ height: "76.923vw", paddingBottom: "2.051vw" }}
+      >
+        <span className={styles.down}></span>
+      </div>
+    </div>
   );
 
   return (
@@ -141,11 +151,7 @@ function TotalAlbumItems(props: TotalAlbumItemsType) {
 }
 
 interface HeaderType {
-  setIsTotal: React.Dispatch<React.SetStateAction<boolean>>;
-  setIsMove: React.Dispatch<React.SetStateAction<boolean>>;
   setTouchPosition: React.Dispatch<React.SetStateAction<number>>;
-  isTotal: boolean;
-  setMoveEnd: React.Dispatch<React.SetStateAction<boolean>>;
 }
 
 /**
@@ -153,39 +159,37 @@ interface HeaderType {
  * @param props
  * @returns
  */
-function Header({
-  setIsTotal,
-  setIsMove,
-  setTouchPosition,
-  isTotal,
-  setMoveEnd,
-}: HeaderType) {
+function Header({ setTouchPosition }: HeaderType) {
   const [touchStart, setTouchStart] = useState<number>(0);
   const [isSearch, setIsSearch] = useState<boolean>(false);
   const [flag, setFlag] = useState<boolean>(false);
+
+  const isTotal = useSelector((state: StateType) => state.total.isTotal);
+
   useEffect(() => {
     !isTotal && setIsSearch(false);
   }, [isTotal]);
+  const dispatch = useDispatch();
 
   return (
     <div
       onClick={() => {
-        setIsTotal(true);
+        dispatch(setIsTotal(true));
       }}
       onTouchStart={(e) => {
         setTouchStart(e.changedTouches[0].pageY);
       }}
       onTouchMove={(e) => {
         setTouchPosition(e.changedTouches[0].pageY);
-        setIsMove(true);
-        setMoveEnd(false);
+        dispatch(setIsMove(true));
+        dispatch(setMoveEnd(false));
       }}
       onTouchEnd={(e) => {
-        setIsMove(false);
+        dispatch(setIsMove(false));
         touchStart - e.changedTouches[0].pageY >= 0
-          ? setIsTotal(true)
-          : setIsTotal(false);
-        setMoveEnd(false);
+          ? dispatch(setIsTotal(true))
+          : dispatch(setIsTotal(false));
+        !isTotal && dispatch(setMoveEnd(false));
       }}
       className="flex justify-between items-center w-full"
       style={{ padding: "4.103vw" }}
