@@ -65,4 +65,9 @@ public class EmitterRepositoryImpl implements EmitterRepository{
         );
 
     }
+
+    @Override
+    public Map<String, SseEmitter> getSseEmitters() {
+        return emitters;
+    }
 }
