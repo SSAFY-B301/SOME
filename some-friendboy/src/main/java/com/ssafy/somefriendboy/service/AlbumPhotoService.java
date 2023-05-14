@@ -77,6 +77,7 @@ public class AlbumPhotoService {
                     .originUrl(metaDataDtos.get(i).getOriginUrl())
                     .resizeUrl(metaDataDtos.get(i).getResizeUrl())
                     .status(PhotoStatus.NORMAL)
+                    .categoryId(categories.get(i))
                     .albumId(albumId)
                     .userId(userId)
                     .build();
