@@ -140,9 +140,10 @@ export const useInfinitePhotos = (page: number = 0, size: number = 27) => {
           lastPage: PhotoPageType,
           allPosts: PhotoPageType[]
         ) => {
-          return lastPage.now_page !== allPosts[0].total_page
-            ? lastPage.now_page + 1
-            : undefined;
+          return lastPage.is_last ? undefined : lastPage.now_page + 1;
+          // return lastPage.now_page !== allPosts[0].total_page
+          //   ? lastPage.now_page + 1
+          //   : undefined;
         },
       }
     );
