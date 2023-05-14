@@ -37,7 +37,7 @@ function Story() {
   useEffect(() => {
     setTimeout(() => {
       const notiId: number = albums[albumIndex].photo_list[photoIndex].noti_id;
-      statusMutation({ noti_id: notiId, noti_status: "DONE" });
+      // statusMutation({ noti_id: notiId, noti_status: "DONE" });
       if (photoIndex < photosLength - 1) {
         setPhotoIndex(photoIndex + 1);
       } else {
