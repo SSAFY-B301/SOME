@@ -5,7 +5,16 @@ import { EventSourcePolyfill, MessageEvent, Event } from "event-source-polyfill"
 
 
 function Sse() {
-    const [message, setMessage] = useState();          
+    const [message, setMessage] = useState();   
+    function notiPermission() {
+        Notification.requestPermission().then((result) => {
+            alert(result)
+            if (result === "granted") {
+                alert("노티 설정 완료"+result);
+            }
+          });
+        alert(Notification.permission)
+    }       
     async function sendNoti() {
         const registration = await navigator.serviceWorker.getRegistration();
         const showNotification = (body : any) => {
@@ -70,6 +79,7 @@ function Sse() {
 
   return (
     <div>
+        <button onClick={() => notiPermission()}>노티 허가 요청</button>
         <button>connect 요청</button>
         <div>{message}</div>
     </div>
