@@ -76,7 +76,7 @@ $main-color: linear-gradient(
 }
 
 .main_container {
-  height: calc(100% - 60.6px);
+  height: calc(100vh - 60.6px);
 }
 
 .albumText {
@@ -84,28 +84,32 @@ $main-color: linear-gradient(
 }
 
 .slide_container {
-  height: 100%;
+  height: calc(100vh - 60.6px);
+}
+
+.friends_container {
+  height: calc(100vh - 132.6px);
 }
 
 @keyframes slider {
   from {
     transform: translateY(0px);
-    height: 100%;
+    height: calc(100vh - 60.6px);
   }
   to {
     transform: translateY(80px);
-    height: calc(100% - 80px);
+    height: calc(100vh - 140.6px);
   }
 }
 
 @keyframes reverseSlider {
   from {
     transform: translateY(80px);
-    height: calc(100% - 80px);
+    height: calc(100vh - 140.6px);
   }
   to {
     transform: translateY(0px);
-    height: 100%;
+    height: calc(100vh - 60.6px);
   }
 }
 
