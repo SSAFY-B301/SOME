@@ -1,4 +1,10 @@
-import React, { ReactEventHandler, useEffect, useMemo, useState } from "react";
+import React, {
+  ReactEventHandler,
+  useEffect,
+  useMemo,
+  useState,
+  useRef,
+} from "react";
 import { useRouter } from "next/router";
 import Slider from "react-slick";
 import "slick-carousel/slick/slick.css";
@@ -11,7 +17,6 @@ import {
   DeleteModal,
   VoteModal,
   Nav,
-  VoteCurrentModal,
   ThumbnailModal,
 } from "@/components/photo-detail";
 import styles from "./photo.module.scss";
@@ -33,6 +38,17 @@ const PhotoDetail = (): JSX.Element => {
   const photo_id: number = Number(router.query.photo_id);
   const page_num: number = Number(router.query.page_idx);
   const page_idx: number = Number(router.query.index);
+
+  /**
+   * 캐러셀 인덱스 state
+   */
+  const [page, setPage] = useState<number>(page_num);
+  const [carouselIdx, setCarouselIdx] = useState<number>(page_idx);
+
+  /**
+   * 현재 사진 Id state
+   */
+  const [currentPhotoId, setPhotoId] = useState<number>(photo_id);
 
   /**
    * 상호작용 모달 state
@@ -64,33 +80,13 @@ const PhotoDetail = (): JSX.Element => {
    * isSnsAgree: 투표 결과 여부
    * isSnsRequest: 투표 진행 중 여부
    */
-  const {
-    photoDetail: photoDetail,
-    isSnsAgree: isSnsAgree,
-    isSnsRequest: isSnsRequest,
-  } = getPhoto(photo_id);
-
-  const { data: albumData } = useInfinitePhotos();
-  console.log(albumData?.pages[0].albumPhotoList);
+  const { photoDetail: photoDetail, isSnsRequest: isSnsRequest } =
+    getPhoto(photo_id);
 
   /**
-   * 페이지 이동 슬라이더 구현
+   * 캐러셀 구성할 사진 리스트
    */
-  // const onTouchStart = (e: React.TouchEvent) => {
-  //   setTouchedX(e.changedTouches[0].pageX);
-  //   setTouchedY(e.changedTouches[0].pageY);
-  // };
-
-  // const onTouchEnd = (e: React.TouchEvent) => {
-  //   const distanceX = touchedX - e.changedTouches[0].pageX;
-  //   const distanceY = touchedY - e.changedTouches[0].pageY;
-
-  //   if (distanceX > 30 && isZoom == false) {
-  //     console.log("다음 사진!");
-  //   } else if (distanceX < -30 && isZoom == false) {
-  //     console.log("이전 사진!");
-  //   }
-  // };
+  const { data: albumData } = useInfinitePhotos();
 
   /**
    * 다운로드 모달창 생성
@@ -105,20 +101,20 @@ const PhotoDetail = (): JSX.Element => {
    * 삭제 모달창 생성
    */
   const clickDelete = () => {
+    if (albumData) {
+      setPhotoId(albumData.pages[page].albumPhotoList[carouselIdx].photoId);
+    }
     showDeleteModal ? setDeleteModal(false) : setDeleteModal(true);
   };
 
   /**
    * 공유 요청 모달창 생성
    */
-  const clickVote = () => {
-    if (isSnsRequest) {
-      showVoteCurrentModal
-        ? setshowVoteCurrentModal(false)
-        : setshowVoteCurrentModal(true);
-    } else {
-      showVoteModal ? setVoteModal(false) : setVoteModal(true);
+  const clickVote = (photoId: number | undefined) => {
+    if (photoId) {
+      setPhotoId(photoId);
     }
+    showVoteModal ? setVoteModal(false) : setVoteModal(true);
   };
 
   /**
@@ -139,19 +135,24 @@ const PhotoDetail = (): JSX.Element => {
    * 썸네일 수정 API
    */
   const putThumbnail = () => {
-    const body: ThumbnailBodyType = {
-      album_id: photoDetail.albumId,
-      new_album_thumbnail_id: photoDetail.photoId,
-    };
-    mutateThumbnail(body);
+    if (albumData) {
+      const body: ThumbnailBodyType = {
+        album_id: album_id,
+        new_album_thumbnail_id:
+          albumData.pages[page].albumPhotoList[carouselIdx].photoId,
+      };
+      mutateThumbnail(body);
+    }
   };
 
   /**
    * 다운로드 API
    */
   const downloadPhoto = () => {
-    const url = photoDetail.s3Url;
-    useDownload(url);
+    if (albumData) {
+      const url = albumData.pages[page].albumPhotoList[carouselIdx].originUrl;
+      useDownload(url);
+    }
   };
 
   /**
@@ -159,8 +160,8 @@ const PhotoDetail = (): JSX.Element => {
    */
   const requestSns = () => {
     const body: SnsRequestType = {
-      album_id: photoDetail.albumId,
-      photo_id: photoDetail.photoId,
+      album_id: String(album_id),
+      photo_id: String(currentPhotoId),
     };
     mutateSns(body);
   };
@@ -178,13 +179,7 @@ const PhotoDetail = (): JSX.Element => {
       if (clickCount == 2) {
         clickCount = 0;
         if (isZoom) {
-          setIsZoom(false);
-          setRatio(0.7);
-          // console.log("줌 아웃");
-        } else {
-          setIsZoom(true);
-          setRatio(3);
-          // console.log("줌 인");
+          // console.log("doubleclick")
         }
       } else if (clickCount == 1) {
         clickCount = 0;
@@ -196,6 +191,24 @@ const PhotoDetail = (): JSX.Element => {
   };
 
   /**
+   * page 이동 처리
+   */
+  const setNextPage = (direction: string) => {
+    if (albumData) {
+      if (direction == "left" && page < albumData.pages.length - 1) {
+        // setPage(page + 1);
+        // setCarouselIdx(0);
+        // console.log(albumData.pages);
+        // console.log(albumData.pages.length);
+        // console.log("남은 페이지가 있습니다.");
+      } else if (direction == "right" && page > 0) {
+        // setPage(page - 1);
+        // setCarouselIdx(26);
+      }
+    }
+  };
+
+  /**
    * Slider 세팅값
    */
   const sliderSet = {
@@ -204,7 +217,9 @@ const PhotoDetail = (): JSX.Element => {
     speed: 500,
     slidesToShow: 1,
     slidesToScroll: 1,
-    initialSlide: page_idx,
+    initialSlide: carouselIdx,
+    beforeChange: (current: number, next: number) => setCarouselIdx(next),
+    onEdge: (direction: string) => setNextPage(direction),
   };
 
   return (
@@ -215,6 +230,9 @@ const PhotoDetail = (): JSX.Element => {
         <Nav title="앨범" />
       </div>
       <Slider
+        ref={(slider) => {
+          slider && slider.slickGoTo(carouselIdx);
+        }}
         className={
           showConcentrationMode
             ? "w-screen h-screen z-30 bg-black"
@@ -223,24 +241,23 @@ const PhotoDetail = (): JSX.Element => {
         {...sliderSet}
       >
         {albumData &&
-          albumData.pages[page_num].albumPhotoList.map(
+          albumData.pages[page].albumPhotoList.map(
             (photo): JSX.Element => (
               <div className="relative w-screen h-screen">
                 <div
                   className="absolute w-full h-20 z-20 flex items-center justify-center bg-white dark:bg-dark-block"
                   style={{ top: "15.385vw" }}
                 >
-                  <PhotoFeatures photoId={photo.photoId} />
+                  <PhotoFeatures
+                    photoId={photo.photoId}
+                    clickVote={clickVote}
+                    isSnsRequest={isSnsRequest}
+                  />
                 </div>
                 <Photo
                   imgSrc={photo.originUrl}
-                  photoId={photo.photoId}
                   clickImg={clickImg}
                   showConcentrationMode={showConcentrationMode}
-                  isZoom={isZoom}
-                  ratio={ratio}
-                  // onTouchEnd={onTouchEnd}
-                  // onTouchStart={onTouchStart}
                 />
               </div>
             )
@@ -256,10 +273,8 @@ const PhotoDetail = (): JSX.Element => {
         <Footer
           clickDownload={clickDownload}
           clickDelete={clickDelete}
-          clickVote={clickVote}
           clickThumbnail={clickThumbnail}
           theme={theme}
-          isSnsAgree={isSnsAgree}
         />
       </div>
       {showDownLoadModal && (
@@ -268,21 +283,20 @@ const PhotoDetail = (): JSX.Element => {
           downloadPhoto={downloadPhoto}
         />
       )}
-      {showDeleteModal && <DeleteModal clickDelete={clickDelete} />}
+      {showDeleteModal && (
+        <DeleteModal clickDelete={clickDelete} photoId={currentPhotoId} />
+      )}
       {showVoteModal && (
-        <VoteModal clickVote={clickVote} requestSns={requestSns} />
+        <VoteModal
+          clickVote={clickVote}
+          requestSns={requestSns}
+          photoId={currentPhotoId}
+        />
       )}
       {showThumbnailModal && (
         <ThumbnailModal
           clickThumbnail={clickThumbnail}
           putThumbnail={putThumbnail}
-        />
-      )}
-      {showVoteCurrentModal && (
-        <VoteCurrentModal
-          clickVote={clickVote}
-          requestSns={requestSns}
-          photoId={photo_id}
         />
       )}
     </div>
