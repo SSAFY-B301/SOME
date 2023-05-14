@@ -1,5 +1,6 @@
 import { getPhoto, useMutationPhoto } from "@/pages/api/photoDetailApi";
 import React, { useEffect, useState } from "react";
+import styles from "@/styles/inviteFriends.module.scss";
 
 /**
  * 사진 상세보기 특징 컴포넌트
@@ -69,10 +70,10 @@ const PhotoFeatures = ({ photoId, clickVote }: Props): JSX.Element => {
           <div>
             <svg
               xmlns="http://www.w3.org/2000/svg"
-              fill="blue"
+              fill="none"
               viewBox="0 0 24 24"
               strokeWidth={1.5}
-              stroke="currentColor"
+              stroke="blue"
               className="w-8 h-8"
             >
               <path
