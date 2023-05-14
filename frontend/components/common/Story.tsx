@@ -11,7 +11,7 @@ import { useGetCurrent } from "@/pages/api/currentAlbumApi";
 import { storyApiDataType } from "@/types/ApiTypes";
 
 function Story() {
-  const [timeoutId, setTimeoutId] = useState<ReturnType<typeof setTimeout>>(0);
+  const [timeoutId, setTimeoutId] = useState<ReturnType<typeof setTimeout>>();
   const dispatch = useDispatch();
   const { statusMutation } = useMutationNoti();
   const { getCurrent: getStoryData, getCurrentIsLoading: getStoryIsLoading } =
