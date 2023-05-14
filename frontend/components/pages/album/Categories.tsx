@@ -17,7 +17,7 @@ const categoriesTable: categoriesTable = {
   4: "동물",
   5: "운동",
   6: "물건",
-  7: "자연",
+  7: "기타",
 };
 
 const categories: number[] = [1, 2, 3, 4, 5, 6, 7];

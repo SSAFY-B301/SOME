@@ -15,7 +15,7 @@
 body {
   -ms-overflow-style: none; /* IE, Edge */
   scrollbar-width: none; /* Firefox */
-  touch-action: pan-y;
+  touch-action: none;
   &::-webkit-scrollbar {
     display: none; /* Chrome, Safari, Opera */
   }
