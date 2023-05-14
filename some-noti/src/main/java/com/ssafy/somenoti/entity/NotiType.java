@@ -1,5 +1,5 @@
 package com.ssafy.somenoti.entity;
 
 public enum NotiType {
-    INVITE,SNS,UPLOAD
+    INVITE,SNS,UPLOAD,AI
 }
