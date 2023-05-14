@@ -67,30 +67,24 @@ function Story() {
       if (isPrev) {
         // 이전 사진으로 이동
         if (photoIndex - 1 >= 0) {
-          console.log("전 사진");
           setPhotoIndex(photoIndex - 1);
         } else {
           if (albumIndex - 1 >= 0) {
-            console.log("전 앨범");
             setPhotoIndex(0);
             setAlbumIndex(albumIndex - 1);
           } else {
-            console.log("끝");
             dispatch(endCurrentStory());
           }
         }
       } else if (isNext) {
         // 다음 사진으로 이동
         if (photoIndex + 1 < photosLength) {
-          console.log("다음 사진");
           setPhotoIndex(photoIndex + 1);
         } else {
           if (albumIndex + 1 < albumLength) {
-            console.log("다음 앨범");
             setPhotoIndex(0);
             setAlbumIndex(albumIndex + 1);
           } else {
-            console.log("끝");
             dispatch(endCurrentStory());
           }
         }
@@ -98,21 +92,17 @@ function Story() {
     } else if (diffPosition > 0) {
       // 다음 앨범으로 이동
       if (albumIndex + 1 < albumLength) {
-        console.log("다음 앨범");
         setPhotoIndex(0);
         setAlbumIndex(albumIndex + 1);
       } else {
-        console.log("끝");
         dispatch(endCurrentStory());
       }
     } else {
       // 이전 앨범으로 이동
       if (albumIndex - 1 >= 0) {
-        console.log("전 앨범");
         setPhotoIndex(0);
         setAlbumIndex(albumIndex - 1);
       } else {
-        console.log("끝");
         dispatch(endCurrentStory());
       }
     }
@@ -125,29 +115,20 @@ function Story() {
 
   useEffect(() => {
     const id = setTimeout(() => {
-      console.log("TIMEOUT", timeoutId);
-
       const notiId: number = albums[albumIndex].photo_list[photoIndex].noti_id;
-      // statusMutation({ noti_id: notiId, noti_status: "DONE" });
+      statusMutation({ noti_id: notiId, noti_status: "DONE" });
       if (photoIndex < photosLength - 1) {
-        console.log("TEST1");
-
         setPhotoIndex(photoIndex + 1);
       } else {
-        console.log("TEST2");
         if (albumIndex + 1 == albumLength) {
           dispatch(endCurrentStory());
         }
         setPhotoIndex(0);
         setAlbumIndex(albumIndex + 1);
       }
-    }, 10000);
+    }, 4000);
     setTimeoutId(id);
   }, [albumIndex, photoIndex]);
-
-  useEffect(() => {
-    console.log("photoIndex", photoIndex);
-  }, [photoIndex]);
 
   return (
     <>
