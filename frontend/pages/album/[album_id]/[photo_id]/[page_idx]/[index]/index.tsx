@@ -42,6 +42,7 @@ const PhotoDetail = (): JSX.Element => {
   /**
    * 캐러셀 인덱스 state
    */
+  const [page, setPage] = useState<number>(page_num);
   const [carouselIdx, setCarouselIdx] = useState<number>(page_idx);
 
   /**
@@ -86,7 +87,6 @@ const PhotoDetail = (): JSX.Element => {
    * 캐러셀 구성할 사진 리스트
    */
   const { data: albumData } = useInfinitePhotos();
-  console.log(albumData?.pages[page_num].albumPhotoList);
 
   /**
    * 다운로드 모달창 생성
@@ -102,7 +102,7 @@ const PhotoDetail = (): JSX.Element => {
    */
   const clickDelete = () => {
     if (albumData) {
-      setPhotoId(albumData.pages[page_num].albumPhotoList[carouselIdx].photoId);
+      setPhotoId(albumData.pages[page].albumPhotoList[carouselIdx].photoId);
     }
     showDeleteModal ? setDeleteModal(false) : setDeleteModal(true);
   };
@@ -139,7 +139,7 @@ const PhotoDetail = (): JSX.Element => {
       const body: ThumbnailBodyType = {
         album_id: album_id,
         new_album_thumbnail_id:
-          albumData.pages[page_num].albumPhotoList[carouselIdx].photoId,
+          albumData.pages[page].albumPhotoList[carouselIdx].photoId,
       };
       mutateThumbnail(body);
     }
@@ -150,8 +150,7 @@ const PhotoDetail = (): JSX.Element => {
    */
   const downloadPhoto = () => {
     if (albumData) {
-      const url =
-        albumData.pages[page_num].albumPhotoList[carouselIdx].originUrl;
+      const url = albumData.pages[page].albumPhotoList[carouselIdx].originUrl;
       useDownload(url);
     }
   };
@@ -192,6 +191,24 @@ const PhotoDetail = (): JSX.Element => {
   };
 
   /**
+   * page 이동 처리
+   */
+  const setNextPage = (direction: string) => {
+    if (albumData) {
+      if (direction == "left" && page < albumData.pages.length - 1) {
+        // setPage(page + 1);
+        // setCarouselIdx(0);
+        // console.log(albumData.pages);
+        // console.log(albumData.pages.length);
+        // console.log("남은 페이지가 있습니다.");
+      } else if (direction == "right" && page > 0) {
+        // setPage(page - 1);
+        // setCarouselIdx(26);
+      }
+    }
+  };
+
+  /**
    * Slider 세팅값
    */
   const sliderSet = {
@@ -200,8 +217,9 @@ const PhotoDetail = (): JSX.Element => {
     speed: 500,
     slidesToShow: 1,
     slidesToScroll: 1,
-    initialSlide: page_idx,
+    initialSlide: carouselIdx,
     beforeChange: (current: number, next: number) => setCarouselIdx(next),
+    onEdge: (direction: string) => setNextPage(direction),
   };
 
   return (
@@ -223,7 +241,7 @@ const PhotoDetail = (): JSX.Element => {
         {...sliderSet}
       >
         {albumData &&
-          albumData.pages[page_num].albumPhotoList.map(
+          albumData.pages[page].albumPhotoList.map(
             (photo): JSX.Element => (
               <div className="relative w-screen h-screen">
                 <div
