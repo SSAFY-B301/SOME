@@ -33,12 +33,12 @@ function getPhoto(photoId: number) {
 function getSnsPhoto(photoId: number | undefined) {
   let snsResultData: PhotoType;
 
-  const { data: snsPhotoData } = useQuery(["sns", photoId], () =>
+  const { data: snsPhotoData, status: snsPhotoStatus } = useQuery(["sns", photoId], () =>
     customBoyAxios.get("/photo/detail?photoId=" + photoId)
   );
 
   snsResultData = snsPhotoData?.data.data.albumPhotoDetail;
-  return { snsResultData };
+  return { snsResultData,snsPhotoStatus };
 }
 
 function useMutationPhoto() {
