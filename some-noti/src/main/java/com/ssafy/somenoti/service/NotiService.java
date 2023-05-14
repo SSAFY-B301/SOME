@@ -14,6 +14,7 @@ import lombok.extern.slf4j.Slf4j;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.http.MediaType;
+import org.springframework.scheduling.annotation.Scheduled;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 import org.springframework.web.servlet.mvc.method.annotation.SseEmitter;
@@ -39,21 +40,38 @@ public class NotiService {
     private final AlbumRepository albumRepository;
     private final HttpUtil httpUtil;
 
+
+    @Scheduled(fixedDelay = 30000)
+    public void sseConnect(){
+        Map<String, SseEmitter> sseEmitters = emitterRepository.getSseEmitters();
+        sseEmitters.forEach(
+                (key, emitter) -> {
+                    Map<String,Object> subscribeData = new HashMap<>();
+                    subscribeData.put("content","연결유지");
+                    subscribeData.put("type","CONNECT");
+                    sendToClient(emitter, key, subscribeData);
+                }
+        );
+    }
+
     public SseEmitter subscribe(String accessToken, String lastEventId) {
         String userId = tokenCheck(accessToken);
         log.info("userId : "+ userId);
         String id = userId + "_" + System.currentTimeMillis();
 
         SseEmitter emitter = emitterRepository.save(id, new SseEmitter(DEFAULT_TIMEOUT));
-
         emitter.onCompletion(() -> emitterRepository.deleteById(id));
         emitter.onTimeout(() -> {
             emitterRepository.deleteById(id);
             emitter.complete();
         });
         Map<String,Object> subscribeData = new HashMap<>();
+        subscribeData = new HashMap<>();
         subscribeData.put("content","EventStream Created. [userId=" + userId + "]");
         subscribeData.put("type","SUBSCRIBE");
+
+        Map<String, SseEmitter> sseEmitters = emitterRepository.findAllEmitterStartWithId(userId);
+
         // 503 에러를 방지하기 위한 더미 이벤트 전송
         sendToClient(emitter, id, subscribeData);
 
@@ -182,7 +200,6 @@ public class NotiService {
                     .reconnectTime(500));
         } catch (IOException exception) {
             emitterRepository.deleteById(emitterId);
-            throw new RuntimeException("연결 오류");
         }
     }
 
