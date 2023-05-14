@@ -1,0 +1,115 @@
+$main-color: linear-gradient(
+    238.55deg,
+    rgba(244, 114, 182, 0.75) 15.98%,
+    rgba(145, 153, 217, 0.75) 55.85%,
+    rgba(56, 189, 248, 0.75) 84.59%
+  ),
+  linear-gradient(134.36deg, #f472b6 15.23%, #9797d7 49.79%, #38bdf8 84.77%);
+
+.story {
+  position: fixed;
+  width: 100vw;
+  height: 100vh;
+  color: white;
+  background-color: black;
+  z-index: 9999;
+  opacity: 0;
+  animation: openStory 0.5s forwards;
+}
+
+@keyframes openStory {
+  0% {
+    opacity: 0;
+  }
+  100% {
+    opacity: 1;
+    top: 0px;
+    left: 0px;
+  }
+}
+
+.image {
+  width: 100vw;
+  height: 100vh;
+  background-size: contain;
+  background-repeat: no-repeat;
+  background-position: center;
+}
+
+.info_container {
+  nav {
+    padding: 8px 6px;
+    display: flex;
+    flex-direction: column;
+    gap: 12px;
+    .status_bar {
+      width: 100%;
+      height: 2px;
+      border-radius: 32px;
+      gap: 2px;
+      .each_bar {
+        position: relative;
+        background: #b1b8c02d;
+        border-radius: 32px;
+      }
+      .before {
+        background: #b1b8c0;
+      }
+      .now {
+        background: #b1b8c02d;
+      }
+      .now::after {
+        content: "";
+        background: #b1b8c0;
+        position: absolute;
+        opacity: 1;
+        left: 0;
+        top: 0;
+        width: 0%;
+        height: 100%;
+        animation: now_read 4s forwards;
+      }
+    }
+    .info {
+      padding: 0 8px;
+      display: flex;
+      justify-content: space-between;
+      .info_item {
+        display: flex;
+        gap: 8px;
+        .profile {
+          width: 24px;
+          height: 24px;
+          border-radius: 999px;
+          background-size: contain;
+          background-repeat: no-repeat;
+          background-position: center;
+        }
+        .name {
+          font-size: 16px;
+        }
+        .time {
+          font-size: 16px;
+          color: rgba(255, 255, 255, 0.515);
+        }
+      }
+      .exit {
+      }
+    }
+  }
+  footer {
+    .go_to_album {
+    }
+    .fav {
+    }
+  }
+}
+
+@keyframes now_read {
+  0% {
+    width: 0%;
+  }
+  100% {
+    width: 100%;
+  }
+}
