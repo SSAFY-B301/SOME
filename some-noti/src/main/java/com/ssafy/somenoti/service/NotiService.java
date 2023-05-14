@@ -51,8 +51,11 @@ public class NotiService {
             emitterRepository.deleteById(id);
             emitter.complete();
         });
+        Map<String,Object> subscribeData = new HashMap<>();
+        subscribeData.put("content","EventStream Created. [userId=" + userId + "]");
+        subscribeData.put("type","SUBSCRIBE");
         // 503 에러를 방지하기 위한 더미 이벤트 전송
-        sendToClient(emitter, id, "EventStream Created. [userId=" + userId + "]");
+        sendToClient(emitter, id, subscribeData);
 
         // 클라이언트가 미수신한 Event 목록이 존재할 경우 전송하여 Event 유실을 예방
         if (!lastEventId.isEmpty()) {
@@ -175,7 +178,6 @@ public class NotiService {
         try {
             emitter.send(SseEmitter.event()
                     .id(emitterId)
-                    .name("some")
                     .data(data,MediaType.APPLICATION_JSON)
                     .reconnectTime(500));
         } catch (IOException exception) {
@@ -212,8 +214,8 @@ public class NotiService {
                 if(receiver.getNotiUpload().equals(false)) continue;
             }
 
-            Map<String, SseEmitter> sseEmitters = emitterRepository.findAllEmitterStartWithId(receiver.getUserId());
 
+            Map<String, SseEmitter> sseEmitters = emitterRepository.findAllEmitterStartWithId(receiver.getUserId());
             sseEmitters.forEach(
                     (key, emitter) -> {
                         // 데이터 캐시 저장(유실된 데이터 처리하기 위함)
