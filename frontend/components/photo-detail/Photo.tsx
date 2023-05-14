@@ -5,17 +5,13 @@ interface Props {
   imgSrc: string;
   clickImg(): void;
   showConcentrationMode: boolean;
-  // onTouchEnd(e: React.TouchEvent): void;
-  // onTouchStart(e: React.TouchEvent): void;
 }
 
 const Photo = ({
   imgSrc,
   clickImg,
   showConcentrationMode,
-}: // onTouchEnd,
-// onTouchStart,
-Props): JSX.Element => {
+}: Props): JSX.Element => {
   const [scale, setScale] = useState<number>(1);
 
   const onZoomHandler = (state: any) => {
@@ -30,8 +26,6 @@ Props): JSX.Element => {
           : "absolute w-screen h-screen z-10 flex justify-center items-center"
       }
       onClick={clickImg}
-      // onTouchStart={onTouchStart}
-      // onTouchEnd={onTouchEnd}
     >
       <div className="w-screen h-screen flex justify-center items-center overflow-hidden">
         <TransformWrapper
@@ -39,11 +33,13 @@ Props): JSX.Element => {
           minScale={1}
           maxScale={5}
           disablePadding={true}
+          centerOnInit={true}
           panning={scale == 1 ? { disabled: true } : { disabled: false }}
-          doubleClick={{ disabled: true }}
           onZoomStop={(state) => onZoomHandler(state)}
         >
-          <TransformComponent>
+          <TransformComponent
+            wrapperStyle={{ width: "100vw", height: "100vh" }}
+          >
             <img src={`${imgSrc}`} />
           </TransformComponent>
         </TransformWrapper>
