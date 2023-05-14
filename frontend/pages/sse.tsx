@@ -15,6 +15,34 @@ function Sse() {
           });
         alert(Notification.permission)
     }       
+    function connectHandler() {
+        const parseToken = JSON.parse(window.localStorage.getItem("access_token") || '{}').access_token;
+        
+
+        
+        const sse = new EventSourcePolyfill(`http://3.35.18.146:9003/noti/noti/subscribe`, {
+            headers: {
+                "access_token": parseToken,
+            }
+        });
+        sse.onopen = function () {
+            console.log("SSE 연결!!");
+          };
+        sse.onerror = function (error) {
+            console.log("SSE 에러", error, sse);
+            sse.close();
+        };
+        sse.onmessage = (event) => {
+            const parseMsg = JSON.parse(event.data);
+            sendNoti();
+            console.log(typeof event.data)
+            console.log(event.data);
+            console.log(event.type);
+            console.log(event.target);
+            console.log(event.lastEventId);
+        }
+        console.log(sse);
+    }
     async function sendNoti() {
         const registration = await navigator.serviceWorker.getRegistration();
         const showNotification = (body : any) => {
@@ -46,32 +74,32 @@ function Sse() {
         }
     }
     useEffect(() => {
-        const parseToken = JSON.parse(window.localStorage.getItem("access_token") || '{}').access_token;
+        // const parseToken = JSON.parse(window.localStorage.getItem("access_token") || '{}').access_token;
         
 
         
-        const sse = new EventSourcePolyfill(`http://3.35.18.146:9003/noti/noti/subscribe`, {
-            headers: {
-                "access_token": parseToken,
-            }
-        });
-        sse.onopen = function () {
-            console.log("SSE 연결!!");
-          };
-        sse.onerror = function (error) {
-            console.log("SSE 에러", error, sse);
-            sse.close();
-        };
-        sse.onmessage = (event) => {
-            const parseMsg = JSON.parse(event.data);
-            sendNoti();
-            console.log(typeof event.data)
-            console.log(event.data);
-            console.log(event.type);
-            console.log(event.target);
-            console.log(event.lastEventId);
-        }
-        console.log(sse);
+        // const sse = new EventSourcePolyfill(`http://3.35.18.146:9003/noti/noti/subscribe`, {
+        //     headers: {
+        //         "access_token": parseToken,
+        //     }
+        // });
+        // sse.onopen = function () {
+        //     console.log("SSE 연결!!");
+        //   };
+        // sse.onerror = function (error) {
+        //     console.log("SSE 에러", error, sse);
+        //     sse.close();
+        // };
+        // sse.onmessage = (event) => {
+        //     const parseMsg = JSON.parse(event.data);
+        //     sendNoti();
+        //     console.log(typeof event.data)
+        //     console.log(event.data);
+        //     console.log(event.type);
+        //     console.log(event.target);
+        //     console.log(event.lastEventId);
+        // }
+        // console.log(sse);
         return () => {
 
         };
@@ -80,7 +108,7 @@ function Sse() {
   return (
     <div>
         <button onClick={() => notiPermission()}>노티 허가 요청</button>
-        <button>connect 요청</button>
+        <button onClick={() => connectHandler()}>connect 요청</button>
         <div>{message}</div>
     </div>
   );

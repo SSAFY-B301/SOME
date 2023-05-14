@@ -22,9 +22,15 @@ export default function Home() {
   );
   CheckDevice();
 
-  async function NotificationPermission() {
-    const permission = await window.Notification.requestPermission();
-    console.log(permission);
+  function NotificationPermission() {
+    Notification.requestPermission().then((result) => {
+      if (result === "granted") {
+          alert("알림 설정을 동의하셨습니다.");
+      }
+      else{
+        alert("알림 설정을 거부하셨습니다.");
+      }
+    });
   }
   useEffect(() => {
     NotificationPermission();
