@@ -47,7 +47,7 @@ function Story() {
         setPhotoIndex(0);
         setAlbumIndex(albumIndex + 1);
       }
-    }, 1000);
+    }, 4000);
   }, [albumIndex, photoIndex]);
 
   return (
