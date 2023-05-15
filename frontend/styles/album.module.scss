@@ -217,20 +217,21 @@ $main-color: linear-gradient(
   align-items: center;
 
   .circle {
+    border: 1px solid #f7cea3;
+
     position: relative;
     overflow: hidden;
     width: 36px;
     height: 36px;
     border-radius: 999px;
-    border: 1px solid #f7cea3;
     z-index: 12;
-    background: $main-color;
-    border: solid 3px $main-color;
-    -webkit-background-clip: text;
-    -webkit-text-fill-color: transparent;
-    background-origin: border-box;
-    background-clip: text;
-    background-blend-mode: lighten, normal;
+    // background: $main-color;
+    // border: solid 3px $main-color;
+    // -webkit-background-clip: text;
+    // -webkit-text-fill-color: transparent;
+    // background-origin: border-box;
+    // background-clip: text;
+    // background-blend-mode: lighten, normal;
     &:before {
       position: absolute;
       content: "";
