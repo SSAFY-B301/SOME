@@ -1,4 +1,4 @@
-import { endCurrentStory } from "@/features/storySlice";
+import { clearNotiIds, endCurrentStory } from "@/features/storySlice";
 import { useMutationNoti } from "@/pages/api/notiApi";
 import { StateType } from "@/types/StateType";
 import { useEffect, useMemo, useState } from "react";
@@ -9,6 +9,7 @@ import ExitIcon from "public/icons/X.svg";
 import FavIcon from "public/icons/Heart.svg";
 import { useGetCurrent } from "@/pages/api/currentAlbumApi";
 import { storyApiDataType } from "@/types/ApiTypes";
+import { addNotiIds } from "@/features/storySlice";
 
 function Story() {
   const [timeoutId, setTimeoutId] = useState<ReturnType<typeof setTimeout>>();
@@ -16,7 +17,7 @@ function Story() {
   const { statusMutation } = useMutationNoti();
   const { getCurrent: getStoryData, getCurrentIsLoading: getStoryIsLoading } =
     useGetCurrent();
-
+  const notiIds = useSelector((state: StateType) => state.story.notiIds);
   const position = useSelector((state: StateType) => state.story.position);
 
   const nowIndex = useSelector((state: StateType) => state.story.albumIndex);
@@ -26,10 +27,15 @@ function Story() {
     getStoryData.slice(nowIndex).concat(getStoryData.slice(0, nowIndex))
   );
   const [isOpen, setIsOpen] = useState<boolean>(false);
-  const [startTouchPosition, setStartTouchPosition] = useState<number>(0);
-  const [endTouchPosition, setEndTouchPosition] = useState<number>(0);
+  const [startTouchPosition, setStartTouchPosition] = useState<number[]>([
+    0, 0,
+  ]);
+  const [endTouchPosition, setEndTouchPosition] = useState<number[]>([0, 0]);
+  const [moveTouchPosition, setMoveTouchPosition] = useState<number[]>([0, 0]);
   const [isPrev, setIsPrev] = useState<boolean>(false);
   const [isNext, setIsNext] = useState<boolean>(false);
+  const [isMove, setIsMove] = useState<boolean>(false);
+  const [isDown, setIsDown] = useState<boolean>(false);
   const albumLength = useMemo(() => albums?.length, [albums]);
   const photos = useMemo(
     () => albums && albums[albumIndex].photo_list,
@@ -38,15 +44,19 @@ function Story() {
   const photosLength = useMemo(() => (photos ? photos?.length : 0), [photos]);
   const screenWidth = useMemo(() => window.screen.availWidth, []);
   const endCurrent = () => {
-    dispatch(endCurrentStory());
+    setIsDown(true);
+    setTimeout(() => {
+      notiDone();
+      dispatch(endCurrentStory());
+    }, 2000);
   };
 
   const endOpen = () => {
     setIsOpen(true);
   };
 
-  const startTouch = (x: number) => {
-    setStartTouchPosition(x);
+  const startTouch = (x: number, y: number) => {
+    setStartTouchPosition([x, y]);
     if (x < screenWidth / 3) {
       setIsPrev(true);
       setIsNext(false);
@@ -56,13 +66,17 @@ function Story() {
     }
   };
 
-  const endTouch = (x: number) => {
-    const diffPosition = startTouchPosition - x;
-    setEndTouchPosition(x);
+  const endTouch = (x: number, y: number) => {
+    const diffPositionX = startTouchPosition[0] - x;
+    const diffPositionY = startTouchPosition[1] - y;
+    setEndTouchPosition([x, y]);
 
     clearTimeout(timeoutId);
 
-    if (-5 < diffPosition && diffPosition < 5) {
+    if (diffPositionY < -50) {
+      console.log(diffPositionY);
+      endCurrent();
+    } else if (-5 < diffPositionX && diffPositionX < 5) {
       // 제자리 터치
       if (isPrev) {
         // 이전 사진으로 이동
@@ -73,7 +87,7 @@ function Story() {
             setPhotoIndex(0);
             setAlbumIndex(albumIndex - 1);
           } else {
-            dispatch(endCurrentStory());
+            endCurrent();
           }
         }
       } else if (isNext) {
@@ -85,17 +99,17 @@ function Story() {
             setPhotoIndex(0);
             setAlbumIndex(albumIndex + 1);
           } else {
-            dispatch(endCurrentStory());
+            endCurrent();
           }
         }
       }
-    } else if (diffPosition > 0) {
+    } else if (diffPositionX > 0) {
       // 다음 앨범으로 이동
       if (albumIndex + 1 < albumLength) {
         setPhotoIndex(0);
         setAlbumIndex(albumIndex + 1);
       } else {
-        dispatch(endCurrentStory());
+        endCurrent();
       }
     } else {
       // 이전 앨범으로 이동
@@ -103,25 +117,38 @@ function Story() {
         setPhotoIndex(0);
         setAlbumIndex(albumIndex - 1);
       } else {
-        dispatch(endCurrentStory());
+        endCurrent();
       }
     }
 
     setIsPrev(false);
     setIsNext(false);
+    setIsMove(false);
   };
 
-  const moveTouch = () => {};
+  const moveTouch = (x: number, y: number) => {
+    setIsMove(true);
+    setMoveTouchPosition([x, y]);
+  };
+
+  const notiDone = () => {
+    const temp: Set<number> = new Set(notiIds);
+    Array.from(temp).forEach((id) => {
+      // statusMutation({ noti_id: id, noti_status: "DONE" });
+    });
+    dispatch(clearNotiIds());
+  };
 
   useEffect(() => {
+    const notiId: number = albums[albumIndex].photo_list[photoIndex].noti_id;
+    dispatch(addNotiIds(notiId));
+    // statusMutation({ noti_id: notiId, noti_status: "DONE" });
     const id = setTimeout(() => {
-      const notiId: number = albums[albumIndex].photo_list[photoIndex].noti_id;
-      statusMutation({ noti_id: notiId, noti_status: "DONE" });
       if (photoIndex < photosLength - 1) {
         setPhotoIndex(photoIndex + 1);
       } else {
         if (albumIndex + 1 == albumLength) {
-          dispatch(endCurrentStory());
+          endCurrent();
         }
         setPhotoIndex(0);
         setAlbumIndex(albumIndex + 1);
@@ -137,15 +164,30 @@ function Story() {
       ) : albums ? (
         <>
           <section
-            className={`${styles.story} ${isPrev ? styles.prev : ""}`}
+            className={`${styles.story} ${isPrev ? styles.prev : ""} ${
+              isDown ? styles.down : ""
+            }`}
             onAnimationEnd={endOpen}
-            onTouchStart={(e) => startTouch(e.changedTouches[0].pageX)}
-            onTouchEnd={(e) => endTouch(e.changedTouches[0].pageX)}
-            onTouchMove={moveTouch}
+            onTouchStart={(e) =>
+              startTouch(e.changedTouches[0].pageX, e.changedTouches[0].pageY)
+            }
+            onTouchEnd={(e) =>
+              endTouch(e.changedTouches[0].pageX, e.changedTouches[0].pageY)
+            }
+            onTouchMove={(e) =>
+              moveTouch(e.changedTouches[0].pageX, e.changedTouches[0].pageY)
+            }
             style={{ top: `${position[0]}px`, left: `${position[1]}px` }}
           >
             {isOpen && (
-              <>
+              <main
+                className={styles.main}
+                style={
+                  isMove
+                    ? { top: moveTouchPosition[1] - startTouchPosition[1] }
+                    : { top: "0px" }
+                }
+              >
                 <div
                   className={`${styles.image}`}
                   style={{
@@ -217,7 +259,7 @@ function Story() {
                 </div>
               </footer> */}
                 </div>
-              </>
+              </main>
             )}
           </section>
         </>

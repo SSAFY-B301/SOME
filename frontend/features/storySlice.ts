@@ -32,6 +32,9 @@ export const storySlice = createSlice({
     addNotiIds(state, action) {
       state.notiIds.push(action.payload);
     },
+    clearNotiIds(state) {
+      state.notiIds = [];
+    },
     setAlbumIndex(state, action) {
       state.albumIndex = action.payload;
     },
@@ -48,6 +51,7 @@ export const {
   startCurrentStory,
   endCurrentStory,
   addNotiIds,
+  clearNotiIds,
   setAlbumIndex,
   setPosition,
 } = storySlice.actions;
