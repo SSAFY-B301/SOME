@@ -229,8 +229,10 @@ public class AlbumPhotoService {
         AlbumPhoto albumPhoto = albumPhotoRepository.findByPhotoId(photoId);
         SNSPhotoDto snsPhotoDto = new SNSPhotoDto(albumPhoto);
 
-        String albumName = albumRepository.findAlbumByAlbumId(albumPhoto.getAlbumId()).getAlbumName();
-        snsPhotoDto.setAlbumName(albumName);
+        Album album = albumRepository.findAlbumByAlbumId(albumPhoto.getAlbumId());
+        snsPhotoDto.setAlbumName(album.getAlbumName());
+        String thumbPhoto = albumPhotoRepository.findByPhotoId(album.getThumbnailPhoto()).getResizeUrl();
+        snsPhotoDto.setThumbnailPhotoUrl(thumbPhoto);
 
         result.put("albumPhotoDetail", snsPhotoDto);
         return setResponseDto(result, "SNS 요청 사진 상세 보기", 200);

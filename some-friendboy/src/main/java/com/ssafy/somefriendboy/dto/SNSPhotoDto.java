@@ -11,6 +11,7 @@ public class SNSPhotoDto {
     private Long photoId;
     private Long albumId;
     private String albumName;
+    private String thumbnailPhotoUrl;
     private String s3Url;
 
     public SNSPhotoDto(AlbumPhoto albumPhoto) {
