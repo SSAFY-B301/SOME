@@ -33,25 +33,24 @@ export const sendNotification = async (title : string, body : string) => {
 };
 
 
-export const sendNotification2 = async () => {
+export const sendNotification2 = async (title: string, content : string) => {
   
   if(Notification.permission === 'granted') {
-    showNotification("msg");
+    showNotification(title, content);
   }
   else {
     if(Notification.permission !== 'denied') {
       const permission = await Notification.requestPermission();
   
       if(permission === 'granted') {
-        showNotification("msg");
+        showNotification(title, content);
       }
     }
   }
 };
   
-const showNotification = async (body : string) => {
+const showNotification = async (title: string, body : string) => {
   const registration = await navigator.serviceWorker.getRegistration();
-  const title = 'What PWA Can Do Today';
   
   const payload = {
     body
