@@ -8,6 +8,8 @@ import TabBar from "@/components/common/TabBar";
 import { getGirlListDetail } from "@/pages/api/girlApi";
 import { useSelector } from "react-redux";
 import { RootState } from "@/store/configureStore";
+import { useState } from "react";
+import  CaretDown  from "@/public/icons/CaretDown.svg"
 
 interface GirlListParamType{
     lat : number,
@@ -16,16 +18,38 @@ interface GirlListParamType{
 export default function List() {
     const girlDetailList = useSelector((state : RootState) => state.girlListDetailState);
     const {resultData} = getGirlListDetail();
+    const [sort, setSort] = useState("like")
+    const [selectOpen, setSelectOpen] = useState(false);
     const router = useRouter();
     return(
         <div className="flex flex-col items-center gap-y-4">
             <InfoBar title={"대전시 유성구"}></InfoBar>
-            <div className="relative flex items-center justify-center h-4 gap-x-2">
+            <div className="relative flex items-center justify-center w-full h-4 gap-x-2">
                 <GirlListUser></GirlListUser>
                 <p>{resultData?.totalUserCnt}</p>
                 <GirlListImage></GirlListImage>
                 <p>{resultData?.totalPhotoCnt}</p>
-                {/* TODO : 정렬 기준 들어가야됨 */}
+                <div onClick={() => setSelectOpen(!selectOpen)} className="absolute flex items-center w-20 p-2 right-2 gap-x-1">
+                    <p>{sort === "like" ? "인기순" : "최신순"}</p>
+                    <CaretDown className="stroke-black dark:stroke-white" ></CaretDown>
+                </div>
+                {selectOpen && 
+                    <ul className="absolute z-10 w-20 p-2 bg-white border-2 rounded-lg right-2 top-6">
+                        <li onClick={() => 
+                        {
+                            setSort("like");
+                            setSelectOpen(!selectOpen);
+                        }} 
+                        className="mb-1">인기순</li>
+                        <hr></hr>
+                        <li onClick={() => 
+                        {
+                            setSort("recent");
+                            setSelectOpen(!selectOpen);
+                        }}
+                        className="mt-1">최신순</li>
+                    </ul>
+                }
             </div>
             <Map
                 center={{lat : girlDetailList.latitude, lng: girlDetailList.longitude}}
