@@ -62,6 +62,15 @@ export interface PhotosType {
   totalPhotoId: number[];
   albumPhotoList: PhotoType[];
 }
+
+export interface SnsPhotoType{
+  albumId: number,
+  albumName : string,
+  photoId : number,
+  s3Url : string,
+  thumbnailPhotoUrl : string,
+}
+
 export interface PhotoType {
   albumId: number;
   categoryId: number[];

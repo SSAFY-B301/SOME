@@ -44,19 +44,14 @@ export default function SnsNotiModal(params : SnsNotiModalParamsType) {
     if (snsPhotoStatus === "success") {
         return(
             <div onClick={() => exitHandler()} className="absolute top-0 flex items-center justify-center bg-black bg-opacity-40" style={{width: "100vw", height: "100vh"}}>
-                <div onClick={(e) => e.stopPropagation()} className="flex flex-col items-center justify-center py-4 bg-white rounded-lg dark:bg-dark-block gap-y-2">
-                    <div className="flex w-full px-4 gap-x-2">
-                        {snsResultData === undefined ? 
-                            <div className="w-12 h-12 bg-gray-300 rounded-lg"></div>
+                <div onClick={(e) => e.stopPropagation()} className="flex flex-col items-center justify-center py-4 bg-white rounded-lg dark:bg-dark-block gap-y-4">
+                    <div className="flex w-full px-4 gap-x-4">
+                        {snsResultData.thumbnailPhotoUrl === null ? 
+                            <div className="w-8 h-8 bg-gray-300 rounded-full"></div>
                             :
-                            <img className="w-12 h-12 rounded-lg" src={snsResultData.userProfileImg} alt="" />
+                            <img className="w-8 h-8 rounded-full" src={snsResultData.thumbnailPhotoUrl} alt="" />
                         }
-                        <div>
-                            <p className="text-xl">{snsResultData ? snsResultData.userName : ""}</p>
-                            <p className="text-sm">{snsResultData ? snsResultData?.uploadedDate.substring(0,4)+"년 "+
-                    snsResultData?.uploadedDate.substring(5,7)+"월 "+
-                    snsResultData?.uploadedDate.substring(8,10)+"일" : ""}</p>
-                        </div>
+                        <p className="text-xl">{snsResultData ? snsResultData.albumName : ""}</p>
                     </div>
                     <div style={{maxWidth : "80vw", maxHeight : "70vh" }}>
                         <img style={{maxWidth : "80vw", maxHeight : "70vh"}} loading="lazy" src={snsResultData.s3Url} alt="" />
