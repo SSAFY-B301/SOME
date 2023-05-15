@@ -28,10 +28,6 @@ export default function Notification() {
   const [notiInfo, setNotiInfo] = useState<NotiType>();
   const [notiId, setNotiId] = useState<number>();
 
-  useEffect(() => {
-    console.log(queryData);
-  }, [queryData]);
-
   const snsAlarmHandler = (params: SnsHandlerParamType) => {
     setNotiInfo(params.notiInfo);
     setSnsModalOpen(!snsModalOpen);
@@ -42,69 +38,67 @@ export default function Notification() {
     setInviteModalOpen(!inviteModalOpen);
   }
 
-  useEffect(() => {
-    console.log(hasNextPage);
-    return () => {};
-  }, [queryData]);
-
   return (
-    <div className="flex flex-col justify-start h-screen bg-white dark:bg-dark-bg-home">
+    <div className="flex flex-col justify-start h-screen bg-white dark:bg-dark-bg-home ">
       <InfoBar title="알림"></InfoBar>
-      <div className=""></div>
-      <InfiniteScroll
-        loadMore={() => fetchNextPage()}
-        hasMore={hasNextPage}
-        loader={<></>}
-        threshold={340}
-      >
-        {queryData !== undefined &&
-          queryData.pages.map((page: any) =>
-            page.notiList.map((noti: NotiType) => {
-              return (
-                <div
-                  key={noti.noti_id}
-                  onClick={
-                    noti.type === "SNS"
-                      ? () => snsAlarmHandler({ notiInfo: noti })
-                      : () =>
-                          inviteModalHandler({
-                            albumId: noti.photo_or_album_id,
-                            notiId: noti.noti_id,
-                          })
-                  }
-                  className={
-                    noti.status === "UNCHECKED"
-                      ? `py-4 px-6 ${styles.on_read}`
-                      : `py-4 px-6 shadow-sm`
-                  }
-                >
-                  <div className="flex justify-between">
-                    <div className="flex">
-                      {noti.type === "SNS" && (
-                        <p className={"dark:text-gray-200"}>SNS 공유 요청</p>
-                      )}
-                      {noti.type === "INVITE" && (
-                        <p className={"dark:text-gray-200"}>새로운 앨범 초대</p>
-                      )}
-                    </div>
-                    <div className="flex items-end">
-                      <AlarmTime time={noti.date}></AlarmTime>
-                    </div>
-                  </div>
+      <div className={styles.container}>
+        <InfiniteScroll
+          loadMore={() => fetchNextPage()}
+          hasMore={hasNextPage}
+          loader={<></>}
+          threshold={99999}
+        >
+          {queryData !== undefined &&
+            queryData.pages.map((page: any) =>
+              page.notiList.map((noti: NotiType) => {
+                return (
                   <div
+                    key={noti.noti_id}
+                    onClick={
+                      noti.type === "SNS"
+                        ? () => snsAlarmHandler({ notiInfo: noti })
+                        : () =>
+                            inviteModalHandler({
+                              albumId: noti.photo_or_album_id,
+                              notiId: noti.noti_id,
+                            })
+                    }
                     className={
-                      "flex justify-between items-center mt-2 dark:text-gray-200"
+                      noti.status === "UNCHECKED"
+                        ? `w-screen py-4 px-6 ${styles.on_read}`
+                        : `w-screen py-4 px-6 shadow-sm`
                     }
                   >
-                    <div className="flex items-center justify-center h-12">
-                      <p className="text-sm">{noti.message}</p>
+                    <div className="flex justify-between">
+                      <div className="flex">
+                        {noti.type === "SNS" && (
+                          <p className={"dark:text-gray-200"}>SNS 공유 요청</p>
+                        )}
+                        {noti.type === "INVITE" && (
+                          <p className={"dark:text-gray-200"}>
+                            새로운 앨범 초대
+                          </p>
+                        )}
+                      </div>
+                      <div className="flex items-end">
+                        <AlarmTime time={noti.date}></AlarmTime>
+                      </div>
+                    </div>
+                    <div
+                      className={
+                        "flex justify-between items-center mt-2 dark:text-gray-200"
+                      }
+                    >
+                      <div className="flex items-center justify-center h-12">
+                        <p className="text-sm">{noti.message}</p>
+                      </div>
                     </div>
                   </div>
-                </div>
-              );
-            })
-          )}
-      </InfiniteScroll>
+                );
+              })
+            )}
+        </InfiniteScroll>
+      </div>
       {inviteModalOpen && (
         <InviteModal
           notiId={notiId}
