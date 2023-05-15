@@ -72,7 +72,7 @@ function Photos({
     <InfiniteScroll
       className={`${styles.photos} grid grid-cols-4`}
       hasMore={hasNextPage}
-      loadMore={() => !getPhotosPages?.pages[0].is_last && fetchNextPage()}
+      loadMore={() => fetchNextPage()}
       // isReverse={true}
       loader={
         getPhotosPages?.pages[0].is_last ? <></> : <LoadingPhotos key={0} />
