@@ -85,10 +85,10 @@ export default function AuthRedirect() {
             const parseMsg = JSON.parse(event.data);
             console.log(parseMsg);
             if (parseMsg.type === "SNS") {
-                sendNoti("SNS 공유 요청", parseMsg.data);
+                sendNoti("SNS 공유 요청", parseMsg.content);
             }
             else if (parseMsg.type === "INVITE"){
-                sendNoti("새로운 앨범 초대", parseMsg.data);
+                sendNoti("새로운 앨범 초대", parseMsg.content);
             }
         }
     };
