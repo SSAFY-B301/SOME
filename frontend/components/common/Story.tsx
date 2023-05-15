@@ -13,6 +13,9 @@ import { addNotiIds } from "@/features/storySlice";
 
 function Story() {
   const [timeoutId, setTimeoutId] = useState<ReturnType<typeof setTimeout>>();
+  const [timeoutIds, setTimeoutIds] = useState<ReturnType<typeof setTimeout>[]>(
+    []
+  );
   const dispatch = useDispatch();
   const { statusMutation } = useMutationNoti();
   const { getCurrent: getStoryData, getCurrentIsLoading: getStoryIsLoading } =
@@ -45,10 +48,10 @@ function Story() {
   const screenWidth = useMemo(() => window.screen.availWidth, []);
   const endCurrent = () => {
     setIsDown(true);
+    // notiDone();
     setTimeout(() => {
-      notiDone();
       dispatch(endCurrentStory());
-    }, 2000);
+    }, 1000);
   };
 
   const endOpen = () => {
@@ -70,8 +73,13 @@ function Story() {
     const diffPositionX = startTouchPosition[0] - x;
     const diffPositionY = startTouchPosition[1] - y;
     setEndTouchPosition([x, y]);
+    console.log("end", timeoutId);
 
-    clearTimeout(timeoutId);
+    const temp = timeoutIds.slice(0, -1);
+    temp.forEach((id) => clearTimeout(id));
+    setTimeoutIds(timeoutIds.slice(-1));
+
+    // clearTimeout(timeoutId);
 
     if (diffPositionY < -50) {
       console.log(diffPositionY);
@@ -133,29 +141,38 @@ function Story() {
 
   const notiDone = () => {
     const temp: Set<number> = new Set(notiIds);
-    Array.from(temp).forEach((id) => {
-      // statusMutation({ noti_id: id, noti_status: "DONE" });
+    temp.forEach((id) => {
+      statusMutation({ noti_id: id, noti_status: "DONE" });
     });
     dispatch(clearNotiIds());
   };
 
   useEffect(() => {
     const notiId: number = albums[albumIndex].photo_list[photoIndex].noti_id;
-    dispatch(addNotiIds(notiId));
-    // statusMutation({ noti_id: notiId, noti_status: "DONE" });
+    // dispatch(addNotiIds(notiId));
+    statusMutation({ noti_id: notiId, noti_status: "DONE" });
     const id = setTimeout(() => {
       if (photoIndex < photosLength - 1) {
         setPhotoIndex(photoIndex + 1);
       } else {
         if (albumIndex + 1 == albumLength) {
+          setIsOpen(false);
           endCurrent();
+        } else {
+          setPhotoIndex(0);
+          setAlbumIndex(albumIndex + 1);
         }
-        setPhotoIndex(0);
-        setAlbumIndex(albumIndex + 1);
       }
     }, 4000);
+    console.log("id", id);
+
     setTimeoutId(id);
+    setTimeoutIds((prev) => [...prev, id]);
   }, [albumIndex, photoIndex]);
+
+  useEffect(() => {
+    console.log(timeoutIds);
+  }, [timeoutIds]);
 
   return (
     <>
