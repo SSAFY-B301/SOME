@@ -32,12 +32,17 @@ function Members({ membersId, isAlbumLoading }: MembersType) {
   const albumId = useSelector((state: StateType) => state.albumStatus.albumId);
 
   const userId = useSelector((state: StateType) => state.albumStatus.userId);
-
+  const [allUsers, setAllUsers] = useState<Set<string>>(new Set(userId));
   const [selectMembers, setSelectMembers] = useState<Set<string>>(
     new Set(userId)
   );
   useEffect(() => {
     setSelectMembers(new Set(userId));
+  }, [userId]);
+  useEffect(() => {
+    if (userId.length > allUsers.size) {
+      setAllUsers(new Set(userId));
+    }
   }, [userId]);
 
   const { getDetail, getDetailIsLoading } = useGetDetail();
@@ -54,9 +59,11 @@ function Members({ membersId, isAlbumLoading }: MembersType) {
   const changeSelect = (id: string) => {
     selectMembers.size === membersSize && selectMembers.clear();
     selectMembers.has(id) ? selectMembers.delete(id) : selectMembers.add(id);
-    selectMembers.size === 0
-      ? setSelectMembers(new Set(userId))
-      : setSelectMembers(new Set(selectMembers));
+    console.log(selectMembers.size);
+
+    selectMembers.size === 0 &&
+      allUsers.forEach((user) => selectMembers.add(user));
+
     dispatch(setUserIdState(Array.from(selectMembers)));
   };
 

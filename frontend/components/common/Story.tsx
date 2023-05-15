@@ -80,52 +80,53 @@ function Story() {
     setTimeoutIds(timeoutIds.slice(-1));
 
     // clearTimeout(timeoutId);
-
-    if (diffPositionY < -50) {
-      console.log(diffPositionY);
-      endCurrent();
-    } else if (-5 < diffPositionX && diffPositionX < 5) {
-      // 제자리 터치
-      if (isPrev) {
-        // 이전 사진으로 이동
-        if (photoIndex - 1 >= 0) {
-          setPhotoIndex(photoIndex - 1);
-        } else {
-          if (albumIndex - 1 >= 0) {
-            setPhotoIndex(0);
-            setAlbumIndex(albumIndex - 1);
+    if (screenWidth - 54 > x || y > 54) {
+      if (diffPositionY < -50) {
+        console.log(diffPositionY);
+        endCurrent();
+      } else if (-5 < diffPositionX && diffPositionX < 5) {
+        // 제자리 터치
+        if (isPrev) {
+          // 이전 사진으로 이동
+          if (photoIndex - 1 >= 0) {
+            setPhotoIndex(photoIndex - 1);
           } else {
-            endCurrent();
+            if (albumIndex - 1 >= 0) {
+              setPhotoIndex(0);
+              setAlbumIndex(albumIndex - 1);
+            } else {
+              endCurrent();
+            }
+          }
+        } else if (isNext) {
+          // 다음 사진으로 이동
+          if (photoIndex + 1 < photosLength) {
+            setPhotoIndex(photoIndex + 1);
+          } else {
+            if (albumIndex + 1 < albumLength) {
+              setPhotoIndex(0);
+              setAlbumIndex(albumIndex + 1);
+            } else {
+              endCurrent();
+            }
           }
         }
-      } else if (isNext) {
-        // 다음 사진으로 이동
-        if (photoIndex + 1 < photosLength) {
-          setPhotoIndex(photoIndex + 1);
+      } else if (diffPositionX > 0) {
+        // 다음 앨범으로 이동
+        if (albumIndex + 1 < albumLength) {
+          setPhotoIndex(0);
+          setAlbumIndex(albumIndex + 1);
         } else {
-          if (albumIndex + 1 < albumLength) {
-            setPhotoIndex(0);
-            setAlbumIndex(albumIndex + 1);
-          } else {
-            endCurrent();
-          }
+          endCurrent();
         }
-      }
-    } else if (diffPositionX > 0) {
-      // 다음 앨범으로 이동
-      if (albumIndex + 1 < albumLength) {
-        setPhotoIndex(0);
-        setAlbumIndex(albumIndex + 1);
       } else {
-        endCurrent();
-      }
-    } else {
-      // 이전 앨범으로 이동
-      if (albumIndex - 1 >= 0) {
-        setPhotoIndex(0);
-        setAlbumIndex(albumIndex - 1);
-      } else {
-        endCurrent();
+        // 이전 앨범으로 이동
+        if (albumIndex - 1 >= 0) {
+          setPhotoIndex(0);
+          setAlbumIndex(albumIndex - 1);
+        } else {
+          endCurrent();
+        }
       }
     }
 
@@ -139,13 +140,13 @@ function Story() {
     setMoveTouchPosition([x, y]);
   };
 
-  const notiDone = () => {
-    const temp: Set<number> = new Set(notiIds);
-    temp.forEach((id) => {
-      statusMutation({ noti_id: id, noti_status: "DONE" });
-    });
-    dispatch(clearNotiIds());
-  };
+  // const notiDone = () => {
+  //   const temp: Set<number> = new Set(notiIds);
+  //   temp.forEach((id) => {
+  //     statusMutation({ noti_id: id, noti_status: "DONE" });
+  //   });
+  //   dispatch(clearNotiIds());
+  // };
 
   useEffect(() => {
     const notiId: number = albums[albumIndex].photo_list[photoIndex].noti_id;
@@ -164,15 +165,15 @@ function Story() {
         }
       }
     }, 4000);
-    console.log("id", id);
+    // console.log("id", id);
 
     setTimeoutId(id);
     setTimeoutIds((prev) => [...prev, id]);
   }, [albumIndex, photoIndex]);
 
-  useEffect(() => {
-    console.log(timeoutIds);
-  }, [timeoutIds]);
+  // useEffect(() => {
+  //   console.log("timeoutIds", timeoutIds);
+  // }, [timeoutIds]);
 
   return (
     <>
