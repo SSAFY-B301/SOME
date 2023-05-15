@@ -17,7 +17,7 @@ import { useDispatch, useSelector } from "react-redux";
 import { StateType } from "@/types/StateType";
 import { setIsMove, setIsTotal, setMoveEnd } from "@/features/totalSlice";
 import { CommonLoading } from "./Loading";
-import { setALbumIdState } from "@/features/albumStatusSlice";
+import { setALbumIdState, setInit } from "@/features/albumStatusSlice";
 
 function TotalAlbum() {
   const [touchPosition, setTouchPosition] = useState<number>(0);
@@ -69,6 +69,7 @@ function TotalAlbumItems() {
 
   const dispatch = useDispatch();
   const goToAlbum = (id: number) => {
+    dispatch(setInit());
     dispatch(setALbumIdState({ albumId: id }));
     router.push(`/album/${id}`);
   };
