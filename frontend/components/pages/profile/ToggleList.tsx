@@ -1,4 +1,4 @@
-import { notificationPermission, sendNotification, sendNotification2 } from "@/features/sse";
+import { notificationPermission, sendNotification } from "@/features/sse";
 import { getMyPageData, useNotiOptionMutation } from "@/pages/api/profileApi";
 import { NotiOptionRequestType } from "@/types/UserType";
 
@@ -19,7 +19,7 @@ export default function ToggleList() {
         <div className="flex flex-col gap-y-4">
             <div className="flex justify-between">
                 <button onClick={() => notificationPermission()}>SOME 푸시 알림 동의</button>
-                <button onClick={() => sendNotification2("알림제목", "알림내용")}>알림 생성</button>
+                <button onClick={() => sendNotification("알림제목", "알림내용")}>알림 생성</button>
             </div>
             <div className="flex justify-between">
                 <p>공유 투표 알림</p>
