@@ -27,23 +27,29 @@ const Photo = ({
       }
       onClick={clickImg}
     >
-      <div className="w-screen h-screen flex justify-center items-center overflow-hidden">
-        <TransformWrapper
-          initialScale={scale}
-          minScale={1}
-          maxScale={5}
-          disablePadding={true}
-          centerOnInit={true}
-          panning={scale == 1 ? { disabled: true } : { disabled: false }}
-          onZoomStop={(state) => onZoomHandler(state)}
+      <TransformWrapper
+        initialScale={scale}
+        minScale={1}
+        maxScale={5}
+        disablePadding={true}
+        centerOnInit={true}
+        panning={scale == 1 ? { disabled: true } : { disabled: false }}
+        onZoomStop={(state) => onZoomHandler(state)}
+      >
+        <TransformComponent
+          wrapperStyle={{
+            width: "100vw",
+            height: "100vh",
+          }}
+          contentStyle={{
+            left: "50%",
+            top: "50%",
+            transform: "translate(50%, 50%)",
+          }}
         >
-          <TransformComponent
-            wrapperStyle={{ width: "100vw", height: "100vh" }}
-          >
-            <img src={`${imgSrc}`} />
-          </TransformComponent>
-        </TransformWrapper>
-      </div>
+          <img src={`${imgSrc}`} />
+        </TransformComponent>
+      </TransformWrapper>
     </div>
   );
 };
