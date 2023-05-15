@@ -8,4 +8,5 @@ import java.util.List;
 
 public interface NotificationRepositoryCustom {
     List<Notification> findPhotoIdNotChecked(String userId);
+    List<Notification> findNotiCnt(String userId);
 }
