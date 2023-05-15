@@ -24,6 +24,9 @@ $main-color: linear-gradient(
     &:nth-child(1) {
       margin-left: 4.103vw;
     }
+    &:last-child {
+      margin-right: 4.103vw;
+    }
     span {
       white-space: nowrap;
       overflow: hidden;
