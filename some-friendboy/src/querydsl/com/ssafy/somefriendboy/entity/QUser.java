@@ -21,6 +21,12 @@ public class QUser extends EntityPathBase<User> {
 
     public final DateTimePath<java.time.LocalDateTime> createdDate = createDateTime("createdDate", java.time.LocalDateTime.class);
 
+    public final BooleanPath notiInvite = createBoolean("notiInvite");
+
+    public final BooleanPath notiSns = createBoolean("notiSns");
+
+    public final BooleanPath notiUpload = createBoolean("notiUpload");
+
     public final StringPath userEmail = createString("userEmail");
 
     public final StringPath userId = createString("userId");
