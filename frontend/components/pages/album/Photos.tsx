@@ -74,16 +74,13 @@ function Photos({
       hasMore={hasNextPage}
       loadMore={() => !getPhotosPages?.pages[0].is_last && fetchNextPage()}
       // isReverse={true}
-      loader={getPhotosPages?.pages[0].is_last ? <></> : <LoadingPhotos />}
+      loader={
+        getPhotosPages?.pages[0].is_last ? <></> : <LoadingPhotos key={0} />
+      }
       // threshold={100}
     >
       {isAlbumLoading() ? (
-        // TODO : 로딩중
-        <div key={-2}>
-          {[...Array(10)].map((_, i) => (
-            <LoadingPhoto key={i} />
-          ))}
-        </div>
+        <LoadingPhotos />
       ) : (
         <>
           {!isSelect && (

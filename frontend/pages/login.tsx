@@ -262,7 +262,11 @@ export default function Login() {
       >
         <Link href={oauthURL} className="z-10">
           <div>
-            <img src="/images/kakao_login_medium_wide.png" alt="" />
+            <img
+              src="/images/kakao_login_large_wide.png"
+              alt=""
+              style={{ width: "300px" }}
+            />
           </div>
         </Link>
       </div>

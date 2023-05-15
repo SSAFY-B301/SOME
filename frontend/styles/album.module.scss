@@ -57,8 +57,6 @@ $main-color: linear-gradient(
   .no_select_member {
     filter: grayscale(100%);
   }
-  .select_member {
-  }
 }
 
 .categories {
@@ -224,8 +222,8 @@ $main-color: linear-gradient(
     width: 36px;
     height: 36px;
     border-radius: 999px;
-    z-index: 12;
     border: 1px solid #f7cea3;
+    z-index: 12;
     background: $main-color;
     border: solid 3px $main-color;
     -webkit-background-clip: text;
@@ -274,21 +272,6 @@ $main-color: linear-gradient(
     transform: rotate(360deg);
   }
 }
-
-// @keyframes prixClipFix {
-//   0% {
-//     clip-path: polygon(50% 50%, 0 0, 0 0, 0 0, 0 0, 0 0);
-//   }
-//   50% {
-//     clip-path: polygon(50% 50%, 0 0, 100% 0, 100% 0, 100% 0, 100% 0);
-//   }
-//   75% {
-//     clip-path: polygon(50% 50%, 0 0, 100% 0, 100% 100%, 100% 100%, 100% 100%);
-//   }
-//   100% {
-//     clip-path: polygon(0% 100%, 0 0, 100% 0, 100% 100%, 100% 100%, 100% 100%);
-//   }
-// }
 
 @keyframes move {
   100% {

@@ -96,7 +96,10 @@ export default function CurrentAlbum() {
         <h1 className="font-bold" style={{ fontSize: "5.128vw" }}>
           최근 업로드
         </h1>
-        <div className="flex" style={{ gap: "4.103vw" }}>
+        <div
+          className="flex items-center overflow-scroll"
+          style={{ gap: "4.103vw", width: "84.102vw", height: "19.487vw" }}
+        >
           {currents}
         </div>
       </div>

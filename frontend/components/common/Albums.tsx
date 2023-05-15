@@ -17,6 +17,8 @@ import PlusIcon from "public/icons/Plus.svg";
 // 타입
 import { FavoriteAlbumType } from "@/types/AlbumTypes";
 import Link from "next/link";
+import { useDispatch } from "react-redux";
+import { setALbumIdState } from "@/features/albumStatusSlice";
 
 /**
  * 즐겨찾는 앨범
@@ -44,87 +46,93 @@ function FavoriteAlbum() {
     "https://images.unsplash.com/photo-1683406164037-5c97ea978964?ixlib=rb-4.0.3&ixid=MnwxMjA3fDB8MHxlZGl0b3JpYWwtZmVlZHw0fHx8ZW58MHx8fHw%3D&auto=format&fit=crop&w=500&q=60",
     "https://images.unsplash.com/photo-1661956602926-db6b25f75947?ixlib=rb-4.0.3&ixid=MnwxMjA3fDF8MHxlZGl0b3JpYWwtZmVlZHwyMXx8fGVufDB8fHx8&auto=format&fit=crop&w=500&q=60",
   ];
+
+  const dispatch = useDispatch();
+  const goToAlbum = (id: number) => {
+    dispatch(setALbumIdState(id));
+    router.push(`/album/${id}`);
+  };
+
   /**
    * 즐겨찾는 앨범 리스트
    */
-  const favorites: React.ReactNode =
-    // TODO : 빈 배열인 경우 개선
-    getFavoriteIsLoading ? (
-      <></>
-    ) : getFavorite && getFavorite.length > 0 ? (
-      getFavorite.map((favoriteAlbum: FavoriteAlbumType) => (
-        <div key={favoriteAlbum.album_id} className={`${styles.card}`}>
+  const favorites: React.ReactNode = getFavoriteIsLoading ? (
+    <></>
+  ) : getFavorite && getFavorite.length > 0 ? (
+    getFavorite.map((favoriteAlbum: FavoriteAlbumType) => (
+      <div key={favoriteAlbum.album_id} className={`${styles.card}`}>
+        <div
+          onClick={() => goToAlbum(favoriteAlbum.album_id)}
+          className="pt-10 bg-center bg-cover"
+          style={{
+            width: "73.846vw",
+            height: "98.462vw",
+            borderRadius: "3.077vw",
+            backgroundImage: `url(${
+              favoriteAlbum.thumbnail_photo_url
+                ? favoriteAlbum.thumbnail_photo_url
+                : default_profile[favoriteAlbum.album_id % 4]
+            })`,
+          }}
+        >
           <div
-            onClick={() => router.push(`/album/${favoriteAlbum.album_id}`)}
-            className="pt-10 bg-center bg-cover"
+            className="relative flex flex-col "
             style={{
-              width: "73.846vw",
-              height: "98.462vw",
-              borderRadius: "3.077vw",
-              backgroundImage: `url(${
-                favoriteAlbum.thumbnail_photo_url
-                  ? favoriteAlbum.thumbnail_photo_url
-                  : default_profile[favoriteAlbum.album_id % 4]
-              })`,
+              maxWidth: "fit-content",
+              minWidth: "18.462vw",
+              top: "6.154vw",
+              left: "4.103vw",
             }}
           >
-            <div
-              className="relative flex flex-col "
-              style={{
-                width: "38.974vw",
-                top: "6.154vw",
-                left: "4.103vw",
-              }}
+            <span
+              className="text-white text-end"
+              style={{ fontSize: "7.692vw" }}
             >
-              <span
-                className="text-white text-end"
-                style={{ fontSize: "7.692vw" }}
-              >
-                {favoriteAlbum.album_name}
-              </span>
-              <span
-                className="text-white text-end"
-                style={{ fontSize: "2.051vw" }}
-              >
-                {favoriteAlbum.album_created_date
-                  .slice(0, 10)
-                  .replaceAll("-", ".")}
-              </span>
-            </div>
-          </div>
-          <div className="relative" style={{ top: "-97.436vw" }}>
-            <div className="relative flex justify-end gap-2 top-4 right-4">
-              <HeartIcon
-                onClick={() => clickedHeart(favoriteAlbum.album_id)}
-                fill={"red"}
-                stroke={"red"}
-                width="6.154vw"
-                height="6.154vw"
-              />
-            </div>
+              {favoriteAlbum.album_name}
+            </span>
+            <span
+              className="text-white text-end"
+              style={{ fontSize: "3.59vw" }}
+            >
+              {favoriteAlbum.album_created_date
+                .slice(0, 10)
+                .replaceAll("-", ".")}
+            </span>
           </div>
         </div>
-      ))
-    ) : (
-      [...Array(1)].map((_, i) => (
-        <Link href={"/album/create"} key={i}>
-          <div
-            className={`w-72 h-96 rounded-xl grow flex-shrink-0 flex flex-col justify-center items-center gap-4 text-xl ${styles.card}`}
-            style={{ backgroundColor: "#B1B8C0" }}
-          >
-            <div
-              className={`flex justify-center items-center rounded-full border-4 border-white`}
-              style={{ width: "16.41vw", height: "16.41vw" }}
-            >
-              <PlusIcon />
-            </div>
-            <div>
-              <span className={`text-white`}>앨범 생성하러 가기</span>
-            </div>
+        <div className="relative" style={{ top: "-97.436vw" }}>
+          <div className="relative flex justify-end gap-2 top-4 right-4">
+            <HeartIcon
+              onClick={() => clickedHeart(favoriteAlbum.album_id)}
+              fill={"red"}
+              stroke={"red"}
+              width="6.154vw"
+              height="6.154vw"
+            />
           </div>
-        </Link>
-      ))
-    );
+        </div>
+      </div>
+    ))
+  ) : (
+    [...Array(1)].map((_, i) => (
+      <Link href={"/album/create"} key={i}>
+        <div
+          className={`w-72 h-96 rounded-xl grow flex-shrink-0 flex flex-col justify-center items-center gap-4 text-xl ${styles.card}`}
+          style={{ backgroundColor: "#B1B8C0" }}
+        >
+          <div
+            className={`flex justify-center items-center rounded-full border-4 border-white`}
+            style={{ width: "16.41vw", height: "16.41vw" }}
+          >
+            <PlusIcon />
+          </div>
+          <div>
+            <span className={`text-white`}>앨범 생성하러 가기</span>
+          </div>
+        </div>
+      </Link>
+    ))
+  );
   return (
     <ItemBlock width="92.308vw" height="" radius="5.128vw">
       <div

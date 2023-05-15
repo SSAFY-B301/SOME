@@ -16,6 +16,8 @@ import { TotalAlbumType } from "types/AlbumTypes";
 import { useDispatch, useSelector } from "react-redux";
 import { StateType } from "@/types/StateType";
 import { setIsMove, setIsTotal, setMoveEnd } from "@/features/totalSlice";
+import { CommonLoading } from "./Loading";
+import { setALbumIdState } from "@/features/albumStatusSlice";
 
 function TotalAlbum() {
   const [touchPosition, setTouchPosition] = useState<number>(0);
@@ -39,18 +41,7 @@ function TotalAlbum() {
       {/* // TODO : 트랜지션 end 잡아서 내려갈때 로딩 X, 데이터 없을 때 표시 */}
       {isMove || getTotalIsLoading || !isTotal || !moveEnd ? (
         <>
-          <div className={styles.loading_box}>
-            <div className={styles.lds_roller}>
-              <div></div>
-              <div></div>
-              <div></div>
-              <div></div>
-              <div></div>
-              <div></div>
-              <div></div>
-              <div></div>
-            </div>
-          </div>
+          <CommonLoading />
         </>
       ) : (
         <TotalAlbumItems />
@@ -76,11 +67,17 @@ function TotalAlbumItems() {
     "https://images.unsplash.com/photo-1661956602926-db6b25f75947?ixlib=rb-4.0.3&ixid=MnwxMjA3fDF8MHxlZGl0b3JpYWwtZmVlZHwyMXx8fGVufDB8fHx8&auto=format&fit=crop&w=500&q=60",
   ];
 
+  const dispatch = useDispatch();
+  const goToAlbum = (id: number) => {
+    dispatch(setALbumIdState(id));
+    router.push(`/album/${id}`);
+  };
+
   const totalAlbums: React.ReactNode = getTotal ? (
     getTotal.map((album: TotalAlbumType) => (
       <div key={album.album_id} className="relative">
         <div
-          onClick={() => router.push(`/album/${album.album_id}`)}
+          onClick={() => goToAlbum(album.album_id)}
           className={`flex flex-col items-end justify-end bg-center bg-cover relative ${styles.total_item}`}
           style={{
             backgroundImage: `url(${
@@ -105,7 +102,7 @@ function TotalAlbumItems() {
           stroke={album.isAlbumFav ? "red" : "white"}
           style={{
             position: "absolute",
-            top: "16px",
+            top: "0px",
             left: "122px",
             margin: "8px",
           }}
