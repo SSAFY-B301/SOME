@@ -69,7 +69,7 @@ function TotalAlbumItems() {
 
   const dispatch = useDispatch();
   const goToAlbum = (id: number) => {
-    dispatch(setALbumIdState(id));
+    dispatch(setALbumIdState({ albumId: id }));
     router.push(`/album/${id}`);
   };
 
