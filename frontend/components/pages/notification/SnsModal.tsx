@@ -58,8 +58,8 @@ export default function SnsNotiModal(params : SnsNotiModalParamsType) {
                     snsResultData?.uploadedDate.substring(8,10)+"일" : ""}</p>
                         </div>
                     </div>
-                    <div className="bg-center bg-cover" style={{maxWidth : "80vw", maxHeight : "50vh" }}>
-                        <img src={snsResultData.s3Url} alt="" />
+                    <div style={{maxWidth : "80vw", maxHeight : "70vh" }}>
+                        <img style={{maxWidth : "80vw", maxHeight : "70vh"}} src={snsResultData.s3Url} alt="" />
                     </div>
                     <p>SNS 공유를 수락하시겠습니까?</p>
                     <div className="flex items-center justify-center gap-x-4">
