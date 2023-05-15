@@ -32,6 +32,7 @@ export interface photoUploadType {
   isPreview: boolean;
   previewLength: number;
   uploadLength: number;
+  files: File[];
 }
 
 export interface GirlListDetailStateType {

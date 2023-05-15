@@ -7,6 +7,7 @@ import { useTheme } from "next-themes";
 import { useSelector } from "react-redux";
 import { StateType } from "@/types/StateType";
 import { useMemo } from "react";
+import { UploadStatus } from "@/components/common/UploadStatus";
 
 interface NavBarType {
   isSelect: boolean;
@@ -73,23 +74,7 @@ function NavBar({ isSelect, setIsSelect, isTotal, setIsTotal }: NavBarType) {
             </Link>
           )}
           <div className="flex gap-2">
-            {isUploading && (
-              <div className={`${styles.loading}`}>
-                <div className={`${styles.circle}`}>
-                  <div
-                    className={`${styles.wave}`}
-                    style={{
-                      top: `${32 - (32 / 100) * uploadPer}px`,
-                      transition: "top 1s",
-                    }}
-                  ></div>
-                </div>
-
-                <span className={`${styles.loadingText}`}>
-                  {`${uploadPer}%`}
-                </span>
-              </div>
-            )}
+            <UploadStatus />
             <div
               onClick={clickSelect}
               className="flex justify-center items-center"

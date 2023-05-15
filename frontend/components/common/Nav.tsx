@@ -16,6 +16,7 @@ import DarkModeIcon from "public/icons/Moon.svg";
 import AlarmIcon from "public/icons/Bell.svg";
 import FeedBackIcon from "./feedBack";
 import { useState } from "react";
+import { UploadStatus } from "./UploadStatus";
 
 interface InfoType {
   title: string;
@@ -30,26 +31,8 @@ function NavBar() {
     >
       <Logo />
       <FeedBackIcon setIsFeed={setIsFeed} isFeed={isFeed} />
-      {/* 다크모드 <-> 라이트모드 전환 버튼 */}
-      <div className="flex gap-2">
-        <button
-          type="button"
-          onClick={() => setTheme(theme === "dark" ? "light" : "dark")}
-        >
-          {theme === "light" ? (
-            <LightModeIcon
-              fill="black"
-              stroke="black"
-              className="cursor-pointer"
-            />
-          ) : (
-            <DarkModeIcon
-              fill="white"
-              stroke="white"
-              className="cursor-pointer"
-            />
-          )}
-        </button>
+      <div className="flex gap-2 items-center">
+        <UploadStatus />
         <Profile />
         <Link href={"/notification"}>
           <AlarmIcon fill="grey" stroke="grey" />
