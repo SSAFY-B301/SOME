@@ -1,5 +1,5 @@
 import useCustomAxios from "@/features/customAxios";
-import { PhotoType } from "@/types/AlbumTypes";
+import { PhotoType, SnsPhotoType } from "@/types/AlbumTypes";
 import { useRouter } from "next/router";
 import { useMutation, useQuery, useQueryClient } from "react-query";
 
@@ -31,10 +31,10 @@ function getPhoto(photoId: number) {
 }
 
 function getSnsPhoto(photoId: number | undefined) {
-  let snsResultData: PhotoType;
+  let snsResultData: SnsPhotoType;
 
   const { data: snsPhotoData, status: snsPhotoStatus } = useQuery(["sns", photoId], () =>
-    customBoyAxios.get("/photo/detail?photoId=" + photoId)
+    customBoyAxios.get("/photo/sns/detail?photoId=" + photoId)
   );
 
   snsResultData = snsPhotoData?.data.data.albumPhotoDetail;
