@@ -18,7 +18,7 @@ import PlusIcon from "public/icons/Plus.svg";
 import { FavoriteAlbumType } from "@/types/AlbumTypes";
 import Link from "next/link";
 import { useDispatch } from "react-redux";
-import { setALbumIdState } from "@/features/albumStatusSlice";
+import { setALbumIdState, setInit } from "@/features/albumStatusSlice";
 
 /**
  * 즐겨찾는 앨범
@@ -49,6 +49,7 @@ function FavoriteAlbum() {
 
   const dispatch = useDispatch();
   const goToAlbum = (id: number) => {
+    dispatch(setInit());
     dispatch(setALbumIdState({ albumId: id }));
     router.push(`/album/${id}`);
   };
