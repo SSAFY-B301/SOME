@@ -20,7 +20,7 @@ import { changeLocation } from "@/features/locationSlice";
 import { RootState } from "@/store/configureStore";
 import { useQueryClient } from "react-query";
 import { setGirlListDetailState } from "@/features/girlListDetailSlice";
-
+import LocationIcon from "@/public/icons/CrosshairSimple.svg"
 export default function Home() {
   
   //router
@@ -53,6 +53,11 @@ export default function Home() {
   function locationPermissionError(err : GeolocationPositionError){
     //에러 처리 부분
   }
+  function getUserLocation() {
+    if('geolocation' in navigator){
+      navigator.geolocation.getCurrentPosition(locationPermissionSuccess, locationPermissionError);
+    }
+  }
   useEffect(() => {
     if('geolocation' in navigator){
       navigator.geolocation.getCurrentPosition(locationPermissionSuccess, locationPermissionError);
@@ -73,7 +78,7 @@ export default function Home() {
         zoomable={false}
         draggable={false}
       >
-        <CustomOverlayMap key={5} position={{lat : location.lat, lng:location.lng}}>
+        <CustomOverlayMap key={"user"} position={{lat : location.lat, lng:location.lng}}>
           <div className="relative w-52 h-52">
             <div className={`absolute w-52 h-52 rounded-full ${girlStyles.loader_back} ${girlStyles.loader_animation} ${girlStyles.loader}`}></div>
             {userStatus === "success" &&
@@ -82,6 +87,11 @@ export default function Home() {
             {userStatus !== "success" && 
               <div  className={`top-20 left-20 z-10 absolute w-12 h-12 bg-gray-400 rounded-full`}></div>
             }
+          </div>
+        </CustomOverlayMap>
+        <CustomOverlayMap key={"location"} position={{lat : location.lat + 0.00158, lng:location.lng - 0.00093}}>
+          <div onClick={() => getUserLocation()} className="flex items-center justify-center w-10 h-10 bg-white rounded-full shadow-md">
+            <LocationIcon className="stroke-black"></LocationIcon>
           </div>
         </CustomOverlayMap>
         {resultData !== undefined && <>
