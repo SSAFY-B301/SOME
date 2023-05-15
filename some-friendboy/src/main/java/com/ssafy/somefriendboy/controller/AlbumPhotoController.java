@@ -73,6 +73,15 @@ public class AlbumPhotoController {
         return new ResponseEntity<ResponseDto>(responseDto, HttpStatus.OK);
     }
 
+    @GetMapping("/sns/detail")
+    public ResponseEntity<ResponseDto> getSNSPhoto(@RequestHeader HttpHeaders headers, Long photoId) {
+        String accessToken = headers.get("access_token").toString();
+        log.info("SNS 요청 사진 상세 정보 GET: /photo/sns/detail, photoId : ", photoId);
+
+        ResponseDto responseDto = albumPhotoService.selectSNSPhoto(accessToken, photoId);
+        return new ResponseEntity<ResponseDto>(responseDto, HttpStatus.OK);
+    }
+
     @Transactional
     @PutMapping("/like")
     public ResponseEntity<ResponseDto> likePhoto(@RequestHeader HttpHeaders headers, Long photoId) {
