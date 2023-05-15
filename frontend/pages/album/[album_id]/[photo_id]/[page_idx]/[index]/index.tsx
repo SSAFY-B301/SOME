@@ -196,11 +196,19 @@ const PhotoDetail = (): JSX.Element => {
   const setNextPage = (direction: string) => {
     if (albumData) {
       if (direction == "left" && !albumData.pages[page].is_last) {
-        setPage(page + 1);
-        setCarouselIdx(0);
+        setTimeout(() => {
+          setCarouselIdx(0);
+          setTimeout(() => {
+            setPage(page + 1);
+          }, 500);
+        }, 300);
       } else if (direction == "right" && !albumData.pages[page].is_first) {
-        setPage(page - 1);
-        setCarouselIdx(26);
+        setTimeout(() => {
+          setCarouselIdx(26);
+          setTimeout(() => {
+            setPage(page - 1);
+          }, 500);
+        }, 300);
       }
     }
   };
