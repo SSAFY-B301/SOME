@@ -1,3 +1,4 @@
+import { notificationPermission } from "@/features/sse";
 import { getMyPageData, useNotiOptionMutation } from "@/pages/api/profileApi";
 import { NotiOptionRequestType } from "@/types/UserType";
 
@@ -13,9 +14,12 @@ export default function ToggleList() {
         mutate(requestData);
         //알림 끄는 설정 접근
     }
-
+    
     return(
         <div className="flex flex-col gap-y-4">
+            <div>
+                <button onClick={() => notificationPermission()}>SOME 푸시 알림 동의</button>
+            </div>
             <div className="flex justify-between">
                 <p>공유 투표 알림</p>
                 {status === "success" && 
