@@ -6,6 +6,7 @@ const initialState: StoryType = {
   currentAlbumId: 0,
   albumIndex: 0,
   notiIds: [],
+  position: [0, 0],
 };
 
 export const storySlice = createSlice({
@@ -17,6 +18,7 @@ export const storySlice = createSlice({
       state.currentAlbumId = 0;
       state.albumIndex = 0;
       state.notiIds = [];
+      state.position = [0, 0];
     },
     setCurrentAlbumId(state, action) {
       state.currentAlbumId = action.payload;
@@ -33,6 +35,9 @@ export const storySlice = createSlice({
     setAlbumIndex(state, action) {
       state.albumIndex = action.payload;
     },
+    setPosition(state, action) {
+      state.position = action.payload;
+    },
   },
   extraReducers: (builder) => {},
 });
@@ -44,5 +49,6 @@ export const {
   endCurrentStory,
   addNotiIds,
   setAlbumIndex,
+  setPosition,
 } = storySlice.actions;
 export default storySlice.reducer;
