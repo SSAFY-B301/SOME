@@ -32,7 +32,6 @@ const Photo = ({
         minScale={1}
         maxScale={5}
         disablePadding={true}
-        centerOnInit={true}
         panning={scale == 1 ? { disabled: true } : { disabled: false }}
         onZoomStop={(state) => onZoomHandler(state)}
       >
@@ -40,11 +39,6 @@ const Photo = ({
           wrapperStyle={{
             width: "100vw",
             height: "100vh",
-          }}
-          contentStyle={{
-            left: "50%",
-            top: "50%",
-            transform: "translate(50%, 50%)",
           }}
         >
           <img src={`${imgSrc}`} />

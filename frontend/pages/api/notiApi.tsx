@@ -4,7 +4,12 @@ import {
   SnsRequestType,
   statusChangeRequestType,
 } from "@/types/NotiType";
-import { useInfiniteQuery, useMutation, useQueryClient } from "react-query";
+import {
+  useInfiniteQuery,
+  useMutation,
+  useQueryClient,
+  useQuery,
+} from "react-query";
 
 const { customNotiAxios } = useCustomAxios();
 
@@ -32,6 +37,24 @@ function getAlarms(page: number = 0, size: number = 10) {
   // return { resultData, isLoading };
   return { status, queryData, fetchNextPage, hasNextPage };
 }
+
+// [GET] sns 알림 갯수
+export const getAlarmCount = () => {
+  const { customBoyAxios } = useCustomAxios();
+
+  const { isLoading: getIsLoading, data: Count } = useQuery(
+    ["count"],
+    () => customBoyAxios.get("/noti/count"),
+    {
+      onSuccess: (data) => {
+        // console.log(data);
+      },
+      refetchOnWindowFocus: false,
+    }
+  );
+
+  return { Count, getIsLoading };
+};
 
 function useMutationNoti() {
   const queryClient = useQueryClient();
