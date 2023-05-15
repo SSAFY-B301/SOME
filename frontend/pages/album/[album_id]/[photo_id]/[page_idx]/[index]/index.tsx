@@ -195,15 +195,12 @@ const PhotoDetail = (): JSX.Element => {
    */
   const setNextPage = (direction: string) => {
     if (albumData) {
-      if (direction == "left" && page < albumData.pages.length - 1) {
-        // setPage(page + 1);
-        // setCarouselIdx(0);
-        // console.log(albumData.pages);
-        // console.log(albumData.pages.length);
-        // console.log("남은 페이지가 있습니다.");
-      } else if (direction == "right" && page > 0) {
-        // setPage(page - 1);
-        // setCarouselIdx(26);
+      if (direction == "left" && !albumData.pages[page].is_last) {
+        setPage(page + 1);
+        setCarouselIdx(0);
+      } else if (direction == "right" && !albumData.pages[page].is_first) {
+        setPage(page - 1);
+        setCarouselIdx(26);
       }
     }
   };
