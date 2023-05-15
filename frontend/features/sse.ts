@@ -1,7 +1,7 @@
 import { EventSourcePolyfill } from "event-source-polyfill";
 
 
-const sendNotification = async (title : string, body : string) => {
+export const sendNotification = async (title : string, body : string) => {
     const registration = await navigator.serviceWorker.getRegistration();
 
     const showNotification = (title: string, body: string) => {
