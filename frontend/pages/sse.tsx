@@ -19,7 +19,7 @@ function Sse() {
         const sse = new EventSourcePolyfill(`${process.env.NEXT_PUBLIC_SOME_NOTI_URL}/noti/subscribe`, {
             headers: {
                 "access_token" : parseToken,
-            }
+            },
         });
         sse.onopen = function () {
             console.log("SSE 연결!!");
@@ -67,7 +67,7 @@ function Sse() {
         }
     }
     useEffect(() => {
-        
+        notiPermission();
         return () => {
 
         };
