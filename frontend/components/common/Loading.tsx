@@ -41,3 +41,20 @@ export const LoadingInviteFriendBtn = () => {
 export const LoadingFav = () => {
   return <div className={`${styles.fav} ${styles.loading}`}></div>;
 };
+
+export const CommonLoading = () => {
+  return (
+    <div className={styles.loading_box}>
+      <div className={styles.lds_roller}>
+        <div></div>
+        <div></div>
+        <div></div>
+        <div></div>
+        <div></div>
+        <div></div>
+        <div></div>
+        <div></div>
+      </div>
+    </div>
+  );
+};
