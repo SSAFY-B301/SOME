@@ -1,5 +1,38 @@
 import { EventSourcePolyfill } from "event-source-polyfill";
 
+
+export const sendNotification = async (title : string, body : string) => {
+    const registration = await navigator.serviceWorker.getRegistration();
+
+    const showNotification = (title: string, body: string) => {
+        
+      const payload = {
+        body
+      };
+      if (registration !== undefined) {
+          if('showNotification' in registration) {
+            registration.showNotification(title, payload);
+          }
+          else {
+            new Notification(title, payload);
+          }
+      }
+    };
+    if(Notification.permission === 'granted') {
+        showNotification(title, body);
+    }
+    else {
+        if(Notification.permission !== 'denied') {
+            const permission = await Notification.requestPermission();
+            
+            if(permission === 'granted') {
+                showNotification(title, body);
+            }
+        }
+    }
+};
+
+
 export const sendNotification2 = async (title: string, content : string) => {
   
   if(Notification.permission === 'granted') {
