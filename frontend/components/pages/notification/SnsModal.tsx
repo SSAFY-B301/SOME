@@ -44,7 +44,7 @@ export default function SnsNotiModal(params : SnsNotiModalParamsType) {
     if (snsPhotoStatus === "success") {
         return(
             <div onClick={() => exitHandler()} className="absolute top-0 flex items-center justify-center bg-black bg-opacity-40" style={{width: "100vw", height: "100vh"}}>
-                <div onClick={(e) => e.stopPropagation()} className="flex flex-col items-center justify-center py-4 bg-white rounded-lg gap-y-2">
+                <div onClick={(e) => e.stopPropagation()} className="flex flex-col items-center justify-center py-4 bg-white rounded-lg dark:bg-dark-block gap-y-2">
                     <div className="flex w-full px-4 gap-x-2">
                         {snsResultData === undefined ? 
                             <div className="w-12 h-12 bg-gray-300 rounded-lg"></div>
@@ -58,13 +58,13 @@ export default function SnsNotiModal(params : SnsNotiModalParamsType) {
                     snsResultData?.uploadedDate.substring(8,10)+"일" : ""}</p>
                         </div>
                     </div>
-                    <div className="bg-center bg-cover" style={{maxWidth : "80vw", maxHeight : "50vh" }}>
-                        <img src={snsResultData.s3Url} alt="" />
+                    <div style={{maxWidth : "80vw", maxHeight : "70vh" }}>
+                        <img style={{maxWidth : "80vw", maxHeight : "70vh"}} loading="lazy" src={snsResultData.s3Url} alt="" />
                     </div>
                     <p>SNS 공유를 수락하시겠습니까?</p>
                     <div className="flex items-center justify-center gap-x-4">
-                        <button onClick={() => snsAcceptHandler("ACCEPT")} className="w-24 rounded-lg shadow">예</button>
-                        <button onClick={() => snsAcceptHandler("DECLINE")} className="w-24 rounded-lg shadow">아니오</button>
+                        <button onClick={() => snsAcceptHandler("ACCEPT")} className="w-24 rounded-lg shadow dark:bg-dark-block">예</button>
+                        <button onClick={() => snsAcceptHandler("DECLINE")} className="w-24 rounded-lg shadow dark:bg-dark-block">아니오</button>
                     </div>
                 </div>
             </div> 
@@ -73,8 +73,8 @@ export default function SnsNotiModal(params : SnsNotiModalParamsType) {
     else{
         return(
             <div onClick={() => exitHandler()} className="absolute top-0 flex items-center justify-center bg-black bg-opacity-40" style={{width: "100vw", height: "100vh"}}>
-                <div onClick={(e) => e.stopPropagation()} className="flex flex-col items-center justify-center py-4 bg-white rounded-lg gap-y-2">
-                    <p>SNS 공유 요청 사진 로딩중입니다..</p>
+                <div onClick={(e) => e.stopPropagation()} className="flex flex-col items-center justify-center py-4 bg-white rounded-lg dark:bg-dark-block gap-y-2">
+                    <p>로딩 중</p>
                 </div>
             </div>
         )
