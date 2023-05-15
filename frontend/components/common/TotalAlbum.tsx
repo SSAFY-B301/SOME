@@ -39,7 +39,7 @@ function TotalAlbum() {
       } bg-white dark:bg-dark-block`}
     >
       <div className={`${styles.up} ${isTotal ? styles.upx : styles.upo}`}>
-        <UpIcon width={"24px"} height={"24px"} stroke={"black"} />
+        <UpIcon width={"24px"} height={"24px"} stroke={"#B1B8C0"} />
       </div>
       <Header setTouchPosition={setTouchPosition} />
       {/* // TODO : 트랜지션 end 잡아서 내려갈때 로딩 X, 데이터 없을 때 표시 */}
