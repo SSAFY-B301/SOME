@@ -18,7 +18,7 @@ $main-color: linear-gradient(
   background: linear-gradient(to Bottom, #2f2f30, #373738);
   z-index: 9999;
   opacity: 0;
-  animation: openStory 0.7s forwards;
+  animation: openStory 0.5s forwards;
 }
 
 .prev::after {
@@ -48,7 +48,7 @@ $main-color: linear-gradient(
 }
 
 .down {
-  animation: down 1.5s forwards;
+  animation: down 1s forwards;
 }
 
 @keyframes down {
@@ -160,15 +160,17 @@ $main-color: linear-gradient(
         }
       }
       .exit {
+        position: relative;
+        z-index: 99999;
       }
     }
   }
-  footer {
-    .go_to_album {
-    }
-    .fav {
-    }
-  }
+  // footer {
+  //   .go_to_album {
+  //   }
+  //   .fav {
+  //   }
+  // }
 }
 
 @keyframes now_read {
