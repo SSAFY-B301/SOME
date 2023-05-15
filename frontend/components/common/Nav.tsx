@@ -16,6 +16,7 @@ import DarkModeIcon from "public/icons/Moon.svg";
 import AlarmIcon from "public/icons/Bell.svg";
 import FeedBackIcon from "./feedBack";
 import { useState } from "react";
+import { getAlarmCount } from "@/pages/api/notiApi";
 
 interface InfoType {
   title: string;
@@ -24,6 +25,9 @@ interface InfoType {
 function NavBar() {
   const { theme, setTheme } = useTheme();
   const [isFeed, setIsFeed] = useState<boolean>(false);
+
+  const getAlarm = getAlarmCount();
+
   return (
     <nav
       className={`flex flex-row justify-between items-center h-14 mx-6 ${styles.nav_bar}`}
@@ -51,7 +55,12 @@ function NavBar() {
           )}
         </button>
         <Profile />
-        <Link href={"/notification"}>
+        <Link className="relative" href={"/notification"}>
+          {getAlarm.Count && getAlarm.Count.data.data > 0 ? (
+            <div className="absolute top-0 right-0 w-3 h-3 bg-red-500 rounded-full"></div>
+          ) : (
+            <div></div>
+          )}
           <AlarmIcon fill="grey" stroke="grey" />
         </Link>
       </div>
