@@ -114,6 +114,15 @@ public class NotiService {
         feedBackRepository.save(feedBack);
         return setResponseDto(true,"피드백",200);
     }
+    public ResponseDto notiCount(String accessToken) {
+        String userId = tokenCheck(accessToken);
+        if(userId == null){
+            return setResponseDto(null,"토큰 만료",450);
+        }
+        List<Notification> notiCnt = notificationRepository.findNotiCnt(userId);
+
+        return setResponseDto(notiCnt.size(), "확인하지 않은 알림 개수",200);
+    }
 //    public void inviteNoti(String sender_id, String[] receiver_ids, Long album_id){
 //        String url = "http://3.35.18.146:9003/noti/noti/invite";
 //
@@ -158,6 +167,7 @@ public class NotiService {
 //                .build();
 //        HttpEntity<?> requestMessage = new HttpEntity<>(notiUploadCreateDto, httpHeaders);
 //        restTemplate.postForEntity(url, requestMessage, Object.class);
+
 //    }
 
     private ResponseDto setResponseDto(Object result, String message, int statusCode){
