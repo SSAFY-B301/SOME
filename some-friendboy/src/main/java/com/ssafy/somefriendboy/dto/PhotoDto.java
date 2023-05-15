@@ -22,6 +22,9 @@ public class PhotoDto {
     @JsonProperty("user_name")
     private String userName;
 
+    @JsonProperty("user_image")
+    private String userImage;
+
     @JsonProperty("upload_date")
     private LocalDateTime uploadDate;
 }

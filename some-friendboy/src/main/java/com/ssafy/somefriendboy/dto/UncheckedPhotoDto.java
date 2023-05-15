@@ -21,6 +21,8 @@ public class UncheckedPhotoDto implements Comparable<UncheckedPhotoDto>{
     @JsonProperty("photo_list")
     private List<PhotoDto> photoList;
 
+    
+
     @Override
     public int compareTo(UncheckedPhotoDto o) {
         if(this.recentUploadTime.isBefore(o.recentUploadTime)) return 1;

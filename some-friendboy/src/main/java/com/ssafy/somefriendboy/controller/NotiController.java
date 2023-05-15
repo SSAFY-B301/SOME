@@ -48,4 +48,12 @@ public class NotiController {
         ResponseDto responseDto = notiService.writeFeedBack(access_token,content);
         return new ResponseEntity<ResponseDto>(responseDto, HttpStatus.OK);
     }
+    @GetMapping("/count")
+    public ResponseEntity<ResponseDto> notiCount(@RequestHeader HttpHeaders headers) {
+        String access_token = headers.get("access_token").toString();
+        log.debug("알림 갯수 카운트 GET: /noti/count, access_token : {}",access_token);
+
+        ResponseDto responseDto = notiService.notiCount(access_token);
+        return new ResponseEntity<ResponseDto>(responseDto, HttpStatus.OK);
+    }
 }

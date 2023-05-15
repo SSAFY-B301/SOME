@@ -12,4 +12,6 @@ public interface AlbumPhotoRepositoryCustom {
     List<AlbumPhoto> findAllAlbumPhoto(Long albumId, Long categoryId, List<String> userId);
     List<Long> findCategoryName(List<String> categoryName);
     void modifyPhotoStatus(List<Long> photoId);
+
+    Long countFriendGirlPhotos(String userId);
 }
