@@ -1,6 +1,6 @@
 import { EventSourcePolyfill } from "event-source-polyfill";
 
-export const sendNotification = async (title: string, content : string) => {
+export const sendNotification2 = async (title: string, content : string) => {
   
   if(Notification.permission === 'granted') {
     showNotification(title, content);
@@ -49,11 +49,11 @@ export function SseConnect(token : string) {
         const parseMsg = JSON.parse(event.data);
         if (parseMsg.type === "SNS") {
             console.log(parseMsg);
-            sendNotification("SNS 공유 요청", parseMsg.content);
+            sendNotification2("SNS 공유 요청", parseMsg.content);
         }
         else if (parseMsg.type === "INVITE"){
             console.log(parseMsg);
-            sendNotification("새로운 앨범 초대", parseMsg.content);
+            sendNotification2("새로운 앨범 초대", parseMsg.content);
         }
     }
 };
