@@ -10,6 +10,7 @@ import { userQuery } from "./api/userApi";
 import { CheckDevice } from "@/components/common/CheckDevice";
 import { useSelector } from "react-redux";
 import { StateType } from "@/types/StateType";
+import { SseConnect, notificationPermission } from "@/features/sse";
 
 export default function Home() {
   //로그인 상태인지 확인하고, 로그인 안 되어 있으면 로그인 페이지로 이동
@@ -23,6 +24,7 @@ export default function Home() {
   CheckDevice();
   
   useEffect(() => {
+    notificationPermission();
     let timeout;
     const isLogin =
       window.localStorage.getItem("access_token") === null ? false : true;
@@ -38,6 +40,8 @@ export default function Home() {
 
   useEffect(() => {
     if (getUserInfo !== undefined) {
+      const parseToken = JSON.parse(window.localStorage.getItem("access_token") || '{}').access_token;
+      SseConnect(parseToken);
       setTimeout(() => router.push("/boy-home"), 2000);
     }
     return () => {};
