@@ -1,5 +1,25 @@
-$main-color: linear-gradient(238.55deg, rgba(244, 114, 182, 0.05) 15.98%, rgba(145, 153, 217, 0.05) 55.85%, rgba(56, 189, 248, 0.05) 84.59%), linear-gradient(134.36deg, rgba(244, 114, 182, 0.15) 15.23%, rgba(151, 151, 215, 0.15) 49.79%, rgba(56, 189, 248, 0.15) 84.77%);
+$main-color: linear-gradient(
+    238.55deg,
+    rgba(244, 114, 182, 0.05) 15.98%,
+    rgba(145, 153, 217, 0.05) 55.85%,
+    rgba(56, 189, 248, 0.05) 84.59%
+  ),
+  linear-gradient(
+    134.36deg,
+    rgba(244, 114, 182, 0.15) 15.23%,
+    rgba(151, 151, 215, 0.15) 49.79%,
+    rgba(56, 189, 248, 0.15) 84.77%
+  );
 
-.on_read{
-    background: $main-color;
+.on_read {
+  background: $main-color;
+}
+
+.container {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  overflow: scroll;
+  //   margin-bottom: 28.718vw;
+  //   height: 92.891vh;
 }
