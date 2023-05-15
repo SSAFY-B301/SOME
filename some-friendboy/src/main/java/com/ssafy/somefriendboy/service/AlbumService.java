@@ -308,10 +308,10 @@ public class AlbumService {
         headers.setContentType(MediaType.APPLICATION_FORM_URLENCODED);
         headers.setBearerAuth(access_token);
 
-        MultiValueMap<String, String> map = new LinkedMultiValueMap<>();
-//        map.add("limit", "3");
+        MultiValueMap<String, Object> map = new LinkedMultiValueMap<>();
+        map.add("limit", 100);
 
-        HttpEntity<MultiValueMap<String, String>> request = new HttpEntity<>(map, headers);
+        HttpEntity<MultiValueMap<String, Object>> request = new HttpEntity<>(map, headers);
         RestTemplate restTemplate = new RestTemplate();
         ResponseEntity<KakaoFriendResponseDto> response = restTemplate.exchange(url, HttpMethod.GET, request, KakaoFriendResponseDto.class);
 
