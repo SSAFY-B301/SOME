@@ -7,6 +7,7 @@ const initialState: photoUploadType = {
   uploadLength: 0,
   isUploading: false,
   isPreview: false,
+  files: [],
 };
 
 export const photoUploadSlice = createSlice({
@@ -44,6 +45,9 @@ export const photoUploadSlice = createSlice({
     setPreviewLength(state, action) {
       state.previewLength = action.payload.previewLength;
     },
+    setFiles(state, action) {
+      state.files = action.payload;
+    },
   },
   extraReducers: (builder) => {},
 });
@@ -57,5 +61,6 @@ export const {
   countUpload,
   setUploadLength,
   setPreviewLength,
+  setFiles,
 } = photoUploadSlice.actions;
 export default photoUploadSlice.reducer;

@@ -22,6 +22,7 @@ import {
   setUploadLength,
   startUpload,
 } from "@/features/photoUploadSlice";
+import { upload } from "@/features/upload";
 
 // 인터페이스
 interface PreviewType {
@@ -106,29 +107,22 @@ function Preview({ inputPhoto }: PreviewType) {
      */
     const uploadPhotos = () => {
       dispatch(startUpload());
+      const temp = Array.from(inputPhoto).filter((_, index) => isChecks[index]);
 
-      Array.from(inputPhoto).forEach((file, index) => {
-        if (isChecks[index]) {
-          let formData = new FormData();
-          formData.append("multipartFile", file);
-          const requestData: requestPartType = {
-            formData: formData,
-            albumId: albumId,
-          };
-          mutate(requestData);
-        }
-      });
+      upload(temp, mutate, albumId);
+
+      // Array.from(inputPhoto).forEach((file, index) => {
+      //   if (isChecks[index]) {
+      //     let formData = new FormData();
+      //     formData.append("multipartFile", file);
+      //     const requestData: requestPartType = {
+      //       formData: formData,
+      //       albumId: albumId,
+      //     };
+      //     mutate(requestData);
+      //   }
+      // });
     };
-
-    useEffect(() => {
-      if (uploadCount === uploadLength) {
-        // TODO : 3초 대기
-        setTimeout(() => {
-          dispatch(endUpload());
-          dispatch(endPreview());
-        }, 3000);
-      }
-    }, [uploadCount]);
 
     // react-slick 설정
     const settings: Settings = {

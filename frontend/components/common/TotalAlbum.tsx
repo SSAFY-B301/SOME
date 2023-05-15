@@ -10,6 +10,7 @@ import styles from "styles/total.module.scss";
 
 // 아이콘
 import HeartIcon from "public/icons/Heart.svg";
+import UpIcon from "public/icons/CaretUp.svg";
 
 // 타입
 import { TotalAlbumType } from "types/AlbumTypes";
@@ -37,6 +38,9 @@ function TotalAlbum() {
         !isMove && (isTotal ? styles.click_total_album : styles.no_click)
       } bg-white dark:bg-dark-block`}
     >
+      <div className={`${styles.up} ${isTotal ? styles.upx : styles.upo}`}>
+        <UpIcon width={"24px"} height={"24px"} stroke={"black"} />
+      </div>
       <Header setTouchPosition={setTouchPosition} />
       {/* // TODO : 트랜지션 end 잡아서 내려갈때 로딩 X, 데이터 없을 때 표시 */}
       {isMove || getTotalIsLoading || !isTotal || !moveEnd ? (
@@ -201,6 +205,7 @@ function Header({ setTouchPosition }: HeaderType) {
         {/* <div>{isSearch && <input type="text" />}</div> */}
         <span>전체 앨범</span>
       </div>
+
       {/* <SearchIcon
         onClick={() => {
           isTotal && setFlag(true);

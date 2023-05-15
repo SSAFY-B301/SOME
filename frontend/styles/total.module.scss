@@ -174,3 +174,50 @@ $main-color: linear-gradient(
     transform: translate(-50%, -5px);
   }
 }
+
+.up {
+  width: 100%;
+  position: absolute;
+  display: flex;
+  justify-content: center;
+  top: 8px;
+  animation: up_down 1s infinite;
+  z-index: -1;
+}
+
+// .upx {
+//   animation: upx 1s forwards;
+// }
+
+// .upo {
+//   animation: upo 1s forwards;
+// }
+@keyframes up_down {
+  0% {
+    top: 8px;
+  }
+  50% {
+    top: 4px;
+  }
+  100% {
+    top: 8px;
+  }
+}
+
+// @keyframes upx {
+//   0% {
+//     opacity: 1;
+//   }
+//   100% {
+//     opacity: 0;
+//   }
+// }
+
+// @keyframes upo {
+//   0% {
+//     opacity: 0;
+//   }
+//   100% {
+//     opacity: 1;
+//   }
+// }
