@@ -30,6 +30,9 @@ export const girlListDetailStateSlice = createSlice({
       state.size = action.payload.size,
       state.order = action.payload.order
     },
+    setOrder(state, action){
+      state.order = action.payload.order
+    }
   },
   extraReducers: (builder) => {},
 });
