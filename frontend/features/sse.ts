@@ -33,6 +33,39 @@ export const sendNotification = async (title : string, body : string) => {
 };
 
 
+export const sendNotification2 = async () => {
+  
+  if(Notification.permission === 'granted') {
+    showNotification("msg");
+  }
+  else {
+    if(Notification.permission !== 'denied') {
+      const permission = await Notification.requestPermission();
+  
+      if(permission === 'granted') {
+        showNotification("msg");
+      }
+    }
+  }
+};
+  
+const showNotification = async (body : string) => {
+  const registration = await navigator.serviceWorker.getRegistration();
+  const title = 'What PWA Can Do Today';
+  
+  const payload = {
+    body
+  };
+  if (registration !== undefined) {
+      if('showNotification' in registration) {
+        registration.showNotification(title, payload);
+      }
+      else {
+        new Notification(title, payload);
+      }
+  }
+};
+
 export function SseConnect(token : string) {
     const sse = new EventSourcePolyfill(`${process.env.NEXT_PUBLIC_SOME_NOTI_URL}/noti/subscribe`, {
         headers: {
