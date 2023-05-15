@@ -60,7 +60,23 @@ const Friends = ({
             ))}
           </ul>
         ) : (
-          <div>친구가 없다</div>
+          <ul>
+            <li
+              className="h-16 flex justify-between items-center"
+              onClick={shareUrl}
+            >
+              <div className="w-2/3 flex justify-start items-center">
+                <div className="w-12 h-12 rounded-full box-border mr-3">
+                  <ShareIcon className="w-12 h-12 rounded-full box-border mr-3" />
+                </div>
+                <div className="text-base truncate">
+                  <span className={`font-bold ${styles.share}`}>
+                    친구에게 SOME 초대하기
+                  </span>
+                </div>
+              </div>
+            </li>
+          </ul>
         )
       ) : (
         <div>
