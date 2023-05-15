@@ -5,7 +5,7 @@ import axios from "axios";
 
 // next Hooks
 import { useRouter } from "next/router";
-import { EventSourcePolyfill } from "event-source-polyfill";
+import { SseConnect, notificationPermission } from "@/features/sse";
 
 //로그인 완료 페이지니까 리덕스에 state 저장해주고 이동할 수 있도록
 export default function AuthRedirect() {
@@ -37,68 +37,11 @@ export default function AuthRedirect() {
         }
         
     }
-    async function showNotification(title : string, body : string) {
-        const registration = await navigator.serviceWorker.getRegistration();
-        
-        const payload = {
-            body
-        };
-
-        if (registration !== undefined) {
-            if('showNotification' in registration) {
-                registration.showNotification(title, payload);
-            }
-            else {
-                new Notification(title, payload);
-            }
-        }
-    }
-    async function sendNoti(title : string, body : string) {
-        
-        if(Notification.permission === 'granted') {
-            showNotification(title, body);
-        }
-        else {
-            if(Notification.permission !== 'denied') {
-                const permission = await Notification.requestPermission();
-            
-                if(permission === 'granted') {
-                showNotification(title, body);
-                }
-            }
-        }
-    }
-    function SseConnect() {
-        const sse = new EventSourcePolyfill(`${process.env.NEXT_PUBLIC_SOME_NOTI_URL}/noti/subscribe`, {
-            headers: {
-                "access_token" : token,
-            },
-        });
-        sse.onopen = function () {
-            console.log("Notification Server Connected..");
-          };
-        sse.onerror = function (error) {
-            console.log("SSE Error Occured : ", error);
-            sse.close();
-        };
-        sse.onmessage = (event) => {
-            const parseMsg = JSON.parse(event.data);
-            console.log(parseMsg);
-            if (parseMsg.type === "SNS") {
-                sendNoti("SNS 공유 요청", parseMsg.content);
-            }
-            else if (parseMsg.type === "INVITE"){
-                sendNoti("새로운 앨범 초대", parseMsg.content);
-            }
-        }
-    };
-    async function notificationPermission() {
-        const permission = await Notification.requestPermission();
-    }
+    
     
     useEffect(() => {
       if (token !== "") {
-          SseConnect();
+          SseConnect(token);
           router.push("/boy-home");
       }
       return () => {
