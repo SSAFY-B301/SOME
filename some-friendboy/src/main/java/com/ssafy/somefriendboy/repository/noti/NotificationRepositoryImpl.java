@@ -28,4 +28,16 @@ public class NotificationRepositoryImpl implements NotificationRepositoryCustom{
                 )
                 .fetch();
     }
+
+    @Override
+    public List<Notification> findNotiCnt(String userId) {
+        return queryFactory.select(notification)
+                .from(notification)
+                .where(
+                        notification.receiver.userId.eq(userId),
+                        notification.type.ne(NotiType.UPLOAD),
+                        notification.status.eq(NotiStatus.UNCHECKED)
+                )
+                .fetch();
+    }
 }
