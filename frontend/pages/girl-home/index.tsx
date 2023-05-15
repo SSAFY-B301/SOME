@@ -69,7 +69,7 @@ export default function Home() {
         className="z-0"
         center={{lat : location.lat, lng:location.lng}}
         style={{width : "100vw", height:"90vh"}}
-        level={1}
+        level={2}
         zoomable={false}
         draggable={false}
       >
