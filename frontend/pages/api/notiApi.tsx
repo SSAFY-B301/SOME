@@ -4,11 +4,17 @@ import {
   SnsRequestType,
   statusChangeRequestType,
 } from "@/types/NotiType";
-import { useInfiniteQuery, useMutation, useQueryClient } from "react-query";
+import {
+  useInfiniteQuery,
+  useMutation,
+  useQueryClient,
+  useQuery,
+} from "react-query";
 
 const { customNotiAxios } = useCustomAxios();
 
 function getAlarms(page: number = 0, size: number = 10) {
+  const queryKey = `/noti/list?&size=${size}`;
   const {
     data: queryData,
     status,
@@ -16,15 +22,13 @@ function getAlarms(page: number = 0, size: number = 10) {
     hasNextPage,
   } = useInfiniteQuery(
     ["alarm"],
-    ({ pageParam = { page, size } }) => {
-      const res = customNotiAxios.get(
-        `/noti/list?page=${pageParam.page}&size=${pageParam.size}`
-      );
+    ({ pageParam = page }) => {
+      const res = customNotiAxios.get(queryKey + `&page=${pageParam}`);
       return res.then((data) => data.data.data);
     },
     {
       getNextPageParam: (lastPage) => {
-        return !lastPage.is_last ? lastPage.page + 1 : undefined;
+        return lastPage.is_last ? undefined : lastPage.now_page + 1;
         // return(lastPage.data.data.now_page)
       },
     }
@@ -32,6 +36,24 @@ function getAlarms(page: number = 0, size: number = 10) {
   // return { resultData, isLoading };
   return { status, queryData, fetchNextPage, hasNextPage };
 }
+
+// [GET] sns 알림 갯수
+export const getAlarmCount = () => {
+  const { customBoyAxios } = useCustomAxios();
+
+  const { isLoading: getIsLoading, data: Count } = useQuery(
+    ["count"],
+    () => customBoyAxios.get("/noti/count"),
+    {
+      onSuccess: (data) => {
+        // console.log(data);
+      },
+      refetchOnWindowFocus: false,
+    }
+  );
+
+  return { Count, getIsLoading };
+};
 
 function useMutationNoti() {
   const queryClient = useQueryClient();
