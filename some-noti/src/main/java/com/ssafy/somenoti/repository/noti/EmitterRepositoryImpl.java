@@ -1,6 +1,7 @@
 package com.ssafy.somenoti.repository.noti;
 
 import lombok.NoArgsConstructor;
+import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Repository;
 import org.springframework.web.servlet.mvc.method.annotation.SseEmitter;
 
@@ -10,6 +11,7 @@ import java.util.stream.Collectors;
 
 @Repository
 @NoArgsConstructor
+@Slf4j
 public class EmitterRepositoryImpl implements EmitterRepository{
     private final Map<String, SseEmitter> emitters = new ConcurrentHashMap<>();
     private final Map<String, Object> eventCache = new ConcurrentHashMap<>();
@@ -17,6 +19,7 @@ public class EmitterRepositoryImpl implements EmitterRepository{
     @Override
     public SseEmitter save(String emitterId, SseEmitter sseEmitter) {
         emitters.put(emitterId,sseEmitter);
+        log.info("Saved SseEmitter for {}", emitterId);
         return sseEmitter;
     }
 
@@ -42,7 +45,7 @@ public class EmitterRepositoryImpl implements EmitterRepository{
     @Override
     public void deleteById(String emitterId) {
         emitters.remove(emitterId);
-
+        log.info("Deleted SseEmitter for {}", emitterId);
     }
 
     @Override

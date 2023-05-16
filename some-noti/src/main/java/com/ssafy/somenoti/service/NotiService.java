@@ -21,10 +21,7 @@ import org.springframework.web.servlet.mvc.method.annotation.SseEmitter;
 
 import java.io.IOException;
 import java.time.LocalDateTime;
-import java.util.HashMap;
-import java.util.List;
-import java.util.Map;
-import java.util.Optional;
+import java.util.*;
 
 @Service
 @RequiredArgsConstructor
@@ -57,23 +54,27 @@ public class NotiService {
     public SseEmitter subscribe(String accessToken, String lastEventId) {
         String userId = tokenCheck(accessToken);
         log.info("userId : "+ userId);
-        String id = userId + "_" + System.currentTimeMillis();
+        String emitterId = userId + "_" + System.currentTimeMillis();
 
-        SseEmitter emitter = emitterRepository.save(id, new SseEmitter(DEFAULT_TIMEOUT));
-        emitter.onCompletion(() -> emitterRepository.deleteById(id));
+        SseEmitter emitter = emitterRepository.save(emitterId, new SseEmitter(DEFAULT_TIMEOUT));
+        emitter.onCompletion(() -> {
+            log.info("onCompletion callback");
+            emitterRepository.deleteById(emitterId);
+        });
         emitter.onTimeout(() -> {
-            emitterRepository.deleteById(id);
+            log.info("onTimeout callback");
+            emitterRepository.deleteById(emitterId);
             emitter.complete();
         });
         Map<String,Object> subscribeData;
         subscribeData = new HashMap<>();
-        subscribeData.put("content","EventStream Created. [userId=" + userId + "]");
+        subscribeData.put("content","EventStream Created. [userId=" + emitterId + "]");
         subscribeData.put("type","SUBSCRIBE");
 
         Map<String, SseEmitter> sseEmitters = emitterRepository.findAllEmitterStartWithId(userId);
 
         // 503 에러를 방지하기 위한 더미 이벤트 전송
-        sendToClient(emitter, id, subscribeData);
+        sendToClient(emitter, emitterId, subscribeData);
 
         // 클라이언트가 미수신한 Event 목록이 존재할 경우 전송하여 Event 유실을 예방
         if (!lastEventId.isEmpty()) {
@@ -233,17 +234,24 @@ public class NotiService {
                 if(receiver.getNotiUpload().equals(false)) continue;
             }
 
-            log.info("************noti 저장 후 알림 보내기 시작*******************");
+            log.info("************noti 저장 후 알림 보내기 시작*******************" + receiver.getUserId()+"**");
             Map<String, SseEmitter> sseEmitters = emitterRepository.findAllEmitterStartWithId(String.valueOf(receiver.getUserId()));
-            sseEmitters.forEach(
-                    (key, emitter) -> {
-                        log.info("sse emitter하나 알림 전송");
-                        // 데이터 캐시 저장(유실된 데이터 처리하기 위함)
-                        emitterRepository.saveEventCache(key, notification);
-                        // 데이터 전송
-                        sendToClient(emitter, key, setNotiData(notification));
-                    }
-            );
+            for(String key : sseEmitters.keySet()){
+                log.info("sse emitter하나 알림 전송");
+                SseEmitter emitter = sseEmitters.get(key);
+                emitterRepository.saveEventCache(key, notification);
+                // 데이터 전송
+                sendToClient(emitter, key, setNotiData(notification));
+            }
+//            sseEmitters.forEach(
+//                    (key, emitter) -> {
+//                        log.info("sse emitter하나 알림 전송");
+//                        // 데이터 캐시 저장(유실된 데이터 처리하기 위함)
+//                        emitterRepository.saveEventCache(key, notification);
+//                        // 데이터 전송
+//                        sendToClient(emitter, key, setNotiData(notification));
+//                    }
+//            );
             log.info("************noti 저장 후 알림 보내기 종료*******************");
         }
     }
