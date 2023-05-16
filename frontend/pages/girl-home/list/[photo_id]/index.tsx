@@ -5,6 +5,7 @@ import TabBar from "@/components/common/TabBar";
 import { getGirlPhotoDetail, useMutationGirl } from "@/pages/api/girlApi";
 import { PhotoTime } from "@/components/pages/notification/AlarmTime";
 import { default as ImageTag } from "next/image";
+import { useEffect } from "react";
 
 export default function GirlDetail() {
   const { resultData, girlDetailStatus } = getGirlPhotoDetail();
@@ -13,8 +14,12 @@ export default function GirlDetail() {
     girlLikeMutation({ photo_id: nowPhotoId, like_photo_status: likeStatus });
   }
 
-  const img = new Image();
-  img.src = resultData ? resultData.s3Url : "";
+  // let img = new Image();
+  // useEffect(() => {
+  //   if (resultData) {
+  //     img.src = resultData.s3Url;
+  //   }
+  // }, [resultData]);
 
   return (
     <div className="flex flex-col items-center gap-y-4">
@@ -57,14 +62,14 @@ export default function GirlDetail() {
         className="flex flex-col justify-center"
         style={{ width: "100vw", height: "70vh" }}
       >
-        <ImageTag
+        {/* <ImageTag
           src={resultData ? resultData.s3Url : ""}
           alt="photo"
           loading="lazy"
           width={img.width}
           height={img.height}
-        />
-        {/* <img src={resultData ? resultData.s3Url : ""} alt="" /> */}
+        /> */}
+        <img src={resultData ? resultData.s3Url : ""} alt="" />
       </div>
       <TabBar />
     </div>
