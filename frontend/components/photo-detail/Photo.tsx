@@ -1,3 +1,4 @@
+import { default as ImageTag } from "next/image";
 import React, { useState } from "react";
 import { TransformWrapper, TransformComponent } from "react-zoom-pan-pinch";
 
@@ -17,6 +18,9 @@ const Photo = ({
   const onZoomHandler = (state: any) => {
     setScale(state.state.scale);
   };
+
+  const img = new Image();
+  img.src = imgSrc;
 
   return (
     <div
@@ -42,7 +46,14 @@ const Photo = ({
             height: "100vh",
           }}
         >
-          <img src={`${imgSrc}`} />
+          <ImageTag
+            src={imgSrc}
+            alt="photo"
+            loading="lazy"
+            width={img.width}
+            height={img.height}
+          />
+          {/* <img src={`${imgSrc}`} /> */}
         </TransformComponent>
       </TransformWrapper>
     </div>

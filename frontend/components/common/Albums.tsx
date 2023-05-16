@@ -19,6 +19,7 @@ import { FavoriteAlbumType } from "@/types/AlbumTypes";
 import Link from "next/link";
 import { useDispatch } from "react-redux";
 import { setALbumIdState, setInit } from "@/features/albumStatusSlice";
+import Image from "next/image";
 
 /**
  * 즐겨찾는 앨범
@@ -64,6 +65,51 @@ function FavoriteAlbum() {
       <div key={favoriteAlbum.album_id} className={`${styles.card}`}>
         <div
           onClick={() => goToAlbum(favoriteAlbum.album_id)}
+          style={{
+            width: "73.846vw",
+            height: "98.462vw",
+            borderRadius: "3.077vw",
+          }}
+        >
+          <Image
+            className={styles.image}
+            src={
+              favoriteAlbum.thumbnail_photo_url
+                ? favoriteAlbum.thumbnail_photo_url
+                : default_profile[favoriteAlbum.album_id % 4]
+            }
+            alt="fav"
+            style={{ objectFit: "cover", borderRadius: "3.077vw" }}
+            loading="lazy"
+            fill
+          />
+          <div
+            className="relative flex flex-col "
+            style={{
+              maxWidth: "fit-content",
+              minWidth: "18.462vw",
+              top: "14.359vw",
+              left: "4.103vw",
+            }}
+          >
+            <span
+              className="text-white text-end"
+              style={{ fontSize: "7.692vw" }}
+            >
+              {favoriteAlbum.album_name}
+            </span>
+            <span
+              className="text-white text-end"
+              style={{ fontSize: "3.59vw" }}
+            >
+              {favoriteAlbum.album_created_date
+                .slice(0, 10)
+                .replaceAll("-", ".")}
+            </span>
+          </div>
+        </div>
+        {/* <div
+          onClick={() => goToAlbum(favoriteAlbum.album_id)}
           className="pt-10 bg-center bg-cover"
           style={{
             width: "73.846vw",
@@ -100,7 +146,7 @@ function FavoriteAlbum() {
                 .replaceAll("-", ".")}
             </span>
           </div>
-        </div>
+        </div> */}
         <div className="relative" style={{ top: "-97.436vw" }}>
           <div className="relative flex justify-end gap-2 top-4 right-4">
             <HeartIcon

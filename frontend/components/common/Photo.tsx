@@ -1,3 +1,4 @@
+import Image from "next/image";
 import CheckIcon from "public/icons/Check.svg";
 import styles from "styles/album.module.scss";
 
@@ -19,13 +20,22 @@ interface PhotoType {
 function Photo(props: PhotoType) {
   return (
     <div
-      className={`bg-cover bg-center ${styles.photo} justify-end items-end`}
+      className={`${styles.photo} justify-end items-end relative`}
       style={{
         width: props.width,
         height: props.height,
-        backgroundImage: "url(" + props.img + ")",
       }}
     >
+      <Image
+        src={props.img}
+        alt="photo"
+        style={{
+          objectFit: "cover",
+        }}
+        loading="lazy"
+        fill
+      />
+
       {props.selectedPhotos.has(props.photoId) && (
         <div className={`${styles.select_check}`}>
           <CheckIcon width={"3.077vw"} height={"3.077vw"} fill={"white"} />
