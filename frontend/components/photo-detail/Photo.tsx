@@ -32,6 +32,7 @@ const Photo = ({
         minScale={1}
         maxScale={5}
         disablePadding={true}
+        centerOnInit={true}
         panning={scale == 1 ? { disabled: true } : { disabled: false }}
         onZoomStop={(state) => onZoomHandler(state)}
       >
