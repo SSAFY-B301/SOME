@@ -19,6 +19,7 @@ import { StateType } from "@/types/StateType";
 import { setIsMove, setIsTotal, setMoveEnd } from "@/features/totalSlice";
 import { CommonLoading } from "./Loading";
 import { setALbumIdState, setInit } from "@/features/albumStatusSlice";
+import Image from "next/image";
 
 function TotalAlbum() {
   const [touchPosition, setTouchPosition] = useState<number>(0);
@@ -83,6 +84,35 @@ function TotalAlbumItems() {
       <div key={album.album_id} className="relative">
         <div
           onClick={() => goToAlbum(album.album_id)}
+          style={{
+            width: "41.026vw",
+            height: "41.026vw",
+            borderRadius: "3.077vw",
+          }}
+        >
+          <Image
+            src={
+              album.thumbnail_photo_url
+                ? album.thumbnail_photo_url
+                : default_profile[album.album_id % 4]
+            }
+            alt="total"
+            style={{
+              objectFit: "cover",
+              borderRadius: "3.077vw",
+            }}
+            loading="lazy"
+            fill
+          />
+          <div className="flex flex-col items-end text-white text-left absolute bottom-1.5 right-1.5">
+            <span>{album.album_name}</span>
+            <span>
+              {album.album_created_date.slice(0, 10).replaceAll("-", ".")}
+            </span>
+          </div>
+        </div>
+        {/* <div
+          onClick={() => goToAlbum(album.album_id)}
           className={`flex flex-col items-end justify-end bg-center bg-cover relative ${styles.total_item}`}
           style={{
             backgroundImage: `url(${
@@ -100,7 +130,7 @@ function TotalAlbumItems() {
               {album.album_created_date.slice(0, 10).replaceAll("-", ".")}
             </span>
           </div>
-        </div>
+        </div> */}
         <HeartIcon
           onClick={() => mutate(album.album_id)}
           fill={album.isAlbumFav ? "red" : "none"}
