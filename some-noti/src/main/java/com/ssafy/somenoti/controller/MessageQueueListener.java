@@ -6,6 +6,9 @@ import com.ssafy.somenoti.entity.NotiType;
 import com.ssafy.somenoti.service.NotiService;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
+import org.springframework.amqp.rabbit.annotation.Exchange;
+import org.springframework.amqp.rabbit.annotation.Queue;
+import org.springframework.amqp.rabbit.annotation.QueueBinding;
 import org.springframework.amqp.rabbit.annotation.RabbitListener;
 import org.springframework.stereotype.Component;
 
@@ -17,8 +20,12 @@ import java.io.IOException;
 public class MessageQueueListener {
     private final NotiService notiService;
 
-    @RabbitListener(queues = "some.queue")
-    public void receiveMessage(MQDto message) throws IOException {
+    @RabbitListener(bindings = @QueueBinding(
+            value = @Queue(value = "some.queue",durable = "true"),
+            exchange = @Exchange(value = "some.noti",type = "fanout"),
+            key = "some.route.#"
+    ))
+    public void receiveMessage(MQDto message) {
         log.info("MQ인식, type : {}",message.getType().toString());
         ObjectMapper mapper = new ObjectMapper();
         if(message.getType().equals(NotiType.INVITE)){
