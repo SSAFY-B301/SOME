@@ -195,9 +195,8 @@ public class NotiService {
     private void sendToClient(SseEmitter emitter, String emitterId, Object data) {
         try {
             emitter.send(SseEmitter.event()
-                    .id(emitterId)
                     .data(data)
-                    .reconnectTime(500));
+                    );
         } catch (IOException exception) {
             emitterRepository.deleteById(emitterId);
         }
