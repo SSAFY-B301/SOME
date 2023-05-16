@@ -1,6 +1,7 @@
 // 라이브러리
 import { MutableRefObject, useEffect, useMemo, useRef, useState } from "react";
 import Slider, { Settings } from "react-slick";
+import { default as ImageTag } from "next/image";
 
 // CSS
 import styles from "styles/album.module.scss";
@@ -141,8 +142,15 @@ function Preview({ inputPhoto }: PreviewType) {
               className={`bg-contain bg-center bg-no-repeat ${
                 styles.paging_photo
               } ${viewId !== i && styles.no_active}`}
-              style={{ backgroundImage: `url(${previewPhotos[i].img})` }}
-            />
+            >
+              <ImageTag
+                src={previewPhotos[i].img}
+                alt="photo"
+                loading="lazy"
+                style={{ objectFit: "cover" }}
+                fill
+              />
+            </div>
           </a>
         );
       },
@@ -172,16 +180,23 @@ function Preview({ inputPhoto }: PreviewType) {
                 <div key={photo.id}>
                   <div
                     key={photo.id}
-                    className={`bg-contain bg-center bg-no-repeat justify-end ${styles.view_photo}`}
-                    style={{ backgroundImage: `url(${photo.img})` }}
+                    className={`relative bg-contain bg-center bg-no-repeat justify-end ${styles.view_photo}`}
+                    // style={{ backgroundImage: `url(${photo.img})` }}
                   >
+                    <ImageTag
+                      src={photo.img}
+                      alt="photo"
+                      loading="lazy"
+                      style={{ objectFit: "contain" }}
+                      fill
+                    />
                     <div
                       onClick={() => {
                         changeCheck(photo.id);
                       }}
                       className={`${styles.check_box} ${
                         isChecks[photo.id] ? styles.is_check : styles.no_check
-                      }`}
+                      } absolute`}
                     >
                       {isChecks[photo.id] && (
                         <CheckIcon
