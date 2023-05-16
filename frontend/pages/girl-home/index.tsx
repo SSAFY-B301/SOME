@@ -69,9 +69,12 @@ export default function Home() {
       className={`bg-bg-home dark:bg-dark-bg-home relative touch-none ${homeStyles.no_scroll}`}
       style={{ width: "100vw", height: "100vh" }}
     >
+      <div onClick={() => getUserLocation()} className="absolute z-10 flex items-center justify-center w-10 h-10 bg-white rounded-full shadow-md top-16 left-2">
+        <LocationIcon className="stroke-black"></LocationIcon>
+      </div>
       <NavBar />
       <Map
-        className="z-0"
+        className="relative z-0"
         center={{lat : location.lat, lng:location.lng}}
         style={{width : "100vw", height:"90vh"}}
         level={2}
@@ -87,11 +90,6 @@ export default function Home() {
             {userStatus !== "success" && 
               <div  className={`top-20 left-20 z-10 absolute w-12 h-12 bg-gray-400 rounded-full`}></div>
             }
-          </div>
-        </CustomOverlayMap>
-        <CustomOverlayMap key={"location"} position={{lat : location.lat + 0.0014, lng:location.lng - 0.00093}}>
-          <div onClick={() => getUserLocation()} className="flex items-center justify-center w-10 h-10 bg-white rounded-full shadow-md">
-            <LocationIcon className="stroke-black"></LocationIcon>
           </div>
         </CustomOverlayMap>
         {resultData !== undefined && <>
