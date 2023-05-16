@@ -57,7 +57,7 @@ function NavBar() {
         <Profile />
         <Link className="relative" href={"/notification"}>
           {getAlarm.Count && getAlarm.Count.data.data > 0 ? (
-            <div className="absolute top-0 right-0 w-3 h-3 bg-red-500 rounded-full"></div>
+            <div className="absolute top-0 right-0 w-2 h-2 bg-red-500 rounded-full"></div>
           ) : (
             <div></div>
           )}
