@@ -201,7 +201,7 @@ const PhotoDetail = (): JSX.Element => {
           setTimeout(() => {
             setPage(page + 1);
           }, 500);
-        }, 300);
+        }, 500);
       } else if (direction == "right" && !albumData.pages[page].is_first) {
         setTimeout(() => {
           setCarouselIdx(26);
