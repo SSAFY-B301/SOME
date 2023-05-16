@@ -65,7 +65,7 @@ public class NotiService {
             emitterRepository.deleteById(id);
             emitter.complete();
         });
-        Map<String,Object> subscribeData = new HashMap<>();
+        Map<String,Object> subscribeData;
         subscribeData = new HashMap<>();
         subscribeData.put("content","EventStream Created. [userId=" + userId + "]");
         subscribeData.put("type","SUBSCRIBE");
@@ -195,8 +195,10 @@ public class NotiService {
     private void sendToClient(SseEmitter emitter, String emitterId, Object data) {
         try {
             emitter.send(SseEmitter.event()
-                    .data(data)
-                    );
+                            .id(emitterId)
+                            .data(data)
+                            );
+            log.info(emitterId + " emitter 하나 알림 전송 성공");
         } catch (IOException exception) {
             emitterRepository.deleteById(emitterId);
         }
@@ -230,16 +232,18 @@ public class NotiService {
                 if(receiver.getNotiUpload().equals(false)) continue;
             }
 
-
-            Map<String, SseEmitter> sseEmitters = emitterRepository.findAllEmitterStartWithId(receiver.getUserId());
+            log.info("************noti 저장 후 알림 보내기 시작*******************");
+            Map<String, SseEmitter> sseEmitters = emitterRepository.findAllEmitterStartWithId(String.valueOf(receiver.getUserId()));
             sseEmitters.forEach(
                     (key, emitter) -> {
+                        log.info("sse emitter하나 알림 전송");
                         // 데이터 캐시 저장(유실된 데이터 처리하기 위함)
                         emitterRepository.saveEventCache(key, notification);
                         // 데이터 전송
                         sendToClient(emitter, key, setNotiData(notification));
                     }
             );
+            log.info("************noti 저장 후 알림 보내기 종료*******************");
         }
     }
 
