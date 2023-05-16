@@ -26,15 +26,26 @@ export default function List() {
     const [address, setAddress] = useState("");
 
     async function getLocalInfo() {
-        const result = axios.get(`${process.env.NEXT_PUBLIC_KAKAO_DAPI_URL}+/v2/local/geo/coord2regioncode.json?x=${girlDetailList.latitude}&y=${girlDetailList.longitude}`)
-        console.log(result)
+        const result = await axios.get(`${process.env.NEXT_PUBLIC_KAKAO_DAPI_URL}/v2/local/geo/coord2address.json?x=${girlDetailList.longitude}&y=${girlDetailList.latitude}`,
+        {
+            headers:{
+                "Authorization" : `KakaoAK ${process.env.NEXT_PUBLIC_KAKAO_RESTAPI_KEY}`
+            }
+        })
+        const addressData = result.data.documents[0]; 
+        if (addressData.road_address === null) {
+            setAddress(`${addressData.address.region_1depth_name} ${addressData.address.region_2depth_name} ${addressData.address.region_3depth_name}`)
+        }
+        else{
+            setAddress(`${addressData.road_address.building_name}`)
+        }
     }
     useEffect(() => {
         getLocalInfo();
     }, [])
     return(
         <div className="flex flex-col items-center gap-y-4">
-            <InfoBar title={"대전시 유성구"}></InfoBar>
+            <InfoBar title={address}></InfoBar>
             <div className="relative flex items-center justify-center w-full h-4 gap-x-2">
                 <GirlListUser></GirlListUser>
                 <p>{resultData?.totalUserCnt}</p>
@@ -65,7 +76,10 @@ export default function List() {
             <Map
                 center={{lat : girlDetailList.latitude, lng: girlDetailList.longitude}}
                 style={{width : "100vw", height:"40vh"}}
-                level={1}>
+                level={2}
+                zoomable={false}
+                draggable={false}
+                disableDoubleClick={true}>
                 {resultData !== undefined && <>
                     {resultData.photoList.map((photo) => {
                         return(
