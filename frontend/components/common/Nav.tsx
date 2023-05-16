@@ -11,8 +11,6 @@ import Logo from "components/common/Logo";
 import styles from "styles/home.module.scss";
 
 // 아이콘
-import LightModeIcon from "public/icons/Sun.svg";
-import DarkModeIcon from "public/icons/Moon.svg";
 import AlarmIcon from "public/icons/Bell.svg";
 import FeedBackIcon from "./feedBack";
 import { useState } from "react";
