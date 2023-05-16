@@ -119,6 +119,7 @@ $main-color: linear-gradient(
 }
 
 .select_check {
+  position: absolute;
   width: 5.128vw;
   height: 5.128vw;
   background: $main-color;
