@@ -89,7 +89,7 @@ export default function Home() {
             }
           </div>
         </CustomOverlayMap>
-        <CustomOverlayMap key={"location"} position={{lat : location.lat + 0.00158, lng:location.lng - 0.00093}}>
+        <CustomOverlayMap key={"location"} position={{lat : location.lat + 0.0014, lng:location.lng - 0.00093}}>
           <div onClick={() => getUserLocation()} className="flex items-center justify-center w-10 h-10 bg-white rounded-full shadow-md">
             <LocationIcon className="stroke-black"></LocationIcon>
           </div>
