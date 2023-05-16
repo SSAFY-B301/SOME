@@ -201,6 +201,7 @@ public class NotiService {
             log.info(emitterId + " emitter 하나 알림 전송 성공");
         } catch (IOException exception) {
             emitterRepository.deleteById(emitterId);
+            log.info("**"+emitterId + " emitter 실패실패**");
         }
     }
 
