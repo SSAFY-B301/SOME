@@ -33,6 +33,7 @@ public class AlbumService {
     private final Double MAP_LAT_TOP_SIZE = 0.0014;
     private final Double MAP_LON_LEFT_SIZE = -0.00078;
     private final Double MAP_LON_RIGHT_SIZE = 0.00078;
+    private final Integer MAP_DEFAULT_SIZE = 5;
 
     public ResponseDto insertPhoto(List<MultipartFile> multipartFiles, List<MetaDataDto> metaDataDtos, GpsRequestDto gpsRequestDto, String accessToken) throws ImageProcessingException, IOException {
         Map<String, Object> result = new HashMap<>();
@@ -160,31 +161,31 @@ public class AlbumService {
 
         //사분면 평균 좌표 수치 조절
         if (markGps[1].latitude != null && markGps[1].longitude != null) {
-            markGps[1].latitude += (gpsRequestDto.getLatitude() + MAP_LAT_TOP_SIZE / 2) * 5;
-            markGps[1].longitude += (gpsRequestDto.getLongitude() + MAP_LON_RIGHT_SIZE / 2) * 5;
-            markGps[1].latitude = markGps[1].latitude / (size[1] + 5);
-            markGps[1].longitude = markGps[1].longitude / (size[1] + 5);
+            markGps[1].latitude += (gpsRequestDto.getLatitude() + MAP_LAT_TOP_SIZE / 2) * MAP_DEFAULT_SIZE;
+            markGps[1].longitude += (gpsRequestDto.getLongitude() + MAP_LON_RIGHT_SIZE / 2) * MAP_DEFAULT_SIZE;
+            markGps[1].latitude = markGps[1].latitude / (MAP_DEFAULT_SIZE + 1);
+            markGps[1].longitude = markGps[1].longitude / (MAP_DEFAULT_SIZE + 1);
         }
 
         if (markGps[2].latitude != null && markGps[2].longitude != null) {
-            markGps[2].latitude += (gpsRequestDto.getLatitude() + MAP_LAT_TOP_SIZE / 2) * 5;
-            markGps[2].longitude += (gpsRequestDto.getLongitude() + MAP_LON_LEFT_SIZE / 2) * 5;
-            markGps[2].latitude = markGps[2].latitude / (size[2] + 5);
-            markGps[2].longitude = markGps[2].longitude / (size[2] + 5);
+            markGps[2].latitude += (gpsRequestDto.getLatitude() + MAP_LAT_TOP_SIZE / 2) * MAP_DEFAULT_SIZE;
+            markGps[2].longitude += (gpsRequestDto.getLongitude() + MAP_LON_LEFT_SIZE / 2) * MAP_DEFAULT_SIZE;
+            markGps[2].latitude = markGps[2].latitude / (MAP_DEFAULT_SIZE + 1);
+            markGps[2].longitude = markGps[2].longitude / (MAP_DEFAULT_SIZE + 1);
         }
 
         if (markGps[3].latitude != null && markGps[3].longitude != null) {
-            markGps[3].latitude += (gpsRequestDto.getLatitude() + MAP_LAT_BOTTOM_SIZE / 2) * 5;
-            markGps[3].longitude += (gpsRequestDto.getLongitude() + MAP_LON_LEFT_SIZE / 2) * 5;
-            markGps[3].latitude = markGps[3].latitude / (size[3] + 5);
-            markGps[3].longitude = markGps[3].longitude / (size[3] + 5);
+            markGps[3].latitude += (gpsRequestDto.getLatitude() + MAP_LAT_BOTTOM_SIZE / 2) * MAP_DEFAULT_SIZE;
+            markGps[3].longitude += (gpsRequestDto.getLongitude() + MAP_LON_LEFT_SIZE / 2) * MAP_DEFAULT_SIZE;
+            markGps[3].latitude = markGps[3].latitude / (MAP_DEFAULT_SIZE + 1);
+            markGps[3].longitude = markGps[3].longitude / (MAP_DEFAULT_SIZE + 1);
         }
 
         if (markGps[4].latitude != null && markGps[4].longitude != null) {
-            markGps[4].latitude += (gpsRequestDto.getLatitude() + MAP_LAT_BOTTOM_SIZE / 2) * 5;
-            markGps[4].longitude += (gpsRequestDto.getLongitude() + MAP_LON_RIGHT_SIZE / 2) * 5;
-            markGps[4].latitude = markGps[4].latitude / (size[4] + 5);
-            markGps[4].longitude = markGps[4].longitude / (size[4] + 5);
+            markGps[4].latitude += (gpsRequestDto.getLatitude() + MAP_LAT_BOTTOM_SIZE / 2) * MAP_DEFAULT_SIZE;
+            markGps[4].longitude += (gpsRequestDto.getLongitude() + MAP_LON_RIGHT_SIZE / 2) * MAP_DEFAULT_SIZE;
+            markGps[4].latitude = markGps[4].latitude / (MAP_DEFAULT_SIZE + 1);
+            markGps[4].longitude = markGps[4].longitude / (MAP_DEFAULT_SIZE + 1);
         }
 
         //좋아요순 사분면 사진 리스트 반환
