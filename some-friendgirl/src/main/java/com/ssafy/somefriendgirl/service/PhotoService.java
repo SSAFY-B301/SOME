@@ -76,7 +76,7 @@ public class PhotoService {
         String userPhotoLikeList;
         String likeListKey = "UserPhotoLikeList::" + userId;
         if (valueOperations.get(likeListKey) == null) {
-            userPhotoLikeList = user.getUserLikePhotos();
+            userPhotoLikeList = userRepository.findByUserId(userId).getUserLikePhotos();
         } else {
             userPhotoLikeList = (String) valueOperations.get(likeListKey);
         }
