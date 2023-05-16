@@ -29,8 +29,11 @@ public class AlbumService {
 
     private final AlbumRepository albumRepository;
     private final ResponseUtil responseUtil;
-    private final Double MAP_LAT_SIZE = 0.001;
-    private final Double MAP_LON_SIZE = 0.0007;
+    private final Double MAP_LAT_BOTTOM_SIZE = -0.0012;
+    private final Double MAP_LAT_TOP_SIZE = 0.0014;
+    private final Double MAP_LON_LEFT_SIZE = -0.00078;
+    private final Double MAP_LON_RIGHT_SIZE = 0.00078;
+
 
     public ResponseDto insertPhoto(List<MultipartFile> multipartFiles, List<MetaDataDto> metaDataDtos, GpsRequestDto gpsRequestDto, String accessToken) throws ImageProcessingException, IOException {
         Map<String, Object> result = new HashMap<>();
@@ -90,8 +93,8 @@ public class AlbumService {
         }
 
         //전체 지도 위경도 범위
-        GpsRangeDto gpsRangeDto = GpsRangeDto.builder().startLat(gpsRequestDto.getLatitude() - MAP_LAT_SIZE / 2).startLon(gpsRequestDto.getLongitude() - MAP_LON_SIZE / 2)
-                .endLat(gpsRequestDto.getLatitude() + MAP_LAT_SIZE / 2).endLon(gpsRequestDto.getLongitude() + MAP_LON_SIZE / 2).build();
+        GpsRangeDto gpsRangeDto = GpsRangeDto.builder().startLat(gpsRequestDto.getLatitude() + MAP_LAT_BOTTOM_SIZE).startLon(gpsRequestDto.getLongitude() + MAP_LON_LEFT_SIZE)
+                .endLat(gpsRequestDto.getLatitude() + MAP_LAT_TOP_SIZE).endLon(gpsRequestDto.getLongitude() + MAP_LON_RIGHT_SIZE).build();
         log.info("4분할 4사진 목록 GET: /album/list, gpsRangeDto : {}", gpsRangeDto);
 
         List<AlbumPhoto> albumPhotos = albumRepository.findAllAlbumPhoto(gpsRangeDto);
@@ -248,19 +251,19 @@ public class AlbumService {
         switch (gpsRequestDto.getSection()) {
             case 1:
                 gpsRangeDto = GpsRangeDto.builder().startLat(gpsRequestDto.getLatitude()).startLon(gpsRequestDto.getLongitude())
-                        .endLat(gpsRequestDto.getLatitude() + MAP_LAT_SIZE / 2).endLon(gpsRequestDto.getLongitude() + MAP_LON_SIZE / 2).build();
+                        .endLat(gpsRequestDto.getLatitude() + MAP_LAT_TOP_SIZE).endLon(gpsRequestDto.getLongitude() + MAP_LON_RIGHT_SIZE).build();
                 break;
             case 2:
-                gpsRangeDto = GpsRangeDto.builder().startLat(gpsRequestDto.getLatitude()).startLon(gpsRequestDto.getLongitude() - MAP_LON_SIZE / 2)
-                        .endLat(gpsRequestDto.getLatitude() + MAP_LAT_SIZE / 2).endLon(gpsRequestDto.getLongitude()).build();
+                gpsRangeDto = GpsRangeDto.builder().startLat(gpsRequestDto.getLatitude()).startLon(gpsRequestDto.getLongitude() + MAP_LON_LEFT_SIZE)
+                        .endLat(gpsRequestDto.getLatitude() + MAP_LAT_TOP_SIZE).endLon(gpsRequestDto.getLongitude()).build();
                 break;
             case 3:
-                gpsRangeDto = GpsRangeDto.builder().startLat(gpsRequestDto.getLatitude() - MAP_LAT_SIZE / 2).startLon(gpsRequestDto.getLongitude() - MAP_LON_SIZE / 2)
+                gpsRangeDto = GpsRangeDto.builder().startLat(gpsRequestDto.getLatitude() + MAP_LAT_BOTTOM_SIZE).startLon(gpsRequestDto.getLongitude() + MAP_LON_LEFT_SIZE)
                         .endLat(gpsRequestDto.getLatitude()).endLon(gpsRequestDto.getLongitude()).build();
                 break;
             case 4:
-                gpsRangeDto = GpsRangeDto.builder().startLat(gpsRequestDto.getLatitude() - MAP_LAT_SIZE / 2).startLon(gpsRequestDto.getLongitude())
-                        .endLat(gpsRequestDto.getLatitude()).endLon(gpsRequestDto.getLongitude() + MAP_LON_SIZE / 2).build();
+                gpsRangeDto = GpsRangeDto.builder().startLat(gpsRequestDto.getLatitude() + MAP_LAT_BOTTOM_SIZE).startLon(gpsRequestDto.getLongitude())
+                        .endLat(gpsRequestDto.getLatitude()).endLon(gpsRequestDto.getLongitude() + MAP_LON_RIGHT_SIZE).build();
                 break;
         }
 
