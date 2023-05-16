@@ -8,8 +8,10 @@ import TabBar from "@/components/common/TabBar";
 import { getGirlListDetail } from "@/pages/api/girlApi";
 import { useSelector } from "react-redux";
 import { RootState } from "@/store/configureStore";
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import  CaretDown  from "@/public/icons/CaretDown.svg"
+import { useQuery } from "react-query";
+import axios from "axios";
 
 interface GirlListParamType{
     lat : number,
@@ -21,6 +23,15 @@ export default function List() {
     const [sort, setSort] = useState("like")
     const [selectOpen, setSelectOpen] = useState(false);
     const router = useRouter();
+    const [address, setAddress] = useState("");
+
+    async function getLocalInfo() {
+        const result = axios.get(`${process.env.NEXT_PUBLIC_KAKAO_DAPI_URL}+/v2/local/geo/coord2regioncode.json?x=${girlDetailList.latitude}&y=${girlDetailList.longitude}`)
+        console.log(result)
+    }
+    useEffect(() => {
+        getLocalInfo();
+    }, [])
     return(
         <div className="flex flex-col items-center gap-y-4">
             <InfoBar title={"대전시 유성구"}></InfoBar>
