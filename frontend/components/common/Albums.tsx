@@ -65,6 +65,7 @@ function FavoriteAlbum() {
       <div key={favoriteAlbum.album_id} className={`${styles.card}`}>
         <div
           onClick={() => goToAlbum(favoriteAlbum.album_id)}
+          className="relative"
           style={{
             width: "73.846vw",
             height: "98.462vw",
