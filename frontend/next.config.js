@@ -16,6 +16,7 @@ const nextConfig = {
     // domains: ["images.unsplash.com"],
     domains: [
       "k8b301-bucket.s3.ap-northeast-2.amazonaws.com",
+      "k8b301-k8s-bucket.s3.ap-northeast-2.amazonaws.com",
       "images.unsplash.com",
     ],
 
