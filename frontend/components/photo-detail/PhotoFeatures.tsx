@@ -19,8 +19,11 @@ const PhotoFeatures = ({ photoId, clickVote }: Props): JSX.Element => {
    * useQuery
    *  queryKey : photo
    */
-  const { photoDetail: photoDetail, isSnsAgree: isSnsAgree } =
-    getPhoto(photoId);
+  const {
+    photoDetail: photoDetail,
+    isSnsAgree: isSnsAgree,
+    isSnsRequest: isSnsRequest,
+  } = getPhoto(photoId);
 
   /**
    * 사진 좋아요 기능
@@ -93,7 +96,7 @@ const PhotoFeatures = ({ photoId, clickVote }: Props): JSX.Element => {
               fill="none"
               viewBox="0 0 24 24"
               strokeWidth="1.5"
-              stroke="currentColor"
+              stroke={isSnsRequest ? "orange" : "currentColor"}
               className="box-border w-8 h-8"
             >
               <path
