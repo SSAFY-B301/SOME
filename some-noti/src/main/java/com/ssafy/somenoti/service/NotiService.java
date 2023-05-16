@@ -53,6 +53,9 @@ public class NotiService {
 
     public SseEmitter subscribe(String accessToken, String lastEventId) {
         String userId = tokenCheck(accessToken);
+        if(userId == null){
+            return null;
+        }
         log.info("userId : "+ userId);
         String emitterId = userId + "_" + System.currentTimeMillis();
 
@@ -207,6 +210,7 @@ public class NotiService {
     }
 
     private void sendNoti(NotiType notiType, List<String> receivers,User sender,Long id){
+        log.info("**********sendNoti 실행****************");
         List<User> byUserIdIn = userRepository.findByUserIdIn(receivers);
         for (User receiver : byUserIdIn) {
             Notification notification = Notification.builder()
