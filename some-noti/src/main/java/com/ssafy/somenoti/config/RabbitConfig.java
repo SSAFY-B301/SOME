@@ -33,6 +33,7 @@ public class RabbitConfig {
     RabbitTemplate rabbitTemplate(ConnectionFactory connectionFactory, MessageConverter messageConverter) {
         RabbitTemplate rabbitTemplate = new RabbitTemplate(connectionFactory);
         rabbitTemplate.setMessageConverter(messageConverter);
+        rabbitTemplate.setChannelTransacted(true);
         return rabbitTemplate;
     }
     @Bean
