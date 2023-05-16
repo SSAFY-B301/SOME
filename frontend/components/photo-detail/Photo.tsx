@@ -21,7 +21,6 @@ const Photo = ({
 
   const img = new Image();
   img.src = imgSrc;
-  img.width;
 
   return (
     <div
