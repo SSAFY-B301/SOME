@@ -140,6 +140,7 @@ public class AuthService {
                 user.setNotiInvite(user1.getNotiInvite());
                 user.setNotiSns(user1.getNotiSns());
                 user.setNotiUpload(user1.getNotiUpload());
+                user.setUserLikePhotos(user1.getUserLikePhotos());
             }
             userRepository.save(user);
         }
