@@ -8,6 +8,7 @@ export interface StateType {
   userAgent: UserAgentType;
   story: StoryType;
   total: TotalStateType;
+  girlListDetailState: GirlListDetailStateType;
 }
 
 export interface locationStateType {
