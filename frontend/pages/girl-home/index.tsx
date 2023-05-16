@@ -80,6 +80,7 @@ export default function Home() {
         level={2}
         zoomable={false}
         draggable={false}
+        disableDoubleClick={true}
       >
         <CustomOverlayMap key={"user"} position={{lat : location.lat, lng:location.lng}}>
           <div className="relative w-52 h-52">
