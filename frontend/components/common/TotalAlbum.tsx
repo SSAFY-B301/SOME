@@ -102,6 +102,7 @@ function TotalAlbumItems() {
               borderRadius: "3.077vw",
             }}
             loading="lazy"
+            sizes="41.026vw"
             fill
           />
           <div className="flex flex-col items-end text-white text-left absolute bottom-1.5 right-1.5">

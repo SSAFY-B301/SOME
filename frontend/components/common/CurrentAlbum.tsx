@@ -85,7 +85,14 @@ export default function CurrentAlbum() {
         </div>
       ))
     ) : (
-      <p>아직 추가된 사진이 없어요</p>
+      <div
+        className={`flex flex-col items-center w-full ${styles.current_text_box}`}
+      >
+        <p className="text-some-grey font-bold">아직 추가된 사진이 없어요</p>
+        <p className="text-some-grey font-bold">
+          친구들과 사진을 공유해 보세요
+        </p>
+      </div>
     );
   return (
     <section
