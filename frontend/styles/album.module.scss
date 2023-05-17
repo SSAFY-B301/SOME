@@ -327,23 +327,23 @@ $main-color: linear-gradient(
 
 .up_btn {
   position: fixed;
-  width: 32px;
-  height: 32px;
+  width: 36px;
+  height: 36px;
   border-radius: 50px;
   bottom: 104px;
   right: 16px;
   z-index: 9;
   div {
     position: relative;
-    width: 32px;
-    height: 32px;
+    width: 36px;
+    height: 36px;
     display: flex;
     justify-content: center;
     align-items: center;
     &::before {
       content: "";
-      width: 32px;
-      height: 32px;
+      width: 36px;
+      height: 36px;
       border-radius: 50px;
       background: $main-color;
       position: absolute;
