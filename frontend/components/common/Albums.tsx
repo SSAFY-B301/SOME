@@ -185,7 +185,7 @@ function FavoriteAlbum() {
     <ItemBlock width="92.308vw" height="" radius="5.128vw">
       <div
         className="flex flex-col w-full h-full"
-        style={{ gap: "4.103vw", padding: "6.154vw 0px" }}
+        style={{ gap: "4.103vw", padding: "16px 0px" }}
       >
         <div
           className={`flex justify-between ${styles.title_box}`}

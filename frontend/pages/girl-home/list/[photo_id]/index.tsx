@@ -14,9 +14,8 @@ export default function GirlDetail() {
     girlLikeMutation({ photo_id: nowPhotoId, like_photo_status: likeStatus });
   }
 
-
   return (
-    <div className="flex flex-col items-center gap-y-4">
+    <div className="flex flex-col items-center gap-y-2">
       <InfoBar title={"대전시 유성구"}></InfoBar>
       <div className="flex justify-between px-6" style={{ width: "100vw" }}>
         <div className="flex gap-x-4">
@@ -56,16 +55,16 @@ export default function GirlDetail() {
         className="flex flex-col justify-center"
         style={{ width: "100vw", height: "70vh" }}
       >
-        {girlDetailStatus === "success" && 
-            <Image
+        {girlDetailStatus === "success" && (
+          <Image
             src={resultData.s3Url}
             alt="photo"
             loading="lazy"
             width={390}
             height={500}
             style={{ objectFit: "contain" }}
-            />
-        }
+          />
+        )}
       </div>
       <TabBar />
     </div>
