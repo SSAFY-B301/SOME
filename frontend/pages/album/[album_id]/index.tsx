@@ -203,7 +203,7 @@ function AlbumDetail() {
       />
       <aside onClick={moveTopSmooth} className={styles.up_btn}>
         <div>
-          <UpIcon width={"24px"} height={"24px"} stroke={"black"} />
+          <UpIcon width={"28px"} height={"28px"} stroke={"#3d3e3e"} />
         </div>
       </aside>
       {isPreview && <Preview inputPhoto={inputPhoto} />}
