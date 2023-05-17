@@ -44,6 +44,10 @@ public class User {
     @NotNull
     private LocalDateTime createdDate;
 
+    @Column(length = 5000)
+    @Size(max = 5000)
+    private String userLikePhotos;
+
     private Boolean notiSns;
     private Boolean notiInvite;
     private Boolean notiUpload;
