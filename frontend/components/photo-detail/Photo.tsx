@@ -49,7 +49,6 @@ const Photo = ({
           <ImageTag
             src={imgSrc}
             alt="photo"
-            loading="lazy"
             width={img.width}
             height={img.height}
           />

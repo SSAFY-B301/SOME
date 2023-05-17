@@ -1,6 +1,7 @@
 import { getPhoto, useMutationPhoto } from "@/pages/api/photoDetailApi";
 import React, { useEffect, useState } from "react";
 import styles from "@/styles/inviteFriends.module.scss";
+import { PhotoTime } from "../pages/notification/AlarmTime";
 
 /**
  * 사진 상세보기 특징 컴포넌트
@@ -46,25 +47,20 @@ const PhotoFeatures = ({ photoId, clickVote }: Props): JSX.Element => {
 
   return (
     <div className="flex justify-between w-11/12 h-full">
-      <div className="flex items-center justify-between w-40">
+      <div className="flex items-center gap-2 w-40">
         <img
           src={photoDetail?.userProfileImg}
           alt="profile"
           className="w-10 h-10 rounded-xl"
         />
         <div className="flex flex-col">
-          <span className="text-2xl">
+          <span className="text-lg font-bold">
             {photoDetail ? photoDetail.userName : ""}
           </span>
           <span className="text-xs">
-            {photoDetail
-              ? photoDetail?.uploadedDate.substring(0, 4) +
-                "년 " +
-                photoDetail?.uploadedDate.substring(5, 7) +
-                "월 " +
-                photoDetail?.uploadedDate.substring(8, 10) +
-                "일"
-              : ""}
+            <PhotoTime
+              time={photoDetail ? photoDetail.uploadedDate : ""}
+            ></PhotoTime>
           </span>
         </div>
       </div>

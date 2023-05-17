@@ -17,12 +17,14 @@ import RightIcon from "public/icons/CaretRight.svg";
 import styles from "styles/girl.module.scss";
 import { setOrder, setPage } from "@/features/girlListDetailSlice";
 import { StateType } from "@/types/StateType";
+import { useTheme } from "next-themes";
 
 interface GirlListParamType {
   lat: number;
   lng: number;
 }
 export default function List() {
+  const { theme, setTheme } = useTheme();
   const dispatch = useDispatch();
   const girlDetailList = useSelector(
     (state: RootState) => state.girlListDetailState
@@ -79,13 +81,18 @@ export default function List() {
   useEffect(() => {
     getLocalInfo();
   }, []);
+
   return (
     <div className="flex flex-col items-center gap-y-4">
       <InfoBar title={address}></InfoBar>
       <div className="relative flex items-center justify-center w-full h-4 gap-x-2">
-        <GirlListUser></GirlListUser>
+        <GirlListUser
+          stroke={theme === "dark" ? "white" : "#061C3D"}
+        ></GirlListUser>
         <p>{resultData?.totalUserCnt}</p>
-        <GirlListImage></GirlListImage>
+        <GirlListImage
+          stroke={theme === "dark" ? "white" : "#061C3D"}
+        ></GirlListImage>
         <p>{resultData?.totalPhotoCnt}</p>
         <div
           onClick={() => setSelectOpen(!selectOpen)}
