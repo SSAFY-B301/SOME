@@ -2,8 +2,7 @@ package com.ssafy.somenoti.entity;
 
 import lombok.*;
 
-import javax.persistence.EmbeddedId;
-import javax.persistence.Entity;
+import javax.persistence.*;
 
 @Entity
 @Builder @Getter
@@ -12,4 +11,8 @@ import javax.persistence.Entity;
 public class AlbumMember {
     @EmbeddedId
     private AlbumMemberId albumMemberId;
+
+    @Column(name = "user_status")
+    @Enumerated(EnumType.STRING)
+    private AlbumMemberStatus albumMemberStatus;
 }
