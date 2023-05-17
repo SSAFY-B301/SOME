@@ -158,12 +158,14 @@ export default function List() {
       >
         {resultData !== undefined && (
           <>
-            {!resultData.page.is_first && (
-              <LeftIcon
-                onClick={() => dispatch(setPage(page - 1))}
-                stroke={"black"}
-              />
-            )}
+            <div className="w-6 h-6">
+              {!resultData.page.is_first && (
+                <LeftIcon
+                  onClick={() => dispatch(setPage(page - 1))}
+                  stroke={"black"}
+                />
+              )}
+            </div>
             <div className="flex h-full justify-center items-center">
               <div className="grid grid-cols-4 grid-rows-3 gap-1 px-1 h-fit">
                 {resultData.photoList.map((photo) => {
@@ -188,14 +190,16 @@ export default function List() {
                 })}
               </div>
             </div>
-            {!resultData.page.is_last && (
-              <RightIcon
-                onClick={() => dispatch(setPage(page + 1))}
-                width={"24px"}
-                height={"24px"}
-                stroke={"black"}
-              />
-            )}
+            <div className="w-6 h-6">
+              {!resultData.page.is_last && (
+                <RightIcon
+                  onClick={() => dispatch(setPage(page + 1))}
+                  width={"24px"}
+                  height={"24px"}
+                  stroke={"black"}
+                />
+              )}
+            </div>
           </>
         )}
       </div>
