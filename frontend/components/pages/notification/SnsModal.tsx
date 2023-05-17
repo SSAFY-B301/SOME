@@ -3,6 +3,7 @@ import { Dispatch, SetStateAction } from "react";
 import { PhotoType } from "@/types/AlbumTypes";
 import { useMutationNoti } from "@/pages/api/notiApi";
 import { NotiType } from "@/types/NotiType";
+import Image from "next/image";
 
 interface SnsNotiModalParamsType{
     notiInfo : NotiType | undefined
@@ -54,7 +55,15 @@ export default function SnsNotiModal(params : SnsNotiModalParamsType) {
                         <p className="text-xl">{snsResultData ? snsResultData.albumName : ""}</p>
                     </div>
                     <div style={{maxWidth : "80vw", maxHeight : "70vh" }}>
-                        <img style={{maxWidth : "80vw", maxHeight : "70vh"}} loading="lazy" src={snsResultData.s3Url} alt="" />
+                        <Image
+                            src={snsResultData.s3Url}
+                            alt="SNS 공유 이미지"
+                            width={390}
+                            height={500}
+                            style={{ objectFit: "contain" }}
+                        >
+                        </Image>
+                        {/* <img style={{maxWidth : "80vw", maxHeight : "70vh"}} src={snsResultData.s3Url} alt="" /> */}
                     </div>
                     <p>SNS 공유를 수락하시겠습니까?</p>
                     <div className="flex items-center justify-center gap-x-4">

@@ -20,7 +20,7 @@ import { getAlarmCount } from "@/pages/api/notiApi";
 import { UploadStatus } from "./UploadStatus";
 
 interface InfoType {
-  title: string;
+  title: string | string[];
 }
 
 function NavBar() {
@@ -34,7 +34,7 @@ function NavBar() {
       className={`flex flex-row justify-between items-center h-14 mx-6 ${styles.nav_bar}`}
     >
       <Logo />
-      <div className="flex gap-2 items-center">
+      <div className="flex items-center gap-2">
         <UploadStatus />
         <button
           type="button"

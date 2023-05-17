@@ -5,18 +5,21 @@ import TabBar from "@/components/common/TabBar";
 import { getGirlPhotoDetail, useMutationGirl } from "@/pages/api/girlApi";
 import { PhotoTime } from "@/components/pages/notification/AlarmTime";
 import Image from "next/image";
-import { useEffect } from "react";
+import { useSelector } from "react-redux";
+import { RootState } from "@/store/configureStore";
+
 
 export default function GirlDetail() {
   const { resultData, girlDetailStatus } = getGirlPhotoDetail();
   const { girlLikeMutation } = useMutationGirl();
+  const addressState = useSelector((state: RootState) => state.addressState)
   function likeHandler(nowPhotoId: number, likeStatus: boolean) {
     girlLikeMutation({ photo_id: nowPhotoId, like_photo_status: likeStatus });
   }
-
+  
   return (
     <div className="flex flex-col items-center gap-y-2">
-      <InfoBar title={"대전시 유성구"}></InfoBar>
+      <InfoBar title={addressState.address}></InfoBar>
       <div
         className="flex justify-between px-6"
         style={{ width: "100vw", height: "48px" }}
@@ -26,7 +29,7 @@ export default function GirlDetail() {
             className="w-10 h-10 bg-center bg-cover rounded-lg"
             style={{ backgroundImage: `url(${resultData?.userProfileImg})` }}
           ></div>
-          <div className=" h-10">
+          <div className="h-10 ">
             <p className="text-lg font-bold">
               {resultData ? resultData.userName : ""}
             </p>
