@@ -280,3 +280,47 @@ $main-color: linear-gradient(
     transform: rotate(360deg);
   }
 }
+
+.select_box {
+  width: 48px;
+  height: 28px;
+  border-radius: 16px;
+  position: relative;
+  &::before {
+    content: "";
+    border-radius: 16px;
+    background: $main-color;
+    position: absolute;
+    opacity: 0.5;
+    width: 48px;
+    height: 28px;
+  }
+  span {
+    position: absolute;
+    color: #3d3e3e;
+  }
+}
+
+.total_box {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  // background-color: #b1b8c0;
+  width: 72px;
+  height: 28px;
+  border-radius: 16px;
+  position: relative;
+  &::before {
+    content: "";
+    border-radius: 16px;
+    background: $main-color;
+    position: absolute;
+    opacity: 0.5;
+    width: 72px;
+    height: 28px;
+  }
+  p {
+    position: absolute;
+    color: #3d3e3e;
+  }
+}
