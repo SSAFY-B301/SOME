@@ -90,7 +90,6 @@ public class AlbumService {
                 .build();
         albumMemberRepository.save(albumMember);
         // 친구 초대 알림
-        //notiService.inviteNoti(userId,albumCreateDto.getInviteFriend(),savedAlbum.getAlbumId());
         NotiInviteCreateDto notiInviteCreateDto = NotiInviteCreateDto.builder()
                 .senderId(userId)
                 .receivers(List.of(albumCreateDto.getInviteFriend()))
