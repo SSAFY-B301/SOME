@@ -1,5 +1,6 @@
 import React from "react";
 import { useRouter } from "next/router";
+import { UploadStatus } from "../common/UploadStatus";
 
 interface InfoType {
   title: string;
@@ -32,6 +33,9 @@ const Nav = (props: InfoType) => {
         </button>
       </div>
       <p className="text-xl text-center">{props.title}</p>
+      <div className="absolute right-0">
+        <UploadStatus />
+      </div>
     </div>
   );
 };

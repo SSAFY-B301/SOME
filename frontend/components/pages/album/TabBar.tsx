@@ -105,7 +105,7 @@ function TabBar(props: TabBarType) {
             onClick={() => openAlert(3)}
             width={"8.205vw"}
             height={"8.205vw"}
-            stroke={"#061C3D"}
+            stroke={"#B1B8C0"}
           />
         </>
       )}

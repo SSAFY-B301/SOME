@@ -20,42 +20,38 @@ interface TabBarType {
 function TabBar({ plusBtnUrl }: TabBarType) {
   const router = useRouter();
 
-  
-
   return (
     <section
       className={`flex justify-between  w-screen ${styles.tab_bar}`}
-      style={{ height: "22.564vw" }}
+      style={{ height: "88px" }}
     >
       {/* 남사친 */}
       <div
         onClick={() => router.push("/boy-home")}
         className={`flex flex-col justify-center items-center bg-white dark:bg-dark-block ${styles.tab_bar_block}`}
-        style={{ gap: "1.026vw", borderRadius: "4.103vw 4.103vw 0px 0px" }}
+        style={{ gap: "4.001px", borderRadius: "4.103vw 4.103vw 0px 0px" }}
       >
         {router.pathname === "/boy-home" ? (
-          <MfriendSelectedIcon width="8.205vw" height="7.436vw" />
+          <MfriendSelectedIcon width="32px" height="29px" />
         ) : (
           <MfriendIcon fill="#B1B8C0" />
         )}
 
-        <p style={{ fontSize: "4.103vw" }}>남사친</p>
+        <p style={{ fontSize: "4vw" }}>남사친</p>
       </div>
 
       {/* 플러스 버튼 */}
-      {plusBtnUrl && 
+      {plusBtnUrl && (
         <Link href={plusBtnUrl}>
           <div
             className={`fixed z-50 left-auto right-auto flex justify-center items-center rounded-full ${styles.plus_btn}`}
-            style={{ width: "16.41vw", height: "16.41vw" }}
+            style={{ width: "16.41vw", height: "64px" }}
           >
             <PlusIcon />
           </div>
         </Link>
-      }
-      {!plusBtnUrl &&
-          <GirlPhotoInput/>
-      }
+      )}
+      {!plusBtnUrl && <GirlPhotoInput />}
 
       {/* 가운데 빈 박스 */}
       <div className={`bg-white dark:bg-dark-block ${styles.mid_box}`} />
@@ -64,7 +60,7 @@ function TabBar({ plusBtnUrl }: TabBarType) {
       <div
         onClick={() => router.push("/girl-home")}
         className={`flex flex-col justify-center items-center bg-white dark:bg-dark-block ${styles.tab_bar_block}`}
-        style={{ gap: "1.026vw", borderRadius: "4.103vw 4.103vw 0px 0px" }}
+        style={{ gap: "1.026vw", borderRadius: "16px 16px 0px 0px" }}
       >
         {router.pathname.includes("/girl-home") ? (
           <FfriendSelectedIcon />
@@ -72,7 +68,7 @@ function TabBar({ plusBtnUrl }: TabBarType) {
           <FfriendIcon fill="#B1B8C0" />
         )}
 
-        <p style={{ fontSize: "4.103vw" }}>여사친</p>
+        <p style={{ fontSize: "16px" }}>여사친</p>
       </div>
     </section>
   );

@@ -66,8 +66,8 @@ export function InfoBar(props: InfoType) {
         <div className="absolute top-0 left-0">
           <button onClick={() => router.back()}>
             <svg
-              width="6.154vw"
-              height="6.154vw"
+              width="24px"
+              height="24px"
               viewBox="0 0 24 24"
               fill="none"
               stroke="transparent"

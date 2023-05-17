@@ -88,11 +88,16 @@ export default function CurrentAlbum() {
       <p>아직 추가된 사진이 없어요</p>
     );
   return (
-    <ItemBlock width="92.308vw" height="28.718vw" radius="16px">
-      <div
-        className="flex flex-col justify-around w-full h-full"
-        style={{ margin: "0px 4.103vw" }}
-      >
+    <section
+      className="bg-white dark:bg-dark-block"
+      style={{
+        padding: "8px 16px",
+        width: "92.308vw",
+        height: "32.821vw",
+        borderRadius: "16px",
+      }}
+    >
+      <div className="flex flex-col justify-around w-full h-full">
         <h1 className="font-bold" style={{ fontSize: "5.128vw" }}>
           최근 업로드
         </h1>
@@ -103,6 +108,6 @@ export default function CurrentAlbum() {
           {currents}
         </div>
       </div>
-    </ItemBlock>
+    </section>
   );
 }
