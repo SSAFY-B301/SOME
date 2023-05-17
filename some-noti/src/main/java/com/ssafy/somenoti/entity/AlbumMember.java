@@ -12,7 +12,4 @@ public class AlbumMember {
     @EmbeddedId
     private AlbumMemberId albumMemberId;
 
-    @Column(name = "user_status")
-    @Enumerated(EnumType.STRING)
-    private AlbumMemberStatus albumMemberStatus;
 }
