@@ -277,7 +277,7 @@ public class AlbumService {
         for (Long albumId : myFavAlbumIdList) {
             Album album = albumRepository.findAlbumByAlbumId(albumId);
             AlbumPhoto albumPhoto = albumPhotoRepository.findByPhotoId(album.getThumbnailPhoto());
-            String thumbnailPhotoUrl = albumPhoto == null ? null : albumPhoto.getResizeUrl();
+            String thumbnailPhotoUrl = albumPhoto == null ? null : albumPhoto.getOriginUrl();
 
             AlbumFavDto albumFavDto = AlbumFavDto.builder()
                     .albumId(album.getAlbumId())

@@ -218,6 +218,26 @@ public class AlbumPhotoService {
         return setResponseDto(result, "앨범 사진 목록", 200);
     }
 
+    public ResponseDto selectSNSPhoto(String accessToken, Long photoId) {
+        Map<String, Object> result = new HashMap<>();
+        String userId = tokenCheck(accessToken);
+
+        if (userId == null) {
+            return setResponseDto(result, "토큰 만료", 450);
+        }
+
+        AlbumPhoto albumPhoto = albumPhotoRepository.findByPhotoId(photoId);
+        SNSPhotoDto snsPhotoDto = new SNSPhotoDto(albumPhoto);
+
+        Album album = albumRepository.findAlbumByAlbumId(albumPhoto.getAlbumId());
+        snsPhotoDto.setAlbumName(album.getAlbumName());
+        String thumbPhoto = albumPhotoRepository.findByPhotoId(album.getThumbnailPhoto()).getResizeUrl();
+        snsPhotoDto.setThumbnailPhotoUrl(thumbPhoto);
+
+        result.put("albumPhotoDetail", snsPhotoDto);
+        return setResponseDto(result, "SNS 요청 사진 상세 보기", 200);
+    }
+
     public ResponseDto updateLikePhoto(String accessToken, Long photoId) {
         Map<String, Object> result = new HashMap<>();
         String userId = tokenCheck(accessToken);
