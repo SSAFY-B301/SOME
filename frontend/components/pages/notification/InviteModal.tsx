@@ -42,7 +42,7 @@ export default function InviteModal(params : InviteNotiModalPropsType) {
 
     return(
         <div onClick={() => cancleHandler()} className="absolute top-0 flex items-center justify-center bg-black bg-opacity-40" style={{width: "100vw", height: "100vh"}}>
-            <div onClick={(e) => e.stopPropagation()} className="flex flex-col items-center justify-center w-64 bg-white rounded-lg h-28 gap-y-4">
+            <div onClick={(e) => e.stopPropagation()} className="flex flex-col items-center justify-center w-64 bg-white rounded-lg dark:bg-dark-block h-28 gap-y-4">
                 <p>앨범에 참여 하시겠습니까?</p>
                 <div className="flex items-center justify-center gap-x-4">
                     <button onClick={() => inviteHandler("ACCEPT")} className="w-24 rounded-lg shadow">수락</button>
