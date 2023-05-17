@@ -29,13 +29,12 @@ $bg-color3: #ffffff;
 }
 
 .cards {
+  padding: 0 4.103vw;
   .card {
-    &:nth-child(1) {
-      margin-left: 4.103vw;
-    }
-    &:last-child {
-      margin-right: 4.103vw;
-    }
+    // &:nth-child(1) {
+    //   margin-left: 4.103vw;
+    // }
+
     span {
       white-space: nowrap;
       overflow: hidden;
