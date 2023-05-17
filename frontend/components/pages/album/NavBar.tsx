@@ -6,7 +6,7 @@ import { LoadingTitle } from "@/components/common/Loading";
 import { useTheme } from "next-themes";
 import { useSelector } from "react-redux";
 import { StateType } from "@/types/StateType";
-import { useMemo } from "react";
+import { useEffect, useMemo } from "react";
 import { UploadStatus } from "@/components/common/UploadStatus";
 
 interface NavBarType {
@@ -44,14 +44,18 @@ function NavBar({ isSelect, setIsSelect, isTotal, setIsTotal }: NavBarType) {
   );
 
   const { getDetail, getDetailIsLoading } = useGetDetail();
-  const { theme } = useTheme();
+  const { theme, setTheme } = useTheme();
+  useEffect(() => {
+    if (window.matchMedia("(prefers-color-scheme: dark)").matches) {
+      setTheme("dark");
+    } else {
+      setTheme("light");
+    }
+  }, []);
+
   return (
     <section className={`${styles.nav_bar}`}>
-      <div
-        className={`${styles.nav_bar_items} ${
-          theme === "dark" ? styles.dark : styles.light
-        }`}
-      >
+      <div className={`${styles.nav_bar_items}`}>
         <div
           className={`absolute w-screen h-full flex justify-center items-center ${styles.title}`}
         >
@@ -82,7 +86,12 @@ function NavBar({ isSelect, setIsSelect, isTotal, setIsTotal }: NavBarType) {
               className={`flex justify-center items-center ${styles.select_box}`}
             >
               {isSelect ? (
-                <span className={`${styles.selectBtn}`}>취소</span>
+                <span
+                  className={`${styles.selectBtn}`}
+                  style={theme === "dark" ? { color: "white" } : {}}
+                >
+                  취소
+                </span>
               ) : (
                 <span className={`${styles.selectBtn}`}>선택</span>
               )}

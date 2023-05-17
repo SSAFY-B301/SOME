@@ -121,8 +121,6 @@ const PhotoDetail = (): JSX.Element => {
    * 썸네일 수정 모달창 생성
    */
   const clickThumbnail = () => {
-    console.log(showThumbnailModal);
-
     showThumbnailModal ? setThumbnailModal(false) : setThumbnailModal(true);
   };
 
@@ -179,7 +177,6 @@ const PhotoDetail = (): JSX.Element => {
       if (clickCount == 2) {
         clickCount = 0;
         if (isZoom) {
-          // console.log("doubleclick")
         }
       } else if (clickCount == 1) {
         clickCount = 0;
@@ -230,7 +227,7 @@ const PhotoDetail = (): JSX.Element => {
   return (
     <div className="w-screen h-screen bg-white dark:bg-dark-bg-home overflow-hidden">
       <div
-        className={`z-20 fixed flex items-center justify-center border-b-2 box-border p-4 bg-white dark:bg-dark-block ${styles.info_bar}`}
+        className={`z-20 fixed flex items-center justify-center box-border p-4 bg-white dark:bg-dark-block ${styles.info_bar}`}
       >
         <Nav title="앨범" />
       </div>

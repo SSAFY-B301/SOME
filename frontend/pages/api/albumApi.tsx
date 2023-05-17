@@ -268,8 +268,6 @@ export function Mutations() {
         ),
       {
         onSuccess: () => {
-          console.log("Success");
-
           dispatch(countUpload());
           queryClient.invalidateQueries([
             "photos",

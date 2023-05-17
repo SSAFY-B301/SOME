@@ -19,6 +19,7 @@ import DownloadIcon from "public/icons/DownloadSimple.svg";
 import TrashIcon from "public/icons/Trash.svg";
 import UploadIcon from "public/icons/UploadSimple.svg";
 import { share } from "./Share";
+import { useTheme } from "next-themes";
 
 // 인터페이스
 interface TabBarType {
@@ -37,6 +38,7 @@ interface TabBarType {
  */
 function TabBar(props: TabBarType) {
   const router = useRouter();
+  const { theme } = useTheme();
   const albumId: number = Number(router.query.album_id);
   const { getDetail } = useGetDetail();
 
@@ -81,10 +83,16 @@ function TabBar(props: TabBarType) {
         <>
           <UploadIcon
             onClick={() => share(idToUrl(props.selectedPhotos))}
-            stroke={"black"}
+            stroke={theme === "dark" ? "white" : "black"}
           />
-          <DownloadIcon onClick={() => openAlert(1)} stroke={"black"} />
-          <TrashIcon onClick={() => openAlert(0)} stroke={"black"} />
+          <DownloadIcon
+            onClick={() => openAlert(1)}
+            stroke={theme === "dark" ? "white" : "black"}
+          />
+          <TrashIcon
+            onClick={() => openAlert(0)}
+            stroke={theme === "dark" ? "white" : "black"}
+          />
         </>
       ) : (
         <>

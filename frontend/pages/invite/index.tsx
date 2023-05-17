@@ -55,7 +55,6 @@ const InviteFriends = (): JSX.Element => {
   const friends: FriendType[] =
     getFriends.Friends?.data.data.kakao_friend_list.elements;
   const albums: AlbumType[] = getFriends.Friends?.data.data.myAlbum_member_list;
-  console.log(getFriends);
 
   /**
    * 친구 선택 기능
