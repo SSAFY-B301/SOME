@@ -324,3 +324,34 @@ $main-color: linear-gradient(
     color: #3d3e3e;
   }
 }
+
+.up_btn {
+  position: fixed;
+  width: 32px;
+  height: 32px;
+  border-radius: 50px;
+  bottom: 104px;
+  right: 16px;
+  z-index: 9;
+  div {
+    position: relative;
+    width: 32px;
+    height: 32px;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    &::before {
+      content: "";
+      width: 32px;
+      height: 32px;
+      border-radius: 50px;
+      background: $main-color;
+      position: absolute;
+      opacity: 0.75;
+    }
+    svg {
+      position: absolute;
+      z-index: 10;
+    }
+  }
+}

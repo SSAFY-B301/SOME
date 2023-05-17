@@ -11,6 +11,9 @@ import Logo from "components/common/Logo";
 import styles from "styles/home.module.scss";
 
 // 아이콘
+import LightModeIcon from "public/icons/Sun.svg";
+import DarkModeIcon from "public/icons/Moon.svg";
+
 import AlarmIcon from "public/icons/Bell.svg";
 import FeedBackIcon from "./feedBack";
 import { useState } from "react";
@@ -35,6 +38,25 @@ function NavBar() {
       <FeedBackIcon setIsFeed={setIsFeed} isFeed={isFeed} />
       <div className="flex gap-2 items-center">
         <UploadStatus />
+        <button
+          type="button"
+          onClick={() => setTheme(theme === "dark" ? "light" : "dark")}
+        >
+          {theme === "light" ? (
+            <LightModeIcon
+              fill="black"
+              stroke="black"
+              className="cursor-pointer"
+            />
+          ) : (
+            <DarkModeIcon
+              fill="white"
+              stroke="white"
+              className="cursor-pointer"
+            />
+          )}
+        </button>
+
         <Profile />
         <Link className="relative" href={"/notification"}>
           {getAlarm.Count && getAlarm.Count.data.data > 0 ? (
