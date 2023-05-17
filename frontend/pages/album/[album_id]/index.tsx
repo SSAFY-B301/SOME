@@ -7,6 +7,7 @@ import TabBar from "components/pages/album/TabBar";
 import Alert from "components/pages/album/Alert";
 import EditAlbumName from "components/pages/album/EditAlbumName";
 import { LoadingCount } from "components/common/Loading";
+import Preview from "components/pages/album/Preview";
 
 // 라이브러리
 import { useEffect, useState } from "react";
@@ -18,7 +19,6 @@ import { Mutations, useGetDetail, useInfinitePhotos } from "pages/api/albumApi";
 
 // CSS
 import styles from "styles/album.module.scss";
-import Preview from "components/pages/album/Preview";
 
 // 리덕스
 import { useDispatch, useSelector } from "react-redux";
@@ -28,6 +28,9 @@ import {
   setALbumIdState,
   setInit,
 } from "@/features/albumStatusSlice";
+
+// 아이콘
+import UpIcon from "public/icons/CaretUp.svg";
 
 function AlbumDetail() {
   const router = useRouter();
@@ -119,6 +122,22 @@ function AlbumDetail() {
     closeAlert(1);
   };
 
+  const moveTop = () => {
+    window.scrollTo(0, 0);
+  };
+
+  const moveTopSmooth = () => {
+    window.scroll({
+      top: 0,
+      left: 0,
+      behavior: "smooth",
+    });
+  };
+
+  useEffect(() => {
+    moveTop();
+  }, []);
+
   // 로딩이 완료되면 user id 배열 수정
   useEffect(() => {
     if (getDetail) {
@@ -182,6 +201,11 @@ function AlbumDetail() {
         setIsAlerts={setIsAlerts}
         selectedPhotos={selectedPhotos}
       />
+      <aside onClick={moveTopSmooth} className={styles.up_btn}>
+        <div>
+          <UpIcon width={"24px"} height={"24px"} stroke={"black"} />
+        </div>
+      </aside>
       {isPreview && <Preview inputPhoto={inputPhoto} />}
       {isAlerts[0] && (
         <Alert
