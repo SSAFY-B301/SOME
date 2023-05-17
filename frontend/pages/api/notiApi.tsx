@@ -45,9 +45,7 @@ export const getAlarmCount = () => {
     ["count"],
     () => customBoyAxios.get("/noti/count"),
     {
-      onSuccess: (data) => {
-        // console.log(data);
-      },
+      onSuccess: (data) => {},
       refetchOnWindowFocus: false,
     }
   );

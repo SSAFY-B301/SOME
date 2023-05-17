@@ -26,15 +26,8 @@ function App({ Component, ...rest }: AppProps) {
     if ("serviceWorker" in navigator) {
       window.addEventListener("load", function () {
         navigator.serviceWorker.register("/service-worker.js").then(
-          function (registration) {
-            console.log(
-              "Service Worker registration successful with scope: ",
-              registration.scope
-            );
-          },
-          function (err) {
-            console.log("Service Worker registration failed: ", err);
-          }
+          function (registration) {},
+          function (err) {}
         );
       });
     }
@@ -45,7 +38,6 @@ function App({ Component, ...rest }: AppProps) {
         htmlTag.className = "dark";
         htmlTag.style.colorScheme = "dark";
       }
-      console.log("MODE", htmlTag.className);
 
       // css media query 동작과 유사하게, 시스템의 컬러모드가 변경될 때 마다 이를 웹에 반영
       const mediaQueryList = window.matchMedia("(prefers-color-scheme: dark)");
