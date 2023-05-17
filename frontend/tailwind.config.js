@@ -12,6 +12,7 @@ module.exports = {
         "bg-home": "#F2F4F6",
         "dark-bg-home": "#101012",
         "dark-block": "#262626",
+        "some-grey": "#B1B8C0",
       },
       backgroundImage: {
         "gradient-radial": "radial-gradient(var(--tw-gradient-stops))",
