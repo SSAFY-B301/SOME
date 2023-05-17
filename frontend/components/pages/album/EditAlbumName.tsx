@@ -43,7 +43,7 @@ export default function EditAlbumName(props: AlertType) {
       >
         <motion.div
           onClick={(e) => e.stopPropagation()}
-          className="flex flex-col items-center justify-center  bg-white rounded-lg  gap-y-4"
+          className="flex flex-col items-center justify-center  bg-white dark:bg-dark-block rounded-lg  gap-y-4"
           initial={{ opacity: 0, width: "0px", height: "0px" }}
           animate={{ opacity: 1, width: "256px", height: "128px" }}
           exit={{ opacity: 0, width: "0px", height: "0px" }}

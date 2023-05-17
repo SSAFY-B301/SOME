@@ -34,26 +34,26 @@ body {
   }
   overflow: scroll;
 }
-/* :root {
-  --foreground-rgb: 0, 0, 0;
-  --background-start-rgb: 214, 219, 220;
+:root {
+  --btn-color: #3d3e3e
+  --album-nav: linear-gradient(180deg, #ffffffb8 50%, #ffffff0a);
   --background-end-rgb: 255, 255, 255;
 }
 
 @media (prefers-color-scheme: dark) {
   :root {
-    --foreground-rgb: 255, 255, 255;
-    --background-start-rgb: 0, 0, 0;
+    --btn-color: white;
+    --album-nav: linear-gradient(180deg, #262626b8 50%, #2626260a);
     --background-end-rgb: 0, 0, 0;
   }
 }
 
-body {
-  color: rgb(var(--foreground-rgb));
-  background: linear-gradient(
-      to bottom,
-      transparent,
-      rgb(var(--background-end-rgb))
-    )
-    rgb(var(--background-start-rgb));
-} */
+// body {
+//   color: rgb(var(--foreground-rgb));
+//   background: linear-gradient(
+//       to bottom,
+//       transparent,
+//       rgb(var(--background-end-rgb))
+//     )
+//     rgb(var(--background-start-rgb));
+// }
