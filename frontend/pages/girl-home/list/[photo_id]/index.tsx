@@ -17,13 +17,16 @@ export default function GirlDetail() {
   return (
     <div className="flex flex-col items-center gap-y-2">
       <InfoBar title={"대전시 유성구"}></InfoBar>
-      <div className="flex justify-between px-6" style={{ width: "100vw" }}>
+      <div
+        className="flex justify-between px-6"
+        style={{ width: "100vw", height: "48px" }}
+      >
         <div className="flex gap-x-4">
           <div
-            className="w-12 h-12 bg-center bg-cover rounded-lg"
+            className="w-10 h-10 bg-center bg-cover rounded-lg"
             style={{ backgroundImage: `url(${resultData?.userProfileImg})` }}
           ></div>
-          <div>
+          <div className=" h-10">
             <p className="text-lg font-bold">
               {resultData ? resultData.userName : ""}
             </p>

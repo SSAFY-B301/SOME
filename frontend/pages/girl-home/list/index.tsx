@@ -17,12 +17,14 @@ import RightIcon from "public/icons/CaretRight.svg";
 import styles from "styles/girl.module.scss";
 import { setOrder, setPage } from "@/features/girlListDetailSlice";
 import { StateType } from "@/types/StateType";
+import { useTheme } from "next-themes";
 
 interface GirlListParamType {
   lat: number;
   lng: number;
 }
 export default function List() {
+  const { theme, setTheme } = useTheme();
   const dispatch = useDispatch();
   const girlDetailList = useSelector(
     (state: RootState) => state.girlListDetailState
@@ -79,13 +81,18 @@ export default function List() {
   useEffect(() => {
     getLocalInfo();
   }, []);
+
   return (
     <div className="flex flex-col items-center gap-y-4">
       <InfoBar title={address}></InfoBar>
       <div className="relative flex items-center justify-center w-full h-4 gap-x-2">
-        <GirlListUser></GirlListUser>
+        <GirlListUser
+          stroke={theme === "dark" ? "white" : "#061C3D"}
+        ></GirlListUser>
         <p>{resultData?.totalUserCnt}</p>
-        <GirlListImage></GirlListImage>
+        <GirlListImage
+          stroke={theme === "dark" ? "white" : "#061C3D"}
+        ></GirlListImage>
         <p>{resultData?.totalPhotoCnt}</p>
         <div
           onClick={() => setSelectOpen(!selectOpen)}
@@ -154,16 +161,18 @@ export default function List() {
       </Map>
       <div
         className="flex justify-center items-center"
-        style={{ height: "40vh" }}
+        style={{ height: "32vh" }}
       >
         {resultData !== undefined && (
           <>
-            {!resultData.page.is_first && (
-              <LeftIcon
-                onClick={() => dispatch(setPage(page - 1))}
-                stroke={"black"}
-              />
-            )}
+            <div className="w-6 h-6">
+              {!resultData.page.is_first && (
+                <LeftIcon
+                  onClick={() => dispatch(setPage(page - 1))}
+                  stroke={"black"}
+                />
+              )}
+            </div>
             <div className="flex h-full justify-center items-center">
               <div className="grid grid-cols-4 grid-rows-3 gap-1 px-1 h-fit">
                 {resultData.photoList.map((photo) => {
@@ -188,14 +197,16 @@ export default function List() {
                 })}
               </div>
             </div>
-            {!resultData.page.is_last && (
-              <RightIcon
-                onClick={() => dispatch(setPage(page + 1))}
-                width={"24px"}
-                height={"24px"}
-                stroke={"black"}
-              />
-            )}
+            <div className="w-6 h-6">
+              {!resultData.page.is_last && (
+                <RightIcon
+                  onClick={() => dispatch(setPage(page + 1))}
+                  width={"24px"}
+                  height={"24px"}
+                  stroke={"black"}
+                />
+              )}
+            </div>
           </>
         )}
       </div>

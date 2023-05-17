@@ -11,19 +11,25 @@ import { CheckDevice } from "@/components/common/CheckDevice";
 import { useSelector } from "react-redux";
 import { StateType } from "@/types/StateType";
 import { SseConnect, notificationPermission } from "@/features/sse";
+import { useTheme } from "next-themes";
 
 export default function Home() {
   //로그인 상태인지 확인하고, 로그인 안 되어 있으면 로그인 페이지로 이동
   const router = useRouter();
-  
+  const { theme, setTheme } = useTheme();
   const { getUserInfo } = userQuery();
-  
+
   const userAgent = useSelector(
     (state: StateType) => state.userAgent.userAgent
   );
   CheckDevice();
-  
+
   useEffect(() => {
+    if (window.matchMedia("(prefers-color-scheme: dark)").matches) {
+      setTheme("dark");
+    } else {
+      setTheme("light");
+    }
     notificationPermission();
     let timeout;
     const isLogin =
@@ -40,7 +46,9 @@ export default function Home() {
 
   useEffect(() => {
     if (getUserInfo !== undefined) {
-      const parseToken = JSON.parse(window.localStorage.getItem("access_token") || '{}').access_token;
+      const parseToken = JSON.parse(
+        window.localStorage.getItem("access_token") || "{}"
+      ).access_token;
       SseConnect(parseToken);
       setTimeout(() => router.push("/boy-home"), 2000);
     }
