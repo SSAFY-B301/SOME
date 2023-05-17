@@ -95,7 +95,6 @@ function Photos({
               page.albumPhotoList.map((photo, index) => (
                 <div
                   key={photo.photoId}
-                  onTouchMove={(e) => isSelect && console.log(e.currentTarget)}
                   onClick={() =>
                     isSelect
                       ? changeSelect(photo.photoId)

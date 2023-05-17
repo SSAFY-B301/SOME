@@ -19,8 +19,6 @@ const VoteModal = ({ clickVote, requestSns, photoId }: Props): JSX.Element => {
     acceptFriends: acceptFriends,
   } = getPhoto(photoId);
 
-  console.log(acceptFriends, declineFriends, noReplyFriends);
-
   return isSnsRequest ? (
     <div
       className="fixed left-0 top-0 w-screen h-screen z-20 bg-black/50 flex justify-center items-center"
