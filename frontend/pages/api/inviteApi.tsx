@@ -19,9 +19,7 @@ export const useGetFriends = () => {
     ["friends"],
     () => customBoyAxios.get("/album/list/friend"),
     {
-      onSuccess: (data) => {
-        // console.log(data);
-      },
+      onSuccess: (data) => {},
       refetchOnWindowFocus: false,
     }
   );
@@ -49,20 +47,15 @@ export const albumMutation = () => {
       return customBoyAxios.post("/album/create", newAlbum);
     },
     {
-      onMutate: (variable) => {
-        console.log("onMutate ", variable);
-      },
+      onMutate: (variable) => {},
       onError: (error, variable, context) => {
         //error
       },
       onSuccess: (data, variables, context) => {
-        console.log("success", data, variables, context);
         dispatch(setALbumIdState(data.data.data.album_id));
         router.push(`/album/${data.data.data.album_id}`);
       },
-      onSettled: () => {
-        console.log("end");
-      },
+      onSettled: () => {},
     }
   );
 
@@ -72,19 +65,12 @@ export const albumMutation = () => {
       return customBoyAxios.post("/album/friend/invite", inviteInfo);
     },
     {
-      onMutate: (variable) => {
-        console.log("onMutate ", variable);
-      },
-      onError: (error, variable, context) => {
-        console.log(error);
-      },
+      onMutate: (variable) => {},
+      onError: (error, variable, context) => {},
       onSuccess: (data, variables, context) => {
-        console.log("success", data, variables, context);
         router.push(`/album/${variables.album_id}`);
       },
-      onSettled: () => {
-        console.log("end");
-      },
+      onSettled: () => {},
     }
   );
 

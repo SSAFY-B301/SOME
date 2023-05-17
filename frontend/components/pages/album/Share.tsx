@@ -14,9 +14,7 @@ export const share = async (urls: string[]) => {
   };
   try {
     await navigator.share(shareData);
-  } catch (err) {
-    console.log(err);
-  }
+  } catch (err) {}
 };
 
 /**
@@ -30,9 +28,7 @@ export const shareUrl = async () => {
   };
   try {
     await navigator.share(shareData);
-  } catch (err) {
-    console.log(err);
-  }
+  } catch (err) {}
 };
 
 /**
@@ -41,7 +37,6 @@ export const shareUrl = async () => {
  * @returns
  */
 export const urlToFile = async (url: string) => {
-  console.log(url);
   const response = await axios({
     url: url,
     method: "GET",

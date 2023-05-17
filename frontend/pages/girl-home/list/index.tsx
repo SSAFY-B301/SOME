@@ -10,11 +10,9 @@ import { useDispatch, useSelector } from "react-redux";
 import { RootState } from "@/store/configureStore";
 import { useEffect, useState } from "react";
 import CaretDown from "@/public/icons/CaretDown.svg";
-import { useQuery } from "react-query";
 import axios from "axios";
 import LeftIcon from "public/icons/CaretLeft.svg";
 import RightIcon from "public/icons/CaretRight.svg";
-import styles from "styles/girl.module.scss";
 import { setOrder, setPage } from "@/features/girlListDetailSlice";
 import { StateType } from "@/types/StateType";
 import { useTheme } from "next-themes";
@@ -53,12 +51,6 @@ export default function List() {
   const [sort, setSort] = useState("like");
   const [selectOpen, setSelectOpen] = useState(false);
   const router = useRouter();
-  useEffect(() => {
-    console.log("page", page);
-  }, [page]);
-  useEffect(() => {
-    console.log("resultData", resultData);
-  }, [resultData]);
 
   async function getLocalInfo() {
     const result = await axios.get(

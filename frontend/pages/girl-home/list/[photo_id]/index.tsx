@@ -24,12 +24,12 @@ export default function GirlDetail() {
         className="flex justify-between px-6"
         style={{ width: "100vw", height: "48px" }}
       >
-        <div className="flex gap-x-4">
+        <div className="flex items-center justify-center gap-x-4">
           <div
-            className="w-10 h-10 bg-center bg-cover rounded-lg"
+            className="items-center justify-center w-10 h-10 bg-center bg-cover rounded-lg"
             style={{ backgroundImage: `url(${resultData?.userProfileImg})` }}
           ></div>
-          <div className="h-10 ">
+          <div className="flex flex-col items-center justify-center h-10">
             <p className="text-lg font-bold">
               {resultData ? resultData.userName : ""}
             </p>

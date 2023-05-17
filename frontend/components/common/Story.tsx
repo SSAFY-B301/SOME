@@ -74,7 +74,6 @@ function Story() {
     const diffPositionX = startTouchPosition[0] - x;
     const diffPositionY = startTouchPosition[1] - y;
     setEndTouchPosition([x, y]);
-    console.log("end", timeoutId);
 
     const temp = timeoutIds.slice(0, -1);
     temp.forEach((id) => clearTimeout(id));
@@ -83,7 +82,6 @@ function Story() {
     // clearTimeout(timeoutId);
     if (screenWidth - 54 > x || y > 54) {
       if (diffPositionY < -50) {
-        console.log(diffPositionY);
         endCurrent();
       } else if (-5 < diffPositionX && diffPositionX < 5) {
         // 제자리 터치
@@ -166,15 +164,10 @@ function Story() {
         }
       }
     }, 4000);
-    // console.log("id", id);
 
     setTimeoutId(id);
     setTimeoutIds((prev) => [...prev, id]);
   }, [albumIndex, photoIndex]);
-
-  // useEffect(() => {
-  //   console.log("timeoutIds", timeoutIds);
-  // }, [timeoutIds]);
 
   return (
     <>
@@ -275,15 +268,6 @@ function Story() {
                       </div>
                     </div>
                   </nav>
-                  {/* <footer>
-                <div className={styles.go_to_album}></div>
-                <div className={styles.fav}>
-                  {
-                  <FavIcon width={"24px"} height={"24px"} fill={"non"} />
-                  <FavIcon width={"24px"} height={"24px"} fill={"non"} />
-                }
-                </div>
-              </footer> */}
                 </div>
               </main>
             )}
