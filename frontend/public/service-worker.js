@@ -12,3 +12,7 @@ self.addEventListener("message", (event) => {
     })
   );
 });
+self.addEventListener("notificationclick", function (event) {
+  event.notification.close();
+  clients.openWindow("https://k8b301.p.ssafy.io/notification");
+});
