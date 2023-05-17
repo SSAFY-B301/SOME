@@ -230,7 +230,7 @@ const PhotoDetail = (): JSX.Element => {
   return (
     <div className="w-screen h-screen bg-white dark:bg-dark-bg-home overflow-hidden">
       <div
-        className={`z-20 fixed flex items-center justify-center border-b-2 box-border p-4 bg-white dark:bg-dark-block ${styles.info_bar}`}
+        className={`z-20 fixed flex items-center justify-center box-border p-4 bg-white dark:bg-dark-block ${styles.info_bar}`}
       >
         <Nav title="앨범" />
       </div>
