@@ -10,14 +10,13 @@ import { useDispatch, useSelector } from "react-redux";
 import { RootState } from "@/store/configureStore";
 import { useEffect, useState } from "react";
 import CaretDown from "@/public/icons/CaretDown.svg";
-import { useQuery } from "react-query";
 import axios from "axios";
 import LeftIcon from "public/icons/CaretLeft.svg";
 import RightIcon from "public/icons/CaretRight.svg";
-import styles from "styles/girl.module.scss";
 import { setOrder, setPage } from "@/features/girlListDetailSlice";
 import { StateType } from "@/types/StateType";
 import { useTheme } from "next-themes";
+import { setAddress } from "@/features/addressSlice";
 
 interface GirlListParamType {
   lat: number;
@@ -26,10 +25,10 @@ interface GirlListParamType {
 export default function List() {
   const { theme, setTheme } = useTheme();
   const dispatch = useDispatch();
+  const [sectionAddress, setSectionAddress] = useState("")
   const girlDetailList = useSelector(
     (state: RootState) => state.girlListDetailState
   );
-
   const section = useSelector(
     (state: StateType) => state.girlListDetailState.section
   );
@@ -52,7 +51,6 @@ export default function List() {
   const [sort, setSort] = useState("like");
   const [selectOpen, setSelectOpen] = useState(false);
   const router = useRouter();
-  const [address, setAddress] = useState("");
 
   async function getLocalInfo() {
     const result = await axios.get(
@@ -65,11 +63,11 @@ export default function List() {
     );
     const addressData = result.data.documents[0];
     if (addressData.road_address === null) {
-      setAddress(
-        `${addressData.address.region_1depth_name} ${addressData.address.region_2depth_name} ${addressData.address.region_3depth_name}`
-      );
+      dispatch(setAddress(`${addressData.address.region_1depth_name} ${addressData.address.region_2depth_name} ${addressData.address.region_3depth_name}`));
+      setSectionAddress(`${addressData.address.region_1depth_name} ${addressData.address.region_2depth_name} ${addressData.address.region_3depth_name}`);
     } else {
-      setAddress(`${addressData.road_address.building_name}`);
+      dispatch(setAddress(`${addressData.road_address.building_name}`));
+      setSectionAddress(`${addressData.road_address.building_name}`);
     }
   }
   useEffect(() => {
@@ -78,7 +76,7 @@ export default function List() {
 
   return (
     <div className="flex flex-col items-center gap-y-4">
-      <InfoBar title={address}></InfoBar>
+      <InfoBar title={sectionAddress}></InfoBar>
       <div className="relative flex items-center justify-center w-full h-4 gap-x-2">
         <GirlListUser
           stroke={theme === "dark" ? "white" : "#061C3D"}
@@ -139,8 +137,7 @@ export default function List() {
                 >
                   <div
                     onClick={() =>
-                      router.push(`/girl-home/list/${photo.photoId}`)
-                    }
+                      router.push(`/girl-home/list/${photo.photoId}`)}
                     className="w-4 h-4 rounded-full"
                     style={{
                       background:
@@ -154,7 +151,7 @@ export default function List() {
         )}
       </Map>
       <div
-        className="flex justify-center items-center"
+        className="flex items-center justify-center"
         style={{ height: "32vh" }}
       >
         {resultData !== undefined && (
@@ -167,7 +164,7 @@ export default function List() {
                 />
               )}
             </div>
-            <div className="flex h-full justify-center items-center">
+            <div className="flex items-center justify-center h-full">
               <div className="grid grid-cols-4 grid-rows-3 gap-1 px-1 h-fit">
                 {resultData.photoList.map((photo) => {
                   return (
