@@ -18,12 +18,13 @@
     height: 15.385vw;
 
     z-index: 5;
-    &.dark {
-      background: linear-gradient(180deg, #101012b8 50%, #1010120a);
-    }
-    &.light {
-      background: linear-gradient(180deg, #ffffffb8 50%, #ffffff0a);
-    }
+    // &.dark {
+    //   background: linear-gradient(180deg, #262626b8 50%, #2626260a);
+    // }
+    // &.light {
+    //   background: linear-gradient(180deg, #ffffffb8 50%, #ffffff0a);
+    // }
+    background: var(--album-nav);
   }
   .title {
     font-size: 5.128vw;
@@ -291,7 +292,7 @@
   }
   span {
     position: absolute;
-    color: #3d3e3e;
+    color: var(--btn-color);
   }
 }
 
@@ -315,7 +316,8 @@
   }
   p {
     position: absolute;
-    color: #3d3e3e;
+    // color: #3d3e3e;
+    color: var(--btn-color);
   }
 }
 
