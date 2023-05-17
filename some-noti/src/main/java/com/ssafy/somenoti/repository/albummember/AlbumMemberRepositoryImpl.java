@@ -30,7 +30,7 @@ public class AlbumMemberRepositoryImpl implements AlbumMemberRepositoryCustom{
                 .from(albumMember)
                 .where(
                         albumMember.albumMemberId.albumId.eq(albumId)
-                        .and(albumMember.albumMemberId.albumMemberStatus.eq(AlbumMemberStatus.ACCEPT))
+                        .and(albumMember.albumMemberStatus.eq(AlbumMemberStatus.ACCEPT))
                                 .and(albumMember.albumMemberId.userId.ne(sender))
                 )
                 .fetch();
