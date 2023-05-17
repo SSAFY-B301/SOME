@@ -34,7 +34,7 @@ function NewPhoto({ setInputPhoto }: NewPhotoType) {
   return (
     <div
       onClick={inputPhoto}
-      className="bg-bg-home flex justify-center items-center"
+      className="bg-bg-home dark:bg-dark-bg-home flex justify-center items-center"
       style={{ width: "22.564vw", height: "22.564vw" }}
     >
       <input

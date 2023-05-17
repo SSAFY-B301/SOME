@@ -38,6 +38,27 @@ function App({ Component, ...rest }: AppProps) {
         );
       });
     }
+    const htmlTag = window.document.querySelector("html");
+    if (htmlTag) {
+      // 앞서 사용한 prefers-color-scheme 값을 확인 해 시스템의 컬러모드 초기값으로 사용
+      if (window.matchMedia("(prefers-color-scheme: dark)").matches) {
+        htmlTag.className = "dark";
+        htmlTag.style.colorScheme = "dark";
+      }
+      console.log("MODE", htmlTag.className);
+
+      // css media query 동작과 유사하게, 시스템의 컬러모드가 변경될 때 마다 이를 웹에 반영
+      const mediaQueryList = window.matchMedia("(prefers-color-scheme: dark)");
+      mediaQueryList.addEventListener("change", (e) => {
+        if (e.matches) {
+          htmlTag.className = "dark";
+          htmlTag.style.colorScheme = "dark";
+        } else {
+          htmlTag.className = "light";
+          htmlTag.style.colorScheme = "light";
+        }
+      });
+    }
   }, []);
   return (
     <ThemeProvider attribute="class">
