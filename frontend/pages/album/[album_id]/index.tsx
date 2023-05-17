@@ -13,6 +13,7 @@ import Preview from "components/pages/album/Preview";
 import { useEffect, useState } from "react";
 import { useRouter } from "next/router";
 import axios from "axios";
+import { motion, AnimatePresence } from "framer-motion";
 
 // API
 import { Mutations, useGetDetail, useInfinitePhotos } from "pages/api/albumApi";
@@ -221,14 +222,16 @@ function AlbumDetail() {
           noHandler={() => closeAlert(1)}
         />
       )}
-      {isAlerts[3] && (
-        <EditAlbumName
-          msg="앨범 이름 변경"
-          prev={getDetail ? getDetail.album_name : ""}
-          albumId={albumId}
-          noHandler={() => closeAlert(3)}
-        />
-      )}
+      <AnimatePresence>
+        {isAlerts[3] && (
+          <EditAlbumName
+            msg="앨범 이름 변경"
+            prev={getDetail ? getDetail.album_name : ""}
+            albumId={albumId}
+            noHandler={() => closeAlert(3)}
+          />
+        )}
+      </AnimatePresence>
     </section>
   );
 }
