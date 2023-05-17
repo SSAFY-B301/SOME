@@ -15,7 +15,7 @@ import axios from "axios";
 import LeftIcon from "public/icons/CaretLeft.svg";
 import RightIcon from "public/icons/CaretRight.svg";
 import styles from "styles/girl.module.scss";
-import { setPage } from "@/features/girlListDetailSlice";
+import { setOrder, setPage } from "@/features/girlListDetailSlice";
 import { StateType } from "@/types/StateType";
 
 interface GirlListParamType {
@@ -91,14 +91,15 @@ export default function List() {
           onClick={() => setSelectOpen(!selectOpen)}
           className="absolute flex items-center w-20 p-2 right-2 gap-x-1"
         >
-          <p>{sort === "like" ? "인기순" : "최신순"}</p>
+          <p>{order === "like" ? "인기순" : "최신순"}</p>
           <CaretDown className="stroke-black dark:stroke-white"></CaretDown>
         </div>
         {selectOpen && (
           <ul className="absolute z-10 w-20 p-2 bg-white border-2 rounded-lg right-2 top-6">
             <li
               onClick={() => {
-                setSort("like");
+                // setSort("like");
+                dispatch(setOrder("like"));
                 setSelectOpen(!selectOpen);
               }}
               className="mb-1"
@@ -108,7 +109,8 @@ export default function List() {
             <hr></hr>
             <li
               onClick={() => {
-                setSort("date");
+                // setSort("date");
+                dispatch(setOrder("date"));
                 setSelectOpen(!selectOpen);
               }}
               className="mt-1"

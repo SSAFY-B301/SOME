@@ -65,9 +65,11 @@ function NavBar({ isSelect, setIsSelect, isTotal, setIsTotal }: NavBarType) {
         </div>
         <div className="relative w-screen h-full flex justify-between items-center p-4">
           {isSelect ? (
-            <p onClick={() => setIsTotal(!isTotal)}>
-              {isTotal ? "선택 해제" : "전체선택"}
-            </p>
+            <div className={styles.total_box}>
+              <p onClick={() => setIsTotal(!isTotal)}>
+                {isTotal ? "선택 해제" : "전체선택"}
+              </p>
+            </div>
           ) : (
             <Link href={"/boy-home"}>
               <LeftIcon stroke={theme === "dark" ? "white" : "black"} />
@@ -77,12 +79,12 @@ function NavBar({ isSelect, setIsSelect, isTotal, setIsTotal }: NavBarType) {
             <UploadStatus />
             <div
               onClick={clickSelect}
-              className="flex justify-center items-center"
+              className={`flex justify-center items-center ${styles.select_box}`}
             >
               {isSelect ? (
                 <span className={`${styles.selectBtn}`}>취소</span>
               ) : (
-                <span className={`${styles.selectBtn}`}>사진 선택</span>
+                <span className={`${styles.selectBtn}`}>선택</span>
               )}
             </div>
           </div>

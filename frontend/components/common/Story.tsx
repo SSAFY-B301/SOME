@@ -10,6 +10,7 @@ import FavIcon from "public/icons/Heart.svg";
 import { useGetCurrent } from "@/pages/api/currentAlbumApi";
 import { storyApiDataType } from "@/types/ApiTypes";
 import { addNotiIds } from "@/features/storySlice";
+import Image from "next/image";
 
 function Story() {
   const [timeoutId, setTimeoutId] = useState<ReturnType<typeof setTimeout>>();
@@ -208,10 +209,17 @@ function Story() {
               >
                 <div
                   className={`${styles.image}`}
-                  style={{
-                    backgroundImage: `url(${albums[albumIndex].photo_list[photoIndex].photo_url})`,
-                  }}
-                ></div>
+                  // style={{
+                  //   backgroundImage: `url(${albums[albumIndex].photo_list[photoIndex].photo_url})`,
+                  // }}
+                >
+                  <Image
+                    src={albums[albumIndex].photo_list[photoIndex].photo_url}
+                    alt="story"
+                    style={{ objectFit: "contain" }}
+                    fill
+                  />
+                </div>
                 <div className={`${styles.info_container}`}>
                   <nav>
                     <div
