@@ -6,6 +6,15 @@ $main-color: linear-gradient(
   ),
   linear-gradient(134.36deg, #f472b6 15.23%, #9797d7 49.79%, #38bdf8 84.77%);
 
+@media (prefers-color-scheme: dark) {
+  $bg-color: black;
+  $bg-color2: #101012;
+  $bg-color3: #262626;
+}
+$bg-color: white;
+$bg-color2: #f2f4f6;
+$bg-color3: #ffffff;
+
 .logo {
   background: $main-color;
   -webkit-background-clip: text;
