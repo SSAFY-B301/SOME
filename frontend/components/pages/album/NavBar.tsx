@@ -55,11 +55,7 @@ function NavBar({ isSelect, setIsSelect, isTotal, setIsTotal }: NavBarType) {
 
   return (
     <section className={`${styles.nav_bar}`}>
-      <div
-        className={`${styles.nav_bar_items} ${
-          theme === "dark" ? styles.dark : styles.light
-        }`}
-      >
+      <div className={`${styles.nav_bar_items}`}>
         <div
           className={`absolute w-screen h-full flex justify-center items-center ${styles.title}`}
         >

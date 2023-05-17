@@ -34,8 +34,6 @@ export const girlListDetailStateSlice = createSlice({
       state.order = action.payload;
     },
     setPage(state, action) {
-      console.log("PAGE", action.payload);
-
       state.page = action.payload;
     },
   },

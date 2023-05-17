@@ -10,11 +10,7 @@ $main-color: linear-gradient(
   position: fixed;
   width: 0vw;
   height: 0vh;
-  // width: 100vw;
-  // height: 100vh;
-  // border-radius: 8px;
   color: white;
-  // background-color: #2f2f30;
   background: linear-gradient(to Bottom, #2f2f30, #373738);
   z-index: 9999;
   opacity: 0;
@@ -165,12 +161,6 @@ $main-color: linear-gradient(
       }
     }
   }
-  // footer {
-  //   .go_to_album {
-  //   }
-  //   .fav {
-  //   }
-  // }
 }
 
 @keyframes now_read {

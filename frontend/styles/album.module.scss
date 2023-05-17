@@ -1,4 +1,10 @@
-@use "./color.scss" as *;
+$main-color: linear-gradient(
+    238.55deg,
+    rgba(244, 114, 182, 0.75) 15.98%,
+    rgba(145, 153, 217, 0.75) 55.85%,
+    rgba(56, 189, 248, 0.75) 84.59%
+  ),
+  linear-gradient(134.36deg, #f472b6 15.23%, #9797d7 49.79%, #38bdf8 84.77%);
 
 .container {
   display: flex;
@@ -18,12 +24,7 @@
     height: 15.385vw;
 
     z-index: 5;
-    // &.dark {
-    //   background: linear-gradient(180deg, #262626b8 50%, #2626260a);
-    // }
-    // &.light {
-    //   background: linear-gradient(180deg, #ffffffb8 50%, #ffffff0a);
-    // }
+
     background: var(--album-nav);
   }
   .title {

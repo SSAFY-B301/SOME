@@ -59,7 +59,6 @@ function Members({ membersId, isAlbumLoading }: MembersType) {
   const changeSelect = (id: string) => {
     selectMembers.size === membersSize && selectMembers.clear();
     selectMembers.has(id) ? selectMembers.delete(id) : selectMembers.add(id);
-    console.log(selectMembers.size);
 
     selectMembers.size === 0 &&
       allUsers.forEach((user) => selectMembers.add(user));

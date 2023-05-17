@@ -53,12 +53,6 @@ export default function List() {
   const [selectOpen, setSelectOpen] = useState(false);
   const router = useRouter();
   const [address, setAddress] = useState("");
-  useEffect(() => {
-    console.log("page", page);
-  }, [page]);
-  useEffect(() => {
-    console.log("resultData", resultData);
-  }, [resultData]);
 
   async function getLocalInfo() {
     const result = await axios.get(
