@@ -146,7 +146,8 @@ function Preview({ inputPhoto }: PreviewType) {
               <ImageTag
                 src={previewPhotos[i].img}
                 alt="photo"
-                loading="lazy"
+                loading={i < 1 ? "eager" : "lazy"}
+                priority={i < 1 ? true : false}
                 style={{ objectFit: "cover" }}
                 fill
               />

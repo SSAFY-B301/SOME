@@ -26,7 +26,7 @@ export const shareUrl = async () => {
   const shareData = {
     title: "SOME",
     text: "SOME 초대",
-    url: "https://k8b301.p.ssafy.io/",
+    url: "https://some-album.com/",
   };
   try {
     await navigator.share(shareData);

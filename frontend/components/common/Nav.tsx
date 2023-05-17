@@ -15,7 +15,6 @@ import LightModeIcon from "public/icons/Sun.svg";
 import DarkModeIcon from "public/icons/Moon.svg";
 
 import AlarmIcon from "public/icons/Bell.svg";
-import FeedBackIcon from "./feedBack";
 import { useState } from "react";
 import { getAlarmCount } from "@/pages/api/notiApi";
 import { UploadStatus } from "./UploadStatus";
@@ -35,7 +34,6 @@ function NavBar() {
       className={`flex flex-row justify-between items-center h-14 mx-6 ${styles.nav_bar}`}
     >
       <Logo />
-      <FeedBackIcon setIsFeed={setIsFeed} isFeed={isFeed} />
       <div className="flex gap-2 items-center">
         <UploadStatus />
         <button
