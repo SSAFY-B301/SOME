@@ -13,7 +13,6 @@ interface NewPhotoType {
 }
 
 function NewPhoto({ setInputPhoto }: NewPhotoType) {
-  // TODO : useRef 타입 any 처리하기
   const fileInput = React.useRef<any>(null);
   let dispatch = useDispatch();
   const inputPhoto = () => {

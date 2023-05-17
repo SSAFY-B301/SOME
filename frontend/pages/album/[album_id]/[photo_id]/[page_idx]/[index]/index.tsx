@@ -121,8 +121,6 @@ const PhotoDetail = (): JSX.Element => {
    * 썸네일 수정 모달창 생성
    */
   const clickThumbnail = () => {
-    console.log(showThumbnailModal);
-
     showThumbnailModal ? setThumbnailModal(false) : setThumbnailModal(true);
   };
 
@@ -179,7 +177,6 @@ const PhotoDetail = (): JSX.Element => {
       if (clickCount == 2) {
         clickCount = 0;
         if (isZoom) {
-          // console.log("doubleclick")
         }
       } else if (clickCount == 1) {
         clickCount = 0;
