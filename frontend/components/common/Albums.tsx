@@ -3,6 +3,7 @@ import { useRouter } from "next/router";
 
 // 컴포넌트
 import ItemBlock from "components/common/ItemBlock";
+import defaultImages from "components/common/DefaultImages";
 
 // API
 import { useGetFavorite, Mutations } from "@/pages/api/albumApi";
@@ -41,13 +42,6 @@ function FavoriteAlbum() {
     mutate(id);
   };
 
-  const default_profile = [
-    "https://images.unsplash.com/photo-1661956602116-aa6865609028?ixlib=rb-4.0.3&ixid=MnwxMjA3fDF8MHxlZGl0b3JpYWwtZmVlZHwxMXx8fGVufDB8fHx8&auto=format&fit=crop&w=500&q=60",
-    "https://images.unsplash.com/photo-1683319586943-766e45c00e3f?ixlib=rb-4.0.3&ixid=MnwxMjA3fDB8MHxlZGl0b3JpYWwtZmVlZHw3M3x8fGVufDB8fHx8&auto=format&fit=crop&w=500&q=60",
-    "https://images.unsplash.com/photo-1683406164037-5c97ea978964?ixlib=rb-4.0.3&ixid=MnwxMjA3fDB8MHxlZGl0b3JpYWwtZmVlZHw0fHx8ZW58MHx8fHw%3D&auto=format&fit=crop&w=500&q=60",
-    "https://images.unsplash.com/photo-1661956602926-db6b25f75947?ixlib=rb-4.0.3&ixid=MnwxMjA3fDF8MHxlZGl0b3JpYWwtZmVlZHwyMXx8fGVufDB8fHx8&auto=format&fit=crop&w=500&q=60",
-  ];
-
   const dispatch = useDispatch();
   const goToAlbum = (id: number) => {
     dispatch(setInit());
@@ -61,7 +55,7 @@ function FavoriteAlbum() {
   const favorites: React.ReactNode = getFavoriteIsLoading ? (
     <></>
   ) : getFavorite && getFavorite.length > 0 ? (
-    getFavorite.map((favoriteAlbum: FavoriteAlbumType) => (
+    getFavorite.map((favoriteAlbum: FavoriteAlbumType, index) => (
       <div key={favoriteAlbum.album_id} className={`${styles.card}`}>
         <div
           onClick={() => goToAlbum(favoriteAlbum.album_id)}
@@ -77,11 +71,13 @@ function FavoriteAlbum() {
             src={
               favoriteAlbum.thumbnail_photo_url
                 ? favoriteAlbum.thumbnail_photo_url
-                : default_profile[favoriteAlbum.album_id % 4]
+                : defaultImages[favoriteAlbum.album_id % 8]
             }
             alt="fav"
             style={{ objectFit: "cover", borderRadius: "3.077vw" }}
-            loading="lazy"
+            loading={index < 2 ? "eager" : "lazy"}
+            priority={index < 2 ? true : false}
+            sizes="73.846vw"
             fill
           />
           <div

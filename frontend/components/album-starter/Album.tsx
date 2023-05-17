@@ -1,6 +1,7 @@
 import React, { useState } from "react";
 import styles from "@/styles/inviteFriends.module.scss";
-
+import defaultImages from "components/common/DefaultImages";
+import Image from "next/image";
 interface AlbumType {
   album_id: number;
   album_name: string;
@@ -22,14 +23,17 @@ const Album = ({ album, selectAlbum, isActiveFriends }: Props): JSX.Element => {
 
   return (
     <div className="relative w-28 h-28 rounded-xl border-2" onClick={select}>
-      <img
+      <Image
         src={
           album.thumbnail_photo_url
             ? album.thumbnail_photo_url
-            : "/images/default_album_thumbnail.png"
+            : defaultImages[album.album_id % 8]
         }
-        className="absolute z-10 w-full h-full object-cover rounded-xl"
+        alt="invite"
+        style={{ objectFit: "cover", borderRadius: "3.077vw" }}
+        fill
       />
+
       <div className="w-28 h-28 flex justify-center items-center">
         <div className="z-20 w-24 h-24 flex flex-col justify-end items-center">
           <span

@@ -154,7 +154,7 @@ export default function List() {
       </Map>
       <div
         className="flex justify-center items-center"
-        style={{ height: "40vh" }}
+        style={{ height: "32vh" }}
       >
         {resultData !== undefined && (
           <>
