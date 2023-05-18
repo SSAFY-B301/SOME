@@ -30,25 +30,23 @@ const PhotoFeatures = ({ photoId, clickVote }: Props): JSX.Element => {
    * 사진 좋아요 기능
    * useMutation
    */
-  const { likeMutation } = useMutationPhoto(photoDetail.photoId);
+  const { likeMutation } = useMutationPhoto(photoId);
 
   /**
    * 좋아요 기능 추후 추가
    */
   const select = () => {
     if (isActive == false) {
-      console.log(1123);
       likeMutation();
       setIsActive(true);
     } else {
-      console.log(3333);
       likeMutation();
       setIsActive(false);
     }
   };
 
   return (
-    <div className="flex justify-between w-screen relative z-30 px-6">
+    <div className="flex justify-between w-11/12 h-full">
       <div className="flex items-center gap-2 w-40">
         <img
           src={photoDetail?.userProfileImg}
