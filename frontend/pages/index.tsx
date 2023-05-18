@@ -52,7 +52,7 @@ export default function Home() {
         window.localStorage.getItem("access_token") || "{}"
       ).access_token;
       SseConnect(parseToken);
-      setTimeout(() => router.push("/boy-home"), 20000);
+      setTimeout(() => router.push("/boy-home"), 2000);
     }
     return () => {};
   }, [getUserInfo]);
