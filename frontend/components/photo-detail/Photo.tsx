@@ -46,12 +46,16 @@ const Photo = ({
             height: "100vh",
           }}
         >
-          <ImageTag
-            src={imgSrc}
-            alt="photo"
-            width={img.width}
-            height={img.height}
-          />
+          <div className="relative" style={{ width: "100vw", height: "70vh" }}>
+            <ImageTag
+              src={imgSrc}
+              alt="photo"
+              // width={img.width}
+              // height={img.height}
+              style={{ objectFit: "contain" }}
+              fill
+            />
+          </div>
           {/* <img src={`${imgSrc}`} /> */}
         </TransformComponent>
       </TransformWrapper>

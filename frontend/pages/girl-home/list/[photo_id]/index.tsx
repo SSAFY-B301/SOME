@@ -8,21 +8,20 @@ import Image from "next/image";
 import { useSelector } from "react-redux";
 import { RootState } from "@/store/configureStore";
 
-
 export default function GirlDetail() {
   const { resultData, girlDetailStatus } = getGirlPhotoDetail();
   const { girlLikeMutation } = useMutationGirl();
-  const addressState = useSelector((state: RootState) => state.addressState)
+  const addressState = useSelector((state: RootState) => state.addressState);
   function likeHandler(nowPhotoId: number, likeStatus: boolean) {
     girlLikeMutation({ photo_id: nowPhotoId, like_photo_status: likeStatus });
   }
-  
+
   return (
     <div className="flex flex-col items-center gap-y-2">
       <InfoBar title={addressState.address}></InfoBar>
       <div
         className="flex justify-between px-6"
-        style={{ width: "100vw", height: "48px" }}
+        style={{ width: "100vw", height: "48px", marginTop: "8px" }}
       >
         <div className="flex items-center justify-center gap-x-4">
           <div
@@ -52,7 +51,7 @@ export default function GirlDetail() {
               )}
             </div>
           )}
-          <p className="text-center text-gray-700">
+          <p className="text-center text-gray-700 dark:text-white">
             {resultData ? resultData.likeCnt : 0}
           </p>
         </div>
