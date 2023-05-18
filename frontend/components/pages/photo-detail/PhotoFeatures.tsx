@@ -1,8 +1,8 @@
 import { getPhoto, useMutationPhoto } from "@/pages/api/photoDetailApi";
 import React, { useEffect, useState } from "react";
 import styles from "@/styles/inviteFriends.module.scss";
-import { PhotoTime } from "../pages/notification/AlarmTime";
-import { LoadingPhotoProfile, LoadingPhotoSpan } from "../common/Loading";
+import { PhotoTime } from "../notification/AlarmTime";
+import { LoadingPhotoProfile, LoadingPhotoSpan } from "../../common/Loading";
 
 /**
  * 사진 상세보기 특징 컴포넌트
