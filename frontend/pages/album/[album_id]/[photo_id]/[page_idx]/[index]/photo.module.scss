@@ -36,3 +36,19 @@
   border-radius: 3.077vw 3.077vw 0px 0px;
   padding: 8.205vw;
 }
+
+.slide {
+  touch-action: pan-x;
+}
+
+.container {
+  touch-action: pan-x;
+}
+
+.is_mode {
+  background: black;
+}
+
+.no_mode {
+  background: var(--album-nav);
+}
