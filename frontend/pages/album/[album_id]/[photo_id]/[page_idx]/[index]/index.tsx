@@ -86,7 +86,7 @@ const PhotoDetail = (): JSX.Element => {
   /**
    * 캐러셀 구성할 사진 리스트
    */
-  const { data: albumData } = useInfinitePhotos();
+  const { data: albumData, fetchNextPage, hasNextPage } = useInfinitePhotos();
 
   /**
    * 다운로드 모달창 생성
@@ -190,9 +190,12 @@ const PhotoDetail = (): JSX.Element => {
   /**
    * page 이동 처리
    */
-  const setNextPage = (direction: string) => {
+  const setNextPage = async (direction: string) => {
     if (albumData) {
       if (direction == "left" && !albumData.pages[page].is_last) {
+        if (page === albumData.pages.length - 1 && hasNextPage) {
+          await fetchNextPage();
+        }
         setTimeout(() => {
           setCarouselIdx(0);
           setTimeout(() => {
