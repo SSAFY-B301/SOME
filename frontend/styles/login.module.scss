@@ -1,4 +1,5 @@
 .title {
+  font-family: "Cafe24Ssurround";
   background: linear-gradient(
       238.55deg,
       rgba(244, 114, 182, 0.75) 15.98%,
@@ -15,4 +16,16 @@
 .slider {
   width: 100vw;
   height: 80vh;
+}
+
+.text {
+  font-family: "Cafe24Ssurround";
+  font-size: 18px;
+  color: rgb(71, 71, 71);
+}
+
+.span {
+  font-family: "Cafe24Ssurround";
+  font-size: 12px;
+  color: rgb(71, 71, 71);
 }

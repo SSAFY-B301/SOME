@@ -3,10 +3,10 @@ import Friend from "./Friend";
 import {
   LoadingInviteFriendThumbnail,
   LoadingInviteFriendBtn,
-} from "../common/Loading";
+} from "../../common/Loading";
 import styles from "styles/inviteFriends.module.scss";
 import ShareIcon from "public/icons/KakaoTalk.svg";
-import { shareUrl } from "../pages/album/Share";
+import { shareUrl } from "../album/Share";
 
 interface FriendType {
   id: number;
