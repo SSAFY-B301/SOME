@@ -24,8 +24,8 @@ interface InfoType {
 }
 
 function NavBar() {
-  const { theme, setTheme } = useTheme();
-  const [isFeed, setIsFeed] = useState<boolean>(false);
+  // const { theme, setTheme } = useTheme();
+  // const [isFeed, setIsFeed] = useState<boolean>(false);
 
   const getAlarm = getAlarmCount();
 
@@ -36,7 +36,7 @@ function NavBar() {
       <Logo />
       <div className="flex items-center gap-2">
         <UploadStatus />
-        <button
+        {/* <button
           type="button"
           onClick={() => setTheme(theme === "dark" ? "light" : "dark")}
         >
@@ -53,7 +53,7 @@ function NavBar() {
               className="cursor-pointer"
             />
           )}
-        </button>
+        </button> */}
 
         <Profile />
         <Link className="relative" href={"/notification"}>

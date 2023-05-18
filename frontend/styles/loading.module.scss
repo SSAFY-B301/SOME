@@ -87,6 +87,19 @@ $main-color: linear-gradient(
   border-radius: 3.077vw;
 }
 
+.photo_profile {
+  width: 2.5rem;
+  height: 2.5rem;
+  border-radius: 0.75rem;
+}
+
+.photo_span {
+  width: 4.5rem;
+  height: 1.15rem;
+  border-radius: 4px;
+  margin: 2px 0;
+}
+
 .lds_roller {
   display: inline-block;
   position: relative;

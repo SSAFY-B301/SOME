@@ -2,6 +2,7 @@ import { getPhoto, useMutationPhoto } from "@/pages/api/photoDetailApi";
 import React, { useEffect, useState } from "react";
 import styles from "@/styles/inviteFriends.module.scss";
 import { PhotoTime } from "../pages/notification/AlarmTime";
+import { LoadingPhotoProfile, LoadingPhotoSpan } from "../common/Loading";
 
 /**
  * 사진 상세보기 특징 컴포넌트
@@ -24,6 +25,7 @@ const PhotoFeatures = ({ photoId, clickVote }: Props): JSX.Element => {
     photoDetail: photoDetail,
     isSnsAgree: isSnsAgree,
     isSnsRequest: isSnsRequest,
+    isLoading,
   } = getPhoto(photoId);
 
   /**
@@ -48,20 +50,34 @@ const PhotoFeatures = ({ photoId, clickVote }: Props): JSX.Element => {
   return (
     <div className="flex justify-between w-11/12 h-full">
       <div className="flex items-center gap-2 w-40">
-        <img
-          src={photoDetail?.userProfileImg}
-          alt="profile"
-          className="w-10 h-10 rounded-xl"
-        />
+        {isLoading ? (
+          <LoadingPhotoProfile />
+        ) : (
+          <img
+            src={photoDetail?.userProfileImg}
+            alt="profile"
+            className="w-10 h-10 rounded-xl"
+          />
+        )}
         <div className="flex flex-col">
-          <span className="text-lg font-bold">
-            {photoDetail ? photoDetail.userName : ""}
-          </span>
-          <span className="text-xs">
-            <PhotoTime
-              time={photoDetail ? photoDetail.uploadedDate : ""}
-            ></PhotoTime>
-          </span>
+          {isLoading ? (
+            <>
+              <LoadingPhotoSpan />
+              <LoadingPhotoSpan />
+            </>
+          ) : (
+            <>
+              <span className="text-lg font-bold">
+                {photoDetail ? photoDetail.userName : ""}
+              </span>
+
+              <span className="text-xs">
+                <PhotoTime
+                  time={photoDetail ? photoDetail.uploadedDate : ""}
+                ></PhotoTime>
+              </span>
+            </>
+          )}
         </div>
       </div>
       <div className="flex items-center justify-between w-20">
