@@ -2,7 +2,7 @@
 
 ### [링크 바로가기](https://some-album.com/)
 
-![메인페이지]()
+![메인페이지](https://file.notion.so/f/s/4dc78c86-67ea-4213-9ac7-74d47144235c/Splash.svg?id=c6906208-484e-4c95-b244-0918a58c33ea&table=block&spaceId=6c4a8b4a-051a-4ef0-ad49-395545692169&expirationTimestamp=1684513985185&signature=aw-8QE59t9qv8-NoSB-euO6A0xwQjpo9PVHkArWkeNM&downloadName=Splash.svg)
 
 ---
 
