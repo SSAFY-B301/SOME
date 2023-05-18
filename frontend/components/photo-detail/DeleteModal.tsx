@@ -12,7 +12,7 @@ interface Props {
  */
 
 const DeleteModal = ({ clickDelete, photoId }: Props): JSX.Element => {
-  const { deleteMutation } = useMutationPhoto();
+  const { deleteMutation } = useMutationPhoto(photoId);
   /**
    * 사진 삭제 기능 추가
    */
