@@ -1,6 +1,6 @@
 import React from "react";
 import { useRouter } from "next/router";
-import { UploadStatus } from "../common/UploadStatus";
+import { UploadStatus } from "../../common/UploadStatus";
 
 interface InfoType {
   title: string;

@@ -1,7 +1,7 @@
 import React from "react";
 import Album from "./Album";
 import styles from "@/styles/home.module.scss";
-import { LoadingInviteAlbum } from "../common/Loading";
+import { LoadingInviteAlbum } from "../../common/Loading";
 
 interface AlbumType {
   album_id: number;

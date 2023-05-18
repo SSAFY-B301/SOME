@@ -1,6 +1,7 @@
 // 라이브러리
 import React, { useEffect } from "react";
 import { useRouter } from "next/router";
+import "animate.css";
 
 // CSS
 import styles from "@/styles/home.module.scss";
@@ -66,7 +67,10 @@ export default function Home() {
         className="flex-col justify-center items-center content-center mx-auto relative"
         style={{ width: "200px", height: "200px" }}
       >
-        <Logo className="absolute" style={{ top: "-8px" }} />
+        <Logo
+          className={`absolute ${styles.splash} animate__animated animate__bounceIn`}
+          style={{ top: "-64px" }}
+        />
       </div>
     </div>
   );

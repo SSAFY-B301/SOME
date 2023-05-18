@@ -16,6 +16,11 @@ export default function Document() {
         />
         <link rel="manifest" href="/manifest.json" />
         <link
+          href="//db.onlinewebfonts.com/c/7dd6452e07e96bbcad6478f070c9020d?family=FruitygreenW01-BlackItalic"
+          rel="stylesheet"
+          type="text/css"
+        />
+        <link
           href="/favicons/favicon-16x16.png"
           rel="icon"
           type="image/png"

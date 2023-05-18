@@ -18,8 +18,8 @@ import {
   VoteModal,
   Nav,
   ThumbnailModal,
-} from "@/components/photo-detail";
-import styles from "./photo.module.scss";
+} from "@/components/pages/photo-detail";
+import styles from "styles/photo.module.scss";
 import { getPhoto } from "@/pages/api/photoDetailApi";
 import {
   Mutations,
