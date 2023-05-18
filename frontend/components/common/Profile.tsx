@@ -9,7 +9,9 @@ function Profile() {
       <Link href={"/profile"}>
         <div
           className="w-8 h-8 bg-center bg-cover rounded-full"
-          style={{ backgroundImage: "url(" + getUserInfo.user_img + ")" }}
+          style={{
+            backgroundImage: "url(" + getUserInfo.user_img + ")",
+          }}
         ></div>
       </Link>
     );

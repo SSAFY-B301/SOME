@@ -75,8 +75,8 @@ function FavoriteAlbum() {
             }
             alt="fav"
             style={{ objectFit: "cover", borderRadius: "3.077vw" }}
-            loading={index < 2 ? "eager" : "lazy"}
-            priority={index < 2 ? true : false}
+            loading={index < 5 ? "eager" : "lazy"}
+            priority={index < 5 ? true : false}
             sizes="73.846vw"
             fill
           />
