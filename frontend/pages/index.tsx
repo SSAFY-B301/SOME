@@ -66,7 +66,7 @@ export default function Home() {
         className="flex-col justify-center items-center content-center mx-auto relative"
         style={{ width: "200px", height: "200px" }}
       >
-        <Logo className="absolute" style={{ top: "-8px" }} />
+        <Logo className="absolute" style={{ top: "-64px" }} />
       </div>
     </div>
   );
