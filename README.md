@@ -423,6 +423,7 @@ some-friendgirl
 
 - 알림을 통해 SNS 공유 요청 수락
 - SNS 요청 현황 확인
+
   ![SNS](https://file.notion.so/f/s/bb550d32-1b35-4fc1-9430-aeadafbc8443/12.gif?id=dd788c85-8380-4a76-ad67-a4c1316298b1&table=block&spaceId=6c4a8b4a-051a-4ef0-ad49-395545692169&expirationTimestamp=1684499796828&signature=NlP-DfQd5c-CTGB8JYVdU5nCZog1iGmMoXA7IZaoKzQ&downloadName=12.gif)
 
 ### 🙋‍♀️ 여사친 (여기에 사진 남겼어, 친구야!)
@@ -430,7 +431,7 @@ some-friendgirl
 1️⃣ 사진 업로드
 
 - 현재 위치에 사진 업로드
-  ![여사친1](https://file.notion.so/f/s/1b1e228c-1542-4b5f-8d0f-e4642d23ef89/13.gif?id=a9ed02f5-2131-4855-8961-08870325bfaf&table=block&spaceId=6c4a8b4a-051a-4ef0-ad49-395545692169&expirationTimestamp=1684499960284&signature=r0Ez8sQbo3D-U9502BJrp8lbiIpTlplIe-wdCMWGSu8&downloadName=13.gif)
+- ![여사친1](https://file.notion.so/f/s/1b1e228c-1542-4b5f-8d0f-e4642d23ef89/13.gif?id=a9ed02f5-2131-4855-8961-08870325bfaf&table=block&spaceId=6c4a8b4a-051a-4ef0-ad49-395545692169&expirationTimestamp=1684499960284&signature=r0Ez8sQbo3D-U9502BJrp8lbiIpTlplIe-wdCMWGSu8&downloadName=13.gif)
 
 2️⃣ 현재 위치의 사진 확인
 
