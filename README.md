@@ -80,12 +80,15 @@
   - SSE
     <br>
 
-- **Deployment**
-  - Nginx
+- **Infrastructure**
   - Docker
+  - Kubernetes
+  - AWS CLI
+  - Amazon S3
+  - Elastic Container Registry
   - Jenkins
-  - AWS EC2
   - Gitlab
+  - SonarQube
     <br>
 
 ## :art: 버전 정보
@@ -139,6 +142,7 @@
   - 여사친 API 개발
   - RabbitMQ 구현
   - 알림 서버 개발
+  - Redis 연동
 
 #### 3.1
 
@@ -353,10 +357,10 @@ some-friendgirl
 
 ## :clipboard: 프로젝트 산출물
 
-- [서비스기획서](<[./docs/md/%EC%84%9C%EB%B9%84%EC%8A%A4%EA%B8%B0%ED%9A%8D%EC%84%9C.md](https://www.notion.so/b173d37cba5b4e9e969ebba75f4e55e7)>)
+- [서비스기획서](https://www.notion.so/b173d37cba5b4e9e969ebba75f4e55e7)
 - [기능명세서](https://www.notion.so/3f14f23d87ad4a44bc8b7a25e3e99677?v=08794510cc7348658f1588d063464dd4&pvs=4)
 - [회의록](https://www.notion.so/515356e2d5b44df89a6d6698d132683d)
-- [Jira](<[./docs/md/jira.md](https://www.notion.so/JIRA-55029bb25c5c4fa6a90080f17290cd29)>)
+- [Jira](https://www.notion.so/JIRA-55029bb25c5c4fa6a90080f17290cd29)
 - [아키텍처](https://www.notion.so/dbf3bc6ba4ca4eec9e7a49512bbd82ed)
 - [와이어프레임](https://www.figma.com/file/pz0IKJ0MUDdbW6McHsjjsR/%EC%99%80%EC%9D%B4%EC%96%B4-%ED%94%84%EB%A0%88%EC%9E%84?type=design&node-id=0%3A1&t=wYKlFGL9ZbBE09U0-1)
 - [컨벤션](https://www.notion.so/a0528901fc77473c99b48a5535a37eaf)
