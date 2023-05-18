@@ -225,7 +225,9 @@ const PhotoDetail = (): JSX.Element => {
   };
 
   return (
-    <div className="w-screen h-screen bg-white dark:bg-dark-bg-home overflow-hidden">
+    <div
+      className={`w-screen h-screen bg-white dark:bg-dark-bg-home overflow-hidden ${styles.container}`}
+    >
       <div
         className={`z-20 fixed flex items-center justify-center box-border p-4 bg-white dark:bg-dark-block ${styles.info_bar}`}
       >
@@ -235,11 +237,15 @@ const PhotoDetail = (): JSX.Element => {
         ref={(slider) => {
           slider && slider.slickGoTo(carouselIdx);
         }}
-        className={
-          showConcentrationMode
-            ? "w-screen h-screen z-30 bg-black"
-            : "w-screen h-screen dark:bg-dark-bg-home"
-        }
+        className={`
+          ${styles.slide}
+          ${
+            showConcentrationMode
+              ? "w-screen h-screen z-30 "
+              : "w-screen h-screen"
+          }
+          ${showConcentrationMode ? styles.is_mode : styles.no_mode}
+            `}
         {...sliderSet}
       >
         {albumData &&
@@ -247,8 +253,8 @@ const PhotoDetail = (): JSX.Element => {
             (photo): JSX.Element => (
               <div className="relative w-screen h-screen">
                 <div
-                  className="absolute w-full h-20 z-20 flex items-center justify-center bg-white dark:bg-dark-block"
-                  style={{ top: "15.385vw" }}
+                  className="fixed w-screen z-20 flex items-center justify-center "
+                  style={{ top: "56px", height: "72px" }}
                 >
                   <PhotoFeatures
                     photoId={photo.photoId}

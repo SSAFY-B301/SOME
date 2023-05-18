@@ -33,23 +33,24 @@ function getPhoto(photoId: number) {
 function getSnsPhoto(photoId: number | undefined) {
   let snsResultData: SnsPhotoType;
 
-  const { data: snsPhotoData, status: snsPhotoStatus } = useQuery(["sns", photoId], () =>
-    customBoyAxios.get("/photo/sns/detail?photoId=" + photoId)
+  const { data: snsPhotoData, status: snsPhotoStatus } = useQuery(
+    ["sns", photoId],
+    () => customBoyAxios.get("/photo/sns/detail?photoId=" + photoId)
   );
 
   snsResultData = snsPhotoData?.data.data.albumPhotoDetail;
-  return { snsResultData,snsPhotoStatus };
+  return { snsResultData, snsPhotoStatus };
 }
 
-function useMutationPhoto() {
+function useMutationPhoto(photoId: number) {
   const queryClient = useQueryClient();
   const router = useRouter();
-  const photoId = router.query.photo_id;
+  // const photoId = router.query.photo_id;
   const { mutate: likeMutation } = useMutation(
     () => customBoyAxios.put("/photo/like?photoId=" + photoId),
     {
       onSuccess: () => {
-        queryClient.invalidateQueries("photo"); // queryKey 유효성 제거
+        queryClient.invalidateQueries(["photo", String(photoId)]); // queryKey 유효성 제거
       },
     }
   );
