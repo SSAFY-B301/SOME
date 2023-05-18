@@ -42,6 +42,14 @@ export const LoadingFav = () => {
   return <div className={`${styles.fav} ${styles.loading}`}></div>;
 };
 
+export const LoadingPhotoProfile = () => {
+  return <div className={`${styles.photo_profile} ${styles.loading}`}></div>;
+};
+
+export const LoadingPhotoSpan = () => {
+  return <div className={`${styles.photo_span} ${styles.loading}`}></div>;
+};
+
 export const CommonLoading = () => {
   return (
     <div className={styles.loading_box}>

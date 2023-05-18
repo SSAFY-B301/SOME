@@ -33,8 +33,8 @@ const Footer = ({
         onClick={clickThumbnail}
       >
         <ThumbnailIcon
-          width={"28px"}
-          height={"28px"}
+          width={"32px"}
+          height={"32px"}
           fill={"white"}
           stroke={"black"}
         />

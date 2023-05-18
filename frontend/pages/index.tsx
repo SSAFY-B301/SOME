@@ -13,6 +13,8 @@ import { StateType } from "@/types/StateType";
 import { SseConnect, notificationPermission } from "@/features/sse";
 import { useTheme } from "next-themes";
 
+import Logo from "public/icons/Splash.svg";
+
 export default function Home() {
   //로그인 상태인지 확인하고, 로그인 안 되어 있으면 로그인 페이지로 이동
   const router = useRouter();
@@ -50,7 +52,7 @@ export default function Home() {
         window.localStorage.getItem("access_token") || "{}"
       ).access_token;
       SseConnect(parseToken);
-      setTimeout(() => router.push("/boy-home"), 2000);
+      setTimeout(() => router.push("/boy-home"), 20000);
     }
     return () => {};
   }, [getUserInfo]);
@@ -61,12 +63,10 @@ export default function Home() {
       style={{ width: "100vw", height: "100vh" }}
     >
       <div
-        className="flex-col items-center content-center mx-auto"
+        className="flex-col justify-center items-center content-center mx-auto relative"
         style={{ width: "200px", height: "200px" }}
       >
-        <img src="/images/splash.png" alt="" />
-        <p className="text-5xl text-center">SOME</p>
-        <p className="mt-4 text-center">함께 만들어가는 앨범</p>
+        <Logo className="absolute" style={{ top: "-8px" }} />
       </div>
     </div>
   );
