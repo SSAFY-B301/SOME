@@ -2,12 +2,12 @@ import React, { useState } from "react";
 import { useRouter } from "next/router";
 import styles from "@/styles/inviteFriends.module.scss";
 import BackButtonIcon from "@/public/icons/CaretLeft.svg";
-import Albums from "@/components/album-starter/Albums";
-import Friends from "@/components/album-starter/Friends";
-import InvitedGroup from "@/components/album-starter/InvitedGroup";
+import Albums from "@/components/pages/album-starter/Albums";
+import Friends from "@/components/pages/album-starter/Friends";
+import InvitedGroup from "@/components/pages/album-starter/InvitedGroup";
 import { useGetFriends, albumMutation } from "../api/inviteApi";
 import { useTheme } from "next-themes";
-import AlertModal from "@/components/album-starter/AlertModal";
+import AlertModal from "@/components/pages/album-starter/AlertModal";
 
 interface FriendType {
   id: number;

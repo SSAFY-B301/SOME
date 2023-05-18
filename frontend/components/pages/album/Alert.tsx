@@ -13,7 +13,7 @@ export default function Alert(props: AlertType) {
     >
       <div
         onClick={(e) => e.stopPropagation()}
-        className="flex flex-col items-center justify-center w-64 bg-white rounded-lg h-28 gap-y-4"
+        className="flex flex-col items-center justify-center w-64 bg-white dark:bg-dark-block rounded-lg h-28 gap-y-4"
       >
         <p>{props.msg}</p>
         <div className="flex items-center justify-center gap-x-4">

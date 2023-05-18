@@ -24,7 +24,7 @@ export const CheckDevice = () => {
       dispatch(setUserAgent(userAgent));
 
       if (userAgent === "Desktop") {
-        router.push("Desktop");
+        router.push("desktop");
       }
     }
   }, []);
