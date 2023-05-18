@@ -1,12 +1,13 @@
 import Link from "next/link";
 import styles from "styles/home.module.scss";
+import LogoText from "public/icons/Logo.svg";
 
 function Logo() {
   return (
     <Link href="/boy-home">
-      <h1 className={`text-3xl ${styles.logo}`}>SOME</h1>
+      <LogoText width={"80px"} height={"36px"} />
     </Link>
-  )
+  );
 }
 
 export default Logo;
