@@ -163,7 +163,7 @@
 
 ## :open_file_folder: 시스템 아키텍처
 
-![SOME아키텍쳐](./docs/architecture.png)
+![SOME_아키텍쳐](https://github.com/popopododo/popopododo.github.io/assets/76838814/d36381a7-4e40-446a-b1ab-5ad18e73ede4)
 
 ## :open_file_folder: 프로젝트 파일 구조
 
