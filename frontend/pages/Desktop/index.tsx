@@ -17,7 +17,7 @@ function Desktop() {
         />
         <div className="flex flex-col justify-center items-center gap-1">
           <span className="text-xl font-bold text-black dark:text-white">
-            QR로 들어와주세요.
+            QR코드로 들어와주세요.
           </span>
           <div className="flex  justify-center items-center gap-2">
             <AndroidIcon />
