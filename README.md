@@ -1,6 +1,7 @@
 # 📷👨🏻‍🤝‍👨🏻 S.O.M.E.(Share Our Memory Everywhere) 👨🏻‍🤝‍👨🏻📷
 
 ### [링크 바로가기](https://some-album.com/)
+### [플레이 스토어 바로가기](https://play.google.com/store/apps/details?id=io.ssafy.p.k8b301.twa)
 
 ![메인페이지](./docs/SOME.svg)
 
